@@ -48,11 +48,12 @@ var haste = 0;
 var crit = 0;
 var sp = 0;
 var vers = 0;
+var name = "";
 fs.readdirSync(path.join(".","/results")).forEach(function(result){
     var xml = fs.readFileSync(path.join('.','results', result), "utf-8");
     var doc = new dom().parseFromString(xml);
     var res = result.match("^(.*)_([0-9]*)_(.*).simc.xml");
-    var name = res[1];
+    name = res[1];
     name = name.charAt(0).toUpperCase() + name.slice(1);
     var time = res[2];
     var fight = res[3];
@@ -67,6 +68,6 @@ fs.readdirSync(path.join(".","/results")).forEach(function(result){
 });
 
 console.log("Total calibration: " + sum);
-console.log({int:int/int,mastery:mastery/int,haste:haste/int,crit:crit/int,sp:sp/int,vers:vers/int});
+console.log("( Pawn: v1: \"" + name + "_selfsim\": Intellect=" + int/int + ", Versatility="+ vers/int + ", HasteRating=" + haste/int + ", MasteryRating=" + mastery/int + ", CritRating=" + crit/int + ")");
 
 console.log("Note: If your calibration values vary greatly from 1, please verify weights/that all sims were run.");
