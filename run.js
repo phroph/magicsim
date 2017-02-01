@@ -18,7 +18,6 @@ var cp = config.names.reduce(function(prev, cur) {
 
 
 var configurations = cartesianProduct(cp);
-fs
 
 Q.nfcall(fs.readdir,"templates").then(function(templates) {
     return cartesianProduct([templates,configurations]);
