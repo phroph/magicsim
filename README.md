@@ -3,7 +3,7 @@ Shadow priest tailored tool for simming stat weights in a fight-aware manner usi
 
 How to run sims and analyze: "node run.js `<region>` `<realm>` `<name>`"
 
-How to analyze (say if you have run sims and want to adjust weights): "analyze.js"
+How to analyze (say if you have run sims and want to adjust weights): "node analyze.js"
 
 Note: You must have 7zip and Node.js installed and in your PATH (see StackOverflow/Google for more information) for this tool to properly work. If you do not have 7zip in your PATH, you will most likely see the error "undefined" when running node run.js.
 
