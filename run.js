@@ -53,14 +53,11 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         fs.mkdirSync('./results/');
     }
     var promises = fs.readdirSync("sims").map(function(sim) {
-        var deferred = Q.defer();
-        exec("C:\\Users\\phrop\\Downloads\\simc-715-01-win64-a0a9385\\simc-715-01-win64\\simc.exe ../sims/" + sim, { cwd: "./results" }, function(err, out, stderr) {
-            console.log("Done sim " + sim);
-            deferred.resolve();
-        });
-        return deferred;
+        return Q.nfcall(exec, "C:\\Users\\phrop\\Downloads\\simc-715-01-win64-a0a9385\\simc-715-01-win64\\simc.exe ../sims/" + sim, { cwd: "./results" }).then(function() {
+            console.log("Done sim: " + sim);
+        })
     });
-    return Q.all(promises).then(function() {
+    return Q.allSettled(promises).then(function() {
         // process results.
         var deferred2 = Q.defer();
         exec("node ./analyze.js", function(err, out, stderr) {
@@ -69,6 +66,4 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         });
         return deferred2;
     });
-}).then(function() {
-    
 }).done();
