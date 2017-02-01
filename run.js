@@ -61,5 +61,9 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         return deferred;
     }));
 }).then(function() {
-    // process results.
+    var deferred = Q.defer();
+    exec("node ./analyze.js", function(err, out, stderr) {
+        deferred.resolve();
+    });
+    return deferred;
 }).done();

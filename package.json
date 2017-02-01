@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "q": "1.4.1",
-    "cartesian-product": "2.1.2"
+    "cartesian-product": "2.1.2",
+    "xpath": "0.0.23",
+    "xmldom": "0.1.27"
   },
   "repository": {
     "type": "git",
