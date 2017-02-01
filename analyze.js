@@ -65,7 +65,7 @@ fs.readdirSync("./results").forEach(function(result){
     sum += weight;
 });
 
+console.log("Total calibration: " + sum);
 console.log({int:int/int,mastery:mastery/int,haste:haste/int,crit:crit/int,sp:sp/int,vers:vers/int});
 
-console.log("Total calibration: " + sum);
 console.log("Note: If your calibration values vary greatly from 1, please verify weights/that all sims were run.");
