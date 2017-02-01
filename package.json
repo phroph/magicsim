@@ -7,10 +7,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "q": "1.4.1",
     "cartesian-product": "2.1.2",
-    "xpath": "0.0.23",
-    "xmldom": "0.1.27"
+    "dom-parser": "0.1.5",
+    "node-7z": "^0.4.0",
+    "q": "1.4.1",
+    "xmldom": "0.1.27",
+    "xpath": "0.0.23"
   },
   "repository": {
     "type": "git",

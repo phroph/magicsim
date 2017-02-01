@@ -2,6 +2,10 @@ var Q = require("Q");
 var cartesianProduct = require("cartesian-product");
 var fs = require("fs");
 var exec = require('child_process').exec;
+var zip = require('node-7z')
+var xpath = require('xpath');
+var dom = require('xmldom').DOMParser;
+var http = require('http');
 
 var region = process.argv[2];
 var realm = process.argv[3];
@@ -48,12 +52,52 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         });
     }))
 }).then(function() {
+    var deferred = Q.defer();
+    var rawData = "";
+    http.get("http://downloads.simulationcraft.org/?C=M;O=D", (response) => {
+        response.on('data', (chunk) => rawData += chunk);
+        response.on('end', () => {
+            deferred.resolve(rawData);
+        });
+    });
+
+    return deferred.promise;
+}).then((response) => {
+        var doc = new dom().parseFromString(response, "text/html")
+        var select = xpath.useNamespaces({ h: 'http://www.w3.org/1999/xhtml' });
+        var link = "http://downloads.simulationcraft.org/" + select("//h:html/h:body/h:table/h:tr/h:td/h:a[contains(@href,'.7z')][1]/@href", doc)[0].value;
+	    var file = fs.createWriteStream("simc.7z");
+        var deferred = Q.defer();
+        http.get(link, (response) => {
+            response.pipe(file);
+            response.on('end', () => {
+                deferred.resolve("simc.7z");
+            });
+        })
+        return deferred.promise;
+	    //response.pipe(file);
+	    //return Q.nfcall(zip.extractFull, file, 'bin');
+}).then((name) => {
+    var deferred = Q.defer();
+    new zip().extractFull('simc.7z', 'bin', {})
+    .progress((files) => {
+        console.log(files);
+    })
+    .then(() => {
+        console.log("done");
+        deferred.resolve();
+    }).catch((err) => {
+        console.log(err);
+    })
+    return deferred.promise;
+}).then(function() {
     // start simc run
     if (!fs.existsSync('./results/')) { 
         fs.mkdirSync('./results/');
     }
     var promises = fs.readdirSync("sims").map(function(sim) {
-        return Q.nfcall(exec, "C:\\Users\\phrop\\Downloads\\simc-715-01-win64-a0a9385\\simc-715-01-win64\\simc.exe ../sims/" + sim, { cwd: "./results" }).then(function() {
+        // find a better way to pull the newest version.
+        return Q.nfcall(exec, "../bin/" + fs.readdirSync("bin")[0] + "/simc.exe ../sims/" + sim, { cwd: "./results" }).then(function() {
             console.log("Done sim: " + sim);
         })
     });
