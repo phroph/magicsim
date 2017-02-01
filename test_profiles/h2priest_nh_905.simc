@@ -1,0 +1,28 @@
+head=,id=140851,bonus_id=3445
+neck=,id=140898,bonus_id=3445,enchant=mark_of_the_satyr
+shoulders=,id=138322,bonus_id=3445
+back=,id=138370,bonus_id=3445,enchant=200int
+chest=,id=140848,bonus_id=3445
+wrists=,id=140886,bonus_id=3445
+hands=,id=138310,bonus_id=3445
+waist=,id=140887,bonus_id=3445
+legs=,id=138316,bonus_id=3445
+feet=,id=140885,bonus_id=3445
+finger1=,id=140896,bonus_id=3445,enchant=binding_of_haste
+finger2=,id=140895,bonus_id=3445,enchant=binding_of_haste
+trinket1=,id=142507,bonus_id=3469/604
+trinket2=,id=139321,bonus_id=1806
+main_hand=xalatath_blade_of_the_black_empire,id=128827,bonus_id=740,gem_id=140822/140818/140822,relic_id=3518/3445/3518
+off_hand=secrets_of_the_void,id=133958
+
+# Gear Summary
+# gear_ilvl=905.25
+# gear_stamina=34201
+# gear_intellect=36261
+# gear_crit_rating=6067
+# gear_haste_rating=12343
+# gear_mastery_rating=3172
+# gear_versatility_rating=3921
+# gear_armor=1979
+# set_bonus=tier19_2pc=1
+# set_bonus=tier19_4pc=1
