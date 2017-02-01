@@ -3,7 +3,7 @@ $(style)=%fightstyle%
 
 armory=%region%,%realm%,%name%
 iterations=10000
-threads=16
+threads=1
 target_error=0.000
 max_time=$(time)
 vary_combat_length=0.20

@@ -1,6 +1,7 @@
 var Q = require("Q");
 var cartesianProduct = require("cartesian-product");
 var fs = require("fs");
+var exec = require('child_process').exec;
 
 var region = process.argv[2];
 var realm = process.argv[3];
@@ -49,4 +50,16 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
     }))
 }).then(function() {
     // start simc run
+    if (!fs.existsSync('./results/')) { 
+        fs.mkdirSync('./results/');
+    }
+    return Q.all(fs.readdirSync("sims").map(function(sim) {
+        var deferred = Q.defer();
+        exec("C:\\Users\\phrop\\Downloads\\simc-715-01-win64-a0a9385\\simc-715-01-win64\\simc.exe ../sims/" + sim, { cwd: "./results" }, function(err, out, stderr) {
+            deferred.resolve();
+        });
+        return deferred;
+    }));
+}).then(function() {
+    // process results.
 }).done();
