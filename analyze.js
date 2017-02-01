@@ -25,8 +25,8 @@ var fight_mapping = {
 }
 
 var time_mapping = {
-    250: .4,
-    400: .6
+    250: .15,
+    400: .85
 }
 
 var sum = 0;
