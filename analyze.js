@@ -48,7 +48,7 @@ var crit = 0;
 var sp = 0;
 var vers = 0;
 fs.readdirSync("./results").forEach(function(result){
-    var xml = fs.readFileSync("./results/" + result, "utf-8");
+    var xml = fs.readFileSync(path.join('.','results') + result, "utf-8");
     var doc = new dom().parseFromString(xml);
     var res = result.match("^(.*)_([0-9]*)_(.*).simc.xml");
     var name = res[1];

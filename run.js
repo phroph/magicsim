@@ -6,6 +6,7 @@ var zip = require('node-7z')
 var xpath = require('xpath');
 var dom = require('xmldom').DOMParser;
 var http = require('http');
+var path = require('path');
 
 var region = process.argv[2];
 var realm = process.argv[3];
@@ -45,10 +46,10 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
             templateData = templateData.replace("%filename%",filename);
             return {data: templateData,fileName: filename};
         }).then(function(data) {
-            if (!fs.existsSync('./sims/')) { 
-                fs.mkdirSync('./sims/');
+            if (!fs.existsSync(path.join('.','sims'))) { 
+                fs.mkdirSync(path.join('.','sims'));
             }
-            return Q.nfcall(fs.writeFile, "./sims/"+data.fileName, data.data, "utf-8")
+            return Q.nfcall(fs.writeFile, path.join('.','sims',data.fileName), data.data, "utf-8")
         });
     }))
 }).then(function() {
@@ -66,6 +67,9 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         var doc = new dom().parseFromString(response, "text/html")
         var select = xpath.useNamespaces({ h: 'http://www.w3.org/1999/xhtml' });
         var link = "http://downloads.simulationcraft.org/" + select("//h:html/h:body/h:table/h:tr/h:td/h:a[contains(@href,'.7z')][1]/@href", doc)[0].value;
+        if (!fs.existsSync('simc.7z')) { 
+            fs.unlinkSync('simc.7z');
+        }
 	    var file = fs.createWriteStream("simc.7z");
         var deferred = Q.defer();
         http.get(link, (response) => {
@@ -75,36 +79,29 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
             });
         })
         return deferred.promise;
-	    //response.pipe(file);
-	    //return Q.nfcall(zip.extractFull, file, 'bin');
 }).then((name) => {
     var deferred = Q.defer();
     new zip().extractFull('simc.7z', 'bin', {})
-    .progress((files) => {
-        console.log(files);
-    })
     .then(() => {
-        console.log("done");
         deferred.resolve();
-    }).catch((err) => {
-        console.log(err);
-    })
+    });
     return deferred.promise;
 }).then(function() {
     // start simc run
-    if (!fs.existsSync('./results/')) { 
-        fs.mkdirSync('./results/');
+    if (!fs.existsSync(path.join('.','results'))) { 
+        fs.mkdirSync(path.join('.','results'));
     }
     var promises = fs.readdirSync("sims").map(function(sim) {
         // find a better way to pull the newest version.
-        return Q.nfcall(exec, "../bin/" + fs.readdirSync("bin")[0] + "/simc.exe ../sims/" + sim, { cwd: "./results" }).then(function() {
+        var cmd = path.join("..","bin",fs.readdirSync("bin")[0], "simc.exe") + " " + path.join("..","sims", sim);
+        return Q.nfcall(exec, cmd, { cwd: path.join('.','results') }).then(function() {
             console.log("Done sim: " + sim);
         })
     });
     return Q.allSettled(promises).then(function() {
         // process results.
         var deferred2 = Q.defer();
-        exec("node ./analyze.js", function(err, out, stderr) {
+        exec("node " + path.join('.','analyze.js'), function(err, out, stderr) {
             console.log(out);
             deferred2.resolve();
         });
