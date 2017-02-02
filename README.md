@@ -5,7 +5,7 @@ How to run sims and analyze: ```node run.js <region> <realm> <name>```
 
 How to analyze (say if you have run sims and want to adjust weights): `node analyze.js`
 
-Note: You must have Node.js installed and in your PATH (see StackOverflow/Google for more information) in order to run this tool.
+Note: This has a portable, self-bootstrapping version of node. If you cannot run the scripts using this, delete node.cmd, install Node.js locally on your machine and add it to PATH. Run `npm install` from the magicsim directory and then the commands should run as usual.
 
 **Tests:**
 
