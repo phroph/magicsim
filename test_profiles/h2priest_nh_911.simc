@@ -11,6 +11,7 @@ feet=perpetually_muddy_sandals,id=140854,bonus_id=3519
 finger1=ring_of_the_scoured_clan,id=140897,bonus_id=3519,enchant=binding_of_haste
 finger2=spellblades_gemmed_signet,id=140895,bonus_id=3519,enchant=binding_of_haste
 trinket1=whispers_in_the_dark,id=140809,ilevel=890
+trinket2=unstable_arcanocrystal,id=141482,ilevel=860
 main_hand=xalatath_blade_of_the_black_empire,id=128827,bonus_id=740,gem_id=140823/140819/140823,relic_id=3519/3519/3519
 off_hand=secrets_of_the_void,id=133958
 
