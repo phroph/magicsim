@@ -42,6 +42,8 @@ console.log("Fight calibration: " + sum);
 
 sum = 0;
 
+var damage = 0;
+var dps = 0;
 var int = 0;
 var mastery = 0;
 var haste = 0;
@@ -61,6 +63,9 @@ fs.readdirSync(path.join(".","/results")).forEach(function(result){
     var fight = res[3];
     simname = name;
     var weight = fight_mapping[fight]*time_mapping[time];
+	
+	damage += xpath.select1("//simulationcraft/summary/dmg/@total", doc).value*weight;
+	dps += xpath.select1("//simulationcraft/summary/dmg/@dps", doc).value*weight;
     int += xpath.select1("//simulationcraft/players/player[@name='"+name+"']/scale_factors/metric[@name='" + name + " Damage Per Second']/weights/stat[@name='Int']/@value", doc).value*weight;
     mastery += xpath.select1("//simulationcraft/players/player[@name='"+name+"']/scale_factors/metric[@name='" + name + " Damage Per Second']/weights/stat[@name='Mastery']/@value", doc).value*weight;
     haste += xpath.select1("//simulationcraft/players/player[@name='"+name+"']/scale_factors/metric[@name='" + name + " Damage Per Second']/weights/stat[@name='Haste']/@value", doc).value*weight;
@@ -79,6 +84,7 @@ if(process.argv[2] == "sim_test") {
     simname = "simtest";
 }
 console.log("Total calibration: " + sum);
+console.log("Damage (DPS): " + damage + " (" + dps + ")");
 console.log("( Pawn: v1: \"" + simname + "_selfsim\": Intellect=" + sint + ", Versatility="+ svers + ", HasteRating=" + shaste + ", MasteryRating=" + smastery + ", CritRating=" + scrit + " )");
 if(process.argv[2] == "sim_test") {
     console.log("Expected Values: ( Pawn: v1: \"SL 4-piece\": Intellect=1, MasteryRating=1.36, HasteRating=1.2, CritRating=1.02, Versatility=0.9 )")
