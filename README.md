@@ -7,7 +7,7 @@ How to analyze (say if you have run sims and want to adjust weights): "node anal
 
 Note: You must have 7zip and Node.js installed and in your PATH (see StackOverflow/Google for more information) for this tool to properly work. If you do not have 7zip in your PATH, you will most likely see the error "undefined" when running node run.js.
 
-**Tests:*
+**Tests:**
 
 This tool has a mode where you can run it in verification mode. It uses the same nighthold ilvl 905 4set gear model that the H2P sims (right now it uses my own character as a base, it will be refactored later) and generates stat weights and shows you how close they compare to the H2P raid stat weights posted for 12k haste SL 4set. I ran it and it was within acceptable parameters of closeness (<=.01 delta for all values), so you can use this to also verify if the simming tool is working properly or are accurate.
 
