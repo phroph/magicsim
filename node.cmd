@@ -1,0 +1,1 @@
+.\npm.cmd install & .\nodeexe.exe %*
