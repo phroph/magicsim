@@ -93,9 +93,10 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
                   
             if(process.argv[2] == "sim_test") {
                 templateData = templateData.replace("#","");
-                region = "us";
-                realm = "thrall";
-                name = "altrius";
+				templateData = templateData.replace("armory=%region%,%realm%,%name%","input=../test_profiles/characterbase.simc")
+                region = "test";
+                realm = "test";
+                name = "sim_test";
             }
             templateData = templateData.replace("%region%",region);
             templateData = templateData.replace("%realm%",realm);

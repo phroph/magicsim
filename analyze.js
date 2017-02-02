@@ -54,7 +54,9 @@ fs.readdirSync(path.join(".","/results")).forEach(function(result){
     var doc = new dom().parseFromString(xml);
     var res = result.match("^(.*)_([0-9]*)_(.*).simc.xml");
     var name = res[1];
-    name = name.charAt(0).toUpperCase() + name.slice(1);
+	if(name != "sim_test") {
+		name = name.charAt(0).toUpperCase() + name.slice(1);
+	}
     var time = res[2];
     var fight = res[3];
     simname = name;
