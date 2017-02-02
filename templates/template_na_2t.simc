@@ -2,7 +2,7 @@ $(time)=%fighttime%
 $(style)=%fightstyle%
 
 armory=%region%,%realm%,%name%
-#input=../test_profiles/h2priest_nh_905.simc
+#input=../test_profiles/h2priest_nh_%version%.simc
 iterations=10000
 threads=1
 target_error=0.000
