@@ -9,7 +9,7 @@ Note: This has a portable, self-bootstrapping version of node. If you cannot run
 
 **Tests:**
 
-This tool has a mode where you can run it in verification mode. It uses the same nighthold ilvl 905 4set gear model that the H2P sims (right now it uses my own character as a base, it will be refactored later) and generates stat weights and shows you how close they compare to the H2P raid stat weights posted for 12k haste SL 4set. I ran it and it was within acceptable parameters of closeness (<=.01 delta for all values, however it varies slightly from sim to sim, and haste tends to be valued slightly higher in my sims), so you can use this to also verify if the simming tool is working properly or is accurate.
+This tool has a mode where you can run it in verification mode. It uses the same nighthold ilvl 905 4set gear model that the H2P sims and generates stat weights and shows you how close they compare to the H2P raid stat weights posted for 12k haste SL 4set. I ran it and it was within acceptable parameters of closeness (<=.01 delta for all values typically), so you can use this to also verify if the simming tool is working properly or is accurate.
 
 Run it as such:
 
