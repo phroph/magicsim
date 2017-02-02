@@ -48,12 +48,11 @@ var haste = 0;
 var crit = 0;
 var sp = 0;
 var vers = 0;
-var name = "";
 fs.readdirSync(path.join(".","/results")).forEach(function(result){
     var xml = fs.readFileSync(path.join('.','results', result), "utf-8");
     var doc = new dom().parseFromString(xml);
     var res = result.match("^(.*)_([0-9]*)_(.*).simc.xml");
-    name = res[1];
+    var name = res[1];
     name = name.charAt(0).toUpperCase() + name.slice(1);
     var time = res[2];
     var fight = res[3];
@@ -67,7 +66,16 @@ fs.readdirSync(path.join(".","/results")).forEach(function(result){
     sum += weight;
 });
 
+var sint = int/int;
+var smastery = mastery/int;
+var shaste = haste/int;
+var scrit = crit/int;
+var svers = vers/int;
 console.log("Total calibration: " + sum);
-console.log("( Pawn: v1: \"" + name + "_selfsim\": Intellect=" + int/int + ", Versatility="+ vers/int + ", HasteRating=" + haste/int + ", MasteryRating=" + mastery/int + ", CritRating=" + crit/int + ")");
+console.log("( Pawn: v1: \"" + process.argv[2] + "_selfsim\": Intellect=" + sint + ", Versatility="+ svers + ", HasteRating=" + shaste + ", MasteryRating=" + smastery + ", CritRating=" + scrit + " )");
+if(process.argv[2] == "sim_test") {
+    console.log("Expected Values: ( Pawn: v1: \"SL 4-piece\": Intellect=1, MasteryRating=1.36, HasteRating=1.2, CritRating=1.02, Versatility=0.9 )")
+    console.log("Differences: int=" + (1-sint) + ", mastery=" + (1.36-smastery) + ", haste=" + (1.2-shaste) + ", crit=" + (1.02-scrit) + ", vers=" + (0.9-svers));
+}
 
 console.log("Note: If your calibration values vary greatly from 1, please verify weights/that all sims were run.");

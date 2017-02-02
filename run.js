@@ -31,20 +31,21 @@ var exec = function(command, options, callback) {
     mutex.lock(function() {
         var return_promise;
         if (pool[threads%pool_size] == null) {
+            console.log("Running: " + command);
             return_promise = Q.nfcall(process_exec, command, options).then(function() {
                 callback();
             });
             pool[threads%pool_size] = return_promise;
             threads++;
         } else {
-            deferral = Q.defer();
-            (pool[threads%pool_size]).then(function() {
+            var chain = (pool[threads%pool_size]).then(function() {
+                console.log("Running: " + command);
                 return Q.nfcall(process_exec, command, options).then(function() {
                     callback();
-                    deferral.resolve();
                 })
             });
-            pool[threads%pool_size] = deferral.promise;
+            pool[threads%pool_size] = chain;
+            console.log("Queued: " + command);
             threads++;
         }
         mutex.unlock();
@@ -144,7 +145,7 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         var deferral = Q.defer();
         process_exec("node " + path.join('.','analyze.js'), function(err, out, stderr) {
             console.log(out);
-            deferall.resolve();
+            deferral.resolve();
         });
         return deferral.promise;
     });
