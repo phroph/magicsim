@@ -122,7 +122,7 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         var doc = new dom().parseFromString(response, "text/html")
         var select = xpath.useNamespaces({ h: 'http://www.w3.org/1999/xhtml' });
         var link = "http://downloads.simulationcraft.org/" + select("//h:html/h:body/h:table/h:tr/h:td/h:a[contains(@href,'.7z')][1]/@href", doc)[0].value;
-        if (!fs.existsSync('simc.7z')) { 
+        if (fs.existsSync('simc.7z')) { 
             fs.unlinkSync('simc.7z');
         }
 	    var file = fs.createWriteStream("simc.7z");
