@@ -19,6 +19,8 @@ or after running sims (or to compare your own sims against H2P 12k haste SL 4set
 
 `node analyze.js sim_test`
 
+**This script only runs on Windows x64**
+
 *Big disclaimer that follows all simulated stat weights: Please take me with a grain of salt. Trust and verify. These are made with the same methodology as the sims that H2P runs for pinned resources, but it doesn't make these results infallible. Use common sense and your brain with this tool.*
 
 **Another disclaimer: I wrote the simc templates myself based on what I believe is the same simc templates (roughly) as the ones H2P uses. It is possible that these templates may give slightly different results and may influence weights. Again, use your brain, verify against pinned information. This tool is only an assistant that does a very specific task. It only gives you what it thinks is the best stat weights for your current gear/talent setup assuming a synthesized "average" nighthold raid.**
