@@ -1,6 +1,5 @@
-var Q = require("Q");
-var cartesianProduct = require("cartesian-product");
-var fs = require("fs");
+var Q = require('Q');
+var cartesianProduct = require('cartesian-product');
 var process_exec = require('child_process').exec;
 var zip = require('node-7z')
 var xpath = require('xpath');
@@ -8,6 +7,7 @@ var dom = require('xmldom').DOMParser;
 var http = require('http');
 var path = require('path');
 var locks = require('locks');
+var fs = require('fs');
 
 var region = process.argv[2];
 var realm = process.argv[3];
@@ -21,6 +21,19 @@ var cp = config.names.reduce(function(prev, cur) {
     var cp = cartesianProduct([[name], values]);
     return prev.concat([cp]);
 },[]);
+
+var deleteContents = function(path) {
+    if(fs.existsSync(path) ) {
+        fs.readdirSync(path).forEach(function(file,index){
+        var curPath = path + "/" + file;
+        if(fs.lstatSync(curPath).isDirectory()) { // recurse
+            deleteContents(curPath);
+        } else { // delete file
+            fs.unlinkSync(curPath);
+        }
+        });
+    }
+}
 
 var pool = [null,null,null,null,null,null,null,null];
 var pool_size = 8;
@@ -58,6 +71,12 @@ var configurations = cartesianProduct(cp);
 Q.nfcall(fs.readdir,"templates").then(function(templates) {
     return cartesianProduct([templates,configurations]);
 }).then(function(sims){
+    var simsFolder = 'sims';
+    if (!fs.existsSync(simsFolder)) { 
+        fs.mkdirSync(simsFolder);
+    }  else {
+        deleteContents(simsFolder);
+    }
     return Q.all(sims.map(function(sim){
         return Q.nfcall(fs.readFile, "templates/"+ sim[0], "utf-8").then(function(templateData){
             var fighttime;
@@ -85,10 +104,7 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
             templateData = templateData.replace("%filename%",filename);
             return {data: templateData,fileName: filename};
         }).then(function(data) {
-            if (!fs.existsSync(path.join('.','sims'))) { 
-                fs.mkdirSync(path.join('.','sims'));
-            }  
-            return Q.nfcall(fs.writeFile, path.join('.','sims',data.fileName), data.data, "utf-8")
+            return Q.nfcall(fs.writeFile, path.join(simsFolder,data.fileName), data.data, "utf-8")
         });
     }))
 }).then(function() {
@@ -120,6 +136,9 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         return deferred.promise;
 }).then((name) => {
     var deferred = Q.defer();
+    if (fs.existsSync('bin')) { 
+        deleteContents('bin');
+    }
     new zip().extractFull('simc.7z', 'bin', {})
     .then(() => {
         deferred.resolve();
@@ -127,15 +146,18 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
     return deferred.promise;
 }).then(function() {
     // start simc run
-    if (!fs.existsSync(path.join('.','results'))) { 
-        fs.mkdirSync(path.join('.','results'));
+    var resultsFolder = path.join('.','results');
+    if (!fs.existsSync(resultsFolder)) { 
+        fs.mkdirSync(resultsFolder);
+    } else {
+        deleteContents(resultsFolder);
     }
     var promises = fs.readdirSync("sims").map(function(sim) {
         // find a better way to pull the newest version.
         var cmd = path.join("..","bin",fs.readdirSync("bin")[0], "simc.exe") + " " + path.join("..","sims", sim);
         
         var deferred = Q.defer();
-        exec(cmd, { cwd: path.join('.','results') }, function() {
+        exec(cmd, { cwd: resultsFolder }, function() {
             console.log("Done sim: " + sim);
             deferred.resolve();
         });
