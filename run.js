@@ -1,12 +1,13 @@
 var Q = require("Q");
 var cartesianProduct = require("cartesian-product");
 var fs = require("fs");
-var exec = require('child_process').exec;
+var process_exec = require('child_process').exec;
 var zip = require('node-7z')
 var xpath = require('xpath');
 var dom = require('xmldom').DOMParser;
 var http = require('http');
 var path = require('path');
+var locks = require('locks');
 
 var region = process.argv[2];
 var realm = process.argv[3];
@@ -20,6 +21,35 @@ var cp = config.names.reduce(function(prev, cur) {
     var cp = cartesianProduct([[name], values]);
     return prev.concat([cp]);
 },[]);
+
+var pool = [null,null,null,null,null,null,null,null];
+var pool_size = 8;
+var threads = 0;
+
+var mutex = locks.createMutex();
+var exec = function(command, options, callback) {
+    mutex.lock(function() {
+        var return_promise;
+        if (pool[threads%pool_size] == null) {
+            return_promise = Q.nfcall(process_exec, command, options).then(function() {
+                callback();
+            });
+            pool[threads%pool_size] = return_promise;
+            threads++;
+        } else {
+            deferral = Q.defer();
+            (pool[threads%pool_size]).then(function() {
+                return Q.nfcall(process_exec, command, options).then(function() {
+                    callback();
+                    deferral.resolve();
+                })
+            });
+            pool[threads%pool_size] = deferral.promise;
+            threads++;
+        }
+        mutex.unlock();
+    });
+}
 
 
 var configurations = cartesianProduct(cp);
@@ -102,17 +132,20 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
     var promises = fs.readdirSync("sims").map(function(sim) {
         // find a better way to pull the newest version.
         var cmd = path.join("..","bin",fs.readdirSync("bin")[0], "simc.exe") + " " + path.join("..","sims", sim);
-        return Q.nfcall(exec, cmd, { cwd: path.join('.','results') }).then(function() {
+        
+        var deferred = Q.defer();
+        exec(cmd, { cwd: path.join('.','results') }, function() {
             console.log("Done sim: " + sim);
-        })
+            deferred.resolve();
+        });
+        return deferred.promise;
     });
     return Q.allSettled(promises).then(function() {
-        // process results.
-        var deferred2 = Q.defer();
-        exec("node " + path.join('.','analyze.js'), function(err, out, stderr) {
+        var deferral = Q.defer();
+        process_exec("node " + path.join('.','analyze.js'), function(err, out, stderr) {
             console.log(out);
-            deferred2.resolve();
+            deferall.resolve();
         });
-        return deferred2;
+        return deferral.promise;
     });
 }).done();

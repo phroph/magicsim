@@ -12,7 +12,8 @@
     "node-7z": "^0.4.0",
     "q": "1.4.1",
     "xmldom": "0.1.27",
-    "xpath": "0.0.23"
+    "xpath": "0.0.23",
+    "locks": "0.2.2"
   },
   "repository": {
     "type": "git",
