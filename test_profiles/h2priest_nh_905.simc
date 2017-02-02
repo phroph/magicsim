@@ -1,28 +1,27 @@
-head=,id=140851,bonus_id=3445
-neck=,id=140898,bonus_id=3445,enchant=mark_of_the_satyr
-shoulders=,id=138322,bonus_id=3445
-back=,id=138370,bonus_id=3445,enchant=200int
-chest=,id=140848,bonus_id=3445
-wrists=,id=140886,bonus_id=3445
-hands=,id=138310,bonus_id=3445
-waist=,id=140887,bonus_id=3445
-legs=,id=138316,bonus_id=3445
-feet=,id=140885,bonus_id=3445
-finger1=,id=140896,bonus_id=3445,enchant=binding_of_haste
-finger2=,id=140895,bonus_id=3445,enchant=binding_of_haste
-trinket1=,id=142507,bonus_id=3469/604
-trinket2=,id=139321,bonus_id=1806
-main_hand=xalatath_blade_of_the_black_empire,id=128827,bonus_id=740,gem_id=140822/140818/140822,relic_id=3518/3445/3518
+head=nighthold_custodians_hood,id=140851,bonus_id=3519
+neck=radiant_string_of_scorpid_eyes,id=140898,bonus_id=3519,enchant=mark_of_the_trained_soldier
+shoulders=purifiers_mantle,id=138322,bonus_id=3519
+back=purifiers_drape,id=138370,bonus_id=3519,enchant=200int
+chest=robes_of_fluctuating_energy,id=140848,bonus_id=3519
+wrists=bracers_of_harnessed_flame,id=140850,bonus_id=3519
+hands=purifiers_gloves,id=138310,bonus_id=3519
+waist=manari_skullbuckled_cinch,id=140887,bonus_id=3519
+legs=purifiers_leggings,id=138316,bonus_id=3519
+feet=perpetually_muddy_sandals,id=140854,bonus_id=3519
+finger1=ring_of_the_scoured_clan,id=140897,bonus_id=3519,enchant=binding_of_haste
+finger2=spellblades_gemmed_signet,id=140895,bonus_id=3519,enchant=binding_of_haste
+trinket1=whispers_in_the_dark,id=140809,ilevel=890
+main_hand=xalatath_blade_of_the_black_empire,id=128827,bonus_id=740,gem_id=140823/140819/140823,relic_id=3519/3519/3519
 off_hand=secrets_of_the_void,id=133958
 
 # Gear Summary
-# gear_ilvl=905.25
-# gear_stamina=34201
-# gear_intellect=36261
-# gear_crit_rating=6067
-# gear_haste_rating=12343
-# gear_mastery_rating=3172
-# gear_versatility_rating=3921
-# gear_armor=1979
+# gear_ilvl=911.73
+# gear_stamina=35877
+# gear_intellect=38072
+# gear_crit_rating=6102
+# gear_haste_rating=9283
+# gear_mastery_rating=7375
+# gear_versatility_rating=1659
+# gear_armor=2014
 # set_bonus=tier19_2pc=1
 # set_bonus=tier19_4pc=1
