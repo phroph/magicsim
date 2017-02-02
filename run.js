@@ -68,11 +68,11 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
                     fightstyle = variable[1]
                 }
                 templateData = templateData.replace("%" + variable[0] + "%",variable[1]);
-            })
-
+                })
             // Injects h2p test data instead of character data and uses myself as a template.
-            if(region == "sim_test") {
-                templateData = templateData.replace("#",""); 
+                  
+            if(process.argv[2] == "sim_test") {
+                templateData = templateData.replace("#","");
                 region = "us";
                 realm = "thrall";
                 name = "altrius";
@@ -86,7 +86,7 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         }).then(function(data) {
             if (!fs.existsSync(path.join('.','sims'))) { 
                 fs.mkdirSync(path.join('.','sims'));
-            }
+            }  
             return Q.nfcall(fs.writeFile, path.join('.','sims',data.fileName), data.data, "utf-8")
         });
     }))
