@@ -71,8 +71,8 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
             })
 
             // Injects h2p test data instead of character data and uses myself as a template.
-            if(region === "sim_test") {
-                templateData.replace("#",""); 
+            if(region == "sim_test") {
+                templateData = templateData.replace("#",""); 
                 region = "us";
                 realm = "thrall";
                 name = "altrius";
