@@ -165,7 +165,7 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
     });
     return Q.allSettled(promises).then(function() {
         var deferral = Q.defer();
-        process_exec("node " + path.join('.','analyze.js'), function(err, out, stderr) {
+        process_exec("node " + path.join('.','analyze.js') + " " + process.argv[2], function(err, out, stderr) {
             console.log(out);
             deferral.resolve();
         });
