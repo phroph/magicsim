@@ -77,6 +77,7 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
     }  else {
         deleteContents(simsFolder);
     }
+    console.log("Generating simc profiles.");
     return Q.all(sims.map(function(sim){
         return Q.nfcall(fs.readFile, "templates/"+ sim[0], "utf-8").then(function(templateData){
             var fighttime;
@@ -104,6 +105,7 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
             templateData = templateData.replace("%name%",name);
             var filename = sim[0].replace("template", name+"_"+fighttime+"_"+fightstyle.replace("_", ""));
             templateData = templateData.replace("%filename%",filename);
+            console.log("Generating simc profile: ") + filename;
             return {data: templateData,fileName: filename};
         }).then(function(data) {
             return Q.nfcall(fs.writeFile, path.join(simsFolder,data.fileName), data.data, "utf-8")
@@ -112,9 +114,11 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
 }).then(function() {
     var deferred = Q.defer();
     var rawData = "";
+    console.log("Downloading newest version of SimulationCraft");
     http.get("http://downloads.simulationcraft.org/?C=M;O=D", (response) => {
         response.on('data', (chunk) => rawData += chunk);
         response.on('end', () => {
+            console.log("Download complete.");
             deferred.resolve(rawData);
         });
     });
@@ -127,11 +131,13 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         if (fs.existsSync('simc.7z')) { 
             fs.unlinkSync('simc.7z');
         }
+        console.log("Unzipping simc.7z.");
 	    var file = fs.createWriteStream("simc.7z");
         var deferred = Q.defer();
         http.get(link, (response) => {
             response.pipe(file);
             response.on('end', () => {
+                console.log("Done unzipping simc.7z");
                 deferred.resolve("simc.7z");
             });
         })
@@ -141,8 +147,10 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
     if (fs.existsSync('bin')) { 
         deleteContents('bin');
     }
+    console.log("Extracting simc.7z archive.");
     new zip().extractFull('simc.7z', 'bin', {})
     .then(() => {
+        console.log("Done extracting simc.7z.");
         deferred.resolve();
     });
     return deferred.promise;
@@ -154,6 +162,7 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
     } else {
         deleteContents(resultsFolder);
     }
+    console.log("Starting SimulationCraft run");
     var promises = fs.readdirSync("sims").map(function(sim) {
         // find a better way to pull the newest version.
         var cmd = path.join("..","bin",fs.readdirSync("bin")[0], "simc.exe") + " " + path.join("..","sims", sim);
