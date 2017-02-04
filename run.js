@@ -105,7 +105,7 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
             templateData = templateData.replace("%name%",name);
             var filename = sim[0].replace("template", name+"_"+fighttime+"_"+fightstyle.replace("_", ""));
             templateData = templateData.replace("%filename%",filename);
-            console.log("Generating simc profile: ") + filename;
+            console.log("Generating simc profile: " + filename);
             return {data: templateData,fileName: filename};
         }).then(function(data) {
             return Q.nfcall(fs.writeFile, path.join(simsFolder,data.fileName), data.data, "utf-8")
