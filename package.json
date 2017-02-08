@@ -2,7 +2,13 @@
   "name": "magicsim-master",
   "version": "1.0.0",
   "description": "Shadow priest tailored tool for simming stat weights in a fight-aware manner using SimulationCraft.",
-  "main": "run.js",
+  "main": "http://localhost:3000/",
+  "window": {
+    "toolbar": false,
+    "resizable": false,
+    "width": 660,
+    "height": 500
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,7 +19,13 @@
     "q": "1.4.1",
     "xmldom": "0.1.27",
     "xpath": "0.0.23",
-    "locks": "0.2.2"
+    "locks": "0.2.2",
+    "nw": "0.20.1",
+    "body-parser": "~1.16.0",
+    "cookie-parser": "~1.4.3",
+    "express-session": "~1.15.0",
+    "debug": "~2.6.0",
+    "express": "~4.14.1"
   },
   "repository": {
     "type": "git",

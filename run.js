@@ -8,6 +8,7 @@ var http = require('http');
 var path = require('path');
 var locks = require('locks');
 var fs = require('fs');
+var os = require('os');
 
 var region = process.argv[2];
 var realm = process.argv[3];
@@ -25,12 +26,13 @@ var cp = config.names.reduce(function(prev, cur) {
 var deleteContents = function(path) {
     if(fs.existsSync(path) ) {
         fs.readdirSync(path).forEach(function(file,index){
-        var curPath = path + "/" + file;
-        if(fs.lstatSync(curPath).isDirectory()) { // recurse
-            deleteContents(curPath);
-        } else { // delete file
-            fs.unlinkSync(curPath);
-        }
+            var curPath = path + "/" + file;
+            if(fs.lstatSync(curPath).isDirectory()) { // recurse
+                deleteContents(curPath);
+                fs.rmdirSync(curPath);
+            } else { // delete file
+                fs.unlinkSync(curPath);
+            }
         });
     }
 }
@@ -114,11 +116,10 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
 }).then(function() {
     var deferred = Q.defer();
     var rawData = "";
-    console.log("Downloading newest version of SimulationCraft");
+    console.log("Downloading SimulationCraft version list.");
     http.get("http://downloads.simulationcraft.org/?C=M;O=D", (response) => {
         response.on('data', (chunk) => rawData += chunk);
         response.on('end', () => {
-            console.log("Download complete.");
             deferred.resolve(rawData);
         });
     });
@@ -127,11 +128,16 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
 }).then((response) => {
         var doc = new dom().parseFromString(response, "text/html")
         var select = xpath.useNamespaces({ h: 'http://www.w3.org/1999/xhtml' });
-        var link = "http://downloads.simulationcraft.org/" + select("//h:html/h:body/h:table/h:tr/h:td/h:a[contains(@href,'.7z')][1]/@href", doc)[0].value;
+        var arch = 'win64';
+        if (os.arch() != 'x64') {
+            arch = 'win32';
+        }
+        var link = "http://downloads.simulationcraft.org/" + select("//h:html/h:body/h:table/h:tr/h:td/h:a[contains(@href,'.7z') and contains(@href,'" + arch + "')][1]/@href", doc)[0].value;
+        console.log(link);
         if (fs.existsSync('simc.7z')) { 
             fs.unlinkSync('simc.7z');
         }
-        console.log("Unzipping simc.7z.");
+        console.log("Downloading/unzipping simc.7z for " + arch + " platform.");
 	    var file = fs.createWriteStream("simc.7z");
         var deferred = Q.defer();
         http.get(link, (response) => {
@@ -144,9 +150,13 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         return deferred.promise;
 }).then((name) => {
     var deferred = Q.defer();
-    if (fs.existsSync('bin')) { 
-        deleteContents('bin');
+    var binFolder = path.join('.','bin');
+    if (!fs.existsSync(binFolder)) { 
+        fs.mkdirSync(binFolder);
+    } else {
+        deleteContents(binFolder);
     }
+
     console.log("Extracting simc.7z archive.");
     new zip().extractFull('simc.7z', 'bin', {})
     .then(() => {
