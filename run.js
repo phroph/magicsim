@@ -186,8 +186,10 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
     });
     return Q.allSettled(promises).then(function() {
         var deferral = Q.defer();
+        console.log('Done Simming.');
         process_exec("node " + path.join('.','analyze.js') + " " + process.argv[2], function(err, out, stderr) {
             console.log(out);
+            console.log('Done Analysis.');
             deferral.resolve();
         });
         return deferral.promise;

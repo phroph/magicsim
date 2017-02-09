@@ -1,8 +1,74 @@
 <html>
     <head>
-        <title>Test</title>
+        <title>magicsim</title>
+        <script src="jquery-3.1.1.js"></script>
+        <script>
+        var doPoll = function() {
+            $.ajax({type: "GET",
+                     url: "http://localhost:3000/sim/results", 
+                     success: function(data){
+                        if(data == false) {
+                            setTimeout(doPoll,10000);
+                        } else {
+                            $('#submit').attr('disabled', false);
+                            $("#loading").hide();
+                            $("#pawn").text(data.pawnString);
+                            $("#damage").text(data.damageString);
+                            $("#results").show();
+                        }
+                    }, 
+                    error: function(req, stat, err) {
+                        alert(err);
+                        $('#submit').attr('disabled', false);
+                        $("#loading").hide();
+                        $("#results").hide();
+                        active = false;
+                    }});
+        }
+        $(document).ready(function(){
+            $("#loading").hide();
+            $("#results").hide();
+            var realm,region,character;
+            var active = false;
+            $("#submit").click(function(){
+                // start spinner
+                realm=$("#realm").val();
+                region=$("#region").val();
+                character=$("#character").val();
+                if(!active) {
+                    active = true;
+                    $.ajax({type: "POST",
+                     url: "http://localhost:3000/sim/request", 
+                     data: {character: character, region: region, realm: realm}, 
+                     success: function(data){
+                        if(data == true) {
+                            doPoll();
+                            $("#loading").show();
+                            $("#results").hide();
+                            $('#submit').attr('disabled', true);
+                        }
+                    }, 
+                    error: function(req, stat, err) {
+                        alert(err);
+                        active = false;
+                    }});
+                    alert('Simulation Started. Please wait around 30-60 minutes for a result. Do not close any magicsim windows please.')
+                }
+            });
+        });
+        </script>
     </head>
     <body>
-        <p>Test!</p>
+        <h2>magicsim:</h2>
+        <p>Automated H2Priest-style Armory Sims.</p>
+        <label for="region">Region:</label> <input type="text" name="region" id="region" />
+        <label for="realm">Realm:</label>  <input type="text" name="realm" id="realm" />
+        <label for="character">Character:</label>  <input type="text" name="character" id="character" />
+        <input type="submit" id="submit" value="Simulate" ></label> 
+        <p id="loading"><br />Waiting for sims...</p>
+        <p id="results"><br />
+            <p id="damage"></p>
+            <p id="pawn"></p>
+        </p>
     </body>
 </html>

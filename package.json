@@ -6,8 +6,8 @@
   "window": {
     "toolbar": false,
     "resizable": false,
-    "width": 660,
-    "height": 500
+    "width": 700,
+    "height": 250
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
