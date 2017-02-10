@@ -85,7 +85,7 @@ if(process.argv[2] == "sim_test") {
 }
 console.log("Total calibration: " + sum);
 console.log("Damage (DPS): " + damage + " (" + dps + ")");
-console.log("( Pawn: v1: \"" + simname + "_selfsim\": Intellect=" + sint + ", Versatility="+ svers + ", HasteRating=" + shaste + ", MasteryRating=" + smastery + ", CritRating=" + scrit + " )");
+console.log("( Pawn: v1: \"" + simname + "_selfsim\": Intellect=" + sint.toFixed(4) + ", Versatility="+ svers.toFixed(4) + ", HasteRating=" + shaste.toFixed(4) + ", MasteryRating=" + smastery.toFixed(4) + ", CritRating=" + scrit.toFixed(4) + " )");
 if(process.argv[2] == "sim_test") {
     console.log("Expected Values: ( Pawn: v1: \"SL 4-piece\": Intellect=1, MasteryRating=1.36, HasteRating=1.2, CritRating=1.02, Versatility=0.9 )")
     console.log("Differences: int=" + (1-sint) + ", mastery=" + (1.36-smastery) + ", haste=" + (1.2-shaste) + ", crit=" + (1.02-scrit) + ", vers=" + (0.9-svers));
