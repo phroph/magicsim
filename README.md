@@ -1,7 +1,7 @@
 # magicsim
 Shadow priest tailored tool for simming stat weights in a fight-aware manner using SimulationCraft. Please note that although this tool is specifically designed by and for shadow priests, the methodology is extensible to other classes and depends on the quality of your class/specialization's simc profiles. The methodology used for this tool was borrowed from the How2Priest.com community.
 
-**There is a beta UI in works that runs as an executable on Windows. It is technically ready-to-go and can be built as-is using nw-builder, however it needs some TLC before it is ready for prime-time. It will be available under Releases *soon****
+**There is a beta UI in works that runs as an executable on Windows. It is technically ready-to-go and can be built as-is using nw-builder, however it needs some TLC before it is ready for prime-time. It will be available under Releases *soon***
 
 How to run sims and analyze: ```node run.js <region> <realm> <name>```
 
