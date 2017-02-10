@@ -1,20 +1,32 @@
 <html>
     <head>
         <title>magicsim</title>
-        <script src="jquery-3.1.1.js"></script>
+        <script src="jquery-3.1.1.min.js"></script>
         <script>
+        var active = false;
         var doPoll = function() {
             $.ajax({type: "GET",
-                     url: "http://localhost:3000/sim/results", 
+                     url: "http://localhost:4000/sim/results", 
                      success: function(data){
                         if(data == false) {
                             setTimeout(doPoll,10000);
+                        } else if(JSON.parse(data).done != null) {
+                            data = JSON.parse(data);
+                            $("#done").text(data.done);
+                            $("#total").text(data.total);
+                            if(data.total > 0) {
+                                $("#counter").show();
+                            }
+                            setTimeout(doPoll,10000);
                         } else {
+                            data = JSON.parse(data);
                             $('#submit').attr('disabled', false);
+                            $("#counter").hide();
                             $("#loading").hide();
-                            $("#pawn").text(data.pawnString);
-                            $("#damage").text(data.damageString);
                             $("#results").show();
+                            $("#pawn").text(data.pawn);
+                            $("#damage").text(data.damage);
+                            active = false;
                         }
                     }, 
                     error: function(req, stat, err) {
@@ -26,19 +38,18 @@
                     }});
         }
         $(document).ready(function(){
+            var realm,region,character;
+            $("#counter").hide();
             $("#loading").hide();
             $("#results").hide();
-            var realm,region,character;
-            var active = false;
             $("#submit").click(function(){
-                // start spinner
                 realm=$("#realm").val();
                 region=$("#region").val();
                 character=$("#character").val();
                 if(!active) {
                     active = true;
                     $.ajax({type: "POST",
-                     url: "http://localhost:3000/sim/request", 
+                     url: "http://localhost:4000/sim/request", 
                      data: {character: character, region: region, realm: realm}, 
                      success: function(data){
                         if(data == true) {
@@ -65,10 +76,7 @@
         <label for="realm">Realm:</label>  <input type="text" name="realm" id="realm" />
         <label for="character">Character:</label>  <input type="text" name="character" id="character" />
         <input type="submit" id="submit" value="Simulate" ></label> 
-        <p id="loading"><br />Waiting for sims...</p>
-        <p id="results"><br />
-            <p id="damage"></p>
-            <p id="pawn"></p>
-        </p>
+        <p id="loading"><br />Waiting for sims... <span id="counter">(<span id="done"></span>/<span id="total"></span>)</span></p>
+        <p id="results"><span id="damage"></span><br /><span id="pawn"></span></p>
     </body>
 </html>

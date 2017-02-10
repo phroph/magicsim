@@ -38,7 +38,7 @@ var deleteContents = function(path) {
 }
 
 var pool = [null,null,null,null,null,null,null,null];
-var pool_size = 8;
+var pool_size = 4;
 var threads = 0;
 
 var mutex = locks.createMutex();

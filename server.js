@@ -1,4 +1,3 @@
-var server=require('node-http-server');
 var findpath = require('nw').findpath;
 var nwpath = findpath();
 

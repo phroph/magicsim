@@ -2,7 +2,7 @@
   "name": "magicsim-master",
   "version": "1.0.0",
   "description": "Shadow priest tailored tool for simming stat weights in a fight-aware manner using SimulationCraft.",
-  "main": "http://localhost:3000/",
+  "main": "http://localhost:4000/",
   "window": {
     "toolbar": false,
     "resizable": false,

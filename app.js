@@ -20,15 +20,17 @@ var running = false;
 var analysisMode = false;
 var damageString = '';
 var pawnString = '';
-var errString = 
+var errString = '';
+var doneSims = 0;
+var totalSims = 0;
 
 app.get('/sim/results', function (req, res) {
     if(running || analysisMode) {
-        res.send(false);
+        res.send(JSON.stringify({ done: doneSims, total: totalSims }));
     } else if(errString != '') {
         res.send(errString);
         errString = '';
-    } else if(pawnString != '' && damageSTring != '') {
+    } else if(pawnString != '' && damageString != '') {
         res.send(JSON.stringify({ damage: damageString, pawn: pawnString}));
         pawnString = '';
         damageString = '';
@@ -44,29 +46,68 @@ app.post('/sim/request', function (req, res) {
     realm = req.body.realm;
     if(!running) {
         running = true;
+        doneSims = 0;
+        totalSims = 0;
+        analysisMode = false;
+        damageString = '';
+        pawnString = '';
+        errString = '';
         var proc = exec('node run.js ' + region + ' ' + realm + ' ' + char);
         
         // Bind the output so we can read it.
         proc.stdout.on('data', (data) => {
-            if(data.includes('Done Simming.')) {
-                analysisMode = true;
-            }
-            if(analysisMode && data.includes('Done Analysis.')) {
-                analysisMode = false;
-                running = false;
-            } else if(data.includes('Done Analysis.')) {
-                errString = 'No analysis could be found. Please check logs and try again.';
-            }
-            if(analysisMode && data.includes('Damage (DPS):')) {
-                damageString = data;
-            }
-            if(analysisMode && data.includes('Pawn: v1:')) {
-                pawnString = data;
-            }
+            var lines = data.split('\n');
+            lines.forEach((line) => {
+                if(line.includes('Done Simming.')) {
+                    analysisMode = true;
+                }
+                if(analysisMode && line.includes('Done Analysis.')) {
+                    analysisMode = false;
+                    running = false;
+                } else if(line.includes('Done Analysis.')) {
+                    errString = 'No analysis could be found. Please check logs and try again.';
+                }
+                if(analysisMode && line.includes('Damage (DPS):')) {
+                    damageString = line;
+                }
+                if(analysisMode && line.includes('Pawn: v1:')) {
+                    pawnString = line;
+                }
+                if(line.includes('Done sim:')) {
+                    doneSims++;
+                }
+                if(line.includes('Generating simc profile:')) {
+                    totalSims++;
+                }
+            });
             console.log(data);
         });
 
         proc.stderr.on('data', (data) => {
+            var lines = data.split('\n');
+            for(var line in lines) {
+                if(line.includes('Done Simming.')) {
+                    analysisMode = true;
+                }
+                if(analysisMode && line.includes('Done Analysis.')) {
+                    analysisMode = false;
+                    running = false;
+                } else if(line.includes('Done Analysis.')) {
+                    errString = 'No analysis could be found. Please check logs and try again.';
+                }
+                if(analysisMode && line.includes('Damage (DPS):')) {
+                    damageString = line;
+                }
+                if(analysisMode && line.includes('Pawn: v1:')) {
+                    pawnString = line;
+                }
+                if(line.includes('Done sim:')) {
+                    doneSims++;
+                }
+                if(line.includes('Generating simc profile:')) {
+                    totalSims++;
+                }
+            }
             console.log(data);
         });
         res.send(true);
@@ -75,6 +116,6 @@ app.post('/sim/request', function (req, res) {
     }
 })
 
-app.listen(3000, function () {
+app.listen(4000, function () {
   console.log('magicsim local backend live and operational.')
 })
