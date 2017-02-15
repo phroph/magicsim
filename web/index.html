@@ -22,7 +22,7 @@
                         } else {
                             data = JSON.parse(data);
                             $('#submit').attr('disabled', false);
-                            $("#main").show();
+                            $("#main").hide();
                             $("#counter").hide();
                             $("#loading").hide();
                             $(".loading2").children().hide();
@@ -77,21 +77,23 @@
     </head>
     <body>
         <div id="main">
-            <h2>magicsim:</h2>
+            <h2 class="header">magicsim</h2>
             <p>Automated H2Priest-style Armory Sims.</p>
-            <div class="item">
-                <label for="region">Region:</label>
-                <select id="region" name="region">
-                    <option value="us">US (North America)</option>
-                    <option value="eu">EU (Europe)</option>
-                    <option value="cn">CN (China)</option>
-                    <option value="kr">KR (South Korea)</option>
-                    <option value="tw">TW (Taiwan)</option>
-                </select>
+            <div class="container">
+                <div class="item">
+                    <label for="region">Region:</label>
+                    <select id="region" name="region">
+                        <option value="us">US (North America)</option>
+                        <option value="eu">EU (Europe)</option>
+                        <option value="cn">CN (China)</option>
+                        <option value="kr">KR (South Korea)</option>
+                        <option value="tw">TW (Taiwan)</option>
+                    </select>
+                </div>
+                <div class="item"><label for="realm">Realm:</label><input type="text" name="realm" id="realm" /></div>
+                <div class="item"><label for="character">Character:</label><input type="text" name="character" id="character" /></div>
             </div>
-            <div class="item"><label for="realm">Realm:</label><input type="text" name="realm" id="realm" /></div>
-            <div class="item"><label for="character">Character:</label><input type="text" name="character" id="character" /></div>
-            <div class="item"><input type="submit" id="submit" value="Simulate" ></div></label> 
+            <div class="item submit"><input type="submit" id="submit" value="Simulate" ></div>
         </div>
         <p id="loading">Simulating.
             <div class="element">

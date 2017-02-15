@@ -1,6 +1,8 @@
 body {
     background-color: #EEEEEE;
     font-family: Verdana;
+    overflow: hidden;
+    font-size: 0.9em;
 }
 
 #loading {
@@ -10,15 +12,65 @@ body {
     text-align: center;
 }
 
+label {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.submit {
+    width: 100%;
+    margin-left:60%;
+    margin-right: 0;
+}
+
+#region, #character, #realm {
+    width: 150px;
+}
+
+.header {
+    padding-bottom: 20px;
+}
+
+.container {
+    padding-top: 50px;
+    padding-bottom: 75px;
+}
+
+#character, #realm {
+    margin-left: 5px;
+}
+
 #counter {
-    margin-top:50px;
+    margin-top:65px;
     width: 100%;
     text-align: center;
     font-size: 1.2em;
 }
 
-#item {
+.item {
     padding: 5px;
+}
+
+input[type=text] {
+    padding:2px; 
+    border:1px solid #ccc; 
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+}
+
+input[type=text]:focus {
+    border-color:#333;
+}
+
+input[type=submit] {
+    padding:3px 15px; 
+    background:#ccc; 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 2px;
+    border-radius: 2px; 
 }
 
 .loading2 {
