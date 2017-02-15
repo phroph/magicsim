@@ -2,6 +2,7 @@
     <head>
         <title>magicsim</title>
         <script src="jquery-3.1.1.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="index.css"></link>
         <script>
         var active = false;
         var doPoll = function() {
@@ -21,8 +22,10 @@
                         } else {
                             data = JSON.parse(data);
                             $('#submit').attr('disabled', false);
+                            $("#main").show();
                             $("#counter").hide();
                             $("#loading").hide();
+                            $(".loading2").children().hide();
                             $("#results").show();
                             $("#pawn").text(data.pawn);
                             $("#damage").text(data.damage);
@@ -33,6 +36,7 @@
                         alert(err);
                         $('#submit').attr('disabled', false);
                         $("#loading").hide();
+                        $(".loading2").children().hide();
                         $("#results").hide();
                         active = false;
                     }});
@@ -41,6 +45,7 @@
             var realm,region,character;
             $("#counter").hide();
             $("#loading").hide();
+            $(".loading2").children().hide();
             $("#results").hide();
             $("#submit").click(function(){
                 realm=$("#realm").val();
@@ -55,7 +60,9 @@
                         if(data == true) {
                             doPoll();
                             $("#loading").show();
+                            $(".loading2").children().show();
                             $("#results").hide();
+                            $("#main").hide();
                             $('#submit').attr('disabled', true);
                         }
                     }, 
@@ -63,27 +70,44 @@
                         alert(err);
                         active = false;
                     }});
-                    alert('Simulation Started. Please wait around 30-60 minutes for a result. Do not close any magicsim windows please.')
                 }
             });
         });
         </script>
     </head>
     <body>
-        <h2>magicsim:</h2>
-        <p>Automated H2Priest-style Armory Sims.</p>
-        <label for="region">Region:</label>
-        <select id="region" name="region">
-            <option value="us">US (North America)</option>
-            <option value="eu">EU (Europe)</option>
-            <option value="cn">CN (China)</option>
-            <option value="kr">KR (South Korea)</option>
-            <option value="tw">TW (Taiwan)</option>
-        </select><br />
-        <label for="realm">Realm:</label>  <input type="text" name="realm" id="realm" /><br />
-        <label for="character">Character:</label>  <input type="text" name="character" id="character" /><br />
-        <input type="submit" id="submit" value="Simulate" ></label> 
-        <p id="loading"><br />Waiting for sims... <span id="counter">(<span id="done"></span>/<span id="total"></span>)</span></p>
+        <div id="main">
+            <h2>magicsim:</h2>
+            <p>Automated H2Priest-style Armory Sims.</p>
+            <div class="item">
+                <label for="region">Region:</label>
+                <select id="region" name="region">
+                    <option value="us">US (North America)</option>
+                    <option value="eu">EU (Europe)</option>
+                    <option value="cn">CN (China)</option>
+                    <option value="kr">KR (South Korea)</option>
+                    <option value="tw">TW (Taiwan)</option>
+                </select>
+            </div>
+            <div class="item"><label for="realm">Realm:</label><input type="text" name="realm" id="realm" /></div>
+            <div class="item"><label for="character">Character:</label><input type="text" name="character" id="character" /></div>
+            <div class="item"><input type="submit" id="submit" value="Simulate" ></div></label> 
+        </div>
+        <p id="loading">Simulating.
+            <div class="element">
+                <div class="loading2">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div id="counter"><span id="done"></span>/<span id="total"></span> sims completed</div>
+        </p>
         <p id="results"><span id="damage"></span><br /><span id="pawn"></span></p>
     </body>
 </html>
