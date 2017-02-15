@@ -72,9 +72,16 @@
     <body>
         <h2>magicsim:</h2>
         <p>Automated H2Priest-style Armory Sims.</p>
-        <label for="region">Region:</label> <input type="text" name="region" id="region" />
-        <label for="realm">Realm:</label>  <input type="text" name="realm" id="realm" />
-        <label for="character">Character:</label>  <input type="text" name="character" id="character" />
+        <label for="region">Region:</label>
+        <select id="region" name="region">
+            <option value="us">US (North America)</option>
+            <option value="eu">EU (Europe)</option>
+            <option value="cn">CN (China)</option>
+            <option value="kr">KR (South Korea)</option>
+            <option value="tw">TW (Taiwan)</option>
+        </select><br />
+        <label for="realm">Realm:</label>  <input type="text" name="realm" id="realm" /><br />
+        <label for="character">Character:</label>  <input type="text" name="character" id="character" /><br />
         <input type="submit" id="submit" value="Simulate" ></label> 
         <p id="loading"><br />Waiting for sims... <span id="counter">(<span id="done"></span>/<span id="total"></span>)</span></p>
         <p id="results"><span id="damage"></span><br /><span id="pawn"></span></p>

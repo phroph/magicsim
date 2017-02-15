@@ -2,7 +2,7 @@
   "name": "magicsim-master",
   "version": "1.0.0",
   "description": "Shadow priest tailored tool for simming stat weights in a fight-aware manner using SimulationCraft.",
-  "node-main": "./app.js",
+  "node-main": "app.js",
   "main": "http://localhost:4000/",
   "window": {
     "toolbar": false,
@@ -11,7 +11,10 @@
     "height": 250
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nw",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": ".\\node_modules\\.bin\\nw-gyp rebuild --target=0.20.1 --arch=x64",
+    "build": "nwbuild -f -o ../build -p win32,win64 ./"
   },
   "dependencies": {
     "cartesian-product": "2.1.2",
@@ -25,7 +28,12 @@
     "cookie-parser": "~1.4.3",
     "express-session": "~1.15.0",
     "debug": "~2.6.0",
-    "express": "~4.14.1"
+    "express": "~4.14.1",
+    "nw": "0.20.1"
+  },
+  "devDependencies": {
+    "nw-builder": "3.1.3",
+    "nw-gyp": "^3.4.0"
   },
   "repository": {
     "type": "git",
