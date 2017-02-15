@@ -7,12 +7,18 @@
   "window": {
     "toolbar": false,
     "resizable": false,
-    "width": 750,
-    "height": 250
+    "width": 250,
+    "height": 400
   },
   "scripts": {
     "start": "nw",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "buildandrun32": "npm run build32 && npm run run32",
+    "buildandrun64": "npm run build64 && npm run run64",
+    "build64": "npm install --production && (robocopy . ..\\build\\magicsim-master\\win64\\package.nw\\ /IT /MIR) ^& IF %ERRORLEVEL% LEQ 1 exit 0",
+    "build32": "npm install --production && (robocopy . ..\\build\\magicsim-master\\win32\\package.nw\\ /IT /MIR) ^& IF %ERRORLEVEL% LEQ 1 exit 0",
+    "run64": "..\\build\\magicsim-master\\win64\\nw.exe",
+    "run32": "..\\build\\magicsim-master\\win32\\nw.exe"
   },
   "dependencies": {
     "cartesian-product": "2.1.2",
@@ -26,7 +32,9 @@
     "cookie-parser": "~1.4.3",
     "express-session": "~1.15.0",
     "debug": "~2.6.0",
-    "express": "~4.14.1",
+    "express": "~4.14.1"
+  },
+  "devDependencies": {
     "nw": "0.20.1"
   },
   "repository": {
