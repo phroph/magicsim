@@ -99,10 +99,10 @@ app.post('/sim/request', function (req, res) {
         if(req.body.threads) {
             execString += " --threads " + req.body.threads;
         }
-        if(req.body.noweights) {
+        if(req.body.noweights == "true") {
             execString += " --noweights";
         }
-        if(req.body.ptr) {
+        if(req.body.ptr == "true") {
             execString += " --ptr";
         }
         var proc = exec(execString);

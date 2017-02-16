@@ -74,8 +74,8 @@
                 region=$("#region").val();
                 character=$("#character").val();
                 threads=$("#workers").val();
-                noweights=$("#workers").val();
-                ptr=$("#ptr").val();
+                noweights=$("#noweights")[0].checked;
+                ptr=$("#ptr")[0].checked;
                 if(!active) {
                     active = true;
                     $.ajax({type: "POST",
