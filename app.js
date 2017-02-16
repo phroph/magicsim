@@ -95,7 +95,14 @@ app.post('/sim/request', function (req, res) {
         errString = '';
         simsString = '';
         state = 'Initializing';
-        var proc = exec('node run.js ' + region + ' ' + realm + ' ' + char);
+        var execString = 'node run.js ' + region + ' ' + realm + ' ' + char;
+        if(req.body.threads) {
+            execString += " --threads " + req.body.threads;
+        }
+        if(req.body.noweights) {
+            execString += " --noweights";
+        }
+        var proc = exec(execString);
         
         // Bind the output so we can read it.
         proc.stdout.on('data', (data) => {
@@ -104,7 +111,7 @@ app.post('/sim/request', function (req, res) {
                 processLine(line);
             });
             console.log(data);
-            if(data.includes('error')) {
+            if(data.includes('Error:')) {
                 errString = data;
                 running = false;
             }
@@ -116,7 +123,7 @@ app.post('/sim/request', function (req, res) {
                 processLine(line);
             });
             console.log(data);
-            if(data.includes('error')) {
+            if(data.includes('Error:')) {
                 errString = data;
                 running = false;
             }

@@ -9,6 +9,7 @@ var path = require('path');
 var locks = require('locks');
 var fs = require('fs');
 var os = require('os');
+var argv = require('yargs').argv;
 
 var region = process.argv[2];
 var realm = process.argv[3];
@@ -39,6 +40,9 @@ var deleteContents = function(path) {
 
 var pool = [null,null,null,null,null,null,null,null];
 var pool_size = 4;
+if(argv.threads && argv.threads >= 1 && argv.threads <= 8) {
+    pool_size = argv.threads;
+}
 var threads = 0;
 
 var mutex = locks.createMutex();
@@ -101,6 +105,9 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
                 region = "test";
                 realm = "test";
                 name = "sim_test";
+            }
+            if(argv.noweights) {
+                templateData = templateData.replace("calculate_scale_factors=1","#noweights");
             }
             templateData = templateData.replace("%region%",region);
             templateData = templateData.replace("%realm%",realm);
@@ -165,7 +172,6 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
     });
     return deferred.promise;
 }).then(function() {
-    // start simc run
     var resultsFolder = path.join('.','results');
     if (!fs.existsSync(resultsFolder)) { 
         fs.mkdirSync(resultsFolder);
@@ -174,7 +180,6 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
     }
     console.log("Starting SimulationCraft run");
     var promises = fs.readdirSync("sims").map(function(sim) {
-        // find a better way to pull the newest version.
         var cmd = path.join("..","bin",fs.readdirSync("bin")[0], "simc.exe") + " " + path.join("..","sims", sim);
         
         var deferred = Q.defer();
@@ -187,7 +192,11 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
     return Q.allSettled(promises).then(function() {
         var deferral = Q.defer();
         console.log('Done Simming.');
-        process_exec("node " + path.join('.','analyze.js') + " " + process.argv[2], function(err, out, stderr) {
+        var analyze = path.join('.','analyze.js') + " " + process.argv[2];
+        if(argv.noweights) {
+            analyze += " --noweights"; 
+        }
+        process_exec("node " + analyze, function(err, out, stderr) {
             console.log(out);
             console.log('Done Analysis.');
             deferral.resolve();

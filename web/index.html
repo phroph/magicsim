@@ -66,11 +66,14 @@
                 realm=$("#realm").val();
                 region=$("#region").val();
                 character=$("#character").val();
+                threads=$("#workers").val();
+                noweights=$("#workers").val();
+                ptr=$("#ptr").val();
                 if(!active) {
                     active = true;
                     $.ajax({type: "POST",
                      url: "http://localhost:4000/sim/request", 
-                     data: {character: character, region: region, realm: realm}, 
+                     data: {character: character, region: region, realm: realm, threads: threads, noweights: noweights, ptr: ptr}, 
                      success: function(data){
                         if(data == true) {
                             doPoll();
@@ -105,6 +108,10 @@
                 <div class="item"><label for="realm">Realm:</label><input type="text" name="realm" id="realm" /></div>
                 <div class="item"><label for="character">Character:</label><input type="text" name="character" id="character" /></div>
                 <div class="item"><label for="workers">Threads:</label><input type="range" name="workers" id="workers" min="1" max="8" value="4" onchange="$('#threads').text(this.value)" /> <span id="threads">4</span></div>
+                <div class="item">
+                    <label for="noweights">No Weights:</label><input type="checkbox" name="noweights" id="noweights" />
+                    <label for="ptr">PTR Mode:</label><input type="checkbox" name="ptr" id="ptr" />
+                </div>
             </div>
             <div class="item submit"><input type="submit" id="submit" value="Simulate" ></div>
         </div>

@@ -21,21 +21,22 @@
     "run32": "..\\build\\magicsim-master\\win32\\nw.exe"
   },
   "dependencies": {
-    "cartesian-product": "2.1.2",
-    "dom-parser": "0.1.5",
-    "node-7z": "^0.4.0",
-    "q": "1.4.1",
-    "xmldom": "0.1.27",
-    "xpath": "0.0.23",
-    "locks": "0.2.2",
+    "cartesian-product": "~2.1.2",
+    "dom-parser": "~0.1.5",
+    "node-7z": "~0.4.0",
+    "q": "~1.4.1",
+    "xmldom": "~0.1.27",
+    "xpath": "~0.0.23",
+    "locks": "~0.2.2",
     "body-parser": "~1.16.0",
     "cookie-parser": "~1.4.3",
     "express-session": "~1.15.0",
     "debug": "~2.6.0",
-    "express": "~4.14.1"
+    "express": "~4.14.1",
+    "yargs": "~6.6.0"
   },
   "devDependencies": {
-    "nw": "0.20.1"
+    "nw": "~0.20.1"
   },
   "repository": {
     "type": "git",
