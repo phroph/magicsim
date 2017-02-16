@@ -1,5 +1,5 @@
 body {
-    background-color: #eee;
+    background-color: #ddd;
     font-family: Verdana;
     overflow: hidden;
     font-size: 0.9em;
@@ -19,7 +19,7 @@ label {
     padding-right: 10px;
 }
 
-#threads, #pawn, #damage {
+#pawn, #damage {
     font-size: .75em;
     color: #222;
     -webkit-border-radius: 2px;
@@ -29,10 +29,18 @@ label {
     padding: 5px;
 }
 
+#threads {
+    font-size: .75em;
+    color: #222;
+    -webkit-border-radius: 2px;
+    border-radius: 2px; 
+    border:1px solid #aaa; 
+    background-color: #ddd;
+    padding: 3px;
+}
+
 .submit {
     width: 100%;
-    margin-left:60%;
-    margin-right: 0;
 }
 
 #region, #character, #realm {
@@ -44,8 +52,14 @@ label {
 }
 
 .container {
-    padding-top: 50px;
-    padding-bottom: 75px;
+    margin-top: 50px;
+    margin-bottom: 50px; 
+    padding-top: 20px;
+    padding-bottom: 20px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px; 
+    border:1px solid #aaa; 
+    background-color: #eee;
 }
 
 #character, #realm {
@@ -59,12 +73,22 @@ label {
     font-size: 1em;
 }
 
+#workers {
+    margin-left: 5px;
+    position: relative;
+    top: -2px;
+}
+
 .item {
     padding: 5px;
 }
 
 input[type=range]{
     -webkit-appearance: none;
+}
+
+#loadingHeader {
+    margin-top: 40px;
 }
 
 input[type=range]::-webkit-slider-runnable-track {
@@ -104,7 +128,9 @@ input[type=text]:focus {
     border-color:#333;
 }
 
-input[type=submit] {
+input[type=submit],input[type=button] {
+    float: right;
+    margin-right:10px;
     padding:3px 15px; 
     background:#ccc; 
     border:0 none;
