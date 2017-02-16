@@ -59,7 +59,6 @@ fs.readdirSync(path.join(".","/results")).forEach(function(result){
 
     var time = res[2];
     var fight = res[3];
-    simname = name;
     var weight = fight_mapping[fight]*time_mapping[time];
 	
 	damage += xpath.select1("//simulationcraft/summary/dmg/@total", doc).value*weight;
@@ -81,6 +80,8 @@ fs.readdirSync(path.join(".","/results")).forEach(function(result){
 
 if(process.argv[2] == "sim_test") {
     simname = "simtest";
+} else {
+    simname = name;
 }
 console.log("Total calibration: " + sum);
 console.log("Damage (DPS): " + damage + " (" + dps + ")");
