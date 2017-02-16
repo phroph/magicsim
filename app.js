@@ -32,7 +32,7 @@ app.get('/sim/results', function (req, res) {
     } else if(errString != '') {
         res.send(JSON.stringify({ error: errString }));
         errString = '';
-    } else if(pawnString != '' && damageString != '') {
+    } else if(damageString != '') {
         res.send(JSON.stringify({ damage: damageString, pawn: pawnString, sims: simsString}));
         pawnString = '';
         damageString = '';

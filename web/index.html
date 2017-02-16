@@ -46,6 +46,11 @@
                             $("#counter").hide();
                             showResults();
                             $("#pawn").text(data.pawn);
+                            if(data.pawn == '') {
+                                $("#pawn").hide();
+                            } else {
+                                $("#pawn").show();
+                            }
                             $("#damage").text(data.damage);
                             $("#sims").text(data.sims);
                             active = false;
