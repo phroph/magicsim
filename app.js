@@ -102,6 +102,9 @@ app.post('/sim/request', function (req, res) {
         if(req.body.noweights) {
             execString += " --noweights";
         }
+        if(req.body.ptr) {
+            execString += " --ptr";
+        }
         var proc = exec(execString);
         
         // Bind the output so we can read it.

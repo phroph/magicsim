@@ -101,10 +101,13 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
             if(process.argv[2] == "sim_test") {
                 templateData = templateData.replace("#","");
                 templateData = templateData.replace("%version%", "905");
-				templateData = templateData.replace("armory=%region%,%realm%,%name%","input=../test_profiles/characterbase.simc\ninput=../test_profiles/apl232017.simc");
+				templateData = templateData.replace("armory=%region%,%realm%,%name%","input=../test_profiles/characterbase.simc\r\ninput=../test_profiles/apl232017.simc");
                 region = "test";
                 realm = "test";
                 name = "sim_test";
+            }
+            if(argv.ptr) {
+                templateData = "ptr=1\r\n" + templateData;
             }
             if(argv.noweights) {
                 templateData = templateData.replace("calculate_scale_factors=1","#noweights");
