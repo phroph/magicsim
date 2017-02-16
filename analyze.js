@@ -2,7 +2,7 @@ var xpath = require("xpath");
 var dom = require('xmldom').DOMParser;
 var fs = require("fs");
 var path = require('path');
-var argv = require('yarg').argv;
+var argv = require('yargs').argv;
 
 var fight_mapping = {
     patchwerk_ba_2t: 0.025,
@@ -66,7 +66,7 @@ fs.readdirSync(path.join(".","/results")).forEach(function(result){
 	dps += xpath.select1("//simulationcraft/summary/dmg/@dps", doc).value*weight;
     var name = res[1];
 	if(name != "sim_test") {
-		name = xpath.select1("//simulationcraft/summary/player_by_dps/player/@name").value;
+		name = xpath.select1("//simulationcraft/summary/player_by_dps/player/@name", doc).value;
 	}
     if(!argv.noweights) {
         int += xpath.select1("//simulationcraft/players/player[@name='"+name+"']/scale_factors/metric[@name='" + name + " Damage Per Second']/weights/stat[@name='Int']/@value", doc).value*weight;
