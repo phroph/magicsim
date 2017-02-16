@@ -133,17 +133,17 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
             arch = 'win32';
         }
         var link = "http://downloads.simulationcraft.org/" + select("//h:html/h:body/h:table/h:tr/h:td/h:a[contains(@href,'.7z') and contains(@href,'" + arch + "')][1]/@href", doc)[0].value;
-        console.log(link);
+        console.log('Found: ' + link);
         if (fs.existsSync('simc.7z')) { 
             fs.unlinkSync('simc.7z');
         }
-        console.log("Downloading/unzipping simc.7z for " + arch + " platform.");
+        console.log("Downloading simc.7z for " + arch + " platform.");
 	    var file = fs.createWriteStream("simc.7z");
         var deferred = Q.defer();
         http.get(link, (response) => {
             response.pipe(file);
             response.on('end', () => {
-                console.log("Done unzipping simc.7z");
+                console.log("Done downloading simc.7z");
                 deferred.resolve("simc.7z");
             });
         })

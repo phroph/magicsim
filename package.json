@@ -41,6 +41,7 @@
     "type": "git",
     "url": "git+https://github.com/phroph/magicsim.git"
   },
+  "chromium-args": "--enable-logging=stderr",
   "author": "phroph",
   "license": "MIT",
   "bugs": {

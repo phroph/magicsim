@@ -1,5 +1,5 @@
 body {
-    background-color: #EEEEEE;
+    background-color: #eee;
     font-family: Verdana;
     overflow: hidden;
     font-size: 0.9em;
@@ -17,6 +17,16 @@ label {
     width: 100px;
     text-align: right;
     padding-right: 10px;
+}
+
+#threads, #pawn, #damage {
+    font-size: .75em;
+    color: #222;
+    -webkit-border-radius: 2px;
+    border-radius: 2px; 
+    border:1px solid #aaa; 
+    background-color: #ddd;
+    padding: 5px;
 }
 
 .submit {
@@ -46,11 +56,41 @@ label {
     margin-top:65px;
     width: 100%;
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1em;
 }
 
 .item {
     padding: 5px;
+}
+
+input[type=range]{
+    -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 5px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: goldenrod;
+    margin-top: -4px;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ccc;
 }
 
 input[type=text] {

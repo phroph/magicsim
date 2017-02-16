@@ -5,6 +5,21 @@
         <link type="text/css" rel="stylesheet" href="index.css"></link>
         <script>
         var active = false;
+        var showHome = function() {
+            $("#loading").hide();
+            $("#results").hide();
+            $("#main").show();
+        }
+        var showLoading = function() {
+            $("#loading").show();
+            $("#results").hide();
+            $("#main").hide();
+        }
+        var showResults = function() {
+            $("#loading").hide();
+            $("#results").show();
+            $("#main").hide();
+        }
         var doPoll = function() {
             $.ajax({type: "GET",
                      url: "http://localhost:4000/sim/results", 
@@ -15,18 +30,21 @@
                             data = JSON.parse(data);
                             $("#done").text(data.done);
                             $("#total").text(data.total);
+                            $("#state").text(data.state);
                             if(data.total > 0) {
                                 $("#counter").show();
                             }
                             setTimeout(doPoll,10000);
+                        } else if(JSON.parse(data).error != null) {
+                            alert(JSON.parse(data).error);
+                            $('#submit').attr('disabled', false);
+                            showHome();
+                            active = false;
                         } else {
                             data = JSON.parse(data);
                             $('#submit').attr('disabled', false);
-                            $("#main").hide();
                             $("#counter").hide();
-                            $("#loading").hide();
-                            $(".loading2").children().hide();
-                            $("#results").show();
+                            showResults();
                             $("#pawn").text(data.pawn);
                             $("#damage").text(data.damage);
                             active = false;
@@ -35,18 +53,14 @@
                     error: function(req, stat, err) {
                         alert(err);
                         $('#submit').attr('disabled', false);
-                        $("#loading").hide();
-                        $(".loading2").children().hide();
-                        $("#results").hide();
+                        showHome();
                         active = false;
                     }});
         }
         $(document).ready(function(){
             var realm,region,character;
             $("#counter").hide();
-            $("#loading").hide();
-            $(".loading2").children().hide();
-            $("#results").hide();
+            showHome();
             $("#submit").click(function(){
                 realm=$("#realm").val();
                 region=$("#region").val();
@@ -59,10 +73,7 @@
                      success: function(data){
                         if(data == true) {
                             doPoll();
-                            $("#loading").show();
-                            $(".loading2").children().show();
-                            $("#results").hide();
-                            $("#main").hide();
+                            showLoading();
                             $('#submit').attr('disabled', true);
                         }
                     }, 
@@ -92,10 +103,12 @@
                 </div>
                 <div class="item"><label for="realm">Realm:</label><input type="text" name="realm" id="realm" /></div>
                 <div class="item"><label for="character">Character:</label><input type="text" name="character" id="character" /></div>
+                <div class="item"><label for="workers">Threads:</label><input type="range" name="workers" id="workers" min="1" max="8" value="4" onchange="$('#threads').text(this.value)" /> <span id="threads">4</span></div>
             </div>
             <div class="item submit"><input type="submit" id="submit" value="Simulate" ></div>
         </div>
-        <p id="loading">Simulating.
+        <div id="loading">
+            <span id="state">Starting</span>.
             <div class="element">
                 <div class="loading2">
                     <div></div>
@@ -109,7 +122,14 @@
                 </div>
             </div>
             <div id="counter"><span id="done"></span>/<span id="total"></span> sims completed</div>
-        </p>
-        <p id="results"><span id="damage"></span><br /><span id="pawn"></span></p>
+        </div>
+        <div id="results">
+            <h3>Simulation Complete!</h3>
+            <div>Aggregate Damage Results:</div>
+            <div id="damage"></div>
+            <div>Pawn String:</div>
+            <div id="pawn"></div>
+            <div class="item submit"><input type="button" id="button" value="Run New Sim" onclick="showHome()" ></div>
+        </div>
     </body>
 </html>

@@ -21,14 +21,15 @@ var analysisMode = false;
 var damageString = '';
 var pawnString = '';
 var errString = '';
+var state = '';
 var doneSims = 0;
 var totalSims = 0;
 
 app.get('/sim/results', function (req, res) {
     if(running || analysisMode) {
-        res.send(JSON.stringify({ done: doneSims, total: totalSims }));
+        res.send(JSON.stringify({ done: doneSims, total: totalSims, state: state }));
     } else if(errString != '') {
-        res.send(errString);
+        res.send(JSON.stringify({ error: errString }));
         errString = '';
     } else if(pawnString != '' && damageString != '') {
         res.send(JSON.stringify({ damage: damageString, pawn: pawnString}));
@@ -52,6 +53,7 @@ app.post('/sim/request', function (req, res) {
         damageString = '';
         pawnString = '';
         errString = '';
+        state = 'Initializing';
         var proc = exec('node run.js ' + region + ' ' + realm + ' ' + char);
         
         // Bind the output so we can read it.
@@ -60,6 +62,7 @@ app.post('/sim/request', function (req, res) {
             lines.forEach((line) => {
                 if(line.includes('Done Simming.')) {
                     analysisMode = true;
+                    state = 'Analyzing';
                 }
                 if(analysisMode && line.includes('Done Analysis.')) {
                     analysisMode = false;
@@ -79,8 +82,21 @@ app.post('/sim/request', function (req, res) {
                 if(line.includes('Generating simc profile:')) {
                     totalSims++;
                 }
+                if(line.includes('Downloading simc.7z')) {
+                    state = 'Downloading';
+                }
+                if(line.includes('Extracting simc.7z')) {
+                    state = 'Extracting';
+                }
+                if(line.includes('Starting SimulationCraft run')) {
+                    state = 'Simulating';
+                }
             });
             console.log(data);
+            if(data.includes('error')) {
+                errString = data;
+                running = false;
+            }
         });
 
         proc.stderr.on('data', (data) => {
@@ -109,6 +125,10 @@ app.post('/sim/request', function (req, res) {
                 }
             }
             console.log(data);
+            if(data.includes('error')) {
+                errString = data;
+                running = false;
+            }
         });
         res.send(true);
     } else {
