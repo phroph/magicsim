@@ -22,6 +22,7 @@ var damageString = '';
 var pawnString = '';
 var errString = '';
 var state = '';
+var simsString = '';
 var doneSims = 0;
 var totalSims = 0;
 
@@ -32,13 +33,52 @@ app.get('/sim/results', function (req, res) {
         res.send(JSON.stringify({ error: errString }));
         errString = '';
     } else if(pawnString != '' && damageString != '') {
-        res.send(JSON.stringify({ damage: damageString, pawn: pawnString}));
+        res.send(JSON.stringify({ damage: damageString, pawn: pawnString, sims: simsString}));
         pawnString = '';
         damageString = '';
     } else {
         res.send(false);
     }
 })
+
+var processLine = function(line) {
+    if(line.includes('Done Simming.')) {
+        analysisMode = true;
+        state = 'Analyzing';
+    }
+    if(analysisMode && line.includes('Done Analysis.')) {
+        analysisMode = false;
+        running = false;
+    } else if(line.includes('Done Analysis.')) {
+        errString = 'No analysis could be found. Please check logs and try again.';
+    }
+    if(analysisMode && line.includes('Damage (DPS):')) {
+        damageString = line;
+    }
+    if(analysisMode && line.includes('Pawn: v1:')) {
+        pawnString = line;
+    }
+    if(line.includes('Done sim:')) {
+        doneSims++;
+    }
+    if(line.includes('Generating simc profile:')) {
+        if(simsString == '') {
+            simsString = line.match("profile: (.+).simc")[1];
+        } else {
+            simsString += '\n' + line.match("profile: (.+).simc")[1];
+        }
+        totalSims++;
+    }
+    if(line.includes('Downloading simc.7z')) {
+        state = 'Downloading';
+    }
+    if(line.includes('Extracting simc.7z')) {
+        state = 'Extracting';
+    }
+    if(line.includes('Starting SimulationCraft run')) {
+        state = 'Simulating';
+    }
+}
 
 app.post('/sim/request', function (req, res) {
     var char, region, realm;
@@ -53,6 +93,7 @@ app.post('/sim/request', function (req, res) {
         damageString = '';
         pawnString = '';
         errString = '';
+        simsString = '';
         state = 'Initializing';
         var proc = exec('node run.js ' + region + ' ' + realm + ' ' + char);
         
@@ -60,37 +101,7 @@ app.post('/sim/request', function (req, res) {
         proc.stdout.on('data', (data) => {
             var lines = data.split('\n');
             lines.forEach((line) => {
-                if(line.includes('Done Simming.')) {
-                    analysisMode = true;
-                    state = 'Analyzing';
-                }
-                if(analysisMode && line.includes('Done Analysis.')) {
-                    analysisMode = false;
-                    running = false;
-                } else if(line.includes('Done Analysis.')) {
-                    errString = 'No analysis could be found. Please check logs and try again.';
-                }
-                if(analysisMode && line.includes('Damage (DPS):')) {
-                    damageString = line;
-                }
-                if(analysisMode && line.includes('Pawn: v1:')) {
-                    pawnString = line;
-                }
-                if(line.includes('Done sim:')) {
-                    doneSims++;
-                }
-                if(line.includes('Generating simc profile:')) {
-                    totalSims++;
-                }
-                if(line.includes('Downloading simc.7z')) {
-                    state = 'Downloading';
-                }
-                if(line.includes('Extracting simc.7z')) {
-                    state = 'Extracting';
-                }
-                if(line.includes('Starting SimulationCraft run')) {
-                    state = 'Simulating';
-                }
+                processLine(line);
             });
             console.log(data);
             if(data.includes('error')) {
@@ -101,29 +112,9 @@ app.post('/sim/request', function (req, res) {
 
         proc.stderr.on('data', (data) => {
             var lines = data.split('\n');
-            for(var line in lines) {
-                if(line.includes('Done Simming.')) {
-                    analysisMode = true;
-                }
-                if(analysisMode && line.includes('Done Analysis.')) {
-                    analysisMode = false;
-                    running = false;
-                } else if(line.includes('Done Analysis.')) {
-                    errString = 'No analysis could be found. Please check logs and try again.';
-                }
-                if(analysisMode && line.includes('Damage (DPS):')) {
-                    damageString = line;
-                }
-                if(analysisMode && line.includes('Pawn: v1:')) {
-                    pawnString = line;
-                }
-                if(line.includes('Done sim:')) {
-                    doneSims++;
-                }
-                if(line.includes('Generating simc profile:')) {
-                    totalSims++;
-                }
-            }
+            lines.forEach((line) => {
+                processLine(line);
+            });
             console.log(data);
             if(data.includes('error')) {
                 errString = data;

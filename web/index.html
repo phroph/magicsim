@@ -47,6 +47,7 @@
                             showResults();
                             $("#pawn").text(data.pawn);
                             $("#damage").text(data.damage);
+                            $("#sims").text(data.sims);
                             active = false;
                         }
                     }, 
@@ -108,7 +109,7 @@
             <div class="item submit"><input type="submit" id="submit" value="Simulate" ></div>
         </div>
         <div id="loading">
-            <span id="state">Starting</span>.
+            <div id="loadingHeader"><span id="state">Starting</span>.</div>
             <div class="element">
                 <div class="loading2">
                     <div></div>
@@ -125,11 +126,13 @@
         </div>
         <div id="results">
             <h3>Simulation Complete!</h3>
-            <div>Aggregate Damage Results:</div>
+            <div class="item">Aggregate Damage Results:</div>
             <div id="damage"></div>
-            <div>Pawn String:</div>
+            <div class="item">Pawn String:</div>
             <div id="pawn"></div>
-            <div class="item submit"><input type="button" id="button" value="Run New Sim" onclick="showHome()" ></div>
+            <div class="item">Simulations Ran:</div>
+            <div id="sims"></div>
+            <div class="item submit"><input type="button" id="button" value="Run New Sim" onclick="showHome()" ></input></div>
         </div>
     </body>
 </html>
