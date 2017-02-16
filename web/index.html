@@ -48,8 +48,10 @@
                             $("#pawn").text(data.pawn);
                             if(data.pawn == '') {
                                 $("#pawn").hide();
+                                $("#pawnlabel").hide();
                             } else {
                                 $("#pawn").show();
+                                $("#pawnlabel").show();
                             }
                             $("#damage").text(data.damage);
                             $("#sims").text(data.sims);
@@ -140,7 +142,7 @@
             <h3>Simulation Complete!</h3>
             <div class="item">Aggregate Damage Results:</div>
             <div id="damage"></div>
-            <div class="item">Pawn String:</div>
+            <div class="item" id="pawnlabel">Pawn String:</div>
             <div id="pawn"></div>
             <div class="item">Simulations Ran:</div>
             <div id="sims"></div>
