@@ -66,6 +66,7 @@ fs.readdirSync(path.join(".","/results")).forEach(function(result){
     var name = res[1];
 	if(name != "sim_test") {
 		name = xpath.select1("//simulationcraft/summary/player_by_dps/player/@name", doc).value;
+        simname = name;
 	}
     if(!argv.noweights) {
         int += xpath.select1("//simulationcraft/players/player[@name='"+name+"']/scale_factors/metric[@name='" + name + " Damage Per Second']/weights/stat[@name='Int']/@value", doc).value*weight;
@@ -80,8 +81,6 @@ fs.readdirSync(path.join(".","/results")).forEach(function(result){
 
 if(process.argv[2] == "sim_test") {
     simname = "simtest";
-} else {
-    simname = name;
 }
 console.log("Total calibration: " + sum);
 console.log("Damage (DPS): " + damage + " (" + dps + ")");

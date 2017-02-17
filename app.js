@@ -3,6 +3,7 @@ var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
 var exec = require('child_process').exec;
+var boss_models = require("./models.js");
 
 app.use(express.static(path.join(__dirname,'web_res')));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -25,6 +26,12 @@ var state = '';
 var simsString = '';
 var doneSims = 0;
 var totalSims = 0;
+
+app.get('/sim/models', function (req, res) {
+    res.send(JSON.stringify(boss_models.map((model) => {
+        return {name:model.name, dispName:model.dispName};
+    })));
+})
 
 app.get('/sim/results', function (req, res) {
     if(running || analysisMode) {
@@ -104,6 +111,9 @@ app.post('/sim/request', function (req, res) {
         }
         if(req.body.ptr == "true") {
             execString += " --ptr";
+        }
+        if(req.body.model) {
+            execString += " --model " + req.body.model;
         }
         var proc = exec(execString);
         

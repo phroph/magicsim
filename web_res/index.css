@@ -25,7 +25,7 @@ label {
     -webkit-border-radius: 2px;
     border-radius: 2px; 
     border:1px solid #aaa; 
-    background-color: #ddd;
+    background-color: #eee;
     padding: 5px;
 }
 
@@ -48,7 +48,7 @@ label {
     width: 100%;
 }
 
-#region, #character, #realm {
+#region, #character, #realm, #model {
     width: 150px;
 }
 

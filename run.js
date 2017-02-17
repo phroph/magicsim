@@ -11,6 +11,19 @@ var fs = require('fs');
 var os = require('os');
 var argv = require('yargs').argv;
 
+var boss_models = require("./models.js");
+var model;
+
+if(!argv.model) {
+    model = boss_models.filter((m) => {
+        return m.name == "nighthold";
+    })[0].model;
+} else {
+    model = boss_models.filter((m) => {
+        return m.name == argv.model;
+    })[0].model;
+}
+
 var region = process.argv[2];
 var realm = process.argv[3];
 var name = process.argv[4];
@@ -92,12 +105,15 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
                 if(variable[0] == "fighttime") {
                     fighttime = variable[1];
                 } else if(variable[0] == "fightstyle") {
-                    fightstyle = variable[1]
+                    fightstyle = variable[1];
                 }
+                
                 templateData = templateData.replace("%" + variable[0] + "%",variable[1]);
                 })
-            // Injects h2p test data instead of character data and uses myself as a template.
-                  
+            if(model[sim[0].split('.')[0].replace("template", fightstyle.replace("_", ""))] == 0) {
+                console.log("Preventing generation of unused model: " + sim[0].replace("template", name+"_"+fighttime+"_"+fightstyle.replace("_", "")));
+                return null;
+            }
             if(process.argv[2] == "sim_test") {
                 templateData = templateData.replace("#","");
                 templateData = templateData.replace("%version%", "905");
@@ -120,6 +136,9 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
             console.log("Generating simc profile: " + filename);
             return {data: templateData,fileName: filename};
         }).then(function(data) {
+            if(data == null) {
+                return;
+            }
             return Q.nfcall(fs.writeFile, path.join(simsFolder,data.fileName), data.data, "utf-8")
         });
     }))
