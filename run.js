@@ -218,6 +218,11 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         if(argv.noweights) {
             analyze += " --noweights"; 
         }
+        if(argv.model) {
+            analyze += " --model " + argv.model;
+        } else {
+            analyze += " --model nighthold"
+        }
         process_exec("node " + analyze, function(err, out, stderr) {
             console.log(out);
             console.log('Done Analysis.');

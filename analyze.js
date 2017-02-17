@@ -3,26 +3,18 @@ var dom = require('xmldom').DOMParser;
 var fs = require("fs");
 var path = require('path');
 var argv = require('yargs').argv;
+var boss_models = require("./models.js");
+var boss_models = require("./models.js");
+var fight_mapping;
 
-var fight_mapping = {
-    patchwerk_ba_2t: 0.025,
-    patchwerk_ba_st: 0.07,
-    patchwerk_sa_2t: 0.02,
-    patchwerk_sa_st: 0.07,
-    patchwerk_na_2t: 0,
-    patchwerk_na_st: 0.07,
-    lowmovement_ba_2t: 0.155,
-    lowmovement_ba_st: 0.195,
-    lowmovement_sa_2t: 0.05,
-    lowmovement_sa_st: 0.12,
-    lowmovement_na_2t: 0.03,
-    lowmovement_na_st: 0.065,
-    highmovement_ba_2t: 0,
-    highmovement_ba_st: 0.08,
-    highmovement_sa_2t: 0.015,
-    highmovement_sa_st: 0.035,
-    highmovement_na_2t: 0,
-    highmovement_na_st: 0
+if(!argv.model) {
+    fight_mapping = boss_models.filter((m) => {
+        return m.name == "nighthold";
+    })[0].model;
+} else {
+    fight_mapping = boss_models.filter((m) => {
+        return m.name == argv.model;
+    })[0].model;
 }
 
 var time_mapping = {
