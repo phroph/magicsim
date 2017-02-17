@@ -161,19 +161,22 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         if (os.arch() != 'x64') {
             arch = 'win32';
         }
-        var link = "http://downloads.simulationcraft.org/" + select("//h:html/h:body/h:table/h:tr/h:td/h:a[contains(@href,'.7z') and contains(@href,'" + arch + "')][1]/@href", doc)[0].value;
+        var fname = select("//h:html/h:body/h:table/h:tr/h:td/h:a[contains(@href,'.7z') and contains(@href,'" + arch + "')][1]/@href", doc)[0].value
+        var link = "http://downloads.simulationcraft.org/" + fname;
         console.log('Found: ' + link);
-        if (fs.existsSync('simc.7z')) { 
-            fs.unlinkSync('simc.7z');
+        if (fs.existsSync(fname)) { 
+            fs.unlinkSync(console.log("Skipping download. Already found existing file."));
+            deferred.resolve(fname);
+            return deferred.promise;
         }
         console.log("Downloading simc.7z for " + arch + " platform.");
-	    var file = fs.createWriteStream("simc.7z");
+	    var file = fs.createWriteStream(fname);
         var deferred = Q.defer();
         http.get(link, (response) => {
             response.pipe(file);
             response.on('end', () => {
                 console.log("Done downloading simc.7z");
-                deferred.resolve("simc.7z");
+                deferred.resolve(fname);
             });
         })
         return deferred.promise;
@@ -187,7 +190,7 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
     }
 
     console.log("Extracting simc.7z archive.");
-    new zip().extractFull('simc.7z', 'bin', {})
+    new zip().extractFull(name, 'bin', {})
     .then(() => {
         console.log("Done extracting simc.7z.");
         deferred.resolve();

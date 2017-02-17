@@ -7,15 +7,15 @@ var boss_models = require("./models.js");
 var boss_models = require("./models.js");
 var fight_mapping;
 
+var modelname;
 if(!argv.model) {
-    fight_mapping = boss_models.filter((m) => {
-        return m.name == "nighthold";
-    })[0].model;
+    modelname = "nighthold";
 } else {
-    fight_mapping = boss_models.filter((m) => {
-        return m.name == argv.model;
-    })[0].model;
+    modelname = argv.model;
 }
+fight_mapping = boss_models.filter((m) => {
+    return m.name == modelname;
+})[0].model;
 
 var time_mapping = {
     250: .15,
@@ -82,7 +82,7 @@ if(!argv.noweights) {
     var shaste = haste/int;
     var scrit = crit/int;
     var svers = vers/int;
-    console.log("( Pawn: v1: \"" + simname + "_selfsim\": Intellect=" + sint + ", Versatility="+ svers.toFixed(4) + ", HasteRating=" + shaste.toFixed(4) + ", MasteryRating=" + smastery.toFixed(4) + ", CritRating=" + scrit.toFixed(4) + " )");
+    console.log("( Pawn: v1: \"" + simname + "_" + modelname + "_selfsim\": Intellect=" + sint + ", Versatility="+ svers.toFixed(4) + ", HasteRating=" + shaste.toFixed(4) + ", MasteryRating=" + smastery.toFixed(4) + ", CritRating=" + scrit.toFixed(4) + " )");
     if(process.argv[2] == "sim_test") {
         console.log("Expected Values: ( Pawn: v1: \"SL 4-piece\": Intellect=1, MasteryRating=1.36, HasteRating=1.2, CritRating=1.02, Versatility=0.9 )")
         console.log("Differences: int=" + (1-sint) + ", mastery=" + (1.36-smastery) + ", haste=" + (1.2-shaste) + ", crit=" + (1.02-scrit) + ", vers=" + (0.9-svers));
