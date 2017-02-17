@@ -165,9 +165,8 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         var link = "http://downloads.simulationcraft.org/" + fname;
         console.log('Found: ' + link);
         if (fs.existsSync(fname)) { 
-            fs.unlinkSync(console.log("Skipping download. Already found existing file."));
-            deferred.resolve(fname);
-            return deferred.promise;
+            console.log("Skipping download. Already found existing file.");
+            return fname;
         }
         console.log("Downloading simc.7z for " + arch + " platform.");
 	    var file = fs.createWriteStream(fname);

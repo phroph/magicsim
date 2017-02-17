@@ -13,6 +13,7 @@
   "scripts": {
     "start": "nw",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "fullbuild": "npm run build32 && npm run build64",
     "buildandrun32": "npm run build32 && npm run run32",
     "buildandrun64": "npm run build64 && npm run run64",
     "build64": "npm install --production && (robocopy . ..\\build\\magicsim-master\\win64\\package.nw\\ /IT /MIR) ^& IF %ERRORLEVEL% LEQ 1 exit 0",
