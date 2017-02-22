@@ -29,6 +29,7 @@ var realm = process.argv[3];
 var name = process.argv[4];
 
 var config = { names: ["fighttime","fightstyle"], values: [[250, 400],["low_movement","high_movement","patchwerk"]]};
+var addConfig = { names: ["fighttime","fightstyle","adds"], values: [[30,35,50,55,60],["low_movement","patchwerk"],[3,4,5]]}
 
 var cp = config.names.reduce(function(prev, cur) {
     var name= cur;
@@ -36,6 +37,14 @@ var cp = config.names.reduce(function(prev, cur) {
     var cp = cartesianProduct([[name], values]);
     return prev.concat([cp]);
 },[]);
+
+var addCp = addConfig.names.reduce(function(prev, cur) {
+    var name= cur;
+    var values =config.values[config.names.indexOf(cur)];
+    var cp = cartesianProduct([[name], values]);
+    return prev.concat([cp]);
+},[]);
+
 
 var deleteContents = function(path) {
     if(fs.existsSync(path) ) {
@@ -86,9 +95,16 @@ var exec = function(command, options, callback) {
 
 
 var configurations = cartesianProduct(cp);
+var addConfiguration = cartesianProduct(addCp);
 
 Q.nfcall(fs.readdir,"templates").then(function(templates) {
-    return cartesianProduct([templates,configurations]);
+    var addTemplates = templates.filter(template => {
+        return template.includes("adds");
+    });
+    var simTemplates = templates.filter(template => {
+        return !template.includes("adds");
+    });
+    return (cartestianProduct([simTemplates, configurations])).concat(cartesianProduct([addTemplates,addConfiguration]));
 }).then(function(sims){
     var simsFolder = 'sims';
     if (!fs.existsSync(simsFolder)) { 
@@ -101,17 +117,28 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
         return Q.nfcall(fs.readFile, "templates/"+ sim[0], "utf-8").then(function(templateData){
             var fighttime;
             var fightstyle;
+            var adds = null;
             sim[1].forEach(function(variable) {
                 if(variable[0] == "fighttime") {
                     fighttime = variable[1];
                 } else if(variable[0] == "fightstyle") {
                     fightstyle = variable[1];
+                } else if(variable[0] == "adds") {
+                    adds = variable[1];
                 }
                 
                 templateData = templateData.replace("%" + variable[0] + "%",variable[1]);
-                })
-            if(model[sim[0].split('.')[0].replace("template", fightstyle.replace("_", ""))] == 0) {
-                console.log("Preventing generation of unused model: " + sim[0].replace("template", name+"_"+fighttime+"_"+fightstyle.replace("_", "")));
+            })
+            
+            var replaceValue;
+            if(adds != null) {
+                replaceValue = fighttime + '_' + fightstyle  + '_' + adds;
+            } else {
+                replaceValue = fightstyle.replace("_", "");
+            }
+            var modelName = sim[0].split('.')[0].replace("template", replaceValue); // IE 35_patchwerk_3_adds or patchwerk_ba_2t
+            if(model[modelName] != null || model[modelName] == 0) {
+                console.log("Preventing generation of unused model: " + modelName);
                 return null;
             }
             if(process.argv[2] == "sim_test") {
@@ -131,7 +158,7 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
             templateData = templateData.replace("%region%",region);
             templateData = templateData.replace("%realm%",realm);
             templateData = templateData.replace("%name%",name);
-            var filename = sim[0].replace("template", name+"_"+fighttime+"_"+fightstyle.replace("_", ""));
+            var filename = sim[0].replace("template", replaceValue);
             templateData = templateData.replace("%filename%",filename);
             console.log("Generating simc profile: " + filename);
             return {data: templateData,fileName: filename};

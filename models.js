@@ -1,5 +1,42 @@
+var totalScaleFactor = (1.5*7.91) + (7.99/1.5);
+var addScaleFactor = (7.91*1.5)/totalScaleFactor;
+var bossScaleFactor = 7.99/(1.5*totalScaleFactor);
 module.exports = [
-    {"dispName": "Skorpyron", "name": "skorpyron",
+    {"dispName": "Mythic+ Composite", "name": "mythicplus",
+        "model": {
+            '30_lowmovement_4_adds': 0.1/addScaleFactor,
+            '30_lowmovement_5_adds': 0.06/addScaleFactor,
+            '50_lowmovement_3_adds': 0.15/addScaleFactor,
+            '50_lowmovement_4_adds': 0.22/addScaleFactor,
+            '50_lowmovement_5_adds': 0.22/addScaleFactor,
+            '55_lowmovement_3_adds': 0.15/addScaleFactor,
+            '55_lowmovement_4_adds': 0.3/addScaleFactor,
+            '55_lowmovement_5_adds': 0.29/addScaleFactor,
+            '60_lowmovement_3_adds': 0.14/addScaleFactor,
+            '60_lowmovement_4_adds': 0.23/addScaleFactor,
+            '60_lowmovement_5_adds': 0.12/addScaleFactor,
+            '30_patchwerk_4_adds': 0.3/addScaleFactor,
+            '30_patchwerk_5_adds': 0.19/addScaleFactor,
+            '50_patchwerk_3_adds': 0.45/addScaleFactor,
+            '50_patchwerk_4_adds': 0.66/addScaleFactor,
+            '50_patchwerk_5_adds': 0.66/addScaleFactor,
+            '55_patchwerk_3_adds': 0.45/addScaleFactor,
+            '55_patchwerk_4_adds': 0.9/addScaleFactor,
+            '55_patchwerk_5_adds': 0.86/addScaleFactor,
+            '60_patchwerk_3_adds': 0.41/addScaleFactor,
+            '60_patchwerk_4_adds': 0.69/addScaleFactor,
+            '60_patchwerk_5_adds': 0.36/addScaleFactor,
+            patchwerk_ba_st: 0.33/bossScaleFactor,
+            patchwerk_na_st: 1.43/bossScaleFactor,
+            lowmovement_ba_st: 1.86/bossScaleFactor,
+            lowmovement_na_2t: 0.58/bossScaleFactor,
+            lowmovement_na_st: 1.2/bossScaleFactor,
+            highmovement_ba_st: 0.2/bossScaleFactor,
+            highmovement_na_2t: 0.2/bossScaleFactor,
+            highmovement_na_st: 2.17/bossScaleFactor
+        }
+    },
+    {   "dispName": "Skorpyron", "name": "skorpyron",
         "model": {
             patchwerk_ba_2t: 0,
             patchwerk_ba_st: 0,
