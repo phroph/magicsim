@@ -29,7 +29,7 @@ var realm = process.argv[3];
 var name = process.argv[4];
 
 var config = { names: ["fighttime","fightstyle"], values: [[250, 400],["low_movement","high_movement","patchwerk"]]};
-var addConfig = { names: ["fighttime","fightstyle","adds"], values: [[30,35,50,55,60],["low_movement","patchwerk"],[3,4,5]]}
+var addConfig = { names: ["fighttime","fightstyle","adds"], values: [[30,35,50,55,60],["low_movement","patchwerk"],['3','4','5']]}
 
 var cp = config.names.reduce(function(prev, cur) {
     var name= cur;
@@ -40,7 +40,7 @@ var cp = config.names.reduce(function(prev, cur) {
 
 var addCp = addConfig.names.reduce(function(prev, cur) {
     var name= cur;
-    var values =config.values[config.names.indexOf(cur)];
+    var values =addConfig.values[addConfig.names.indexOf(cur)];
     var cp = cartesianProduct([[name], values]);
     return prev.concat([cp]);
 },[]);
@@ -104,7 +104,7 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
     var simTemplates = templates.filter(template => {
         return !template.includes("adds");
     });
-    return (cartestianProduct([simTemplates, configurations])).concat(cartesianProduct([addTemplates,addConfiguration]));
+    return (cartesianProduct([simTemplates, configurations])).concat(cartesianProduct([addTemplates,addConfiguration]));
 }).then(function(sims){
     var simsFolder = 'sims';
     if (!fs.existsSync(simsFolder)) { 
@@ -131,13 +131,16 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
             })
             
             var replaceValue;
+            var filename;
             if(adds != null) {
-                replaceValue = fighttime + '_' + fightstyle  + '_' + adds;
+                replaceValue = fighttime + '_' + fightstyle.replace("_", "")  + '_' + adds;
+                filename = sim[0].replace("template", replaceValue);
             } else {
                 replaceValue = fightstyle.replace("_", "");
+                filename = fighttime + '_' + sim[0].replace("template", replaceValue);
             }
             var modelName = sim[0].split('.')[0].replace("template", replaceValue); // IE 35_patchwerk_3_adds or patchwerk_ba_2t
-            if(model[modelName] != null || model[modelName] == 0) {
+            if(model[modelName] == null || model[modelName] == 0) {
                 console.log("Preventing generation of unused model: " + modelName);
                 return null;
             }
@@ -158,7 +161,7 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
             templateData = templateData.replace("%region%",region);
             templateData = templateData.replace("%realm%",realm);
             templateData = templateData.replace("%name%",name);
-            var filename = sim[0].replace("template", replaceValue);
+            filename = name + '_' + filename;
             templateData = templateData.replace("%filename%",filename);
             console.log("Generating simc profile: " + filename);
             return {data: templateData,fileName: filename};
