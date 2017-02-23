@@ -20,6 +20,19 @@
             $("#results").show();
             $("#main").hide();
         }
+        var updateRealms = function(region) {
+            $.get('https://'+ region +'.api.battle.net/wow/realm/status?locale=en_US&apikey=y592n6pwqj7rypxbswa2x4ek5umg4462',
+                function(data, status) {
+                    $("#realm").empty();
+                    data.realms.map(function(realm) {
+                        return realm.name;
+                    }).forEach(function(name) {
+                        var opt = $("<option value=\'" + name.replace(' ', '-') + "\'>" + name + "</option>")
+                        $("#realm").append(opt);
+                    })
+                }, "json"
+            )
+        }
         var doPoll = function() {
             $.ajax({type: "GET",
                      url: "http://localhost:4000/sim/results", 
@@ -67,6 +80,7 @@
         }
         $(document).ready(function(){
             var realm,region,character;
+            updateRealms("us");
             $("#counter").hide();
             showHome();
             $.ajax({type: "GET",
@@ -116,7 +130,7 @@
             <div class="container">
                 <div class="item">
                     <label for="region">Region:</label>
-                    <select id="region" name="region">
+                    <select id="region" name="region" onchange="updateRealms(this.value)" >
                         <option value="us">US (North America)</option>
                         <option value="eu">EU (Europe)</option>
                         <option value="cn">CN (China)</option>
@@ -124,7 +138,10 @@
                         <option value="tw">TW (Taiwan)</option>
                     </select>
                 </div>
-                <div class="item"><label for="realm">Realm:</label><input type="text" name="realm" id="realm" /></div>
+                <div class="item">
+                    <label for="realm">Realm:</label>
+                    <select id="realm" name="realm"></select>
+                </div>
                 <div class="item"><label for="character">Character:</label><input type="text" name="character" id="character" /></div>
                 <div class="item">
                     <label for="model">Model:</label>
