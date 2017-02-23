@@ -11,24 +11,29 @@ var fs = require('fs');
 var os = require('os');
 var argv = require('yargs').argv;
 
-var boss_models = require("./models.js");
+var boss_models = require("./models.js").models;
 var model;
+var timeModel
 
 if(!argv.model) {
-    model = boss_models.filter((m) => {
+    var m = boss_models.filter((m) => {
         return m.name == "nighthold";
-    })[0].model;
+    })[0]
+    model = m.model;
+    timeModel = m.timeModel;
 } else {
-    model = boss_models.filter((m) => {
+    var m = boss_models.filter((m) => {
         return m.name == argv.model;
-    })[0].model;
+    })[0]
+    model = m.model;
+    timeModel = m.timeModel;
 }
 
 var region = process.argv[2];
 var realm = process.argv[3];
 var name = process.argv[4];
 
-var config = { names: ["fighttime","fightstyle"], values: [[250, 400],["low_movement","high_movement","patchwerk"]]};
+var config = { names: ["fighttime","fightstyle"], values: [[90, 250, 400],["low_movement","high_movement","patchwerk"]]};
 var addConfig = { names: ["fighttime","fightstyle","adds"], values: [[30,35,50,55,60],["low_movement","patchwerk"],['3','4','5']]}
 
 var cp = config.names.reduce(function(prev, cur) {
@@ -140,7 +145,7 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
                 filename = fighttime + '_' + sim[0].replace("template", replaceValue);
             }
             var modelName = sim[0].split('.')[0].replace("template", replaceValue); // IE 35_patchwerk_3_adds or patchwerk_ba_2t
-            if(model[modelName] == null || model[modelName] == 0) {
+            if(model[modelName] == null || model[modelName] == 0 || ((timeModel[fighttime] == null || timeModel[fighttime] == 0) && adds == null)) {
                 console.log("Preventing generation of unused model: " + modelName);
                 return null;
             }
@@ -163,6 +168,10 @@ Q.nfcall(fs.readdir,"templates").then(function(templates) {
             templateData = templateData.replace("%name%",name);
             filename = name + '_' + filename;
             templateData = templateData.replace("%filename%",filename);
+
+            var prefix = fs.readFileSync(path.join('templates','prefix.simc'), 'utf-8');
+            var postfix = fs.readFileSync(path.join('templates','postfix.simc'), 'utf-8');
+            templateData = prefix + '\r\n' + templateData + '\r\n' + postfix;
             console.log("Generating simc profile: " + filename);
             return {data: templateData,fileName: filename};
         }).then(function(data) {

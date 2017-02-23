@@ -3,9 +3,9 @@ var dom = require('xmldom').DOMParser;
 var fs = require("fs");
 var path = require('path');
 var argv = require('yargs').argv;
-var boss_models = require("./models.js");
-var boss_models = require("./models.js");
+var boss_models = require("./models.js").models;
 var fight_mapping;
+var time_mapping
 
 var modelname;
 if(!argv.model) {
@@ -17,10 +17,9 @@ fight_mapping = boss_models.filter((m) => {
     return m.name == modelname;
 })[0].model;
 
-var time_mapping = {
-    250: .15,
-    400: .85
-}
+time_mapping = boss_models.filter((m) => {
+    return m.name == modelname;
+})[0].timeModel;
 
 var sum = 0;
 Object.keys(time_mapping).forEach(function(time) {
@@ -44,14 +43,25 @@ var crit = 0;
 var sp = 0;
 var simname;
 var vers = 0;
-fs.readdirSync(path.join(".","/results")).forEach(function(result){
+
+var results = fs.readdirSync(path.join(".","/results"));
+
+results.forEach(function(result){
     var xml = fs.readFileSync(path.join('.','results', result), "utf-8");
     var doc = new dom().parseFromString(xml);
     var res = result.match("^(.*)_([0-9]*)_(.*).simc.xml");
+    var addRes = result.match("^([^_]*)_(.*).simc.xml");
 
     var time = res[2];
     var fight = res[3];
-    var weight = fight_mapping[fight]*time_mapping[time];
+    var weight;
+
+    
+    if(result.includes('adds')) {
+        weight = fight_mapping[addRes[2]];
+    } else {
+        weight = fight_mapping[fight]*time_mapping[time];
+    }
 	
 	damage += xpath.select1("//simulationcraft/summary/dmg/@total", doc).value*weight;
 	dps += xpath.select1("//simulationcraft/summary/dmg/@dps", doc).value*weight;

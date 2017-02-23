@@ -3,7 +3,7 @@ var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
 var exec = require('child_process').exec;
-var boss_models = require("./models.js");
+var boss_models = require("./models.js").models;
 
 app.use(express.static(path.join(__dirname,'web_res')));
 app.use(bodyParser.urlencoded({extended: false}));
