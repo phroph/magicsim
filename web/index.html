@@ -30,8 +30,17 @@
                         var opt = $("<option value=\'" + name.replace(' ', '-') + "\'>" + name + "</option>")
                         $("#realm").append(opt);
                     })
-                }, "json"
+                }, 'json'
             )
+        }
+        var versionCheck = function(version) {
+            $.get('https://raw.githubusercontent.com/phroph/magicsim/master/models.js', 
+                function(data) {
+                    var version = data.match("exports.version = (.*);")[1];
+                    if(version != version) {
+                        alert("Newer models available on GitHub. Check for a new release.");
+                    }
+                }, 'text')
         }
         var doPoll = function() {
             $.ajax({type: "GET",
@@ -83,6 +92,7 @@
             updateRealms("us");
             $("#counter").hide();
             showHome();
+            versionCheck('1.1'); //Update this to do some NW.js magic and get it really really.
             $.ajax({type: "GET",
                      url: "http://localhost:4000/sim/models",
                      success: function(data) {
