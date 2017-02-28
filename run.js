@@ -80,6 +80,9 @@ var exec = function(command, options, callback) {
             console.log("Running: " + command);
             return_promise = Q.nfcall(process_exec, command, options).then(function() {
                 callback();
+            }, (err) => {
+                console.log("Error: Failed to execute sim profile " + command);
+                throw err;
             });
             pool[threads%pool_size] = return_promise;
             threads++;
@@ -87,8 +90,11 @@ var exec = function(command, options, callback) {
             var chain = (pool[threads%pool_size]).then(function() {
                 console.log("Running: " + command);
                 return Q.nfcall(process_exec, command, options).then(function() {
-                    callback();
-                })
+                        callback();
+                    }, (err) => {
+                        console.log("Error: Failed to execute sim profile " + command);
+                        throw err;
+                    });
             });
             pool[threads%pool_size] = chain;
             console.log("Queued: " + command);
