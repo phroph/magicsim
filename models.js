@@ -174,4 +174,4 @@ module.exports.models = [
     }
 ]
 
-module.exports.version = 1.1;
+module.exports.version = 1.11;
