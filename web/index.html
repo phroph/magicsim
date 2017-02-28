@@ -27,7 +27,7 @@
                     data.realms.map(function(realm) {
                         return realm.name;
                     }).forEach(function(name) {
-                        var opt = $("<option value=\'" + name.replace(' ', '-') + "\'>" + name + "</option>")
+                        var opt = $("<option value=\"" + name.replace(' ', '-') + "\">" + name + "</option>")
                         $("#realm").append(opt);
                     })
                 }, 'json'
