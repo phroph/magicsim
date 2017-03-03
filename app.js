@@ -2,7 +2,6 @@ var express = require('express');
 var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
-var exec = require('child_process').exec;
 var boss_models = require("./models.js").models;
 
 app.use(express.static(path.join(__dirname,'web_res')));
@@ -115,15 +114,15 @@ app.post('/sim/request', function (req, res) {
         if(req.body.model) {
             execString += " --model " + req.body.model;
         }
-        var proc = exec(execString);
-        
+        var proc = require("child_process").exec(execString);
+
         // Bind the output so we can read it.
         proc.stdout.on('data', (data) => {
+            console.log(data);
             var lines = data.split('\n');
             lines.forEach((line) => {
                 processLine(line);
             });
-            console.log(data);
             if(data.includes('Error:')) {
                 errString = data;
                 running = false;
@@ -131,11 +130,11 @@ app.post('/sim/request', function (req, res) {
         });
 
         proc.stderr.on('data', (data) => {
+            console.log(data);
             var lines = data.split('\n');
             lines.forEach((line) => {
                 processLine(line);
             });
-            console.log(data);
             if(data.includes('Error:')) {
                 errString = data;
                 running = false;
@@ -150,3 +149,5 @@ app.post('/sim/request', function (req, res) {
 app.listen(4000, function () {
   console.log('magicsim local backend live and operational.')
 })
+
+module.exports.version = "v1.11";

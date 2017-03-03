@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Shadow priest tailored tool for simming stat weights in a fight-aware manner using SimulationCraft.",
   "node-main": "app.js",
+  "node-remote": "http://localhost",
   "main": "http://localhost:4000/",
   "window": {
     "toolbar": false,

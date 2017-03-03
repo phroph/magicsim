@@ -27,16 +27,16 @@
                     data.realms.map(function(realm) {
                         return realm.name;
                     }).forEach(function(name) {
-                        var opt = $("<option value=\"" + name.replace(' ', '-') + "\">" + name + "</option>")
+                        var opt = $("<option value=\"" + name.replace(/ /g, '-') + "\">" + name + "</option>")
                         $("#realm").append(opt);
                     })
                 }, 'json'
             )
         }
         var versionCheck = function(version) {
-            $.get('https://raw.githubusercontent.com/phroph/magicsim/master/models.js', 
+            $.get('https://api.github.com/repos/phroph/magicsim/releases/latest', 
                 function(data) {
-                    var vers = data.match("exports.version = (.*);")[1];
+                    var vers = JSON.parse(data).tag_name;
                     if(version != vers) {
                         alert("Newer models available on GitHub. Check for a new release.");
                     }
@@ -92,7 +92,7 @@
             updateRealms("us");
             $("#counter").hide();
             showHome();
-            versionCheck('1.11'); //Update this to do some NW.js magic and get it really really.
+            versionCheck(process.mainModule.exports.version);
             $.ajax({type: "GET",
                      url: "http://localhost:4000/sim/models",
                      success: function(data) {

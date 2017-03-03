@@ -73,12 +73,27 @@ if(argv.threads && argv.threads >= 1 && argv.threads <= 8) {
 var threads = 0;
 
 var mutex = locks.createMutex();
+
+// Takes a command and options, executes it, and returns a promise that resolves/errors with the process, making sure the parent kills the child when it dies.
+var bindExec = function(command, options) {
+    var defer = Q.defer();
+    var proc = process_exec(command, options, (error, stdout, stderr) => {
+        if(error) {
+            defer.reject();
+        } else {
+            defer.resolve();
+        }
+    });
+    
+    return defer.promise;
+}
+
 var exec = function(command, options, callback) {
     mutex.lock(function() {
         var return_promise;
         if (pool[threads%pool_size] == null) {
             console.log("Running: " + command);
-            return_promise = Q.nfcall(process_exec, command, options).then(function() {
+            return_promise = bindExec(command, options).then(function() {
                 callback();
             }, (err) => {
                 console.log("Error: Failed to execute sim profile " + command);
@@ -89,7 +104,7 @@ var exec = function(command, options, callback) {
         } else {
             var chain = (pool[threads%pool_size]).then(function() {
                 console.log("Running: " + command);
-                return Q.nfcall(process_exec, command, options).then(function() {
+                return bindExec(command, options).then(function() {
                         callback();
                     }, (err) => {
                         console.log("Error: Failed to execute sim profile " + command);
