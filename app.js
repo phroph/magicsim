@@ -5,7 +5,6 @@ var bodyParser = require('body-parser');
 var boss_models = require("./models.js").models;
 
 var oldLog = console.log;
-
 app.use(express.static(path.join(__dirname,'web_res')));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -142,7 +141,7 @@ app.post('/sim/request', function (req, res) {
         //var proc = require("child_process").exec(execString);
 
         exports.window.on('close', () => {
-            setTimeout(() => { exports.window.close(true);}, 1000);
+            setTimeout(() => { exports.window.close(true);}, 100);
         })
 
         
@@ -181,4 +180,4 @@ app.listen(4000, function () {
   console.log('magicsim local backend live and operational.')
 })
 
-module.exports.version = "v1.11";
+module.exports.version = "v1.12";
