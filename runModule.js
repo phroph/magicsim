@@ -15,6 +15,7 @@ module.exports.run = function(window, cArgs) {
 
     var boss_models = require("./models.js").models;
     var model;
+    var modelName;
     var timeModel
 
     var region,realm,name,threads,weights,ptrl;
@@ -24,6 +25,7 @@ module.exports.run = function(window, cArgs) {
         name = cArgs.character;
         threads = cArgs.theads;
         weights = cArgs.weights
+        modelName = cArgs.model;
         ptr = cArgs.ptr;
         var m = boss_models.filter((m) => {
                 return m.name == cArgs.model;
@@ -32,12 +34,14 @@ module.exports.run = function(window, cArgs) {
         timeModel = m.timeModel;
     } else {
         if(!argv.model) {
+            modelName = 'nighthold';
             var m = boss_models.filter((m) => {
                 return m.name == "nighthold";
             })[0]
             model = m.model;
             timeModel = m.timeModel;
         } else {
+            modelName = argv.model;
             var m = boss_models.filter((m) => {
                 return m.name == argv.model;
             })[0]
@@ -310,13 +314,10 @@ module.exports.run = function(window, cArgs) {
             if(!weights) {
                 analyze += " --noweights"; 
             }
-            if(model) {
-                analyze += " --model " + model.name;
-            } else {
-                analyze += " --model nighthold"
-            }
+            analyze += " --model " + modelName;
             process_exec("node " + analyze, function(err, out, stderr) {
                 console.log(out);
+                console.log(stderr);
                 console.log('Done Analysis.');
                 deferral.resolve();
             });

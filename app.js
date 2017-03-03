@@ -54,6 +54,9 @@ var processLine = function(line) {
         state = 'Analyzing';
     }
     if(analysisMode && line.includes('Done Analysis.')) {
+        if(damageString == '') {
+            errString = 'No analysis could be found. Please check logs and try again.';
+        }
         analysisMode = false;
         running = false;
     } else if(line.includes('Done Analysis.')) {
@@ -138,7 +141,6 @@ app.post('/sim/request', function (req, res) {
         }
 
         require('./runModule.js').run(exports.window, args);
-        //var proc = require("child_process").exec(execString);
 
         exports.window.on('close', () => {
             setTimeout(() => { exports.window.close(true);}, 100);
@@ -148,27 +150,11 @@ app.post('/sim/request', function (req, res) {
 
         // Bind the output so we can read it.
         process.stdout.on('data', (data) => {
-            //console.log(data);
-            var lines = data.split('\n');
-            lines.forEach((line) => {
-                processLine(line);
-            });
-            if(data.includes('Error:')) {
-                errString = data;
-                running = false;
-            }
+            console.log(data);
         });
 
         process.stderr.on('data', (data) => {
-            //console.log(data);
-            var lines = data.split('\n');
-            lines.forEach((line) => {
-                processLine(line);
-            });
-            if(data.includes('Error:')) {
-                errString = data;
-                running = false;
-            }
+            console.log(data);
         });
         res.send(true);
     } else {
