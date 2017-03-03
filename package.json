@@ -15,6 +15,8 @@
     "start": "nw",
     "test": "echo \"Error: no test specified\" && exit 1",
     "fullbuild": "npm run build32 && npm run build64",
+    "sdk32": "node ./installSdk.js win32",
+    "sdk64": "node ./installSdk.js win64",
     "buildandrun32": "npm run build32 && npm run run32",
     "buildandrun64": "npm run build64 && npm run run64",
     "build64": "npm install --production && (robocopy . ..\\build\\magicsim-master\\win64\\package.nw\\ /IT /MIR) ^& IF %ERRORLEVEL% LEQ 1 exit 0",
@@ -38,7 +40,9 @@
     "yargs": "~6.6.0"
   },
   "devDependencies": {
-    "nw": "~0.20.1"
+    "nw": "~0.20.1",
+    "unzip": "~0.1.11",
+    "mkdirp": "~0.5.1"
   },
   "repository": {
     "type": "git",
