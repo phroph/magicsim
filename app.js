@@ -4,6 +4,8 @@ var app = express();
 var bodyParser = require('body-parser');
 var boss_models = require("./models.js").models;
 
+var oldLog = console.log;
+
 app.use(express.static(path.join(__dirname,'web_res')));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -114,11 +116,40 @@ app.post('/sim/request', function (req, res) {
         if(req.body.model) {
             execString += " --model " + req.body.model;
         }
-        var proc = require("child_process").exec(execString);
+
+        var args = {
+            region: region,
+            realm: realm,
+            character: char,
+            theads: req.body.threads,
+            weights: req.body.noweights == "true" ? false: true,
+            ptr: req.body.ptr == "true",
+            model: req.body.model
+        }
+        console.log = function (data) {
+            var lines = data.split('\n');
+            lines.forEach((line) => {
+                processLine(line);
+            });
+            if(data.includes('Error:')) {
+                errString = data;
+                running = false;
+            }
+            oldLog(data);
+        }
+
+        require('./runModule.js').run(exports.window, args);
+        //var proc = require("child_process").exec(execString);
+
+        exports.window.on('close', () => {
+            setTimeout(() => { exports.window.close(true);}, 1000);
+        })
+
+        
 
         // Bind the output so we can read it.
-        proc.stdout.on('data', (data) => {
-            console.log(data);
+        process.stdout.on('data', (data) => {
+            //console.log(data);
             var lines = data.split('\n');
             lines.forEach((line) => {
                 processLine(line);
@@ -129,8 +160,8 @@ app.post('/sim/request', function (req, res) {
             }
         });
 
-        proc.stderr.on('data', (data) => {
-            console.log(data);
+        process.stderr.on('data', (data) => {
+            //console.log(data);
             var lines = data.split('\n');
             lines.forEach((line) => {
                 processLine(line);

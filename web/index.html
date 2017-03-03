@@ -130,6 +130,7 @@
                     }});
                 }
             });
+            process.mainModule.exports.window = require('nw.gui').Window.get();
         });
         </script>
     </head>
