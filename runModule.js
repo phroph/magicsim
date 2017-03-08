@@ -323,5 +323,7 @@ module.exports.run = function(window, cArgs) {
             });
             return deferral.promise;
         });
+    }).fail((err) => {
+        console.log("Error: Failed to process with exeception: " + err);
     }).done();
 }
