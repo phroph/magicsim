@@ -1,0 +1,2 @@
+armory=%region%,%realm%,%name%
+save=./profile_builder/%name%.simc

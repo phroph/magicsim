@@ -3,6 +3,7 @@ module.exports.run = function(window, cArgs) {
     var Q = require('Q');
     var cartesianProduct = require('cartesian-product');
     var process_exec = require('child_process').exec;
+    var execSync = require('child_process').execSync;
     var zip = require('node-7z')
     var xpath = require('xpath');
     var dom = require('xmldom').DOMParser;
@@ -32,6 +33,7 @@ module.exports.run = function(window, cArgs) {
             })[0];
         model = m.model;
         timeModel = m.timeModel;
+        advancedMode = cArgs.advancedMode;
     } else {
         if(!argv.model) {
             modelName = 'nighthold';
@@ -51,6 +53,7 @@ module.exports.run = function(window, cArgs) {
         threads = argv.threads;
         weights = !argv.noweights;
         ptr = argv.ptr;
+        advancedMode = argv.advancedMode;
         region = process.argv[2];
         realm = process.argv[3];
         name = process.argv[4];
@@ -157,86 +160,7 @@ module.exports.run = function(window, cArgs) {
     var configurations = cartesianProduct(cp);
     var addConfiguration = cartesianProduct(addCp);
 
-    Q.nfcall(fs.readdir,"templates").then(function(templates) {
-        var addTemplates = templates.filter(template => {
-            return template.includes("adds");
-        });
-        var simTemplates = templates.filter(template => {
-            return !template.includes("adds");
-        });
-        return (cartesianProduct([simTemplates, configurations])).concat(cartesianProduct([addTemplates,addConfiguration]));
-    }).then(function(sims){
-        var simsFolder = 'sims';
-        if (!fs.existsSync(simsFolder)) { 
-            fs.mkdirSync(simsFolder);
-        }  else {
-            deleteContents(simsFolder);
-        }
-        console.log("Generating simc profiles.");
-        return Q.all(sims.map(function(sim){
-            return Q.nfcall(fs.readFile, "templates/"+ sim[0], "utf-8").then(function(templateData){
-                var fighttime;
-                var fightstyle;
-                var adds = null;
-                sim[1].forEach(function(variable) {
-                    if(variable[0] == "fighttime") {
-                        fighttime = variable[1];
-                    } else if(variable[0] == "fightstyle") {
-                        fightstyle = variable[1];
-                    } else if(variable[0] == "adds") {
-                        adds = variable[1];
-                    }
-                    
-                    templateData = templateData.replace("%" + variable[0] + "%",variable[1]);
-                })
-                
-                var replaceValue;
-                var filename;
-                if(adds != null) {
-                    replaceValue = fighttime + '_' + fightstyle.replace("_", "")  + '_' + adds;
-                    filename = sim[0].replace("template", replaceValue);
-                } else {
-                    replaceValue = fightstyle.replace("_", "");
-                    filename = fighttime + '_' + sim[0].replace("template", replaceValue);
-                }
-                var modelName = sim[0].split('.')[0].replace("template", replaceValue); // IE 35_patchwerk_3_adds or patchwerk_ba_2t
-                if(model[modelName] == null || model[modelName] == 0 || ((timeModel[fighttime] == null || timeModel[fighttime] == 0) && adds == null)) {
-                    console.log("Preventing generation of unused model: " + modelName);
-                    return null;
-                }
-                if(region == "sim_test") {
-                    templateData = templateData.replace("#","");
-                    templateData = templateData.replace("%version%", "905");
-                    templateData = templateData.replace("armory=%region%,%realm%,%name%","input=../test_profiles/characterbase.simc\r\ninput=../test_profiles/apl232017.simc");
-                    region = "test";
-                    realm = "test";
-                    name = "sim_test";
-                }
-                if(ptr) {
-                    templateData = "ptr=1\r\n" + templateData;
-                }
-                if(!weights) {
-                    templateData = templateData.replace("calculate_scale_factors=1","#noweights");
-                }
-                templateData = templateData.replace("%region%",region);
-                templateData = templateData.replace("%realm%",realm);
-                templateData = templateData.replace("%name%",name);
-                filename = name + '_' + filename;
-                templateData = templateData.replace("%filename%",filename);
-
-                var prefix = fs.readFileSync(path.join('build_profiles','prefix.simc'), 'utf-8');
-                var postfix = fs.readFileSync(path.join('build_profiles','postfix.simc'), 'utf-8');
-                templateData = prefix + '\r\n' + templateData + '\r\n' + postfix;
-                console.log("Generating simc profile: " + filename);
-                return {data: templateData,fileName: filename};
-            }).then(function(data) {
-                if(data == null) { 
-                    return;
-                }
-                return Q.nfcall(fs.writeFile, path.join(simsFolder,data.fileName), data.data, "utf-8")
-            });
-        }))
-    }).then(function() {
+    Q().then(function() {
         var deferred = Q.defer();
         var rawData = "";
         console.log("Downloading SimulationCraft version list.");
@@ -289,6 +213,120 @@ module.exports.run = function(window, cArgs) {
             deferred.resolve();
         });
         return deferred.promise;
+    }).then(() => { 
+        var deferred = Q.defer();
+        fs.readdir('templates', (err, files) => {
+            if(err) {
+                deferred.reject(err);
+                return;
+            }
+            deferred.resolve(files);
+        });
+        return deferred.promise;
+    }).then(function(templates) {
+        var addTemplates = templates.filter(template => {
+            return template.includes("adds");
+        });
+        var simTemplates = templates.filter(template => {
+            return !template.includes("adds");
+        });
+        return (cartesianProduct([simTemplates, configurations])).concat(cartesianProduct([addTemplates,addConfiguration]));
+    }).then(function(sims){
+        var simsFolder = 'sims';
+        if (!fs.existsSync(simsFolder)) { 
+            fs.mkdirSync(simsFolder);
+        }  else {
+            deleteContents(simsFolder);
+        }
+        console.log("Generating simc profiles.");
+        if(advancedMode) {
+            // Delete old builder profiles
+            console.log("Detecting advanced mode. Generating player profile using simc.");
+            var builder = fs.readFileSync(path.join('build_profiles','builder.simc'),'utf-8');
+            builder = builder.replace(/%region%/g,region);
+            builder = builder.replace(/%realm%/g,realm);
+            builder = builder.replace(/%name%/g,name);
+            if(!fs.existsSync('profile_builder')) {
+                fs.mkdirSync('profile_builder');
+            }
+            fs.writeFileSync(path.join('profile_builder', name + '.simc'), builder);
+            try {
+                execSync(path.join('bin',fs.readdirSync("bin")[0],"simc.exe") + " " + path.join('profile_builder', name + '.simc'));
+            }
+            catch(err) {
+                console.log(err.toString());
+                throw err;
+            }
+            // Generate profile.
+            console.log("Performing specified modifications to APL.");
+            // Advanced profile mutations
+        }
+        return Q.all(sims.map(function(sim){
+            return Q.nfcall(fs.readFile, "templates/"+ sim[0], "utf-8").then(function(templateData){
+                var fighttime;
+                var fightstyle;
+                var adds = null;
+                sim[1].forEach(function(variable) {
+                    if(variable[0] == "fighttime") {
+                        fighttime = variable[1];
+                    } else if(variable[0] == "fightstyle") {
+                        fightstyle = variable[1];
+                    } else if(variable[0] == "adds") {
+                        adds = variable[1];
+                    }
+                    
+                    templateData = templateData.replace("%" + variable[0] + "%",variable[1]);
+                })
+                
+                var replaceValue;
+                var filename;
+                if(adds != null) {
+                    replaceValue = fighttime + '_' + fightstyle.replace("_", "")  + '_' + adds;
+                    filename = sim[0].replace("template", replaceValue);
+                } else {
+                    replaceValue = fightstyle.replace("_", "");
+                    filename = fighttime + '_' + sim[0].replace("template", replaceValue);
+                }
+                var modelName = sim[0].split('.')[0].replace("template", replaceValue); // IE 35_patchwerk_3_adds or patchwerk_ba_2t
+                if(model[modelName] == null || model[modelName] == 0 || ((timeModel[fighttime] == null || timeModel[fighttime] == 0) && adds == null)) {
+                    console.log("Preventing generation of unused model: " + modelName);
+                    return null;
+                }
+                if(advancedMode) {
+                    templateData = templateData.replace(/armory=%region%,%realm%,%name%/g,"input=../profile_builder/%name%.simc");
+                }
+                if(region == "sim_test") {
+                    templateData = templateData.replace(/#/g,"");
+                    templateData = templateData.replace(/%version%/g, "905");
+                    templateData = templateData.replace(/armory=%region%,%realm%,%name%/g,"input=../test_profiles/characterbase.simc\r\ninput=../test_profiles/apl232017.simc");
+                    region = "test";
+                    realm = "test";
+                    name = "sim_test";
+                }
+                if(ptr) {
+                    templateData = "ptr=1\r\n" + templateData;
+                }
+                if(!weights) {
+                    templateData = templateData.replace("calculate_scale_factors=1","#noweights");
+                }
+                templateData = templateData.replace(/%region%/g,region);
+                templateData = templateData.replace(/%realm%/g,realm);
+                templateData = templateData.replace(/%name%/g,name);
+                filename = name + '_' + filename;
+                templateData = templateData.replace("%filename%",filename);
+
+                var prefix = fs.readFileSync(path.join('build_profiles','prefix.simc'), 'utf-8');
+                var postfix = fs.readFileSync(path.join('build_profiles','postfix.simc'), 'utf-8');
+                templateData = prefix + '\r\n' + templateData + '\r\n' + postfix;
+                console.log("Generating simc profile: " + filename);
+                return {data: templateData,fileName: filename};
+            }).then(function(data) {
+                if(data == null) { 
+                    return;
+                }
+                return Q.nfcall(fs.writeFile, path.join(simsFolder,data.fileName), data.data, "utf-8")
+            });
+        }))
     }).then(function() {
         var resultsFolder = path.join('.','results');
         if (!fs.existsSync(resultsFolder)) { 
