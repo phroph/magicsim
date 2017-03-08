@@ -224,8 +224,8 @@ module.exports.run = function(window, cArgs) {
                 filename = name + '_' + filename;
                 templateData = templateData.replace("%filename%",filename);
 
-                var prefix = fs.readFileSync(path.join('templates','prefix.simc'), 'utf-8');
-                var postfix = fs.readFileSync(path.join('templates','postfix.simc'), 'utf-8');
+                var prefix = fs.readFileSync(path.join('build_profiles','prefix.simc'), 'utf-8');
+                var postfix = fs.readFileSync(path.join('build_profiles','postfix.simc'), 'utf-8');
                 templateData = prefix + '\r\n' + templateData + '\r\n' + postfix;
                 console.log("Generating simc profile: " + filename);
                 return {data: templateData,fileName: filename};
