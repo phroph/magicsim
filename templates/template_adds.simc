@@ -1,4 +1,5 @@
-$(time)=%fighttime%
+$(stuntime)=%fighttime%
+$(time)=$(stuntime)+15
 $(style)=%fightstyle%
 
 armory=%region%,%realm%,%name%
@@ -6,16 +7,17 @@ armory=%region%,%realm%,%name%
 iterations=10000
 threads=1
 target_error=0.000
-max_time=$(time)
+# Because I can't directly set max_time=400-400%$(time), I need to do this substitution in runModule.
+max_time=%meta_totaltime%
 fight_style=$(style)
 
 enemy=Fluffball
 #override.target_health=0
 #enemy_health=1000000
 enemy_fixed_health_percentage=80
-raid_events+=/invulnerable,cooldown=75,duration=15,first=60
-raid_events+=/stun,cooldown=75,duration=15,first=60
-raid_events+=/adds,count=%adds%,duration=60,cooldown=75
+raid_events+=/invulnerable,cooldown=$(time),duration=15,first=$(stuntime)
+raid_events+=/stun,cooldown=$(time),duration=15,first=$(stuntime)
+raid_events+=/adds,count=%adds%,duration=$(stuntime),cooldown=$(time)
 
 calculate_scale_factors=1
 xml=%filename%.xml
