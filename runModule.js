@@ -64,7 +64,7 @@ module.exports.run = function(window, cArgs) {
     if(modelName == 'mythicplus') {
         advancedMode = true;
     }
-    
+
     var config = { names: ["fighttime","fightstyle"], values: [[90, 250, 400],["low_movement","high_movement","patchwerk"]]};
     var addConfig = { names: ["fighttime","fightstyle","adds"], values: [[30,35,50,55,60],["low_movement","patchwerk"],['3','4','5']]}
 
@@ -262,6 +262,14 @@ module.exports.run = function(window, cArgs) {
             // Generate profile.
             console.log("Performing specified modifications to APL.");
             // Advanced profile mutations
+            var apl = fs.readFileSync(path.join('profile_builder', name + '.simc'),'utf-8');
+            if(modelName == 'mythicplus') {
+                // Do our special Mythic+ configuration steps.
+                console.log('Applying special Mythic+ customizations.');
+                apl = apl.replace(/actions.precombat\+=\/potion,name=.*/,'#Dungeon sim - Disabling prepots');
+                apl = apl.replace(/actions=potion,name=.*,if=buff\.bloodlust\.react\|target\.time_to_die<=80\|\(target\.health\.pct<35&cooldown\.power_infusion\.remains<30\)/, '#Dungeon sim - Disabling combat pots');
+            }
+            fs.writeFileSync(path.join('profile_builder', name + '.simc'), apl);
         }
         return Q.all(sims.map(function(sim){
             return Q.nfcall(fs.readFile, "templates/"+ sim[0], "utf-8").then(function(templateData){
