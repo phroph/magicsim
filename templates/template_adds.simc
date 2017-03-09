@@ -1,5 +1,5 @@
 $(stuntime)=%fighttime%
-$(time)=$(stuntime)+15
+$(time)=%nettime%
 $(style)=%fightstyle%
 
 armory=%region%,%realm%,%name%
