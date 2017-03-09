@@ -6,6 +6,7 @@ armory=%region%,%realm%,%name%
 #input=../test_profiles/h2priest_nh_%version%.simc
 iterations=10000
 threads=1
+override.bloodlust=0
 target_error=0.000
 # Because I can't directly set max_time=400-400%$(time), I need to do this substitution in runModule.
 max_time=%meta_totaltime%
@@ -15,8 +16,8 @@ enemy=Fluffball
 #override.target_health=0
 #enemy_health=1000000
 enemy_fixed_health_percentage=80
-raid_events+=/invulnerable,cooldown=$(time),duration=15,first=$(stuntime)
-raid_events+=/stun,cooldown=$(time),duration=15,first=$(stuntime)
+raid_events+=/move_enemy,name=Fluffball,cooldown=2000,duration=1000,x=-67,y=-67
+raid_events+=/invulnerable,cooldown=1000,duration=1000,first=0
 raid_events+=/adds,count=%adds%,duration=$(stuntime),cooldown=$(time)
 
 calculate_scale_factors=1
