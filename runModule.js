@@ -283,6 +283,7 @@ module.exports.run = function(window, cArgs) {
                 if(adds != null) {
                     replaceValue = fighttime + '_' + fightstyle.replace("_", "")  + '_' + adds;
                     filename = sim[0].replace("template", replaceValue);
+                    templateData = templateData.replace("%meta_totaltime%", 400 - 400%(fighttime+15));
                 } else {
                     replaceValue = fightstyle.replace("_", "");
                     filename = fighttime + '_' + sim[0].replace("template", replaceValue);
