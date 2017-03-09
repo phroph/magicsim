@@ -59,10 +59,12 @@ module.exports.run = function(window, cArgs) {
         name = process.argv[4];
     }
 
+    // Due to restrictions with SimC, we have to generate and modify the APL for dungeon sims.
+    // ergo we must enforce advanced mode if it is not already enabled.
+    if(modelName == 'mythicplus') {
+        advancedMode = true;
+    }
     
-
-
-
     var config = { names: ["fighttime","fightstyle"], values: [[90, 250, 400],["low_movement","high_movement","patchwerk"]]};
     var addConfig = { names: ["fighttime","fightstyle","adds"], values: [[30,35,50,55,60],["low_movement","patchwerk"],['3','4','5']]}
 
