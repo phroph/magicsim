@@ -126,8 +126,7 @@ app.post('/sim/request', function (req, res) {
             theads: req.body.threads,
             weights: req.body.noweights == "true" ? false: true,
             ptr: req.body.ptr == "true",
-            model: req.body.model,
-            advancedMode: true
+            model: req.body.model
         }
         console.log = function (data) {
             var lines = data.split('\n');
