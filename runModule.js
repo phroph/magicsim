@@ -138,7 +138,6 @@ module.exports.run = function(window, cArgs) {
         if(command == 'race') {
             return new RegExp('race=(.*)');
         } else {
-            console.log(baseRegex.replace('%name%',command).replace('%attribute%',variableMapping[command]));
             return new RegExp(baseRegex.replace('%name%',command).replace('%attribute%',variableMapping[command]),'g')
         }
     }
@@ -289,9 +288,6 @@ module.exports.run = function(window, cArgs) {
                 advancedOperations.push({name: 'potion', replacement: 'DELETE'});
             }
 
-            // Generic modifications. Look through array of {regex, replacement}
-            // The below matches the supplied string, then takes returns the matched string with the matched targets replaced out.
-            // IE: {"actions.precombat+=/potion,name=(.*)", "deadly_grace"} -> apl.replace(escape(regex), (match, a, b, c, d) => { return match.replace(a,replacement); })
             if(advancedOperations != null) {
                 advancedOperations.forEach((operation) => {
                     var replacement = operation.replacement;
@@ -299,7 +295,6 @@ module.exports.run = function(window, cArgs) {
                     var regex = getRegexFor(operation.name);
                     apl = apl.replace(regex, (match, g1, g2) => {
                         var newMatch = match;
-                        console.log(match);
                         if(replacement == 'DELETE') {
                             // Detect if deleting line will cause issues.
                             if(newMatch.match(/actions(?:\.[^\=\+]*)?=(?:[^\/\n]+)/)) {

@@ -126,18 +126,24 @@ app.post('/sim/request', function (req, res) {
             theads: req.body.threads,
             weights: req.body.noweights == "true" ? false: true,
             ptr: req.body.ptr == "true",
-            model: req.body.model
+            model: req.body.model,
+            advancedMode: req.body.advancedMode,
+            advancedOperations: JSON.parse(req.body.advancedOptions)
         }
         console.log = function (data) {
-            var lines = data.split('\n');
-            lines.forEach((line) => {
-                processLine(line);
-            });
-            if(data.includes('Error:')) {
-                errString = data;
-                running = false;
-            }
             oldLog(data);
+            try {
+                if(data.includes('Error:')) {
+                    errString = data;
+                    running = false;
+                }
+                var lines = data.split('\n');
+                lines.forEach((line) => {
+                    processLine(line);
+                });
+            } catch(e) {
+
+            }
         }
 
         require('./runModule.js').run(exports.window, args);
@@ -145,8 +151,6 @@ app.post('/sim/request', function (req, res) {
         exports.window.on('close', () => {
             setTimeout(() => { exports.window.close(true);}, 100);
         })
-
-        
 
         // Bind the output so we can read it.
         process.stdout.on('data', (data) => {

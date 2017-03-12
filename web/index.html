@@ -5,6 +5,53 @@
         <link type="text/css" rel="stylesheet" href="index.css"></link>
         <script>
         var active = false;
+        var advancedMode = false;
+        var race = [
+            {name:"Default", value:"DEFAULT"},
+            {name:"Blood Elf", value:"blood_elf"},
+            {name:"Orc", value:"orc"},
+            {name:"Undead", value:"undead"},
+            {name:"Goblin", value:"goblin"},
+            {name:"Troll", value:"troll"},
+            {name:"Tauren", value:"tauren"},
+            {name:"Night Elf", value:"night_elf"},
+            {name:"Human", value:"human"},
+            {name:"Draenei", value:"draenei"},
+            {name:"Gnome", value:"gnome"},
+            {name:"Dwarf", value:"dwarf"},
+            {name:"Worgen", value:"worgen"},
+            {name:"Pandaren", value:"pandaren"}
+        ];
+        var food = [
+            {name:"Default", value:"DEFAULT"},
+            {name:"Azshari Salad", value:"azshari_salad"},
+            {name:"Nightborne Delicacy Platter", value:"nightborne_delicacy_platter"},
+            {name:"Seed-Battered Fish Plate", value:"seedbattered_fish_plate"},
+            {name:"The Hungry Magister", value:"the_hungry_magister"},
+            {name:"Fishbrul Special", value:"fishbrul_special"},
+            {name:"None", value:"DELETE"}
+        ];
+        var flask = [
+            {name:"Default", value:"DEFAULT"},
+            {name:"Flask of the Whispered Pact", value:"flask_of_the_whispered_pact"},
+            {name:"Flask of the Seventh Demon", value:"flask_of_the_seventh_demon"},
+            {name:"Flask of Ten Thousand Scars", value:"flask_of_ten_thousand_scars"},
+            {name:"Flask of the Countless Armies", value:"flask_of_the_countless_armies"},
+            {name:"None", value:"DELETE"}
+        ];
+        var potion = [
+            {name:"Default", value:"DEFAULT"},
+            {name:"Unbending Potion", value:"unbending_potion"},
+            {name:"Potion of Prolonged Power", value:"prolonged_power"},
+            {name:"Potion of Deadly Grace", value:"deadly_grace"},
+            {name:"Potion of the Old War", value:"old_war"},
+            {name:"None", value:"DELETE"}
+        ]; 
+        var rune = [
+            {name:"Default", value:"DEFAULT"},
+            {name:"Defiled Augment Rune", value:"defiled"},
+            {name:"None", value:"DELETE"}
+        ]; 
         var showHome = function() {
             $("#loading").hide();
             $("#results").hide();
@@ -19,6 +66,11 @@
             $("#loading").hide();
             $("#results").show();
             $("#main").hide();
+        }
+        var loadOptions = function(select, option) {
+            option.forEach((item) => {
+                select.append($("<option value=\"" + item.value + "\">" + item.name + "</option>"));
+            });
         }
         var updateRealms = function(region) {
             $.get('https://'+ region +'.api.battle.net/wow/realm/status?locale=en_US&apikey=y592n6pwqj7rypxbswa2x4ek5umg4462',
@@ -90,7 +142,13 @@
         $(document).ready(function(){
             var realm,region,character;
             updateRealms("us");
+            loadOptions($('#food'),food);
+            loadOptions($('#potion'),potion);
+            loadOptions($('#rune'),rune);
+            loadOptions($('#flask'),flask);
+            loadOptions($('#race'),race);
             $("#counter").hide();
+            $('#advanced').hide();
             showHome();
             versionCheck(process.mainModule.exports.version);
             $.ajax({type: "GET",
@@ -104,6 +162,11 @@
                      } 
 
             });
+            $("#advancedSubmit").click(function() {
+                $('#advanced').show();
+                advancedMode = true;
+                require('nw.gui').Window.get().width = 700;
+            })
             $("#submit").click(function(){
                 realm=$("#realm").val();
                 region=$("#region").val();
@@ -116,7 +179,13 @@
                     active = true;
                     $.ajax({type: "POST",
                      url: "http://localhost:4000/sim/request", 
-                     data: {character: character, region: region, realm: realm, threads: threads, noweights: noweights, ptr: ptr, model: model}, 
+                     data: {character: character, region: region, realm: realm, threads: threads, noweights: noweights, ptr: ptr, model: model, advancedMode: advancedMode, advancedOptions: JSON.stringify([
+                         {name:'food', replacement: $('#food').val()},
+                         {name:'rune', replacement: $('#rune').val()},
+                         {name:'potion', replacement: $('#potion').val()},
+                         {name:'flask', replacement: $('#flask').val()},
+                         {name:'race', replacement: $('#race').val()}
+                     ])}, 
                      success: function(data){
                         if(data == true) {
                             doPoll();
@@ -135,61 +204,88 @@
         </script>
     </head>
     <body>
-        <div id="main">
-            <h2 class="header">magicsim</h2>
-            <div class="subheader">Automated H2Priest-style Armory Sims.</div>
-            <div class="container">
-                <div class="item">
-                    <label for="region">Region:</label>
-                    <select id="region" name="region" onchange="updateRealms(this.value)" >
-                        <option value="us">US (North America)</option>
-                        <option value="eu">EU (Europe)</option>
-                        <option value="kr">KR (South Korea)</option>
-                        <option value="tw">TW (Taiwan)</option>
-                    </select>
+        <div id="simple">
+            <div id="main">
+                <h2 class="header">magicsim</h2>
+                <div class="subheader">Automated H2Priest-style Armory Sims.</div>
+                <div class="container">
+                    <div class="item">
+                        <label for="region">Region:</label>
+                        <select id="region" name="region" onchange="updateRealms(this.value)" >
+                            <option value="us">US (North America)</option>
+                            <option value="eu">EU (Europe)</option>
+                            <option value="kr">KR (South Korea)</option>
+                            <option value="tw">TW (Taiwan)</option>
+                        </select>
+                    </div>
+                    <div class="item">
+                        <label for="realm">Realm:</label>
+                        <select id="realm" name="realm"></select>
+                    </div>
+                    <div class="item"><label for="character">Character:</label><input type="text" name="character" id="character" /></div>
+                    <div class="item">
+                        <label for="model">Model:</label>
+                        <select id="model" name="model"></select>
+                    </div>
+                    <div class="item"><label for="workers">Threads:</label><input type="range" name="workers" id="workers" min="1" max="8" value="4" onchange="$('#threads').text(this.value)" /> <span id="threads">4</span></div>
+                    <div class="item">
+                        <label for="noweights">No Weights:</label><input type="checkbox" name="noweights" id="noweights" />
+                        <label for="ptr">PTR Mode:</label><input type="checkbox" name="ptr" id="ptr" />
+                    </div>
                 </div>
-                <div class="item">
-                    <label for="realm">Realm:</label>
-                    <select id="realm" name="realm"></select>
-                </div>
-                <div class="item"><label for="character">Character:</label><input type="text" name="character" id="character" /></div>
-                <div class="item">
-                    <label for="model">Model:</label>
-                    <select id="model" name="model"></select>
-                </div>
-                <div class="item"><label for="workers">Threads:</label><input type="range" name="workers" id="workers" min="1" max="8" value="4" onchange="$('#threads').text(this.value)" /> <span id="threads">4</span></div>
-                <div class="item">
-                    <label for="noweights">No Weights:</label><input type="checkbox" name="noweights" id="noweights" />
-                    <label for="ptr">PTR Mode:</label><input type="checkbox" name="ptr" id="ptr" />
+                <div class="item"><input type="submit" id="advancedSubmit" value="Advanced" ></div>
+                <div class="item"><input type="submit" id="submit" value="Simulate" ></div>
+            </div>
+            <div id="advanced">
+                <div class="container">
+                    <div class="item">
+                        <label for="potion">Potion:</label>
+                        <select id="potion" name="potion"></select>
+                    </div>
+                    <div class="item">
+                        <label for="rune">Rune:</label>
+                        <select id="rune" name="rune"></select>
+                    </div>
+                    <div class="item">
+                        <label for="flask">Flask:</label>
+                        <select id="flask" name="flask"></select>
+                    </div>
+                    <div class="item">
+                        <label for="food">Food:</label>
+                        <select id="food" name="food"></select>
+                    </div>
+                    <div class="item">
+                        <label for="race">Race:</label>
+                        <select id="race" name="race"></select>
+                    </div>
                 </div>
             </div>
-            <div class="item submit"><input type="submit" id="submit" value="Simulate" ></div>
-        </div>
-        <div id="loading">
-            <div id="loadingHeader"><span id="state">Starting</span>.</div>
-            <div class="element">
-                <div class="loading2">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
+            <div id="loading">
+                <div id="loadingHeader"><span id="state">Starting</span>.</div>
+                <div class="element">
+                    <div class="loading2">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
                 </div>
+                <div id="counter"><span id="done"></span>/<span id="total"></span> sims completed</div>
             </div>
-            <div id="counter"><span id="done"></span>/<span id="total"></span> sims completed</div>
-        </div>
-        <div id="results">
-            <h3>Simulation Complete!</h3>
-            <div class="item">Aggregate Damage Results:</div>
-            <div id="damage"></div>
-            <div class="item" id="pawnlabel">Pawn String:</div>
-            <div id="pawn"></div>
-            <div class="item">Simulations Ran:</div>
-            <div id="sims"></div>
-            <div class="item submit"><input type="button" id="button" value="Run New Sim" onclick="showHome()" ></input></div>
+            <div id="results">
+                <h3>Simulation Complete!</h3>
+                <div class="item">Aggregate Damage Results:</div>
+                <div id="damage"></div>
+                <div class="item" id="pawnlabel">Pawn String:</div>
+                <div id="pawn"></div>
+                <div class="item">Simulations Ran:</div>
+                <div id="sims"></div>
+                <div class="item submit"><input type="button" id="button" value="Run New Sim" onclick="showHome()" ></input></div>
+            </div>
         </div>
     </body>
 </html>

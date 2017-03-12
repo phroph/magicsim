@@ -19,6 +19,10 @@ label {
     padding-right: 10px;
 }
 
+#main, #advanced, #advancedSubmit, #submit{
+    display: inline-block;
+}
+
 #pawn, #damage, #sims {
     font-size: .75em;
     color: #222;
