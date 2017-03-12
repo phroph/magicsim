@@ -84,12 +84,6 @@ module.exports.run = function(window, cArgs) {
         return prev.concat([cp]);
     },[]);
 
-    // Taken from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript/3561711#3561711
-    // bobince's response to "Is there a RegExp.escape function in Javascript?"
-    var escape = function(s) {
-        return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-    };
-
     var deleteContents = function(path) {
         if(fs.existsSync(path) ) {
             fs.readdirSync(path).forEach(function(file,index){
@@ -293,11 +287,6 @@ module.exports.run = function(window, cArgs) {
                 }
         
                 advancedOperations.push({name: 'potion', replacement: 'DELETE'});
-                advancedOperations.push({name: 'flask', replacement: 'DELETE'});
-                advancedOperations.push({name: 'food', replacement: 'DELETE'});
-                advancedOperations.push({name: 'augmentation', replacement: 'DELETE'});
-                //apl = apl.replace(/actions.precombat\+=\/potion,name=.*/,'# Dungeon sim - Disabling prepots');
-                //apl = apl.replace(/actions=potion,name=.*,if=buff\.bloodlust\.react\|target\.time_to_die<=80\|\(target\.health\.pct<35&cooldown\.power_infusion\.remains<30\)/, '# Dungeon sim - Disabling combat pots');
             }
 
             // Generic modifications. Look through array of {regex, replacement}
@@ -327,7 +316,6 @@ module.exports.run = function(window, cArgs) {
                     });
                 });
             }
-
             fs.writeFileSync(path.join('profile_builder', name + '.simc'), apl);
         }
         return Q.all(sims.map(function(sim){
