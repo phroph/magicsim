@@ -33,7 +33,10 @@ module.exports.run = function(window, cArgs) {
             })[0];
         model = m.model;
         timeModel = m.timeModel;
+        // Advanced mode should only be available through the GUI tbh. Excepting M+ sims ofc, but those are a special case.
+        // In that case AM should not be user exposed through CLI.
         advancedMode = cArgs.advancedMode;
+        advancedOperations = cArgs.advancedOperations;
     } else {
         if(!argv.model) {
             modelName = 'nighthold';
@@ -53,7 +56,6 @@ module.exports.run = function(window, cArgs) {
         threads = argv.threads;
         weights = !argv.noweights;
         ptr = argv.ptr;
-        advancedMode = argv.advancedMode;
         region = process.argv[2];
         realm = process.argv[3];
         name = process.argv[4];
@@ -82,6 +84,11 @@ module.exports.run = function(window, cArgs) {
         return prev.concat([cp]);
     },[]);
 
+    // Taken from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript/3561711#3561711
+    // bobince's response to "Is there a RegExp.escape function in Javascript?"
+    var escape = function(s) {
+        return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    };
 
     var deleteContents = function(path) {
         if(fs.existsSync(path) ) {
@@ -125,6 +132,21 @@ module.exports.run = function(window, cArgs) {
         
      
         return defer.promise;
+    }
+    var baseRegex = '(?:actions(?:\\..*)?\\+?=)\\/?%name%,%attribute%=([\\w_]*).*\r\n(?:#?.*\r\n)*?(actions.*)';
+    var variableMapping = {
+        food: 'type',
+        flask: 'type',
+        potion: 'name',
+        augmentation: 'type'
+    }
+    var getRegexFor = (command) => {
+        if(command == 'race') {
+            return new RegExp('race=(.*)');
+        } else {
+            console.log(baseRegex.replace('%name%',command).replace('%attribute%',variableMapping[command]));
+            return new RegExp(baseRegex.replace('%name%',command).replace('%attribute%',variableMapping[command]),'g')
+        }
     }
 
     var exec = function(command, options, callback) {
@@ -266,9 +288,46 @@ module.exports.run = function(window, cArgs) {
             if(modelName == 'mythicplus') {
                 // Do our special Mythic+ configuration steps.
                 console.log('Applying special Mythic+ customizations.');
-                apl = apl.replace(/actions.precombat\+=\/potion,name=.*/,'#Dungeon sim - Disabling prepots');
-                apl = apl.replace(/actions=potion,name=.*,if=buff\.bloodlust\.react\|target\.time_to_die<=80\|\(target\.health\.pct<35&cooldown\.power_infusion\.remains<30\)/, '#Dungeon sim - Disabling combat pots');
+                if(advancedOperations == null) {
+                    advancedOperations = [];
+                }
+        
+                advancedOperations.push({name: 'potion', replacement: 'DELETE'});
+                advancedOperations.push({name: 'flask', replacement: 'DELETE'});
+                advancedOperations.push({name: 'food', replacement: 'DELETE'});
+                advancedOperations.push({name: 'augmentation', replacement: 'DELETE'});
+                //apl = apl.replace(/actions.precombat\+=\/potion,name=.*/,'# Dungeon sim - Disabling prepots');
+                //apl = apl.replace(/actions=potion,name=.*,if=buff\.bloodlust\.react\|target\.time_to_die<=80\|\(target\.health\.pct<35&cooldown\.power_infusion\.remains<30\)/, '# Dungeon sim - Disabling combat pots');
             }
+
+            // Generic modifications. Look through array of {regex, replacement}
+            // The below matches the supplied string, then takes returns the matched string with the matched targets replaced out.
+            // IE: {"actions.precombat+=/potion,name=(.*)", "deadly_grace"} -> apl.replace(escape(regex), (match, a, b, c, d) => { return match.replace(a,replacement); })
+            if(advancedOperations != null) {
+                advancedOperations.forEach((operation) => {
+                    var replacement = operation.replacement;
+                    //var regex = escape(operation.regex);
+                    var regex = getRegexFor(operation.name);
+                    apl = apl.replace(regex, (match, g1, g2) => {
+                        var newMatch = match;
+                        console.log(match);
+                        if(replacement == 'DELETE') {
+                            // Detect if deleting line will cause issues.
+                            if(newMatch.match(/actions(?:\.[^\=\+]*)?=(?:[^\/\n]+)/)) {
+                                // Fix the next line we captured
+                                newMatch = newMatch.replace(g2,g2.replace('+=/','='))
+                            }
+                            // Now comment out the first line.
+                            var firstLine = newMatch.split('\n')[0];
+                            newMatch = newMatch.replace(firstLine, '#' + firstLine);
+                        } else if(replacement != 'DEFAULT') {
+                            newMatch = newMatch.replace(g1,replacement);
+                        }
+                        return newMatch
+                    });
+                });
+            }
+
             fs.writeFileSync(path.join('profile_builder', name + '.simc'), apl);
         }
         return Q.all(sims.map(function(sim){
