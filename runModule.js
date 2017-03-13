@@ -290,25 +290,43 @@ module.exports.run = function(window, cArgs) {
 
             if(advancedOperations != null) {
                 advancedOperations.forEach((operation) => {
-                    var replacement = operation.replacement;
-                    //var regex = escape(operation.regex);
-                    var regex = getRegexFor(operation.name);
-                    apl = apl.replace(regex, (match, g1, g2) => {
-                        var newMatch = match;
-                        if(replacement == 'DELETE') {
-                            // Detect if deleting line will cause issues.
-                            if(newMatch.match(/actions(?:\.[^\=\+]*)?=(?:[^\/\n]+)/)) {
-                                // Fix the next line we captured
-                                newMatch = newMatch.replace(g2,g2.replace('+=/','='))
+                    if(operation.name == 'setbonus' && operation.replacement != 'DEFAULT') {
+                        // Extract the different tier configurations.
+                        var sets = operation.replacement.split(';');
+                        sets.forEach((set) => {
+                            var regex = /(\d+):(\dpc=\d),(\dpc=\d)/;
+                            var matches = set.match(regex);
+                            var tier = matches[1];
+                            var twopc = matches[2];
+                            var fourpc = matches[3];
+                            var baseStr = 'set_bonus=tier{0}_{1}';
+                            if(tier == '20') {
+                                ptr = true;
                             }
-                            // Now comment out the first line.
-                            var firstLine = newMatch.split('\n')[0];
-                            newMatch = newMatch.replace(firstLine, '#' + firstLine);
-                        } else if(replacement != 'DEFAULT') {
-                            newMatch = newMatch.replace(g1,replacement);
-                        }
-                        return newMatch
-                    });
+                            apl = apl + '\r\n' + baseStr.replace('{0}',tier).replace('{1}',twopc);
+                            apl = apl + '\r\n' + baseStr.replace('{0}',tier).replace('{1}',fourpc);
+                        })
+                    } else {
+                        var replacement = operation.replacement;
+                        //var regex = escape(operation.regex);
+                        var regex = getRegexFor(operation.name);
+                        apl = apl.replace(regex, (match, g1, g2) => {
+                            var newMatch = match;
+                            if(replacement == 'DELETE') {
+                                // Detect if deleting line will cause issues.
+                                if(newMatch.match(/actions(?:\.[^\=\+]*)?=(?:[^\/\n]+)/)) {
+                                    // Fix the next line we captured
+                                    newMatch = newMatch.replace(g2,g2.replace('+=/','='))
+                                }
+                                // Now comment out the first line.
+                                var firstLine = newMatch.split('\n')[0];
+                                newMatch = newMatch.replace(firstLine, '#' + firstLine);
+                            } else if(replacement != 'DEFAULT') {
+                                newMatch = newMatch.replace(g1,replacement);
+                            }
+                            return newMatch
+                        });
+                    }
                 });
             }
             fs.writeFileSync(path.join('profile_builder', name + '.simc'), apl);

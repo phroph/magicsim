@@ -52,6 +52,16 @@
             {name:"Defiled Augment Rune", value:"defiled"},
             {name:"None", value:"DELETE"}
         ]; 
+        var setbonus = [
+            {name:"Default", value:"DEFAULT"},
+            {name:"Tier 19 2/6", value:"19:2pc=1,4pc=0"},
+            {name:"Tier 19 4/6", value:"19:2pc=1,4pc=1"},
+            {name:"Tier 20 2/6 (PTR)", value:"20:2pc=1,4pc=0"},
+            {name:"Tier 20 4/6 (PTR)", value:"20:2pc=1,4pc=1"},
+            {name:"Tier 19 2/6, Tier 20 4/6 (PTR)", value:"19:2pc=1,4pc=0;20:2pc=1,4pc=1"},
+            {name:"Tier 19 4/6, Tier 20 2/6 (PTR)", value:"19:2pc=1,4pc=1;20:2pc=1,4pc=0"},
+            {name:"No tier", value:"19:2pc=1,4pc=0"}
+        ]
         var showHome = function() {
             $("#loading").hide();
             $("#results").hide();
@@ -147,6 +157,8 @@
             loadOptions($('#rune'),rune);
             loadOptions($('#flask'),flask);
             loadOptions($('#race'),race);
+            loadOptions($('#setbonus'),setbonus)
+            $('#simpleSubmit').hide();
             $("#counter").hide();
             $('#advanced').hide();
             showHome();
@@ -164,8 +176,17 @@
             });
             $("#advancedSubmit").click(function() {
                 $('#advanced').show();
+                $('#advancedSubmit').hide();
+                $('#simpleSubmit').show();
                 advancedMode = true;
-                require('nw.gui').Window.get().width = 700;
+                require('nw.gui').Window.get().width = 655;
+            })
+            $("#simpleSubmit").click(function() {
+                $('#advanced').hide();
+                $('#advancedSubmit').show();
+                $('#simpleSubmit').hide();
+                advancedMode = false;
+                require('nw.gui').Window.get().width = 300;
             })
             $("#submit").click(function(){
                 realm=$("#realm").val();
@@ -177,15 +198,20 @@
                 ptr=$("#ptr")[0].checked;
                 if(!active) {
                     active = true;
-                    $.ajax({type: "POST",
-                     url: "http://localhost:4000/sim/request", 
-                     data: {character: character, region: region, realm: realm, threads: threads, noweights: noweights, ptr: ptr, model: model, advancedMode: advancedMode, advancedOptions: JSON.stringify([
+                    var advancedOpts = null;
+                    if(advancedMode) {
+                        advancedOpts = JSON.stringify([
                          {name:'food', replacement: $('#food').val()},
                          {name:'rune', replacement: $('#rune').val()},
                          {name:'potion', replacement: $('#potion').val()},
                          {name:'flask', replacement: $('#flask').val()},
-                         {name:'race', replacement: $('#race').val()}
-                     ])}, 
+                         {name:'race', replacement: $('#race').val()},
+                         {name:'setbonus',replacement: $('#setbonus').val()}
+                        ])
+                    }
+                    $.ajax({type: "POST",
+                     url: "http://localhost:4000/sim/request", 
+                     data: {character: character, region: region, realm: realm, threads: threads, noweights: noweights, ptr: ptr, model: model, advancedMode: advancedMode, advancedOptions: advancedOpts}, 
                      success: function(data){
                         if(data == true) {
                             doPoll();
@@ -197,6 +223,7 @@
                         alert(err);
                         active = false;
                     }});
+                    require('nw.gui').Window.get().width = 300;
                 }
             });
             process.mainModule.exports.window = require('nw.gui').Window.get();
@@ -233,32 +260,35 @@
                         <label for="ptr">PTR Mode:</label><input type="checkbox" name="ptr" id="ptr" />
                     </div>
                 </div>
-                <div class="item"><input type="submit" id="advancedSubmit" value="Advanced" ></div>
-                <div class="item"><input type="submit" id="submit" value="Simulate" ></div>
-            </div>
-            <div id="advanced">
-                <div class="container">
+                <div id="advanced" class="container">
                     <div class="item">
                         <label for="potion">Potion:</label>
-                        <select id="potion" name="potion"></select>
+                        <select class="advancedOption" id="potion" name="potion"></select>
                     </div>
                     <div class="item">
                         <label for="rune">Rune:</label>
-                        <select id="rune" name="rune"></select>
+                        <select class="advancedOption" id="rune" name="rune"></select>
                     </div>
                     <div class="item">
                         <label for="flask">Flask:</label>
-                        <select id="flask" name="flask"></select>
+                        <select class="advancedOption" id="flask" name="flask"></select>
                     </div>
                     <div class="item">
                         <label for="food">Food:</label>
-                        <select id="food" name="food"></select>
+                        <select class="advancedOption" id="food" name="food"></select>
                     </div>
                     <div class="item">
                         <label for="race">Race:</label>
-                        <select id="race" name="race"></select>
+                        <select class="advancedOption" id="race" name="race"></select>
+                    </div>
+                    <div class="item">
+                        <label for="setbonus">Set Bonuses:</label>
+                        <select class="advancedOption" id="setbonus" name="setbonus"></select>
                     </div>
                 </div>
+                <span class="item"><input type="submit" id="advancedSubmit" value="Advanced" ></span>
+                <span class="item"><input type="submit" id="simpleSubmit" value="Simple" ></span>
+                <span class="item"><input type="submit" id="submit" value="Simulate" ></span>
             </div>
             <div id="loading">
                 <div id="loadingHeader"><span id="state">Starting</span>.</div>
