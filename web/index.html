@@ -198,9 +198,9 @@
                 ptr=$("#ptr")[0].checked;
                 if(!active) {
                     active = true;
-                    var advancedOpts = null;
+                    var data;
                     if(advancedMode) {
-                        advancedOpts = JSON.stringify([
+                        var advancedOpts = JSON.stringify([
                          {name:'food', replacement: $('#food').val()},
                          {name:'rune', replacement: $('#rune').val()},
                          {name:'potion', replacement: $('#potion').val()},
@@ -208,6 +208,9 @@
                          {name:'race', replacement: $('#race').val()},
                          {name:'setbonus',replacement: $('#setbonus').val()}
                         ])
+                        data = {character: character, region: region, realm: realm, threads: threads, noweights: noweights, ptr: ptr, model: model, advancedMode: advancedMode, advancedOptions: advancedOpts};
+                    } else {
+                        data = {character: character, region: region, realm: realm, threads: threads, noweights: noweights, ptr: ptr, model: model, advancedMode: advancedMode};
                     }
                     $.ajax({type: "POST",
                      url: "http://localhost:4000/sim/request", 
@@ -314,7 +317,7 @@
                 <div id="pawn"></div>
                 <div class="item">Simulations Ran:</div>
                 <div id="sims"></div>
-                <div class="item submit"><input type="button" id="button" value="Run New Sim" onclick="showHome()" ></input></div>
+                <span class="item submit"><input type="button" id="button" value="Run New Sim" onclick="showHome()" ></input></span>
             </div>
         </div>
     </body>
