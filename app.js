@@ -170,4 +170,4 @@ app.listen(4000, function () {
   console.log('magicsim local backend live and operational.')
 })
 
-module.exports.version = "v1.12";
+module.exports.version = "v1.2";

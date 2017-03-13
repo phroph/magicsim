@@ -173,5 +173,3 @@ module.exports.models = [
         }
     }
 ]
-
-module.exports.version = 1.11;
