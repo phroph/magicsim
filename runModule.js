@@ -263,6 +263,9 @@ module.exports.run = function(window, cArgs) {
             builder = builder.replace(/%region%/g,region);
             builder = builder.replace(/%realm%/g,realm);
             builder = builder.replace(/%name%/g,name);
+            if(ptr) {
+                builder = 'ptr=1\r\n' + builder; 
+            }
             if(!fs.existsSync('profile_builder')) {
                 fs.mkdirSync('profile_builder');
             }
