@@ -127,10 +127,10 @@ app.post('/sim/request', function (req, res) {
             weights: req.body.noweights == "true" ? false: true,
             ptr: req.body.ptr == "true",
             model: req.body.model,
-            advancedMode: req.body.advancedMode,
+            advancedMode: req.body.advancedMode == "true",
             advancedOperations: []
         }
-        if(req.body.advancedOperations) {
+        if(args.advancedMode) {
             args.advancedOperations = JSON.parse(req.body.advancedOptions);
         }
         console.log = function (data) {
