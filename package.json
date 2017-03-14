@@ -28,7 +28,6 @@
     "run64": "..\\build\\magicsim-master\\win64\\nw.exe",
     "run32": "..\\build\\magicsim-master\\win32\\nw.exe"
   },
-  "chromium-args": "--enable-logging=stderr",
   "dependencies": {
     "cartesian-product": "~2.1.2",
     "dom-parser": "~0.1.5",
