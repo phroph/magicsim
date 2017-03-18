@@ -3,7 +3,7 @@ var addScaleFactor = (1.5)/(totalScaleFactor);
 var bossScaleFactor = 1/(1.5*totalScaleFactor);
 
 module.exports.models = [
-    {"dispName": "Mythic+ Composite", "name": "mythicplus",
+    {"dispName": "Mythic+ Composite", "name": "mplus",
         "model": {
             '30_lowmovement_4_adds': 0.1*addScaleFactor,
             '30_lowmovement_5_adds': 0.06*addScaleFactor,
@@ -83,7 +83,7 @@ module.exports.models = [
             400: .85
         }
     },
-    {"dispName": "Tichondrius", "name": "tichondrius",
+    {"dispName": "Tichondrius", "name": "tich",
         "model": {
             lowmovement_sa_st: 0.65,
             highmovement_sa_st: 0.35
@@ -150,7 +150,7 @@ module.exports.models = [
             400: .85
         }
     },
-    {"dispName": "Nighthold Composite", "name": "nighthold",
+    {"dispName": "Nighthold Composite", "name": "nh",
         "model": {
             patchwerk_ba_2t: 0.025,
             patchwerk_ba_st: 0.07,
