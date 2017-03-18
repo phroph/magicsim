@@ -59,9 +59,6 @@ results.forEach(function(result){
     var time = res[2];
     var fight = res[3];
     var weight;
-
-	spec = xpath.select1("//simulationcraft/players/player[@name='"+name+"']/specialization", doc).value
-	type = xpath.select1("//simulationcraft/players/player[@name='"+name+"']/class[@name='type']/@value", doc).value
     
     if(result.includes('adds')) {
         weight = fight_mapping[addRes[2]];
@@ -70,7 +67,10 @@ results.forEach(function(result){
     }
 	damage += xpath.select1("//simulationcraft/summary/dmg/@total", doc).value*weight;
 	dps += xpath.select1("//simulationcraft/summary/dmg/@dps", doc).value*weight;
-    var name = res[1];
+    var name = xpath.select1("//simulationcraft/players/player[1]/@name", doc).value
+    
+	spec = xpath.select("//simulationcraft/players/player[@name='"+name+"']/specialization", doc)[0].firstChild.data;
+	type = xpath.select1("//simulationcraft/players/player[@name='"+name+"']/class/@type", doc).value;
 	if(name != "sim_test") {
 		name = xpath.select1("//simulationcraft/summary/player_by_dps/player/@name", doc).value;
         simname = name;
@@ -94,7 +94,7 @@ results.forEach(function(result){
         }
         catch(e) {}
         haste += xpath.select1("//simulationcraft/players/player[@name='"+name+"']/scale_factors/metric[@name='" + name + " Damage Per Second']/weights/stat[@name='Haste']/@value", doc).value*weight;
-        crit +=xpath.select1("//simulationcraft/players/player[@name='"+name+"']/scale_factors/metric[@name='" + name + " Damage Per Second']/weights/stat[@name='Crit']/@value", doc).value*weight;
+        crit += xpath.select1("//simulationcraft/players/player[@name='"+name+"']/scale_factors/metric[@name='" + name + " Damage Per Second']/weights/stat[@name='Crit']/@value", doc).value*weight;
         vers += xpath.select1("//simulationcraft/players/player[@name='"+name+"']/scale_factors/metric[@name='" + name + " Damage Per Second']/weights/stat[@name='Vers']/@value", doc).value*weight;
     }
     sum += weight;
@@ -106,15 +106,15 @@ if(process.argv[2] == "sim_test") {
 console.log("Total calibration: " + sum);
 console.log("Damage (DPS): " + damage + " (" + dps + ")");
 if(!argv.noweights) {
-    var sint = int/int;
-    var smastery = mastery/int;
-    var shaste = haste/int;
-    var scrit = crit/int;
-    var svers = vers/int;
-    console.log("( Pawn: v1: \"" + simname + "_" + modelname + "_selfsim\": Class=" + type + ", Spec=" + spec + ", " + mainLabel+"=" + sint + ", Versatility="+ svers.toFixed(4) + ", HasteRating=" + shaste.toFixed(4) + ", MasteryRating=" + smastery.toFixed(4) + ", CritRating=" + scrit.toFixed(4) + " )");
+    var smain = main/main;
+    var smastery = mastery/main;
+    var shaste = haste/main;
+    var scrit = crit/main;
+    var svers = vers/main;
+    console.log("( Pawn: v1: \"" + simname + "_" + modelname + "_selfsim\": Class=" + type + ", Spec=" + spec + ", " + mainLabel+"=" + smain + ", Versatility="+ svers.toFixed(4) + ", HasteRating=" + shaste.toFixed(4) + ", MasteryRating=" + smastery.toFixed(4) + ", CritRating=" + scrit.toFixed(4) + " )");
     if(process.argv[2] == "sim_test") {
         console.log("Expected Values: ( Pawn: v1: \"SL 4-piece\": Intellect=1, MasteryRating=1.36, HasteRating=1.2, CritRating=1.02, Versatility=0.9 )")
-        console.log("Differences: int=" + (1-sint) + ", mastery=" + (1.36-smastery) + ", haste=" + (1.2-shaste) + ", crit=" + (1.02-scrit) + ", vers=" + (0.9-svers));
+        console.log("Differences: int=" + (1-smain) + ", mastery=" + (1.36-smastery) + ", haste=" + (1.2-shaste) + ", crit=" + (1.02-scrit) + ", vers=" + (0.9-svers));
     }
 }
 

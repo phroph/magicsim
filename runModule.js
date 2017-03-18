@@ -231,7 +231,7 @@ module.exports.run = function(window, cArgs) {
         }, () => {
             console.log("Error: Failed to extract simc archive. Please try again.");  
             fs.unlinkSync(name);
-            deferred.fail();
+            deferred.reject();
         });
         return deferred.promise;
     }).then(() => { 
