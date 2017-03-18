@@ -104,7 +104,7 @@ if(process.argv[2] == "sim_test") {
     simname = "simtest";
 }
 console.log("Total calibration: " + sum);
-console.log("Damage (DPS): " + damage + " (" + dps + ")");
+console.log("Damage (DPS): " + damage + " (" + dps.toFixed(2) + ")");
 if(!argv.noweights) {
     var smain = main/main;
     var smastery = mastery/main;
