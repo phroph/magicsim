@@ -229,9 +229,8 @@ module.exports.run = function(window, cArgs) {
             console.log("Done extracting simc.7z.");
             deferred.resolve();
         }, () => {
-            console.log("Error: Failed to extract simc archive. Please try again.");  
             fs.unlinkSync(name);
-            deferred.reject();
+            deferred.reject('Failed to extract archive.');
         });
         return deferred.promise;
     }).then(() => { 
