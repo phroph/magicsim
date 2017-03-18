@@ -242,55 +242,57 @@
             <div id="main">
                 <h2 class="header">magicsim</h2>
                 <div class="subheader">Automated H2Priest-style Armory Sims.</div>
-                <div class="container">
-                    <div class="item">
-                        <label for="region">Region:</label>
-                        <select id="region" name="region" onchange="updateRealms(this.value)" >
-                            <option value="us">US (North America)</option>
-                            <option value="eu">EU (Europe)</option>
-                            <option value="kr">KR (South Korea)</option>
-                            <option value="tw">TW (Taiwan)</option>
-                        </select>
+                <div class="wrapper">
+                    <div class="container">
+                        <div class="item">
+                            <label for="region">Region:</label>
+                            <select id="region" name="region" onchange="updateRealms(this.value)" >
+                                <option value="us">US (North America)</option>
+                                <option value="eu">EU (Europe)</option>
+                                <option value="kr">KR (South Korea)</option>
+                                <option value="tw">TW (Taiwan)</option>
+                            </select>
+                        </div>
+                        <div class="item">
+                            <label for="realm">Realm:</label>
+                            <select id="realm" name="realm"></select>
+                        </div>
+                        <div class="item"><label for="character">Character:</label><input type="text" name="character" id="character" /></div>
+                        <div class="item">
+                            <label for="model">Model:</label>
+                            <select id="model" name="model"></select>
+                        </div>
+                        <div class="item"><label for="workers">Threads:</label><input type="range" name="workers" id="workers" min="1" max="8" value="4" onchange="$('#threads').text(this.value)" /> <span id="threads">4</span></div>
+                        <div class="item">
+                            <label for="noweights">No Weights:</label><input type="checkbox" name="noweights" id="noweights" />
+                            <label for="ptr">PTR Mode:</label><input type="checkbox" name="ptr" id="ptr" />
+                        </div>
                     </div>
-                    <div class="item">
-                        <label for="realm">Realm:</label>
-                        <select id="realm" name="realm"></select>
-                    </div>
-                    <div class="item"><label for="character">Character:</label><input type="text" name="character" id="character" /></div>
-                    <div class="item">
-                        <label for="model">Model:</label>
-                        <select id="model" name="model"></select>
-                    </div>
-                    <div class="item"><label for="workers">Threads:</label><input type="range" name="workers" id="workers" min="1" max="8" value="4" onchange="$('#threads').text(this.value)" /> <span id="threads">4</span></div>
-                    <div class="item">
-                        <label for="noweights">No Weights:</label><input type="checkbox" name="noweights" id="noweights" />
-                        <label for="ptr">PTR Mode:</label><input type="checkbox" name="ptr" id="ptr" />
-                    </div>
-                </div>
-                <div id="advanced" class="container">
-                    <div class="item">
-                        <label for="potion">Potion:</label>
-                        <select class="advancedOption" id="potion" name="potion"></select>
-                    </div>
-                    <div class="item">
-                        <label for="rune">Rune:</label>
-                        <select class="advancedOption" id="rune" name="rune"></select>
-                    </div>
-                    <div class="item">
-                        <label for="flask">Flask:</label>
-                        <select class="advancedOption" id="flask" name="flask"></select>
-                    </div>
-                    <div class="item">
-                        <label for="food">Food:</label>
-                        <select class="advancedOption" id="food" name="food"></select>
-                    </div>
-                    <div class="item">
-                        <label for="race">Race:</label>
-                        <select class="advancedOption" id="race" name="race"></select>
-                    </div>
-                    <div class="item">
-                        <label for="setbonus">Set Bonuses:</label>
-                        <select class="advancedOption" id="setbonus" name="setbonus"></select>
+                    <div id="advanced" class="container">
+                        <div class="item">
+                            <label for="potion">Potion:</label>
+                            <select class="advancedOption" id="potion" name="potion"></select>
+                        </div>
+                        <div class="item">
+                            <label for="rune">Rune:</label>
+                            <select class="advancedOption" id="rune" name="rune"></select>
+                        </div>
+                        <div class="item">
+                            <label for="flask">Flask:</label>
+                            <select class="advancedOption" id="flask" name="flask"></select>
+                        </div>
+                        <div class="item">
+                            <label for="food">Food:</label>
+                            <select class="advancedOption" id="food" name="food"></select>
+                        </div>
+                        <div class="item">
+                            <label for="race">Race:</label>
+                            <select class="advancedOption" id="race" name="race"></select>
+                        </div>
+                        <div class="item">
+                            <label for="setbonus">Set Bonuses:</label>
+                            <select class="advancedOption" id="setbonus" name="setbonus"></select>
+                        </div>
                     </div>
                 </div>
                 <span class="item"><input type="submit" id="advancedSubmit" value="Advanced" ></span>
