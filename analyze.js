@@ -45,6 +45,9 @@ var sp = 0;
 var simname;
 var vers = 0;
 
+var spec;
+var type;
+
 var results = fs.readdirSync(path.join(".","/results"));
 
 results.forEach(function(result){
@@ -57,13 +60,14 @@ results.forEach(function(result){
     var fight = res[3];
     var weight;
 
+	spec = xpath.select1("//simulationcraft/players/player[@name='"+name+"']/specialization", doc).value
+	type = xpath.select1("//simulationcraft/players/player[@name='"+name+"']/class[@name='type']/@value", doc).value
     
     if(result.includes('adds')) {
         weight = fight_mapping[addRes[2]];
     } else {
         weight = fight_mapping[fight]*time_mapping[time];
     }
-	
 	damage += xpath.select1("//simulationcraft/summary/dmg/@total", doc).value*weight;
 	dps += xpath.select1("//simulationcraft/summary/dmg/@dps", doc).value*weight;
     var name = res[1];
@@ -107,7 +111,7 @@ if(!argv.noweights) {
     var shaste = haste/int;
     var scrit = crit/int;
     var svers = vers/int;
-    console.log("( Pawn: v1: \"" + simname + "_" + modelname + "_selfsim\": "+mainLabel+"=" + sint + ", Versatility="+ svers.toFixed(4) + ", HasteRating=" + shaste.toFixed(4) + ", MasteryRating=" + smastery.toFixed(4) + ", CritRating=" + scrit.toFixed(4) + " )");
+    console.log("( Pawn: v1: \"" + simname + "_" + modelname + "_selfsim\": Class=" + type + ", Spec=" + spec + ", " + mainLabel+"=" + sint + ", Versatility="+ svers.toFixed(4) + ", HasteRating=" + shaste.toFixed(4) + ", MasteryRating=" + smastery.toFixed(4) + ", CritRating=" + scrit.toFixed(4) + " )");
     if(process.argv[2] == "sim_test") {
         console.log("Expected Values: ( Pawn: v1: \"SL 4-piece\": Intellect=1, MasteryRating=1.36, HasteRating=1.2, CritRating=1.02, Versatility=0.9 )")
         console.log("Differences: int=" + (1-sint) + ", mastery=" + (1.36-smastery) + ", haste=" + (1.2-shaste) + ", crit=" + (1.02-scrit) + ", vers=" + (0.9-svers));
