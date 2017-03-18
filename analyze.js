@@ -111,6 +111,8 @@ if(!argv.noweights) {
     var shaste = haste/main;
     var scrit = crit/main;
     var svers = vers/main;
+    spec = spec.charAt(0).toUpperCase() + spec.slice(1);
+    type = type.charAt(0).toUpperCase() + type.slice(1);
     console.log("( Pawn: v1: \"" + simname + "_" + modelname + "_selfsim\": Class=" + type + ", Spec=" + spec + ", " + mainLabel+"=" + smain + ", Versatility="+ svers.toFixed(4) + ", HasteRating=" + shaste.toFixed(4) + ", MasteryRating=" + smastery.toFixed(4) + ", CritRating=" + scrit.toFixed(4) + " )");
     if(process.argv[2] == "sim_test") {
         console.log("Expected Values: ( Pawn: v1: \"SL 4-piece\": Intellect=1, MasteryRating=1.36, HasteRating=1.2, CritRating=1.02, Versatility=0.9 )")
