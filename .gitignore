@@ -45,3 +45,6 @@ win-spawn.cmd
 build
 mime
 mime.cmd
+hadoop/.gradle
+.vscode
+.gradle

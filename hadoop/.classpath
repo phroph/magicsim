@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="lib" path="build/libs/atmasim-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/phrop/.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-mapreduce-client-core/2.7.3/bc47392a6830a22900a84723837e04bdba12a2d4/hadoop-mapreduce-client-core-2.7.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/phrop/.gradle/caches/modules-2/files-2.1/org.apache.hadoop/hadoop-common/2.7.3/9ffd994953fc4397830a1241a15c9121aebd9574/hadoop-common-2.7.3.jar"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8/"/>
+	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
