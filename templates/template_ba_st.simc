@@ -3,8 +3,9 @@ $(style)=%fightstyle%
 
 armory=%region%,%realm%,%name%
 #input=../test_profiles/h2priest_nh_%version%.simc
+#aplhook
 iterations=10000
-threads=1
+threads=%threads%
 target_error=0.000
 max_time=$(time)
 vary_combat_length=0.20

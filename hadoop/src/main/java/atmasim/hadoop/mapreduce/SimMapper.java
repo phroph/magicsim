@@ -1,9 +1,7 @@
 package atmasim.hadoop.mapreduce;
 
 import java.io.IOException;
-import java.util.regex.Pattern;
 
-import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 

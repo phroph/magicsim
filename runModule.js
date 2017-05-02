@@ -1,6 +1,6 @@
 module.exports.run = function(window, cArgs) {
 
-    var Q = require('Q');
+    var Q = require('q');
     var cartesianProduct = require('cartesian-product');
     var process_exec = require('child_process').exec;
     var execSync = require('child_process').execSync;
@@ -17,7 +17,12 @@ module.exports.run = function(window, cArgs) {
     var boss_models = require("./models.js").models;
     var model;
     var modelName;
-    var timeModel
+    var timeModel;
+    var srcbuild;
+    var advancedOperations;
+    var simthreads = 1;
+
+    var testMode = true;
 
     var region,realm,name,threads,weights,ptrl;
     if(cArgs!=null) {
@@ -39,9 +44,9 @@ module.exports.run = function(window, cArgs) {
         advancedOperations = cArgs.advancedOperations;
     } else {
         if(!argv.model) {
-            modelName = 'nighthold';
+            modelName = 'nh';
             var m = boss_models.filter((m) => {
-                return m.name == "nighthold";
+                return m.name == "nh";
             })[0]
             model = m.model;
             timeModel = m.timeModel;
@@ -56,16 +61,29 @@ module.exports.run = function(window, cArgs) {
         threads = argv.threads;
         weights = !argv.noweights;
         ptr = argv.ptr;
+        srcbuild = argv.srcbuild;
         region = process.argv[2];
         realm = process.argv[3];
         name = process.argv[4];
     }
+    if(testMode) {
+        var m = boss_models.filter((m) => {
+            return m.name == "universal";
+        })[0]
+        modelName = 'universal';
+        model = m.model;
+        timeModel = m.timeModel;
+        threads = 1;
+        simthreads = 36;
+    }
 
     // Due to restrictions with SimC, we have to generate and modify the APL for dungeon sims.
     // ergo we must enforce advanced mode if it is not already enabled.
-    if(modelName == 'mythicplus') {
+    if(modelName == 'mplus' || testMode) {
         advancedMode = true;
     }
+
+    srcbuild = true;
 
     var config = { names: ["fighttime","fightstyle"], values: [[90, 250, 400],["low_movement","high_movement","patchwerk"]]};
     var addConfig = { names: ["fighttime","fightstyle","adds"], values: [[30,35,50,55,60],["low_movement","patchwerk"],['3','4','5']]}
@@ -98,9 +116,13 @@ module.exports.run = function(window, cArgs) {
         }
     }
 
-    var pool = [null,null,null,null,null,null,null,null];
+    var pool = [];
+    var poom_max = 36;
+    for(var i = 0; i<36; i++) {
+        pool.push(null);
+    }
     var pool_size = 4;
-    if(threads && threads >= 1 && threads <= 8) {
+    if(threads && threads >= 1 && threads <= 36) {
         pool_size = threads;
     }
     var workers = 0;
@@ -112,6 +134,7 @@ module.exports.run = function(window, cArgs) {
         var defer = Q.defer();
         var proc = process_exec(command, options, (error, stdout, stderr) => {
             if(error) {
+				console.log(error);
                 defer.reject();
             } else {
                 defer.resolve();
@@ -177,63 +200,69 @@ module.exports.run = function(window, cArgs) {
     var configurations = cartesianProduct(cp);
     var addConfiguration = cartesianProduct(addCp);
 
-    Q().then(function() {
-        var deferred = Q.defer();
-        var rawData = "";
-        console.log("Downloading SimulationCraft version list.");
-        http.get("http://downloads.simulationcraft.org/?C=M;O=D", (response) => {
-            response.on('data', (chunk) => rawData += chunk);
-            response.on('end', () => {
-                deferred.resolve(rawData);
-            });
-        });
-
-        return deferred.promise;
-    }).then((response) => {
-            var doc = new dom().parseFromString(response, "text/html")
-            var select = xpath.useNamespaces({ h: 'http://www.w3.org/1999/xhtml' });
-            var arch = 'win64';
-            if (os.arch() != 'x64') {
-                arch = 'win32';
-            }
-            var fname = select("//h:html/h:body/h:table/h:tr/h:td/h:a[contains(@href,'.7z') and contains(@href,'" + arch + "')][1]/@href", doc)[0].value
-            var link = "http://downloads.simulationcraft.org/" + fname;
-            console.log('Found: ' + link);
-            if (fs.existsSync(fname)) { 
-                console.log("Skipping download. Already found existing file.");
-                return fname;
-            }
-            console.log("Downloading simc.7z for " + arch + " platform.");
-            var file = fs.createWriteStream(fname);
+    var simcPromise;
+    if(srcbuild) {
+        simcPromise = Q();
+    } else {
+        simcPromise = Q().then(function() {
             var deferred = Q.defer();
-            http.get(link, (response) => {
-                response.pipe(file);
+            var rawData = "";
+            console.log("Downloading SimulationCraft version list.");
+            http.get("http://downloads.simulationcraft.org/?C=M;O=D", (response) => {
+                response.on('data', (chunk) => rawData += chunk);
                 response.on('end', () => {
-                    console.log("Done downloading simc.7z");
-                    deferred.resolve(fname);
+                    deferred.resolve(rawData);
                 });
-            })
-            return deferred.promise;
-    }).then((name) => {
-        var deferred = Q.defer();
-        var binFolder = path.join('.','bin');
-        if (!fs.existsSync(binFolder)) { 
-            fs.mkdirSync(binFolder);
-        } else {
-            deleteContents(binFolder);
-        }
+            });
 
-        console.log("Extracting simc.7z archive.");
-        new zip().extractFull(name, 'bin', {})
-        .then(() => {
-            console.log("Done extracting simc.7z.");
-            deferred.resolve();
-        }, () => {
-            fs.unlinkSync(name);
-            deferred.reject('Failed to extract archive.');
-        });
-        return deferred.promise;
-    }).then(() => { 
+            return deferred.promise;
+        }).then((response) => {
+                var doc = new dom().parseFromString(response, "text/html")
+                var select = xpath.useNamespaces({ h: 'http://www.w3.org/1999/xhtml' });
+                var arch = 'win64';
+                if (os.arch() != 'x64') {
+                    arch = 'win32';
+                }
+                var fname = select("//h:html/h:body/h:table/h:tr/h:td/h:a[contains(@href,'.7z') and contains(@href,'" + arch + "')][1]/@href", doc)[0].value
+                var link = "http://downloads.simulationcraft.org/" + fname;
+                console.log('Found: ' + link);
+                if (fs.existsSync(fname)) { 
+                    console.log("Skipping download. Already found existing file.");
+                    return fname;
+                }
+                console.log("Downloading simc.7z for " + arch + " platform.");
+                var file = fs.createWriteStream(fname);
+                var deferred = Q.defer();
+                http.get(link, (response) => {
+                    response.pipe(file);
+                    response.on('end', () => {
+                        console.log("Done downloading simc.7z");
+                        deferred.resolve(fname);
+                    });
+                })
+                return deferred.promise;
+        }).then((name) => {
+            var deferred = Q.defer();
+            var binFolder = path.join('.','bin');
+            if (!fs.existsSync(binFolder)) { 
+                fs.mkdirSync(binFolder);
+            } else {
+                deleteContents(binFolder);
+            }
+
+            console.log("Extracting simc.7z archive.");
+            new zip().extractFull(name, 'bin', {})
+            .then(() => {
+                console.log("Done extracting simc.7z.");
+                deferred.resolve();
+            }, () => {
+                fs.unlinkSync(name);
+                deferred.reject('Failed to extract archive.');
+            });
+            return deferred.promise;
+        })
+    }
+    simcPromise.then(() => { 
         var deferred = Q.defer();
         fs.readdir('templates', (err, files) => {
             if(err) {
@@ -274,7 +303,13 @@ module.exports.run = function(window, cArgs) {
             }
             fs.writeFileSync(path.join('profile_builder', name + '.simc'), builder);
             try {
-                execSync(path.join('bin',fs.readdirSync("bin")[0],"simc.exe") + " " + path.join('profile_builder', name + '.simc'));
+                var simcpath;
+                if (srcbuild) {
+                    simcpath = path.join("..", "simc", "engine", "simc");
+                } else {
+                    simcpath = path.join("..", "bin", fs.readdirSync("bin")[0], "simc.exe");
+                }
+                execSync(simcpath + " " + path.join('profile_builder', name + '.simc'));
             }
             catch(err) {
                 console.log(err.toString());
@@ -374,12 +409,16 @@ module.exports.run = function(window, cArgs) {
                     templateData = templateData.replace(/armory=%region%,%realm%,%name%/g,"input=../profile_builder/%name%.simc");
                 }
                 if(region == "sim_test") {
-                    templateData = templateData.replace(/#/g,"");
-                    templateData = templateData.replace(/%version%/g, "905");
+                    templateData = templateData.replace("#input=../test_profiles/h2priest_nh_%version%.simc","input=../test_profiles/h2priest_nh_%version%.simc");
+                    templateData = templateData.replace(/%version%/g, "911");
                     templateData = templateData.replace(/armory=%region%,%realm%,%name%/g,"input=../test_profiles/characterbase.simc\r\ninput=../test_profiles/apl232017.simc");
                     region = "test";
                     realm = "test";
                     name = "sim_test";
+                }
+                if(false/*testMode*/) {
+                    templateData = templateData.replace("#input=../test_profiles/h2priest_nh_%version%.simc","input=../test_profiles/h2priest_nh_%version%.simc");
+                    templateData = templateData.replace(/%version%/g, "911");
                 }
                 if(ptr) {
                     templateData = "ptr=1\r\n" + templateData;
@@ -387,15 +426,20 @@ module.exports.run = function(window, cArgs) {
                 if(!weights) {
                     templateData = templateData.replace("calculate_scale_factors=1","#noweights");
                 }
+                templateData = templateData.replace(/%threads%/g,simthreads);
                 templateData = templateData.replace(/%region%/g,region);
                 templateData = templateData.replace(/%realm%/g,realm);
                 templateData = templateData.replace(/%name%/g,name);
                 filename = name + '_' + filename;
-                templateData = templateData.replace("%filename%",filename);
-
                 var prefix = fs.readFileSync(path.join('build_profiles','prefix.simc'), 'utf-8');
                 var postfix = fs.readFileSync(path.join('build_profiles','postfix.simc'), 'utf-8');
-                templateData = prefix + '\r\n' + templateData + '\r\n' + postfix;
+                templateData = templateData.replace("#aplhook", "input=../build_profiles/aplfix.simc");
+                templateData = prefix + '\r\n' + templateData + '\r\n' + postfix + '\r\n';
+                if(testMode) {
+                    templateData = templateData + 'reforge_plot_stat=crit,mastery,haste\r\nreforge_plot_amount=8000\r\nreforge_plot_step=500\r\nreforge_plot_iterations=2000\r\nreforge_plot_output_file=%filename%.csv'
+                }
+                templateData = templateData.replace(/%filename%/g,filename);
+
                 console.log("Generating simc profile: " + filename);
                 return {data: templateData,fileName: filename};
             }).then(function(data) {
@@ -414,10 +458,17 @@ module.exports.run = function(window, cArgs) {
         }
         console.log("Starting SimulationCraft run");
         var promises = fs.readdirSync("sims").map(function(sim) {
-            var cmd = path.join("..","bin",fs.readdirSync("bin")[0], "simc.exe") + " " + path.join("..","sims", sim);
+            var simcpath;
+            if (srcbuild) {
+                simcpath = path.join("..", "..", "simc", "engine", "simc");
+            } else {
+                simcpath = path.join("..", "bin", fs.readdirSync("bin")[0], "simc.exe");
+            }
+            var cmd = simcpath + " " + path.join("..","sims", sim);
             
             var deferred = Q.defer();
-            exec(cmd, { cwd: resultsFolder }, function() {
+			// dangerously large buffer, but for reforge, gotta live large.
+            exec(cmd, { cwd: resultsFolder, maxBuffer: 1024*1024*1024 }, function() {
                 console.log("Done sim: " + sim);
                 deferred.resolve();
             });
@@ -435,6 +486,11 @@ module.exports.run = function(window, cArgs) {
                 console.log(out);
                 console.log(stderr);
                 console.log('Done Analysis.');
+                if(testMode) {
+                    boss_models.forEach(model => {
+                        execSync("node bulkalyze.js --model " + model.name);
+                    })
+                }
                 deferral.resolve();
             });
             return deferral.promise;

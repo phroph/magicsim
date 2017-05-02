@@ -1,1 +1,6 @@
 #your customizations to go at the end of each template
+#reforge_plot_stat=crit,mastery,haste
+#reforge_plot_amount=6000
+#reforge_plot_step=200
+#reforge_plot_iterations=2000
+#reforge_plot_output_file=%filename%.csv

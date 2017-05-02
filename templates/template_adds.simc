@@ -4,8 +4,9 @@ $(style)=%fightstyle%
 
 armory=%region%,%realm%,%name%
 #input=../test_profiles/h2priest_nh_%version%.simc
+#aplhook
 iterations=10000
-threads=1
+threads=%threads%
 override.bloodlust=0
 target_error=0.05
 # Because I can't directly set max_time=400-400%$(time), I need to do this substitution in runModule.

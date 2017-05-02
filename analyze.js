@@ -59,6 +59,10 @@ results.forEach(function(result){
     var time = res[2];
     var fight = res[3];
     var weight;
+
+    if(result.includes('.csv')) {
+        return;
+    }
     
     if(result.includes('adds')) {
         weight = fight_mapping[addRes[2]];
