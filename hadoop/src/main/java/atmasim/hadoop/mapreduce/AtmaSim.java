@@ -17,13 +17,14 @@ public class AtmaSim {
   // AKA this is partitioned by model and grouped by (talent x partition). The data points are reforge (cmh), dps, and simulation
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
+    conf.set("mapreduce.job.running.map.limit", "16");
     Job job = Job.getInstance(conf, "atmasim");
     job.setJarByClass(AtmaSim.class);
 
     // IN: simkey:text -map-> dpskey:dpsvalue -reduce-> compositedpskey:float
     //     (simstring,talentstring):reforgestring -map-> (talentstring,modelstring):(sim,reforge,dps) 
     //     -partition(by key)-> -reduce-> (modelString,talentString,reforgeString):mergedDps
-    job.setInputFormatClass(SimInputFormat.class);
+    job.setInputFormatClass(SimInputFormat.class); 
     job.setMapperClass(SimMapper.class);
     job.setMapOutputKeyClass(DPSKey.class);
     job.setMapOutputValueClass(DPSValue.class);
