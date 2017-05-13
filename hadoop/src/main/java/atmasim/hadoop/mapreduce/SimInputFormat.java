@@ -10,6 +10,7 @@ import org.apache.hadoop.io.Text;
 public class SimInputFormat extends FileInputFormat<SimKey, Text> {
     @Override
     public RecordReader<SimKey, Text> createRecordReader(InputSplit split, TaskAttemptContext context) {
+        context.setStatus(split.toString());
         return new SimRecordReader();
     }
 }

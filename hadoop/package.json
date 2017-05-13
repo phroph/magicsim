@@ -1,0 +1,15 @@
+{
+  "name": "atmasim",
+  "version": "1.0.0",
+  "description": "Amazon EMR/Hadoop powered massive simming automation tool.",
+  "dependencies": {
+    "aws-sdk": "~2.50.0",
+    "guid": "~0.0.12"
+  },
+  "author": "phroph",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/phroph/magicsim/issues"
+  },
+  "homepage": "https://github.com/phroph/magicsim#readme"
+}

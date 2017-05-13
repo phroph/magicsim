@@ -56,6 +56,28 @@ module.exports.models = [
             400: .85/2
         }
     },
+    {"dispName": "Nighthold Composite", "name": "nh",
+        "model": {
+            patchwerk_ba_2t: 0.025,
+            patchwerk_ba_st: 0.07,
+            patchwerk_sa_2t: 0.02,
+            patchwerk_sa_st: 0.07,
+            patchwerk_na_st: 0.07,
+            lowmovement_ba_2t: 0.155,
+            lowmovement_ba_st: 0.195,
+            lowmovement_sa_2t: 0.05,
+            lowmovement_sa_st: 0.12,
+            lowmovement_na_2t: 0.03,
+            lowmovement_na_st: 0.065,
+            highmovement_ba_st: 0.08,
+            highmovement_sa_2t: 0.015,
+            highmovement_sa_st: 0.035
+        },
+        "timeModel": {
+            250: .15,
+            400: .85
+        }
+    },
     {"dispName": "Mythic+ Composite", "name": "mplus",
         "model": {
             '30_lowmovement_4_adds': 0.1*addScaleFactor,
@@ -197,28 +219,6 @@ module.exports.models = [
             patchwerk_na_st: 0.1,
             lowmovement_ba_st: 0.1,
             lowmovement_na_2t: 0.2
-        },
-        "timeModel": {
-            250: .15,
-            400: .85
-        }
-    },
-    {"dispName": "Nighthold Composite", "name": "nh",
-        "model": {
-            patchwerk_ba_2t: 0.025,
-            patchwerk_ba_st: 0.07,
-            patchwerk_sa_2t: 0.02,
-            patchwerk_sa_st: 0.07,
-            patchwerk_na_st: 0.07,
-            lowmovement_ba_2t: 0.155,
-            lowmovement_ba_st: 0.195,
-            lowmovement_sa_2t: 0.05,
-            lowmovement_sa_st: 0.12,
-            lowmovement_na_2t: 0.03,
-            lowmovement_na_st: 0.065,
-            highmovement_ba_st: 0.08,
-            highmovement_sa_2t: 0.015,
-            highmovement_sa_st: 0.035
         },
         "timeModel": {
             250: .15,

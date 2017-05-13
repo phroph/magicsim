@@ -16,6 +16,11 @@ public class SimKey implements WritableComparable<SimKey> {
         this.simString = new Text(sims);
         this.talentString = new Text(talents);
     }
+    
+    public void set(byte[] sim, byte[] talent) {
+        simString.set(sim);
+        talentString.set(talent);
+    }
 
     public void write(DataOutput out) throws IOException {
         this.simString.write(out);
