@@ -9,7 +9,7 @@ public class ModelPartitioner extends Partitioner<DPSKey, DPSValue> {
     public int getPartition(DPSKey key, DPSValue value, int numReduceTasks) {
         try {
             String modelName = Text.decode(key.modelString.getBytes());
-            int reducerPartition = Models.getPartitionForModel(Models.getModelByName(modelName));
+            int reducerPartition = ModelProvider.getProvider().getModelIndexByName(modelName);
             
             if(numReduceTasks == 0)
                 return 0;

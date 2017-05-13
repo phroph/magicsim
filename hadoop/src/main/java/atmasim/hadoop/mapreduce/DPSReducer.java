@@ -3,11 +3,16 @@ package atmasim.hadoop.mapreduce;
 import java.io.IOException;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Collections;
 
 import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 
  public class DPSReducer extends Reducer<DPSKey,DPSValue,CompositeDPSKey,FloatWritable> {
@@ -19,7 +24,7 @@ import org.apache.hadoop.mapreduce.Reducer;
     public void reduce(DPSKey key, Iterable<DPSValue> values, Context context) throws IOException, InterruptedException {
         String modelString = Text.decode(key.modelString.getBytes());
         String talentString = Text.decode(key.talentString.getBytes());
-        Models model = Models.getModelByName(modelString);
+        JsonObject model = ModelProvider.getProvider().getModelByName(modelString);
         Dictionary<String,Float> reforgeDpsMapping = new Hashtable<>();
         for (DPSValue val : values) {
             String reforgeString = Text.decode(val.reforgeString.getBytes());
@@ -34,7 +39,19 @@ import org.apache.hadoop.mapreduce.Reducer;
         }
     }
 
-    private float getWeightForSim(String sim, Models model) {
+    private float getWeightForSim(String sim, JsonObject model) {
+        try {
+            JsonObject sims = model.get("model").getAsJsonObject();
+            Iterator<Entry<String,JsonElement>> simKeys = sims.entrySet().iterator();
+            while(simKeys.hasNext()) {
+                Entry<String,JsonElement> key = simKeys.next();
+                if (sim.contains(key.getKey())) {
+                    return key.getValue().getAsFloat();
+                }
+            }
+        } catch (Exception e) {
+            return 0.0f;
+        }
         return 0.0f;
     }
 }

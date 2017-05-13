@@ -1,11 +1,15 @@
 package atmasim.hadoop.mapreduce;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
  public class SimMapper  extends Mapper<SimKey, Text, DPSKey, DPSValue>{
 
@@ -15,6 +19,8 @@ import org.apache.hadoop.fs.FileSystem;
         String simString = Text.decode(key.simString.getBytes());
         String talentString = Text.decode(key.talentString.getBytes());
         String reforgeString = Text.decode(value.getBytes());
+
+        JsonArray models = ModelProvider.getProvider().models;
         
         String returnDataPath = "";
         String profileData = "";
@@ -22,15 +28,31 @@ import org.apache.hadoop.fs.FileSystem;
         // Create profile with data output pointer at returnDataPath. Write to path. Execute synchronously.
         SimC.ExecuteSim(profilePath);
         // Collect result from returnDataPath and stuff dps into our variable.
-        for(int i = 0; i<=Models.reducerCount; i++) {
-            String model = Models.getModelByNumber(i).toString().toLowerCase();
-            if(doesModelContainSim(model, model)) {
-                context.write(new DPSKey(talentString, model), new DPSValue(simString, reforgeString, dps));
+        for(int i = 0; i <= models.size(); i++) {
+            try {
+                JsonObject model = models.get(i).getAsJsonObject();
+                String modelName = model.get("name").toString();
+                if(doesModelContainSim(model, simString)) {
+                    context.write(new DPSKey(talentString, modelName), new DPSValue(simString, reforgeString, dps));
+                }
+            } catch(Exception e) {
+
             }
         }
     }
     
-    public boolean doesModelContainSim(String modelName, String simName) {
+    public boolean doesModelContainSim(JsonObject model, String simName) {
+        try {
+            JsonObject sims = model.get("model").getAsJsonObject();
+            Iterator<Entry<String,JsonElement>> simKeys = sims.entrySet().iterator();
+            while(simKeys.hasNext()) {
+                if (simName.contains(simKeys.next().getKey())) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            return false;
+        }
         return false;
     }
  }
