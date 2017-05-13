@@ -30,9 +30,9 @@ public class AtmaSim {
     job.setMapOutputValueClass(DPSValue.class);
     job.setPartitionerClass(ModelPartitioner.class);
     job.setReducerClass(DPSReducer.class);
-    job.setOutputKeyClass(CompositeDPSKey.class);
-    job.setOutputValueClass(FloatWritable.class);
-    FileInputFormat.addInputPath(job, new Path(args[0]));
+    job.setOutputKeyClass(DPSKey.class);
+    job.setOutputValueClass(ReducedDPSValue.class);
+    SimInputFormat.addInputPath(job, new Path(args[0]));
     FileOutputFormat.setOutputPath(job, new Path(args[1]));
     System.exit(job.waitForCompletion(true) ? 0 : 1);
   }

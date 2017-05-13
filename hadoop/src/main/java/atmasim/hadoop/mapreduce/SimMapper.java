@@ -29,29 +29,21 @@ import com.google.gson.JsonObject;
         SimC.ExecuteSim(profilePath);
         // Collect result from returnDataPath and stuff dps into our variable.
         for(int i = 0; i <= models.size(); i++) {
-            try {
-                JsonObject model = models.get(i).getAsJsonObject();
-                String modelName = model.get("name").toString();
-                if(doesModelContainSim(model, simString)) {
-                    context.write(new DPSKey(talentString, modelName), new DPSValue(simString, reforgeString, dps));
-                }
-            } catch(Exception e) {
-
+            JsonObject model = models.get(i).getAsJsonObject();
+            String modelName = model.get("name").toString();
+            if(doesModelContainSim(model, simString)) {
+                context.write(new DPSKey(talentString, modelName), new DPSValue(simString, reforgeString, dps));
             }
         }
     }
     
     public boolean doesModelContainSim(JsonObject model, String simName) {
-        try {
-            JsonObject sims = model.get("model").getAsJsonObject();
-            Iterator<Entry<String,JsonElement>> simKeys = sims.entrySet().iterator();
-            while(simKeys.hasNext()) {
-                if (simName.contains(simKeys.next().getKey())) {
-                    return true;
-                }
+        JsonObject sims = model.get("model").getAsJsonObject();
+        Iterator<Entry<String,JsonElement>> simKeys = sims.entrySet().iterator();
+        while(simKeys.hasNext()) {
+            if (simName.contains(simKeys.next().getKey())) {
+                return true;
             }
-        } catch (Exception e) {
-            return false;
         }
         return false;
     }

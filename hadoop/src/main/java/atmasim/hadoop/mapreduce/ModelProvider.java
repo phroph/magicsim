@@ -3,6 +3,7 @@ package atmasim.hadoop.mapreduce;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -15,12 +16,7 @@ public class ModelProvider {
     public JsonArray models;
 
     public ModelProvider() {
-        JsonParser parser = new JsonParser();
-        try {     
-            models =  parser.parse(new FileReader("c:\\file.json")).getAsJsonArray();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        models =  new JsonParser().parse(new InputStreamReader(getClass().getResourceAsStream("/models.json"))).getAsJsonArray();
     }
 
     public JsonObject getModelByName(String name) {
