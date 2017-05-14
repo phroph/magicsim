@@ -1,6 +1,7 @@
 var AWS = require('aws-sdk');
 var Guid = require('guid');
 
+AWS.config.update({region:'us-east-1'});
 var s3 = new AWS.S3();
 var emr = new AWS.EMR();
 
@@ -100,7 +101,7 @@ console.log('Found ' + simCombinations.length + ' sim combinations.');
 var talentChoices = [[0,1,2],[0],[0],[0,1],[0,1,2],[0],[0,2]];
 var talentCombinations = combineTalents(talentChoices); // 36 Combinations
 console.log('Found ' + talentCombinations.length + ' talent combinations.');
-var reforgeParameters = {budget: 20000, step: 500, floor: 3000, ceiling: 17000}; 
+var reforgeParameters = {budget: 24000, step: 500, floor: 3000, ceiling: 17000}; 
 // At each step, 500 can go 1 way, with a maximum of 17000 in any single way. Aka n^3 expansion, pruning duplicates and constraint failures.
 // Floor is budget force allocated each way at least. So effective budget = budget - way*floor.
 // 11000 available budget, 22 steps. 22^3 = O(10,648) reforge points, including duplicates.
@@ -131,59 +132,61 @@ s3.upload({
             return;
         }
         console.log('Successfully uploaded input data: ' + 'input-' + guid + '.txt');
+        s3.putObject({ Bucket: bucket, Key: 'results-' + guid + '/', Body: '' }, function(err, data) {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log("Successfully created folder: " +  'results-' + guid + '/' );
+                emr.runJobFlow({
+                    Name: "Atmasim Job Flow",
+                    Instances: {
+                        KeepJobFlowAliveWhenNoSteps: false,
+                        TerminationProtected: false,
+                        InstanceGroups: [{
+                            Name: "Master Instance Group",
+                            InstanceRole: "MASTER",
+                            InstanceCount: 1,
+                            InstanceType: "c4.8xlarge",
+                            Market: "ON_DEMAND"
+                        }, {
+                            Name: "Core Instance Group",
+                            InstanceRole: "CORE",
+                            InstanceCount: 1,
+                            InstanceType: "c4.8xlarge",
+                            Market: "ON_DEMAND"
+                        }]
+                    },
+                    JobFlowRole: "EMR_EC2_DefaultRole",
+                    ServiceRole: "EMR_DefaultRole",
+                    Steps: [{
+                        Name: "Atmasim Driver",
+                        ActionOnFailure: "CANCEL_AND_WAIT",
+                        HadoopJarStep: {
+                            Jar: "s3://atmasim/atmasimDriver.jar",
+                            Args: [
+                                "s3://atmasim/input-" + guid + ".txt",
+                                "s3://atmasim/results-" + guid + "/"
+                            ]
+                        }
+                    }],
+                    BootstrapActions: [ 
+                    { 
+                        Name: "Install SimC",
+                        ScriptBootstrapAction: { 
+                            Path: "s3://atmasim/installSimC.sh"
+                        }
+                    }
+                    ],
+                    LogUri: "s3://atmasim/logs-" + guid + "/",
+                    VisibleToAllUsers: false,
+                    ReleaseLabel: "emr-5.5.0"
+                }, (err, data) => {
+                    if(err) {
+                        console.log(err);
+                        return;
+                    }
+                    console.log(data);
+                })
+            }
+        });
     });
-s3.putObject({ Bucket: bucket, Key: 'results-' + guid + '/', Body: '' }, function(err, data) {
-    if (err) {
-        console.log(err)
-    } else {
-        console.log("Successfully created folder: " +  'results-' + guid + '/' );
-    }
-});
-emr.runJobFlow({
-    Name: "Atmasim Job Flow",
-    Instances: {
-        KeepJobFlowAliveWhenNoSteps: "false",
-        TerminationProtected: "false",
-        InstanceGroups: [{
-            Name: "Master Instance Group",
-            InstanceRole: "MASTER",
-            InstanceCount: 1,
-            InstanceType: "c4.8xlarge",
-            Market: "ON_DEMAND"
-        }, {
-            Name: "Core Instance Group",
-            InstanceRole: "CORE",
-            InstanceCount: 8,
-            InstanceType: "c4.8xlarge",
-            Market: "ON_DEMAND"
-        }]
-    },
-    Steps: [{
-        Name: "Atmasim Driver",
-        ActionOnFailure: "CANCEL_AND_WAIT",
-        HadoopJarStep: {
-            Jar: "s3://atmasim/atmasimDriver.jar",
-            Args: [
-                "s3://atmasim/input-" + guid + ".txt",
-                "s3://atmasim/results-" + guid + "/"
-            ]
-        }
-    }],
-    BootstrapActions: [ 
-       { 
-          Name: "Install SimC",
-          ScriptBootstrapAction: { 
-             Path: "s3://atmasim/installSimC.sh"
-          }
-       }
-    ],
-    VisibleToAllUsers: "false",
-    NewSupportedProduct: [],
-    AmiVersion: "5.4.0"
-}, (err, data) => {
-    if(err) {
-        console.log(err);
-        return;
-    }
-    console.log(data);
-})

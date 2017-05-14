@@ -22,7 +22,6 @@ import com.google.gson.JsonObject;
     // There we iterate through, reduce like reforge / sim on the model (to get composite reforge and write the list of composite reforge points where final key is: model_reforgestring -> composite dps)
     public void reduce(DPSKey key, Iterable<DPSValue> values, Context context) throws IOException, InterruptedException {
         String modelString = Text.decode(key.modelString.getBytes());
-        String talentString = Text.decode(key.talentString.getBytes());
         JsonObject model = ModelProvider.getProvider().getModelByName(modelString);
         Dictionary<String,Float> reforgeDpsMapping = new Hashtable<>();
         for (DPSValue val : values) {

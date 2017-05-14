@@ -5,6 +5,7 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     compile "org.apache.hadoop:hadoop-client:2.7.3"
     compile "com.google.code.gson:gson:2.8.0"
@@ -12,6 +13,7 @@ dependencies {
 }
 
 jar {
+    baseName = "atmasimDriver"
     manifest {
         attributes 'Main-Class': 'atmasim.hadoop.mapreduce.AtmaSim'
     }
