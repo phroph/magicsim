@@ -1,32 +1,19 @@
 package atmasim.hadoop.mapreduce;
 
 import java.io.IOException;
-import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 import org.apache.hadoop.mapreduce.lib.input.LineRecordReader;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.RecordReader;
 
 import org.apache.hadoop.io.Text;
 public class SimRecordReader extends RecordReader<SimKey, Text> {
- 
-    private long start;
-    private long pos;
-    private long end;
-    private FSDataInputStream in;
     private LineRecordReader reader;
 
     private SimKey key;
     private Text value;
 
     private byte separator;
-
-    private Text innerValue;
- 
     public SimRecordReader() {
         reader = new LineRecordReader();
         separator = (byte) ';';
@@ -70,7 +57,7 @@ public class SimRecordReader extends RecordReader<SimKey, Text> {
         byte[] line = null;
         int lineLen = -1;
         if (reader.nextKeyValue()) {
-            innerValue = reader.getCurrentValue();
+            Text innerValue = reader.getCurrentValue();
             line = innerValue.getBytes();
             lineLen = innerValue.getLength();
         } else {

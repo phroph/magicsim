@@ -2,11 +2,8 @@ package atmasim.hadoop.mapreduce;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 
-import java.io.IOException;
 import java.lang.Process;
 import java.lang.Runtime;
 
@@ -14,7 +11,7 @@ import java.lang.Runtime;
 public class SimC {
     public static void ExecuteSim(String profilePath) {
         try {
-            Process p = Runtime.getRuntime().exec(new String[]{"simc","profilePath"});
+            Process p = Runtime.getRuntime().exec(new String[]{"simc", profilePath});
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String line = null;
             while ((line = reader.readLine()) != null) {

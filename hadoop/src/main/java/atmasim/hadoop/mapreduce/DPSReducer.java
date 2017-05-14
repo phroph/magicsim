@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Collections;
 
-import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
@@ -38,6 +37,7 @@ import com.google.gson.JsonObject;
             // Shouldn't we be writing (modelString, talentString) -> (reforgeString, compositeDps) since we are reducing sims into across a model.
             // Which would imply a reduced DPSValue rather than an augmented DPSKey
             context.write(key, new ReducedDPSValue(reforgeString, reforgeDpsMapping.get(reforgeString)));
+            // Then we can create CSVs based on shared key.
         }
     }
 
