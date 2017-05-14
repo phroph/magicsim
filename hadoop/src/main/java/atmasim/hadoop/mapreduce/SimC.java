@@ -11,17 +11,8 @@ import java.lang.Runtime;
 public class SimC {
     public static void ExecuteSim(String profilePath) {
         try {
-            Process p = Runtime.getRuntime().exec(new String[]{"simc", profilePath});
-            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                System.out.println("O: " + line);
-            }
-            reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-            while ((line = reader.readLine()) != null) {
-            System.out.println("E: " + line);
-            }
-        } catch (IOException e) {
+            System.out.println("Executed sim ("+profilePath+") with status code: " + new ProcessBuilder("simc", profilePath).start().waitFor());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

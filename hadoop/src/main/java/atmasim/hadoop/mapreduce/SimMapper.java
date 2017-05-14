@@ -23,7 +23,6 @@ import com.google.gson.JsonParser;
 
     @Override 
     public void map(SimKey key, Text value, Context context) throws IOException, InterruptedException {
-        float dps = 0;
         String simString = Text.decode(key.simString.getBytes()); // 'time_style_adds_bosses'
         String talentString = Text.decode(key.talentString.getBytes());  //number string of talents
         String reforgeString = Text.decode(value.getBytes()); //c:val,m:val,h:val
@@ -69,6 +68,7 @@ import com.google.gson.JsonParser;
         SimC.ExecuteSim(profilePath);
 
         JsonElement results = new JsonParser().parse(new FileReader(Paths.get(runtimePath, profileName + ".json").toFile()));
+        float dps = 0;
         
         for(int i = 0; i <= models.size(); i++) {
             JsonObject model = models.get(i).getAsJsonObject();
