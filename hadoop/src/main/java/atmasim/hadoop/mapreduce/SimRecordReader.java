@@ -46,7 +46,7 @@ public class SimRecordReader extends RecordReader<SimKey, Text> {
             System.arraycopy(line, pos + 1, talentBytes, 0, talentLen);
             int valLen = lineLen - talentLen - 1;
             byte[] valBytes = new byte[valLen];
-            System.arraycopy(line, 0, valBytes, 0, valLen);
+            System.arraycopy(line, pos2 + 1, valBytes, 0, valLen);
             key.set(simBytes,talentBytes);
             value.set(valBytes);
             logger.info("Found key: " + key.toString());
