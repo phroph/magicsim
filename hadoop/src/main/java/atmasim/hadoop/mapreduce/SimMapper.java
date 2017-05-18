@@ -36,7 +36,7 @@ import com.google.gson.JsonParser;
         String sa = "raid_events+=/adds,count=3,first=45,cooldown=45,duration=10,distance=5\n";
         String doubleTarget = "enemy=enemy2\nraid_events+=/move_enemy,name=enemy2,cooldown=2000,duration=1000,x=-27,y=-27\n";
 
-        String talents = "talents=" + talentString + "\n";
+        String talents = "talents=" + talentString.replace(",", "") + "\n";
         String artifact = "artifact=47:0:0:0:0:764:1:765:1:766:1:767:3:768:1:769:1:770:1:771:3:772:3:773:4:774:3:775:3:776:4:777:4:778:3:779:1:1347:1:1381:1:1573:4:1574:1:1650:1\n";
 
         String header = "priest=\"Atmasim\"\nlevel=110\nrace=troll\nrole=spell\npriest_ignore_healing=1\nposition=back\n" + talents + artifact + "spec=shadow\ndefault_actions=1\n";
