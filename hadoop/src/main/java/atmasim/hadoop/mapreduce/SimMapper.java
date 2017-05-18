@@ -40,7 +40,7 @@ import com.google.gson.JsonParser;
         String artifact = "artifact=47:0:0:0:0:764:1:765:1:766:1:767:3:768:1:769:1:770:1:771:3:772:3:773:4:774:3:775:3:776:4:777:4:778:3:779:1:1347:1:1381:1:1573:4:1574:1:1650:1\n";
 
         String header = "priest=\"Atmasim\"\nlevel=110\nrace=troll\nrole=spell\npriest_ignore_healing=1\nposition=back\n" + talents + artifact + "spec=shadow\ndefault_actions=1\n";
-        int threads = 16;
+        int threads = 4;
 
         String crit = reforgeString.split(",")[0];
         String mastery = reforgeString.split(",")[1];
@@ -92,7 +92,7 @@ import com.google.gson.JsonParser;
                         .get("dps").getAsJsonObject()
                         .get("mean").getAsFloat();
         logger.info("Found DPS: " + dps);
-        for(int i = 0; i <= models.size(); i++) {
+        for(int i = 0; i < models.size(); i++) {
             JsonObject model = models.get(i).getAsJsonObject();
             String modelName = model.get("name").toString();
             if(doesModelContainSim(model, simString)) {

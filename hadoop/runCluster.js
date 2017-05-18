@@ -136,8 +136,7 @@ s3.upload({
             Name: "Atmasim Job Flow",
             Applications: [
                 {
-                    Name: "Hue",
-                    Version: "3.11.0"
+                    Name: "Hue"
                 }
             ],
             Instances: {
@@ -149,13 +148,13 @@ s3.upload({
                     Name: "Master Instance Group",
                     InstanceRole: "MASTER",
                     InstanceCount: 1,
-                    InstanceType: "c1.medium",
+                    InstanceType: "m1.medium",
                     Market: "ON_DEMAND"
                 }, {
                     Name: "Core Instance Group",
                     InstanceRole: "CORE",
                     InstanceCount: 1,
-                    InstanceType: "c4.4xlarge",
+                    InstanceType: "c4.xlarge",
                     Market: "ON_DEMAND"
                 }]
             },
