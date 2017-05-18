@@ -4,6 +4,9 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.LazyOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.log4j.Logger;
 
 public class AtmaSim {
@@ -31,6 +34,8 @@ public class AtmaSim {
     job.setReducerClass(DPSReducer.class);
     job.setOutputKeyClass(DPSKey.class);
     job.setOutputValueClass(ReducedDPSValue.class);
+    job.setOutputFormatClass(FileOutputFormat.class);
+    LazyOutputFormat.setOutputFormatClass(job, TextOutputFormat.class);
     SimInputFormat.addInputPath(job, new Path(args[0]));
     FileOutputFormat.setOutputPath(job, new Path(args[1]));
     System.exit(job.waitForCompletion(true) ? 0 : 1);

@@ -23,9 +23,9 @@ import com.google.gson.JsonParser;
 
     @Override 
     public void map(SimKey key, Text value, Context context) throws IOException, InterruptedException {
-        String simString = Text.decode(key.simString.getBytes()); // 'time_style_adds_bosses'
-        String talentString = Text.decode(key.talentString.getBytes());  //number string of talents
-        String reforgeString = Text.decode(value.getBytes()); //c:val,m:val,h:val
+        String simString = key.simString.toString(); // 'time_style_adds_bosses'
+        String talentString = key.talentString.toString();  //number string of talents
+        String reforgeString = value.toString(); //c:val,m:val,h:val
 
         logger.info("Found key: " + key.toString());
         logger.info("Found value: " + reforgeString);

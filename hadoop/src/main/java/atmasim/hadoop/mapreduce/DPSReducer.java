@@ -23,6 +23,7 @@ import com.google.gson.JsonObject;
 
     @Override
     public void setup(Context context) {
+        logger.info("Setting up MultipleOutputs writer.");
         output = new MultipleOutputs<>(context);
     }
  
@@ -33,13 +34,13 @@ import com.google.gson.JsonObject;
     @Override
     public void reduce(DPSKey key, Iterable<DPSValue> values, Context context) throws IOException, InterruptedException {
         logger.info("Starting to reduce key: " + key.toString());
-        String modelString = Text.decode(key.modelString.getBytes());
-        JsonObject model = ModelProvider.getProvider().getModelByName(modelString.replace("\"", ""));
+        String modelString = key.modelString.toString().replace("\"", "");
+        JsonObject model = ModelProvider.getProvider().getModelByName(modelString);
         Dictionary<String,Float> reforgeDpsMapping = new Hashtable<>();
         for (DPSValue val : values) {
             logger.info("Value for key: " + val.toString());
-            String reforgeString = Text.decode(val.reforgeString.getBytes());
-            String simString = Text.decode(val.simString.getBytes());
+            String reforgeString = val.reforgeString.toString();
+            String simString = val.simString.toString();
             if (reforgeDpsMapping.get(reforgeString) == null) {
                 logger.info("Created mapping for reforge: " + reforgeString);
                 reforgeDpsMapping.put(reforgeString, 0.0f);
@@ -52,22 +53,20 @@ import com.google.gson.JsonObject;
             ReducedDPSValue val = new ReducedDPSValue(reforgeString, reforgeDpsMapping.get(reforgeString));
             logger.info("Writing out reduced key with value: " + val.toString());
             logger.info("Writing value to path (derived by key): " + generateFileName(key));
-            output.write("", val, generateFileName(key));
+            output.write(new DPSKey(), val, generateFileName(key));
             //context.write(key, val);
             // Then we can create CSVs based on shared key.
         }
     }
 
     private String generateFileName(DPSKey key) {
-        return key.talentString + "/" + key.modelString;
+        return key.talentString.toString().replace(",", "") + "/" + key.modelString.toString();
     }
 
     private float getWeightForSim(String sim, JsonObject model) {
         if(model == null) {
-            logger.info("Model not found.");
             return 0.0f;
         }
-        logger.info("Looking at model: " + model.toString());
         JsonObject sims = model.get("model").getAsJsonObject();
         Iterator<Entry<String,JsonElement>> simKeys = sims.entrySet().iterator();
         while(simKeys.hasNext()) {
@@ -77,5 +76,12 @@ import com.google.gson.JsonObject;
             }
         }
         return 0.0f;
+    }
+    
+    @Override
+    protected void cleanup(Context context) throws IOException, InterruptedException {
+        if (output != null) {
+            output.close();
+        }
     }
 }
