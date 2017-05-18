@@ -52,7 +52,7 @@ import com.google.gson.JsonParser;
         +"legs=purifiers_leggings,id=138316,bonus_id=3516/1502/3337\nfeet=perpetually_muddy_sandals,id=140854,bonus_id=3445/1502/3336\nfinger1=ring_of_collapsing_futures,id=142173,bonus_id=3418/1808/1517/3337,gems=150haste,enchant=200haste\n"
         +"finger2=sephuzs_secret,id=132452,bonus_id=3529/3530/1811,gems=150haste,enchant=200haste\ntrinket1=unstable_arcanocrystal,id=141482,bonus_id=1472\ntrinket2=brinewater_slime_in_a_bottle,id=142507,bonus_id=3508/605/1512/3528\n"
         +"main_hand=xalatath_blade_of_the_black_empire,id=128827,bonus_id=740,gem_id=140823/140820/140823/0,relic_id=3517:1502:3336/3517:1497:3336/3517:1502:3336/0\noff_hand=secrets_of_the_void,id=133958\n"
-        +"scale_to_itemlevel=925\ngear_crit_rating="+ crit + "\ngear_haste_rating="+ haste +"\ngear_mastery_rating="+ mastery +"\nset_bonus=tier19_2pc=0\nset_bonus=tier19_4pc=0\nset_bonus=tier20_2pc=1\nset_bonus=tier20_4pc=1\n";
+        +"scale_to_itemlevel=925\ngear_crit_rating="+ crit.split(":")[1] + "\ngear_haste_rating="+ haste.split(":")[1] +"\ngear_mastery_rating="+ mastery.split(":")[1] +"\nset_bonus=tier19_2pc=0\nset_bonus=tier19_4pc=0\nset_bonus=tier20_2pc=1\nset_bonus=tier20_4pc=1\n";
         String base = "iterations=5000\nthreads="+threads+"\noutput=nul\nmax_time="+ simString.split("_")[0] +"\noptimal_raid=1\nfight_style="+ simString.split("_")[1] +"\nenemy=enemy1\n";
 
         String addString = "\n";
@@ -85,7 +85,7 @@ import com.google.gson.JsonParser;
         SimC.ExecuteSim(profilePath);
         logger.info("SimC finished executing. Collecting results.");
         JsonObject results = new JsonParser().parse(new FileReader(Paths.get(runtimePath, profileName + ".json").toFile())).getAsJsonObject();
-        float dps = results.get("sims").getAsJsonObject()
+        float dps = results.get("sim").getAsJsonObject()
                         .get("players").getAsJsonArray()
                         .get(0).getAsJsonObject()
                         .get("collected_data").getAsJsonObject()
