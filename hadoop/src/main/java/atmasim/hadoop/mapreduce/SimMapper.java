@@ -42,9 +42,9 @@ import com.google.gson.JsonParser;
         String header = "priest=\"Atmasim\"\nlevel=110\nrace=troll\nrole=spell\npriest_ignore_healing=1\nposition=back\n" + talents + artifact + "spec=shadow\ndefault_actions=1\n";
         int threads = 18;
 
-        String crit = reforgeString.split(";")[0];
-        String mastery = reforgeString.split(";")[1];
-        String haste = reforgeString.split(";")[2];
+        String crit = reforgeString.split(",")[0];
+        String mastery = reforgeString.split(",")[1];
+        String haste = reforgeString.split(",")[2];
 
         String gear = "head=purifiers_gorget,id=138313,bonus_id=3516/1487/1813\nneck=talisman_of_the_shaldorei,id=141325,enchant=600mastery\nshoulders=purifiers_mantle,id=138322,bonus_id=3516/1487/1813\n"
         +"back=purifiers_drape,id=138370,bonus_id=3518/1502/3528,enchant=200int\nchest=soulstitched_robes,id=133611,bonus_id=3418/1808/1542/3528,gems=150haste\nshirt=wraps_of_the_bloodsoaked_brawler,id=98543\ntabard=renowned_guild_tabard,id=69210\n"
