@@ -137,7 +137,7 @@ s3.upload({
             Applications: [
                 {
                     Name: "Hue",
-                    Verison: "3.11.0"
+                    Version: "3.11.0"
                 }
             ],
             Instances: {
