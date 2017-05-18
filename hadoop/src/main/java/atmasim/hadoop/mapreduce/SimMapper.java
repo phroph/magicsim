@@ -40,7 +40,7 @@ import com.google.gson.JsonParser;
         String artifact = "artifact=47:0:0:0:0:764:1:765:1:766:1:767:3:768:1:769:1:770:1:771:3:772:3:773:4:774:3:775:3:776:4:777:4:778:3:779:1:1347:1:1381:1:1573:4:1574:1:1650:1\n";
 
         String header = "priest=\"Atmasim\"\nlevel=110\nrace=troll\nrole=spell\npriest_ignore_healing=1\nposition=back\n" + talents + artifact + "spec=shadow\ndefault_actions=1\n";
-        int threads = 18;
+        int threads = 16;
 
         String crit = reforgeString.split(",")[0];
         String mastery = reforgeString.split(",")[1];
@@ -48,12 +48,12 @@ import com.google.gson.JsonParser;
 
         String gear = "head=purifiers_gorget,id=138313,bonus_id=3516/1487/1813\nneck=talisman_of_the_shaldorei,id=141325,enchant=600mastery\nshoulders=purifiers_mantle,id=138322,bonus_id=3516/1487/1813\n"
         +"back=purifiers_drape,id=138370,bonus_id=3518/1502/3528,enchant=200int\nchest=soulstitched_robes,id=133611,bonus_id=3418/1808/1542/3528,gems=150haste\nshirt=wraps_of_the_bloodsoaked_brawler,id=98543\ntabard=renowned_guild_tabard,id=69210\n"
-        +"wrists=wristbands_of_the_swirling_deeps,id=137372,bonus_id=3418/1557/3337\nhands=scorpid_handlers_gloves,id=140888,bonus_id=3445/1512/3337\nwaist=mangazas_madness,id=132864,bonus_id=3459/3530"
+        +"wrists=wristbands_of_the_swirling_deeps,id=137372,bonus_id=3418/1557/3337\nhands=scorpid_handlers_gloves,id=140888,bonus_id=3445/1512/3337\nwaist=mangazas_madness,id=132864,bonus_id=3459/3530\n"
         +"legs=purifiers_leggings,id=138316,bonus_id=3516/1502/3337\nfeet=perpetually_muddy_sandals,id=140854,bonus_id=3445/1502/3336\nfinger1=ring_of_collapsing_futures,id=142173,bonus_id=3418/1808/1517/3337,gems=150haste,enchant=200haste\n"
         +"finger2=sephuzs_secret,id=132452,bonus_id=3529/3530/1811,gems=150haste,enchant=200haste\ntrinket1=unstable_arcanocrystal,id=141482,bonus_id=1472\ntrinket2=brinewater_slime_in_a_bottle,id=142507,bonus_id=3508/605/1512/3528\n"
         +"main_hand=xalatath_blade_of_the_black_empire,id=128827,bonus_id=740,gem_id=140823/140820/140823/0,relic_id=3517:1502:3336/3517:1497:3336/3517:1502:3336/0\noff_hand=secrets_of_the_void,id=133958\n"
         +"scale_to_itemlevel=925\ngear_crit_rating="+ crit + "\ngear_haste_rating="+ haste +"\ngear_mastery_rating="+ mastery +"\nset_bonus=tier19_2pc=0\nset_bonus=tier19_4pc=0\nset_bonus=tier20_2pc=1\nset_bonus=tier20_4pc=1\n";
-        String base = "iterations=5000\nthreads="+threads+"\nreport_detail=0\noutput=nul\nmax_time="+ simString.split("_")[0] +"\noptimal_raid=1\nfight_style="+ simString.split("_")[1] +"\nenemy=enemy1\n";
+        String base = "iterations=5000\nthreads="+threads+"\noutput=nul\nmax_time="+ simString.split("_")[0] +"\noptimal_raid=1\nfight_style="+ simString.split("_")[1] +"\nenemy=enemy1\n";
 
         String addString = "\n";
         if(simString.split("_")[2].equals("ba")) { 
