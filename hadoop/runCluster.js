@@ -134,6 +134,12 @@ s3.upload({
         console.log('Successfully uploaded input data: ' + 'input-' + guid + '.txt');
         emr.runJobFlow({
             Name: "Atmasim Job Flow",
+            Applications: [
+                {
+                    Name: "Hue",
+                    Verison: "3.11.0"
+                }
+            ],
             Instances: {
                 Ec2SubnetId: "subnet-4b4bf203",
                 Ec2KeyName: "magicsim", 
@@ -143,15 +149,13 @@ s3.upload({
                     Name: "Master Instance Group",
                     InstanceRole: "MASTER",
                     InstanceCount: 1,
-                    //InstanceType: "c4.8xlarge",
                     InstanceType: "c1.medium",
                     Market: "ON_DEMAND"
                 }, {
                     Name: "Core Instance Group",
                     InstanceRole: "CORE",
                     InstanceCount: 1,
-                    //InstanceType: "c4.8xlarge",
-                    InstanceType: "c4.large",
+                    InstanceType: "c4.4xlarge",
                     Market: "ON_DEMAND"
                 }]
             },
