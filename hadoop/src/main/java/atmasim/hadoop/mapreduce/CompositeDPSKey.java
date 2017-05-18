@@ -13,6 +13,12 @@ public class CompositeDPSKey implements WritableComparable<CompositeDPSKey> {
     public Text reforgeString;
     public Text talentString;
 
+    public CompositeDPSKey() {
+        modelString = new Text();
+        reforgeString = new Text();
+        talentString = new Text();
+    }
+    
     public CompositeDPSKey(String model, String reforge, String talents) {
         this.modelString = new Text(model);
         this.reforgeString = new Text(reforge);

@@ -2,12 +2,14 @@ package atmasim.hadoop.mapreduce;
 
 import java.io.IOException;
 import org.apache.hadoop.mapreduce.lib.input.LineRecordReader;
+import org.apache.log4j.Logger;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.RecordReader;
 
 import org.apache.hadoop.io.Text;
 public class SimRecordReader extends RecordReader<SimKey, Text> {
+    private static Logger logger = Logger.getLogger(SimRecordReader.class);
     private LineRecordReader reader;
 
     private SimKey key;
@@ -24,8 +26,7 @@ public class SimRecordReader extends RecordReader<SimKey, Text> {
         reader.initialize(genericSplit, context);
     }
 
-    public static int findSeparator(byte[] utf, int start, int length, 
-        byte sep) {
+    public static int findSeparator(byte[] utf, int start, int length, byte sep) {
         for (int i = start; i < (start + length); i++) {
             if (utf[i] == sep) {
                 return i;
@@ -48,6 +49,8 @@ public class SimRecordReader extends RecordReader<SimKey, Text> {
             System.arraycopy(line, 0, valBytes, 0, valLen);
             key.set(simBytes,talentBytes);
             value.set(valBytes);
+            logger.info("Found key: " + key.toString());
+            logger.info("Found value: " + value.toString());
         }
     }
 
@@ -71,8 +74,15 @@ public class SimRecordReader extends RecordReader<SimKey, Text> {
         if (value == null) {
             value = new Text();
         }
+        String found = "";
+        for(int i = 0; i < line.length; i++) {
+            found += (char) line[i];
+        }
+        logger.info("Found line: " + found);
         int pos = findSeparator(line, 0, lineLen, this.separator);
-        int pos2 = findSeparator(line, pos+1, lineLen, this.separator);
+        int pos2 = findSeparator(line, pos+1, lineLen-(pos+1), this.separator);
+        logger.info("Found separator 1: " + pos);
+        logger.info("Found separator 2: " + pos2);
         setKeyValue(key, value, line, lineLen, pos, pos2);
         return true;
     }

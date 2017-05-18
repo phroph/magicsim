@@ -4,6 +4,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.log4j.Logger;
 
 public class AtmaSim {
 
@@ -12,12 +13,13 @@ public class AtmaSim {
   // organize them by model. And for each model:
   // Generate a list of dps data points for each talent.
   // AKA this is partitioned by model and grouped by (talent x partition). The data points are reforge (cmh), dps, and simulation
+  private static Logger logger = Logger.getLogger(AtmaSim.class);
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
     conf.set("mapreduce.job.running.map.limit", "16");
     Job job = Job.getInstance(conf, "atmasim");
     job.setJarByClass(AtmaSim.class);
-
+    logger.info("Starting AtmaSim driver.");
     // IN: simkey:text -map-> dpskey:dpsvalue -reduce-> compositedpskey:float
     //     (simstring,talentstring):reforgestring -map-> (talentstring,modelstring):(sim,reforge,dps) 
     //     -partition(by key)-> -reduce-> (modelString,talentString,reforgeString):mergedDps

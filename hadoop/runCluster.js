@@ -135,20 +135,23 @@ s3.upload({
         emr.runJobFlow({
             Name: "Atmasim Job Flow",
             Instances: {
-                Ec2SubnetId: "subnet-5d38c107",
+                Ec2SubnetId: "subnet-4b4bf203",
+                Ec2KeyName: "magicsim", 
                 KeepJobFlowAliveWhenNoSteps: false,
-                TerminationProtected: false,
+                TerminationProtected: true,
                 InstanceGroups: [{
                     Name: "Master Instance Group",
                     InstanceRole: "MASTER",
                     InstanceCount: 1,
-                    InstanceType: "c4.8xlarge",
+                    //InstanceType: "c4.8xlarge",
+                    InstanceType: "c1.medium",
                     Market: "ON_DEMAND"
                 }, {
                     Name: "Core Instance Group",
                     InstanceRole: "CORE",
                     InstanceCount: 1,
-                    InstanceType: "c4.8xlarge",
+                    //InstanceType: "c4.8xlarge",
+                    InstanceType: "c4.large",
                     Market: "ON_DEMAND"
                 }]
             },
@@ -173,9 +176,9 @@ s3.upload({
                 }
             }
             ],
-            LogUri: "s3://atmasim/logs-" + guid + "/",
+            LogUri: "s3://atmasim/logs/",
             VisibleToAllUsers: false,
-            ReleaseLabel: "emr-5.5.0"
+            ReleaseLabel: "emr-5.3.0"
         }, (err, data) => {
             if(err) {
                 console.log(err);
