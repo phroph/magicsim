@@ -18,8 +18,8 @@ public class AtmaSim {
   // AKA this is partitioned by model and grouped by (talent x partition). The data points are reforge (cmh), dps, and simulation
   private static Logger logger = Logger.getLogger(AtmaSim.class);
   public static void main(String[] args) throws Exception {
+    Configuration.addDefaultResource("mapred-site.xml");
     Configuration conf = new Configuration();
-    conf.set("mapreduce.job.running.map.limit", "16");
     Job job = Job.getInstance(conf, "atmasim");
     job.setJarByClass(AtmaSim.class);
     logger.info("Starting AtmaSim driver.");
