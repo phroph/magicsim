@@ -47,13 +47,15 @@ var combineSims = function(model) {
 var combineReforge = function(params) {
     var totalBudget = params.budget;
     var floor = params.floor;
+    var intellect = params.intellect;
     var ceiling = params.ceiling;
     var stepSize = params.step;
-    var createState = function(c,m,h) {
+    var createState = function(c,m,h,i) {
         return {
             crit: c,
             mastery: m,
             haste: h,
+            intellect: i,
             remainingBudget: totalBudget - (c+m+h),
             children: function() {
                 if(this.remainingBudget < stepSize) {
@@ -61,24 +63,24 @@ var combineReforge = function(params) {
                 }
                 var children = [];
                 if(this.crit+stepSize<=ceiling) {
-                    children.push(createState(this.crit+stepSize,this.mastery,this.haste));
+                    children.push(createState(this.crit+stepSize,this.mastery,this.haste,this.intellect));
                 }
                 if(this.mastery+stepSize<=ceiling) {
-                    children.push(createState(this.crit,this.mastery+stepSize,this.haste));
+                    children.push(createState(this.crit,this.mastery+stepSize,this.haste,this.intellect));
                 }
                 if(this.haste+stepSize<=ceiling) {
-                    children.push(createState(this.crit,this.mastery,this.haste+stepSize));
+                    children.push(createState(this.crit,this.mastery,this.haste+stepSize,this.intellect));
                 }
                 return children;
             },
             stringForm: function() {
-                return "c:" + this.crit + ",m:" + this.mastery + ",h:" + this.haste;
+                return "c:" + this.crit + ",m:" + this.mastery + ",h:" + this.haste + ",i:" + this.intellect;
             }
         }
     }
     var discard = {};
     var leaves = []; // Leaves are fully itemized and are the only nodes we want to look at.
-    var threshold = [createState(floor,floor,floor)];
+    var threshold = [createState(floor,floor,floor,intellect)];
     while(threshold.length>0) {
         var cursor = threshold.pop();
         if(discard[cursor.stringForm()]) {
@@ -98,14 +100,21 @@ var combineReforge = function(params) {
 var simModel = require('../models.js').models[1]; // Nighthold
 var simCombinations = combineSims(simModel); // 28 Combinations
 console.log('Found ' + simCombinations.length + ' sim combinations.');
-var talentChoices = [[0,1,2],[0],[0],[0,1],[0,1,2],[0],[0,2]];
+var talentChoices = [[0,1],[0],[0],[0],[0,1],[0,2],[0]];
+//var talentCombinations = [[0,0,0,0,0,0,0]];
 var talentCombinations = combineTalents(talentChoices); // 36 Combinations
 console.log('Found ' + talentCombinations.length + ' talent combinations.');
-var reforgeParameters = {budget: 24000, step: 500, floor: 3000, ceiling: 17000}; 
+var reforgeParameters1 = {budget: 30000, step: 1000, floor: 3000, ceiling: 18000, intellect: 40000}; 
+var reforgeParameters2 = {budget: 27000, step: 1000, floor: 3000, ceiling: 18000, intellect: 36000};
+var reforgeParameters3 = {budget: 33000, step: 1000, floor: 3000, ceiling: 18000, intellect: 44000}; 
 // At each step, 500 can go 1 way, with a maximum of 17000 in any single way. Aka n^3 expansion, pruning duplicates and constraint failures.
 // Floor is budget force allocated each way at least. So effective budget = budget - way*floor.
 // 11000 available budget, 22 steps. 22^3 = O(10,648) reforge points, including duplicates.
-var reforgeCombinations = combineReforge(reforgeParameters); // << 267 points
+var reforgeCombinations1 = combineReforge(reforgeParameters1);
+var reforgeCombinations2 = combineReforge(reforgeParameters2);
+var reforgeCombinations3 = combineReforge(reforgeParameters3);
+var reforgeCombinations = reforgeCombinations1.concat(reforgeCombinations2).concat(reforgeCombinations3)
+//var reforgeCombinations = [["c:5000,m:5000,h:5000"],["c:2000,m:5000,h:8000"],["c:5000,m:2000,h:8000"],["c:8000,m:5000,h:2000"]]
 console.log('Found ' + reforgeCombinations.length + ' reforge combinations.');
 
 // Now shit gets real. We take the cartesian product of all 3 of these basically. And line-by-line add records into jobFlowData.
@@ -123,8 +132,9 @@ console.log('Found ' + numJobs + ' jobs.');
 
 s3.upload({
     Bucket: bucket,
-    Key: 'input-' + guid + '.txt',
+    Key: 'in/input-' + guid + '.txt',
     Body: jobFlowData,
+    ContentType: "text/plain",
     ACL: 'public-read'
     },function (err, data) {
         if(err) {
@@ -136,7 +146,18 @@ s3.upload({
             Name: "Atmasim Job Flow",
             Applications: [
                 {
+                    Name: "Hadoop"
+                },
+                {
                     Name: "Hue"
+                }
+            ],
+            Configurations: [
+                {
+                    Classification: "mapred-site",
+                    Properties: {
+                        "mapreduce.tasktracker.map.tasks.maximum": "16"
+                    }
                 }
             ],
             Instances: {
@@ -153,21 +174,36 @@ s3.upload({
                 }, {
                     Name: "Core Instance Group",
                     InstanceRole: "CORE",
-                    InstanceCount: 1,
-                    InstanceType: "c4.xlarge",
+                    InstanceCount: 16,
+                    InstanceType: "c4.2xlarge",
                     Market: "ON_DEMAND"
                 }]
             },
             JobFlowRole: "EMR_EC2_DefaultRole",
             ServiceRole: "EMR_DefaultRole",
             Steps: [{
+                Name: "Copy Input to HDFS",
+                ActionOnFailure: "TERMINATE_JOB_FLOW",
+                HadoopJarStep: {
+                    Jar: "command-runner.jar",
+                    Args: [
+                        "s3-dist-cp",
+                        "--s3Endpoint=s3.amazonaws.com",
+                        "--src=s3://atmasim/in",
+                        "--dest=hdfs:///atmasim",
+                        "--deleteOnSuccess"
+                    ]
+                }    
+            },
+                {
                 Name: "Atmasim Driver",
                 ActionOnFailure: "TERMINATE_JOB_FLOW",
                 HadoopJarStep: {
-                    Jar: "s3://atmasim/atmasimDriver.jar",
+                    Jar: "s3://atmasim/bin/atmasimDriver.jar",
                     Args: [
-                        "s3://atmasim/input-" + guid + ".txt",
-                        "s3://atmasim/results-" + guid + "/"
+                        "hdfs:///atmasim/input-" + guid + ".txt" ,
+                        "s3://atmasim/out/results-" + guid + "/",
+                        numJobs + "" // Pretty dumb but I gotta cast it to a string explicitly.
                     ]
                 }
             }],
@@ -175,7 +211,7 @@ s3.upload({
             { 
                 Name: "Install SimC",
                 ScriptBootstrapAction: { 
-                    Path: "s3://atmasim/installSimC.sh"
+                    Path: "s3://atmasim/bin/installGate.bash"
                 }
             }
             ],
