@@ -2,12 +2,14 @@ package atmasim.hadoop.mapreduce;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.FloatWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.LazyOutputFormat;
-import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.log4j.Logger;
+
 
 public class AtmaSim {
 
@@ -17,10 +19,11 @@ public class AtmaSim {
   // Generate a list of dps data points for each talent.
   // AKA this is partitioned by model and grouped by (talent x partition). The data points are reforge (cmh), dps, and simulation
   private static Logger logger = Logger.getLogger(AtmaSim.class);
+  public static int NUMBER_OF_RECORDS = 0;
   public static void main(String[] args) throws Exception {
-    Configuration.addDefaultResource("mapred-site.xml");
     Configuration conf = new Configuration();
     Job job = Job.getInstance(conf, "atmasim");
+    NUMBER_OF_RECORDS = Integer.parseInt(args[2]);
     job.setJarByClass(AtmaSim.class);
     logger.info("Starting AtmaSim driver.");
     // IN: simkey:text -map-> dpskey:dpsvalue -reduce-> compositedpskey:float
@@ -32,7 +35,7 @@ public class AtmaSim {
     job.setMapOutputValueClass(DPSValue.class);
     job.setPartitionerClass(ModelPartitioner.class);
     job.setReducerClass(DPSReducer.class);
-    job.setOutputKeyClass(DPSKey.class);
+    job.setOutputKeyClass(FloatWritable.class);
     job.setOutputValueClass(ReducedDPSValue.class);
     job.setOutputFormatClass(FileOutputFormat.class);
     LazyOutputFormat.setOutputFormatClass(job, TextOutputFormat.class);
