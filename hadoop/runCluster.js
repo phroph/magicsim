@@ -156,7 +156,8 @@ s3.upload({
                 {
                     Classification: "mapred-site",
                     Properties: {
-                        "mapreduce.tasktracker.map.tasks.maximum": "16"
+                        "mapreduce.tasktracker.map.tasks.maximum": "32",
+                        "mapreduce.job.reduce.slowstart.completedmaps": "1.0" // So I stop getting cucked by Reduce containers. Stop fucking shuffling jesus.
                     }
                 }
             ],

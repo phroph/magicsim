@@ -21,9 +21,9 @@ public class SimC {
                 builder.append(line);
                 builder.append(System.getProperty("line.separator"));
             }
-            logger.info("*** START SIMC LOGS ***");
-            logger.info(builder.toString());
-            logger.info("*** END SIMC LOGS ***");
+            //logger.info("*** START SIMC LOGS ***");
+            //logger.info(builder.toString());
+            //logger.info("*** END SIMC LOGS ***");
             logger.info("Executed sim ("+profilePath+") with status code: " + simc.waitFor());
         } catch (Exception e) {
             logger.error(e);

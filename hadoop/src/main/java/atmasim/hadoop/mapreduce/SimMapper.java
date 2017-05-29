@@ -49,12 +49,14 @@ import com.google.gson.JsonParser;
 
         String gear = "head=purifiers_gorget,id=138313,bonus_id=3516/1487/1813\nneck=talisman_of_the_shaldorei,id=141325,enchant=600mastery\nshoulders=purifiers_mantle,id=138322,bonus_id=3516/1487/1813\n"
         +"back=purifiers_drape,id=138370,bonus_id=3518/1502/3528,enchant=200int\nchest=soulstitched_robes,id=133611,bonus_id=3418/1808/1542/3528,gems=150haste\nshirt=wraps_of_the_bloodsoaked_brawler,id=98543\ntabard=renowned_guild_tabard,id=69210\n"
-        +"wrists=wristbands_of_the_swirling_deeps,id=137372,bonus_id=3418/1557/3337\nhands=scorpid_handlers_gloves,id=140888,bonus_id=3445/1512/3337\nwaist=mangazas_madness,id=132864,bonus_id=3459/3530\n"
+        +"wrists=wristbands_of_the_swirling_deeps,id=137372,bonus_id=3418/1557/3337\nhands=scorpid_handlers_gloves,id=140888,bonus_id=3445/1512/3337\nwaist=antiquated-_highborne_cinch,id=140849,bonus_id=3445/1502/3336\n"
         +"legs=purifiers_leggings,id=138316,bonus_id=3516/1502/3337\nfeet=perpetually_muddy_sandals,id=140854,bonus_id=3445/1502/3336\nfinger1=ring_of_collapsing_futures,id=142173,bonus_id=3418/1808/1517/3337,gems=150haste,enchant=200haste\n"
-        +"finger2=sephuzs_secret,id=132452,bonus_id=3529/3530/1811,gems=150haste,enchant=200haste\ntrinket1=unstable_arcanocrystal,id=141482,bonus_id=1472\ntrinket2=brinewater_slime_in_a_bottle,id=142507,bonus_id=3508/605/1512/3528\n"
+        +"finger2=grasping_tentacle_loop,id=133634,bonus_id=3418/1562/3337,enchant=200haste\ntrinket1=unstable_arcanocrystal,id=141482,bonus_id=1472\ntrinket2=brinewater_slime_in_a_bottle,id=142507,bonus_id=3508/605/1512/3528\n"
         +"main_hand=xalatath_blade_of_the_black_empire,id=128827,bonus_id=740,gem_id=140823/140820/140823/0,relic_id=3517:1502:3336/3517:1497:3336/3517:1502:3336/0\noff_hand=secrets_of_the_void,id=133958\n"
         +"scale_to_itemlevel=925\ngear_versatility_rating=0\ngear_intellect="+intellect.split(":")[1]+"\ngear_crit_rating="+ crit.split(":")[1] + "\ngear_haste_rating="+ haste.split(":")[1] +"\ngear_mastery_rating="+ mastery.split(":")[1] +"\nset_bonus=tier19_2pc=0\nset_bonus=tier19_4pc=0\nset_bonus=tier20_2pc=1\nset_bonus=tier20_4pc=1\n";
         String base = "iterations=2000\nthreads="+threads+"\noutput=nul\nmax_time="+ simString.split("_")[0] +"\noptimal_raid=1\nfight_style="+ simString.split("_")[1] +"\nenemy=enemy1\n";
+        //waist=mangazas_madness,id=132864,bonus_id=3459/3530
+        //finger2=sephuzs_secret,id=132452,bonus_id=3529/3530/1811,gems=150haste,enchant=200haste
 
         String addString = "\n";
         if(simString.split("_")[2].equals("ba")) { 
@@ -75,10 +77,10 @@ import com.google.gson.JsonParser;
         String profileData = header + gear + base + targetString + addString + footer;
         String profilePath = Paths.get(runtimePath, profileName + ".simc").toString();
         File profile = new File(profilePath);
-        logger.info("Created profile from key/value data:");
-        logger.info("*** START OF PROFILE DATA ***");
-        logger.info(profileData);
-        logger.info("*** END OF PROFILE DATA ***");
+        //logger.info("Created profile from key/value data:");
+        //logger.info("*** START OF PROFILE DATA ***");
+        //logger.info(profileData);
+        //logger.info("*** END OF PROFILE DATA ***");
         FileWriter fWriter = new FileWriter(profile);
         fWriter.write(profileData);
         fWriter.close();

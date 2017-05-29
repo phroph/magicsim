@@ -80,6 +80,7 @@ public class SimInputFormat extends FileInputFormat<SimKey, Text> {
                         offset += splitLength;
                     }
                 }
+                input.close();
             } else if (length != 0) {
                 log.info("Creating 1 split for unsplittable content.");
                 splits.add(new FileSplit(lPath, 0, length, fs.getFileBlockLocations(lPath, 0, length)[0].getHosts()));
