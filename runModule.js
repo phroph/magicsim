@@ -22,7 +22,7 @@ module.exports.run = function(window, cArgs) {
     var advancedOperations;
     var simthreads = 1;
 
-    var testMode = true;
+    var testMode = false;
 
     var region,realm,name,threads,weights,ptrl;
     if(cArgs!=null) {
@@ -83,7 +83,7 @@ module.exports.run = function(window, cArgs) {
         advancedMode = true;
     }
 
-    srcbuild = true;
+    srcbuild = false;
 
     var config = { names: ["fighttime","fightstyle"], values: [[90, 250, 400],["low_movement","high_movement","patchwerk"]]};
     var addConfig = { names: ["fighttime","fightstyle","adds"], values: [[30,35,50,55,60],["low_movement","patchwerk"],['3','4','5']]}
@@ -307,7 +307,7 @@ module.exports.run = function(window, cArgs) {
                 if (srcbuild) {
                     simcpath = path.join("..", "simc", "engine", "simc");
                 } else {
-                    simcpath = path.join("..", "bin", fs.readdirSync("bin")[0], "simc.exe");
+                    simcpath = path.join("bin", fs.readdirSync("bin")[0], "simc.exe");
                 }
                 execSync(simcpath + " " + path.join('profile_builder', name + '.simc'));
             }

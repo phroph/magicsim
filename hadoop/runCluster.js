@@ -49,6 +49,7 @@ var combineReforge = function(params) {
     var floor = params.floor;
     var intellect = params.intellect;
     var ceiling = params.ceiling;
+    var hceiling = params.hceiling;
     var stepSize = params.step;
     var createState = function(c,m,h,i) {
         return {
@@ -68,7 +69,7 @@ var combineReforge = function(params) {
                 if(this.mastery+stepSize<=ceiling) {
                     children.push(createState(this.crit,this.mastery+stepSize,this.haste,this.intellect));
                 }
-                if(this.haste+stepSize<=ceiling) {
+                if(this.haste+stepSize<=hceiling) {
                     children.push(createState(this.crit,this.mastery,this.haste+stepSize,this.intellect));
                 }
                 return children;
@@ -97,37 +98,131 @@ var combineReforge = function(params) {
     return leaves;
 }
 
-var simModel = require('../models.js').models[1]; // Nighthold
+var combineGear = function(params) {
+    var baseTemplate = params.base;
+    var variables = params.parameters;
+    var combinedLabel = "";
+    for(var variable in variables) {
+        variable
+    }
+}
+
+var simModel = require('../models.js').models[2]; // ToS
 var simCombinations = combineSims(simModel); // 28 Combinations
 console.log('Found ' + simCombinations.length + ' sim combinations.');
-var talentChoices = [[0,1],[0],[0],[0],[0,1],[0,2],[0]];
+var talentChoices = [[1,2],[1],[1],[1],[1,2],[1,3],[1]];
 //var talentCombinations = [[0,0,0,0,0,0,0]];
 var talentCombinations = combineTalents(talentChoices); // 36 Combinations
 console.log('Found ' + talentCombinations.length + ' talent combinations.');
-var reforgeParameters1 = {budget: 30000, step: 1000, floor: 3000, ceiling: 18000, intellect: 40000}; 
-var reforgeParameters2 = {budget: 27000, step: 1000, floor: 3000, ceiling: 18000, intellect: 36000};
-var reforgeParameters3 = {budget: 33000, step: 1000, floor: 3000, ceiling: 18000, intellect: 44000}; 
+var reforgeParameters1 = {budget: 30000, step: 1000, floor: 3000, hceiling: 20000, ceiling: 18000, intellect: 40000}; 
+var reforgeParameters2 = {budget: 27000, step: 1000, floor: 3000, hceiling: 20000, ceiling: 18000, intellect: 36000};
+var reforgeParameters3 = {budget: 33000, step: 1000, floor: 3000, hceiling: 20000, ceiling: 18000, intellect: 44000}; 
 // At each step, 500 can go 1 way, with a maximum of 17000 in any single way. Aka n^3 expansion, pruning duplicates and constraint failures.
 // Floor is budget force allocated each way at least. So effective budget = budget - way*floor.
 // 11000 available budget, 22 steps. 22^3 = O(10,648) reforge points, including duplicates.
-var reforgeCombinations1 = combineReforge(reforgeParameters1);
-var reforgeCombinations2 = combineReforge(reforgeParameters2);
-var reforgeCombinations3 = combineReforge(reforgeParameters3);
-var reforgeCombinations = reforgeCombinations1.concat(reforgeCombinations2).concat(reforgeCombinations3)
-//var reforgeCombinations = [["c:5000,m:5000,h:5000"],["c:2000,m:5000,h:8000"],["c:5000,m:2000,h:8000"],["c:8000,m:5000,h:2000"]]
-console.log('Found ' + reforgeCombinations.length + ' reforge combinations.');
 
-// Now shit gets real. We take the cartesian product of all 3 of these basically. And line-by-line add records into jobFlowData.
+var reforge = true;
+if(reforge) {
+    var reforgeCombinations1 = combineReforge(reforgeParameters1);
+    var reforgeCombinations2 = combineReforge(reforgeParameters2);
+    var reforgeCombinations3 = combineReforge(reforgeParameters3);
+    var reforgeCombinations = reforgeCombinations1.concat(reforgeCombinations2).concat(reforgeCombinations3)
+    //var reforgeCombinations = reforgeCombinations3
+    //var reforgeCombinations = [["c:5000,m:5000,h:5000"],["c:2000,m:5000,h:8000"],["c:5000,m:2000,h:8000"],["c:8000,m:5000,h:2000"]]
+    console.log('Found ' + reforgeCombinations.length + ' reforge combinations.');
 
-var numJobs = 0;
-simCombinations.forEach((sim) => {
-    talentCombinations.forEach((talent) => {
-        reforgeCombinations.forEach((reforge) => {
-            jobFlowData += sim + ';' + talent + ';' + reforge + '\n';
-            numJobs++;
+    // Now shit gets real. We take the cartesian product of all 3 of these basically. And line-by-line add records into jobFlowData.
+
+    var numJobs = 0;
+    simCombinations.forEach((sim) => {
+        talentCombinations.forEach((talent) => {
+            reforgeCombinations.forEach((reforge) => {
+                jobFlowData += sim + ';' + talent + ';' + reforge + '\n';
+                numJobs++;
+            })
         })
     })
-})
+
+}
+else {
+    var gearCombinations = [];
+    var gearParameters = {
+        template: "head=,id=%HID%,ilevel=%HILVL%%NL%neck=,id=%NID%,ilevel=%NLVL%,enchant=%NENCH%%NL%shoulders=,id=%SID%,ilevel=%SILVL%%NL%back=,id=%BID%,ilevel=%BILVL,enchant=%BENCH%%NL%chest=,id=%CID%,ilevel=%CILVL%%NL%wrists=,id=%WID%,ilevel=%WILVL%%NL%hands=,id=%HAID%,ilevel=%HAILVL%%NL%waist=,id=%WAID%,ilevel=%WAILVL%%NL%legs=,id=%LID%,ilevel=%LILVL%%NL%feet=,id=%FID%,ilevel=%FILVL%%NL%finger1=,id=%F1ID%,ilevel=%F1ILVL%,enchant=%F1ENCH%%NL%finger2=,id=%F2ID%,ilevel=%F2ILVL%,enchant=%F2ENCH%%NL%trinket1=,id=%T1ID%,ilevel=%T1ILVL%%NL%trinket2=,id=%T2ID%,ilevel=%T2ILVL%%NL%main_hand=,id=128827,bonus_id=740,gem_id=%R1ID%/%R2ID%/%R3ID%,relic_ilevel=%R1ILVL%/%R2ILVL%/%R3ILVL%%NL%off_hand=,id=133958%NL%",
+        baseGear: {
+            H: {id:"147165",lvl:930},
+            N: {id:"147013",lvl:930},
+            S: {id:"146997",lvl:930},
+            B: {id:"147163",lvl:930},
+            C: {id:"147167",lvl:930},
+            W: {id:"147000",lvl:930},
+            HA: {id:"146988",lvl:940},
+            WA: {id:"146999",lvl:930},
+            L: {id:"147166",lvl:930},
+            F: {id:"146987",lvl:930},
+            F1: {id:"147195",lvl:940},
+            F2: {id:"147020",lvl:930},
+            T2: {id:"142507",lvl:930}
+        },
+        modifications: [
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+            [{slot:"T1",id:""}],
+        ],
+        modificationReforgeParameters: {
+            min: 850,
+            max: 955,
+            stepSize: 5
+        },
+        tierCombinations: [
+            ["tier20_2pc=1","tier20_4pc=1"]
+        ]
+    };
+    gearCombinations = combineGear(gearParameters);
+
+    simCombinations.forEach((sim) => {
+        talentCombinations.forEach((talent) => {
+            gearCombinations.forEach((gear) => {
+                jobFlowData += sim + ';' + talent + ';' + gear + '\n';
+                numJobs++;
+            })
+        })
+    })
+}
 console.log('Found ' + numJobs + ' jobs.');
 
 s3.upload({

@@ -3,28 +3,27 @@ var fs = require("fs");
 var baseScript = fs.readFileSync("baseScript.math","utf-8");
 
 //"https://s3.amazonaws.com/atmasim/out/results-%guid%/%talent%/%model%-r-00000"
-var resultGuid = "ee702cc5-5c3f-e963-73ea-0ac184d28131";
+var resultGuid = process.argv[2];
+var processString = 'processUrl["https://s3.amazonaws.com/atmasim/out/results-%guid%/%talent%/%model%-r-00000","%talent%","%model%"]'.replace(/%guid%/g,resultGuid);
 var talentCombinations = [
-    "0000000",
-    "0000020",
-    "0000100",
-    "0000120",
-    "1000000",
-    "1000020",
-    "1000100",
-    "1000120"
+    "1111111",
+    "1111131",
+    "1111211",
+    "1111231",
+    "2111111",
+    "2111131",
+    "2111211",
+    "2111231"
 ]
 var modelNames = [
-    "nh",
-    "krosus"
+    "tos"
 ]
-baseScript = baseScript.replace("%guid%",resultGuid)
-var fullScript = "";
+var fullScript = baseScript;
 for(var talent in talentCombinations) {
     talent = talentCombinations[talent]
     for(var model in modelNames) {
         model = modelNames[model]
-        fullScript = fullScript + baseScript.replace(/%talent%/g,talent).replace(/%model%/g,model) + "\n";   
+        fullScript = fullScript + "\n" + processString.replace(/%model%/g,model).replace(/%talent%/g,talent);   
     }
 }
 fs.writeFileSync("process-" + resultGuid + ".math", fullScript);

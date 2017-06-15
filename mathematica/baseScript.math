@@ -4,14 +4,9 @@ getMastery[point_]:=Part[StringSplit[Part[point,2],":"],2]//ToExpression
 getHaste[point_]:=Part[StringSplit[Part[point,3],":"],2]//ToExpression
 getDps[point_]:=Part[point,4]//ToExpression
 getTotal[point_]:=getCrit[point]+getMastery[point]+getHaste[point]
-data:=Import["https://s3.amazonaws.com/atmasim/out/results-%guid%/%talent%/%model%-r-00000"]
-reforges:=Merge[Part[StringSplit[Part[#,4],";"],1]->Join[Take[Part[Select[StringSplit[Part[StringSplit[#,";"],1],"\t"],compare],1]&/@#,3],{Part[StringSplit[#,";"]//Last,2]}]&/@data,Join]
-{"%talent%/%model%",ListPlot3D[{getHaste[#]/getTotal[#],(getMastery[#]-getCrit[#])/getTotal[#],getDps[#]} &/@reforges[#],PlotRange->All,ColorFunction->Function[{x,y,z},Hue[z]],PlotLabel->Join[#,First[Take[reforges[#],Ordering[Part[#,4] &/@reforges[#],-1]]]],AxesLabel->{"Haste % Total","Mastery - Crit % Total","DPS"}]&/@Keys[reforges]}
-Clear[data]
-Clear[reforges]
-Clear[compare]
-Clear[getCrit]
-Clear[getMastery]
-Clear[getHaste]
-Clear[getDps]
-Clear[getTotal]
+processUrl[url_,talent_,model_]:=
+(  
+data=Import[url];
+reforges=Merge[Part[StringSplit[Part[#,4],";"],1]->Join[Take[Part[Select[StringSplit[Part[StringSplit[#,";"],1],"\t"],compare],1]&/@#,3],{Part[StringSplit[#,";"]//Last,2]}]&/@data,Join];
+Return[{talent + model,ListPlot3D[{getHaste[#]/getTotal[#],(getMastery[#]-getCrit[#])/getTotal[#],getDps[#]} &/@reforges[#],PlotRange->All,ColorFunction->Function[{x,y,z},Hue[z]],PlotLabel-># +ToString[First[Take[reforges[#],Ordering[getDps[#] &/@reforges[#],-1]]]],AxesLabel->{"Haste % Total","Mastery - Crit % Total","DPS"}]&/@Keys[reforges]}];
+)
