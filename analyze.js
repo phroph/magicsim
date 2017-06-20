@@ -51,14 +51,13 @@ var type;
 var results = fs.readdirSync(path.join(".","/results"));
 
 results.forEach(function(result){
+    if(!result.match(".xml")) {
+		return;
+	}
     var xml = fs.readFileSync(path.join('.','results', result), "utf-8");
     var doc = new dom().parseFromString(xml);
     var res = result.match("^(.*)_([0-9]*)_(.*).simc.xml");
     var addRes = result.match("^([^_]*)_(.*).simc.xml");
-
-    if(res == null) {
-        return;
-    }
 
     var time = res[2];
     var fight = res[3];
