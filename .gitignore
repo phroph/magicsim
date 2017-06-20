@@ -48,3 +48,5 @@ mime.cmd
 hadoop/.gradle
 .vscode
 .gradle
+process-*.math
+simc-*.7z
