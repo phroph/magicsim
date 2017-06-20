@@ -9,7 +9,7 @@ var time_mapping
 
 var modelname;
 if(!argv.model) {
-    modelname = "nh";
+    modelname = "tos";
 } else {
     modelname = argv.model;
 }
@@ -47,6 +47,9 @@ results.forEach(function(result){
     var addRes = result.match("^([^_]*)_(.*).simc.csv");
 	var lines = csv.split("\r\n").slice(2);
 
+	if(res == null) {
+		return;
+	}
 	console.log(result);
     var time = res[2];
     var fight = res[3];
