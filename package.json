@@ -42,7 +42,8 @@
     "express-session": "~1.15.0",
     "debug": "~2.6.0",
     "express": "~4.14.1",
-    "yargs": "~6.6.0"
+    "yargs": "~6.6.0",
+    "fs-extra": "3.0.1"
   },
   "chromium-args": "--enable-logging=stderr",
   "devDependencies": {

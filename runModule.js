@@ -13,6 +13,7 @@ module.exports.run = function(window, cArgs) {
     var fs = require('fs');
     var os = require('os');
     var argv = require('yargs').argv;
+    var fse = require('fs-extra');
 
     var boss_models = require("./models.js").models;
     var model;
@@ -20,7 +21,6 @@ module.exports.run = function(window, cArgs) {
     var timeModel;
     var srcbuild;
     var advancedOperations;
-    var simthreads = 1;
 
     var testMode = false;
 
@@ -121,10 +121,11 @@ module.exports.run = function(window, cArgs) {
     for(var i = 0; i<36; i++) {
         pool.push(null);
     }
-    var pool_size = 4;
-    if(threads && threads >= 1 && threads <= 36) {
+    var simthreads = threads;
+    var pool_size = 1;
+    /*if(threads && threads >= 1 && threads <= 36) {
         pool_size = threads;
-    }
+    }*/
     var workers = 0;
 
     var mutex = locks.createMutex();
@@ -456,6 +457,9 @@ module.exports.run = function(window, cArgs) {
         } else {
             deleteContents(resultsFolder);
         }
+        var apikeysrc = path.join('apikey.txt');
+        var apikeydest = path.join('results', 'apikey.txt');
+        fse.copySync(apikeysrc,apikeydest);
         console.log("Starting SimulationCraft run");
         var promises = fs.readdirSync("sims").map(function(sim) {
             var simcpath;
