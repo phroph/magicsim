@@ -9,7 +9,7 @@ var time_mapping
 
 var modelname;
 if(!argv.model) {
-    modelname = "nighthold";
+    modelname = "tos";
 } else {
     modelname = argv.model;
 }
@@ -55,6 +55,10 @@ results.forEach(function(result){
     var doc = new dom().parseFromString(xml);
     var res = result.match("^(.*)_([0-9]*)_(.*).simc.xml");
     var addRes = result.match("^([^_]*)_(.*).simc.xml");
+
+    if(res == null) {
+        return;
+    }
 
     var time = res[2];
     var fight = res[3];
