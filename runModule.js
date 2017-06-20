@@ -44,9 +44,9 @@ module.exports.run = function(window, cArgs) {
         advancedOperations = cArgs.advancedOperations;
     } else {
         if(!argv.model) {
-            modelName = 'nh';
+            modelName = 'tos';
             var m = boss_models.filter((m) => {
-                return m.name == "nh";
+                return m.name == "tos";
             })[0]
             model = m.model;
             timeModel = m.timeModel;
@@ -77,16 +77,13 @@ module.exports.run = function(window, cArgs) {
         simthreads = 36;
     }
 
-    // Due to restrictions with SimC, we have to generate and modify the APL for dungeon sims.
-    // ergo we must enforce advanced mode if it is not already enabled.
-    if(modelName == 'mplus' || testMode) {
-        advancedMode = true;
-    }
+    // Advanced mode for less chance of failure.
+    advancedMode = true;
 
     srcbuild = false;
 
-    var config = { names: ["fighttime","fightstyle"], values: [[90, 250, 400],["low_movement","high_movement","patchwerk"]]};
-    var addConfig = { names: ["fighttime","fightstyle","adds"], values: [[30,35,50,55,60],["low_movement","patchwerk"],['3','4','5']]}
+    var config = { names: ["fighttime","fightstyle"], values: [[90, 250, 400],["light_movement","heavy_movement","patchwerk"]]};
+    var addConfig = { names: ["fighttime","fightstyle","adds"], values: [[30,35,50,55,60],["light_movement","patchwerk"],['3','4','5']]}
 
     var cp = config.names.reduce(function(prev, cur) {
         var name= cur;
@@ -117,8 +114,8 @@ module.exports.run = function(window, cArgs) {
     }
 
     var pool = [];
-    var poom_max = 36;
-    for(var i = 0; i<36; i++) {
+    var pool_max = 36;
+    for(var i = 0; i<pool_max; i++) {
         pool.push(null);
     }
     var simthreads = threads;
