@@ -4,7 +4,6 @@ module.exports.run = function(window, cArgs) {
     var cartesianProduct = require('cartesian-product');
     var process_exec = require('child_process').exec;
     var execSync = require('child_process').execSync;
-    var zip = require('node-7z')
     var xpath = require('xpath');
     var dom = require('xmldom').DOMParser;
     var http = require('http');
@@ -249,7 +248,7 @@ module.exports.run = function(window, cArgs) {
             }
 
             console.log("Extracting simc.7z archive.");
-            new zip().extractFull(name, 'bin', {})
+            bindExec(".\\7z.exe x -obin -y " + name)
             .then(() => {
                 console.log("Done extracting simc.7z.");
                 deferred.resolve();
