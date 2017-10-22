@@ -64,7 +64,10 @@ import com.google.gson.JsonObject;
     }
 
     private String generateFileName(DPSKey key) {
-        return key.talentString.toString().replace(",", "") + "/" + key.modelString.toString().replace("\"", "");
+        return key.talentString.toString().replaceAll(",", "") + "/" 
+        + key.modelString.toString().replaceAll("\"", "") 
+        + "/" + key.legendaries.toString().replaceAll("+", "and")
+        + key.relics.toString() + "and" + key.crucible.toString().replaceAll(":", "-");
     }
 
     private float getWeightForSim(String sim, JsonObject model) {

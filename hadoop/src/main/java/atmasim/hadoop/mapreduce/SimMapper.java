@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -18,8 +20,35 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import atmasim.hadoop.wow.*;
+
  public class SimMapper  extends Mapper<SimKey, Text, DPSKey, DPSValue>{
     private Logger logger = Logger.getLogger(SimMapper.class);
+
+    GearSlot mangaza = new GearSlot(GearSlots.WAIST, "132864", "1811/3570", false);
+    GearSlot sephuz = new GearSlot(GearSlots.FINGER1, "132452", "3529/3459/3570", "150haste", "200haste", false);
+    GearSlot zenk;
+    GearSlot shahraz;
+    GearSlot anunds;
+    GearSlot kjbw;
+    GearSlot soul;
+    GearSlot zeks;
+    GearSlot hotv;
+
+    private GearSlot GetLegendaryByName(String name) {
+        if(name.equals("mangaza")) {
+            return mangaza;
+        } else if(name.equals("sephuz")) {
+            return sephuz;
+        } else if(name.equals("shahraz")) {
+            return shahraz;
+        } else if(name.equals("soul")) {
+            return soul;
+        } else if(name.equals("zeks")) {
+            return zeks;
+        }
+        return null;
+    }
 
     @Override 
     public void map(SimKey key, Text value, Context context) throws IOException, InterruptedException {
@@ -31,7 +60,8 @@ import com.google.gson.JsonParser;
         String label = "";
         boolean isReforge = false;
         String[] gearData = modifierString.split(":::");
-        String[] reforgeData = modifierString.split(",");
+        String[] modifierData = modifierString.split(";");
+        String[] reforgeData = modifierData[0].split(",");
         if(gearData.length == 1) {
             isReforge = true;
             reforgeString = modifierString;
@@ -50,42 +80,78 @@ import com.google.gson.JsonParser;
         String sa = "raid_events+=/adds,count=3,first=45,cooldown=45,duration=10,distance=5\n";
         String doubleTarget = "enemy=enemy2\nraid_events+=/move_enemy,name=enemy2,cooldown=2000,duration=1000,x=-27,y=-27\n";
 
-        String talents = "talents=" + talentString.replace(",", "") + "\n";
-        String artifact = "artifact=47:0:0:0:0:764:1:765:1:766:1:767:4:768:1:769:1:770:1:771:4:772:4:773:4:774:4:775:4:776:4:777:4:778:4:779:1:1347:1:1381:1:1573:4:1574:1:1575:1:1576:9:1650:1\n";
+        String talents = talentString.replace(",", "") + "\n";
+        String artifact = "47:0:0:0:0:764:1:765:1:766:1:767:4:768:1:769:1:770:1:771:4:772:4:773:4:774:4:775:4:776:4:777:4:778:4:779:1:1347:1:1381:1:1573:4:1574:1:1575:1:1576:24:1650:1\n";
 
-        String header = "ptr=1\noutput=nul\nreport_details=0\npriest=\"Atmasim\"\nlevel=110\nrace=troll\nrole=spell\npriest_ignore_healing=1\nposition=back\n" + talents + artifact + "spec=shadow\ndefault_actions=1\n";
+        String header = "ptr=1\noutput=nul\nstrict_work_queue=1\nreport_details=0\npriest=\"Atmasim\"\nlevel=110\nrace=troll\nrole=spell\npriest_ignore_healing=1\nposition=back\n" + talents + artifact + "spec=shadow\ndefault_actions=1\n";
         int threads = 8;
         String gear; 
+
+        //Pyrdaz is just stats, worthless to sim
+        //Norgannon's is worthless to sim
+        //Twin's is worthless to sim
+
+        //GearSlot head = new GearSlot(GearSlots.HEAD, "138313", "3516/1487/1813", false);
+        GearSlot neck = new GearSlot(GearSlots.NECK, "141325", "3562/41/1502/3336", "mark_of_the_claw", false);
+        //GearSlot shoulders = new GearSlot(GearSlots.SHOULDERS, "147168", "3562/1502/3336", false);
+        //GearSlot back = new GearSlot(GearSlots.BACK, "146984", "3563/1512/3528", "200int", false);
+        //GearSlot chest = new GearSlot(GearSlots.CHEST, "147167", "3562/1497/3528", false);
+        //GearSlot wrists = new GearSlot(GearSlots.WRISTS, "147001", "3561/41/1502/3337", false);
+        //GearSlot hands = new GearSlot(GearSlots.HANDS, "147164", "3562/1507/3336", false);
+        //GearSlot legs = new GearSlot(GearSlots.LEGS, "146992", "3562/1808/1507/3336", "150haste");
+        //GearSlot feet = new GearSlot(GearSlots.FEET, "134416", "3536/1582/3337", false);
+        //GearSlot finger2 = new GearSlot(GearSlots.FINGER2, "147195", "3562/1512/3336", "200haste", false);
+        //GearSlot trinket1 = new GearSlot(GearSlots.TRINKET1, "141482", "1472", false);
+        //GearSlot trinket2 = new GearSlot(GearSlots.TRINKET2, "141482", "1472", false);
+        //main_hand=,id=128862
+        GearSlot main_hand = new GearSlot(GearSlots.MAIN_HAND, "128827");
+        //GearSlot off_hand = new GearSlot(GearSlots.OFF_HAND, "133958");
+
+        // Upgrade to parse from parameters
+        GearSlot leg1 = null;
+        GearSlot leg2 = null;
+        String setString = "set_bonus=tier19_2pc=0\nset_bonus=tier19_4pc=0\nset_bonus=tier20_2pc=0\nset_bonus=tier20_4pc=0\nset_bonus=tier21_2pc=1\nset_bonus=tier21_4pc=1\n";
+        //GearSet gearSet = new GearSet(head, neck, shoulders, back, chest, wrists, hands, waist, legs, feet, finger1, finger2, trinket1, trinket2, main_hand, off_hand, setString);
+        SimCharacter character = null;// = new SimCharacter(leg1.toString() +"\n" + leg2.toString() + "\n" + setString, "artifact=47:0:0:0:0:764:1:765:1:766:1:767:4:768:1:769:1:770:1:771:4:772:4:773:4:774:4:775:4:776:4:777:4:778:4:779:1:1347:1:1381:1:1573:4:1574:1:1575:1:1576:15:1650:1\n", talentString.replace(",", ""), "0");
+        
+        String[] simData = simString.split("_");
+
+
         if(isReforge) {
             String crit = reforgeData[0];
             String mastery = reforgeData[1];
             String haste = reforgeData[2];
             String intellect = reforgeData[3];
+            String[] traits = modifierData[1].split(":");
+            String legendary1 = modifierData[2];
+            String legendary2 = modifierData[3];
+            String crucible = modifierData[4];
+            for(String trait : traits) {
+                Pattern regex = Pattern.compile(":"+trait+":(\\d+):");
+                Matcher matcher = regex.matcher(artifact);
+                if(matcher.find()) {
+                    int traitValue = Integer.parseInt(matcher.group(1));
+                    logger.info("Found trait " + trait + " with value " + traitValue);
+                    artifact = artifact.replace(":"+trait+":"+traitValue+":", ":"+trait+":"+(++traitValue)+":");
+                    logger.info("Updated string to " + artifact);
+                }
+            }
+            leg1 = GetLegendaryByName(legendary1);
+            leg2 = GetLegendaryByName(legendary2);
+            
+            gear = neck.toString() + "\n" + leg1.toString() + "\n" + leg2.toString() + "\n" + main_hand.toString() + "\n"
+            + "gear_versatility_rating=0\ngear_intellect="+intellect.split(":")[1]
+            + "\ngear_crit_rating="+ crit.split(":")[1] 
+            + "\ngear_haste_rating="+ haste.split(":")[1] 
+            + "\ngear_mastery_rating="+ mastery.split(":")[1] + "\n"
+            + setString;
 
-            gear = "head=purifiers_gorget,id=138313,bonus_id=3516/1487/1813\n"
-            +"neck=talisman_of_the_shaldorei,id=141325,enchant=600mastery\n"
-            +"shoulders=purifiers_mantle,id=138322,bonus_id=3516/1487/1813\n"
-            +"back=purifiers_drape,id=138370,bonus_id=3518/1502/3528,enchant=200int\n"
-            +"chest=soulstitched_robes,id=133611,bonus_id=3418/1808/1542/3528,gems=150haste\n"
-            +"shirt=wraps_of_the_bloodsoaked_brawler,id=98543\n"
-            +"tabard=renowned_guild_tabard,id=69210\n"
-            +"wrists=wristbands_of_the_swirling_deeps,id=137372,bonus_id=3418/1557/3337\n"
-            +"hands=scorpid_handlers_gloves,id=140888,bonus_id=3445/1512/3337\n"
-            +"waist=antiquated_highborne_cinch,id=140849,bonus_id=3445/1502/3336\n"
-            +"legs=purifiers_leggings,id=138316,bonus_id=3516/1502/3337\n"
-            +"feet=perpetually_muddy_sandals,id=140854,bonus_id=3445/1502/3336\n"
-            +"finger1=ring_of_collapsing_futures,id=142173,bonus_id=3418/1808/1517/3337,gems=150haste,enchant=200haste\n"
-            +"finger2=grasping_tentacle_loop,id=133634,bonus_id=3418/1562/3337,enchant=200haste\n"
-            +"trinket1=unstable_arcanocrystal,id=141482,bonus_id=1472\n"
-            +"trinket2=brinewater_slime_in_a_bottle,id=142507,bonus_id=3508/605/1512/3528\n"
-            +"main_hand=xalatath_blade_of_the_black_empire,id=128827,bonus_id=740,gem_id=140823/140820/140823/0,relic_id=3517:1502:3336/3517:1497:3336/3517:1502:3336/0\n"
-            +"off_hand=secrets_of_the_void,id=133958\n"
-            +"scale_to_itemlevel=925\ngear_versatility_rating=0\ngear_intellect="+intellect.split(":")[1]+"\ngear_crit_rating="+ crit.split(":")[1] + "\ngear_haste_rating="+ haste.split(":")[1] +"\ngear_mastery_rating="+ mastery.split(":")[1] +"\nset_bonus=tier19_2pc=0\nset_bonus=tier19_4pc=0\nset_bonus=tier20_2pc=1\nset_bonus=tier20_4pc=1\n";
+            character = new SimCharacter(gear, artifact, crucible, talents, "1");
         } else {
             gear = gearString;
             reforgeString = label;
         }
-        String[] simData = simString.split("_");
+        //String[] simData = simString.split("_");
         String base = "iterations=2000\nthreads="+threads+"\nmax_time="+ simData[0] +"\noptimal_raid=1\nfight_style="+ simData[1] +"\nenemy=enemy1\n";
         //waist=mangazas_madness,id=132864,bonus_id=3459/3530
         //finger2=sephuzs_secret,id=132452,bonus_id=3529/3530/1811,gems=150haste,enchant=200haste
@@ -100,13 +166,18 @@ import com.google.gson.JsonParser;
         String targetString = "\n";
         if(simData[3].equals("2t")) {
             targetString = doubleTarget;
-        }
-
+        }       
+         
         String uuid = UUID.randomUUID().toString();
         String runtimePath = new File(".").getCanonicalPath();
         String profileName = "atmasim-"+uuid;
+        Simulation simulation = new Simulation(character, simData[0], simData[1], Integer.toString(threads), addString, targetString, profileName);
+
+
         String footer = "json2=" + profileName + ".json\n";
-        String profileData = header + gear + base + targetString + addString + footer;
+        String profileData = simulation.toString();
+        //String profileData = header + gear + base + targetString + addString + footer;
+        
         String profilePath = Paths.get(runtimePath, profileName + ".simc").toString();
         File profile = new File(profilePath);
         logger.info("Created profile from key/value data:");
@@ -128,13 +199,13 @@ import com.google.gson.JsonParser;
                         .get("mean").getAsFloat();
         logger.info("Found DPS: " + dps);
         // Write out the simstring self-keyed, to prevent merging.
-        context.write(new DPSKey(talentString, simString), new DPSValue(simString, reforgeString, dps));
+        context.write(new DPSKey(talentString, simString, modifierData[2]+"+"+modifierData[3],modifierData[1],modifierData[4]), new DPSValue(simString, reforgeString, dps));
         for(int i = 0; i < models.size(); i++) {
             JsonObject model = models.get(i).getAsJsonObject();
             String modelName = model.get("name").toString();
             if(doesModelContainSim(model, simString)) {
                 logger.info("Created DPSKey/Value for model: " + modelName);
-                context.write(new DPSKey(talentString, modelName), new DPSValue(simString, reforgeString, dps));
+                context.write(new DPSKey(talentString, modelName, modifierData[2]+"+"+modifierData[3],modifierData[1],modifierData[4]), new DPSValue(simString, reforgeString, dps));
             }
         }
         logger.info("Finished mapping key: " + key.toString());

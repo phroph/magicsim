@@ -98,35 +98,60 @@ var combineReforge = function(params) {
     return leaves;
 }
 
-var combineGear = function(params) {
-    var baseTemplate = params.base;
-    var variables = params.parameters;
-    var combinedLabel = "";
-    for(var variable in variables) {
-        variable
+var combineLegendaries = function(params) {
+    var legendaries = [];
+    for(var i=0; i<params.length; i++) {
+        for(var j=i+1; j<params.length; j++) {
+            legendaries.push(params[i]+";"+params[j]);
+        }
     }
+    return legendaries;
 }
 
-var simModel = require('../models.js').models[2]; // ToS
+/*var combineRelics = function(params) {
+    var relics = [];
+    
+    var usedRelicMapping = {};
+    return relics;
+}*/
+
+var combineCrucible = function(params) {
+
+}
+
+var simModel = require('../models.js').models[0]; // ToS
 var simCombinations = combineSims(simModel); // 28 Combinations
 console.log('Found ' + simCombinations.length + ' sim combinations.');
-var talentChoices = [[1,2],[1],[1],[1],[1,2],[1,3],[1]];
+var talentChoices = [[1],[1],[1],[1],[2],[3],[1]];
 //var talentCombinations = [[0,0,0,0,0,0,0]];
 var talentCombinations = combineTalents(talentChoices); // 36 Combinations
 console.log('Found ' + talentCombinations.length + ' talent combinations.');
-var reforgeParameters1 = {budget: 30000, step: 1000, floor: 3000, hceiling: 20000, ceiling: 18000, intellect: 40000}; 
-var reforgeParameters2 = {budget: 27000, step: 1000, floor: 3000, hceiling: 20000, ceiling: 18000, intellect: 36000};
-var reforgeParameters3 = {budget: 33000, step: 1000, floor: 3000, hceiling: 20000, ceiling: 18000, intellect: 44000}; 
+var reforgeParameters1 = {budget: 36000, step: 1000, floor: 3000, hceiling: 20000, ceiling: 18000, intellect: 40000};
+var reforgeParameters2 = {budget: 33000, step: 1000, floor: 3000, hceiling: 20000, ceiling: 18000, intellect: 44000}; 
+var legendaryParameters = ["sephuz","mangaza"]//,"shahraz","zeks"]; // Soul has to be added separately because of talent issues.
+var legendaryCombinations = combineLegendaries(legendaryParameters);
+console.log('Found ' + legendaryCombinations.length + ' legendary combinations.');
+// Take exactly 6, where a maximum of 3 from any given trait.
+var relicParameters = [779,778];
+var relicCombinations = ["779:779:779:778:778:778"];
+console.log('Found ' + relicCombinations.length + ' relic combinations.');
+// 1739:3 is always required.
+var crucibleParameters = [1780,1778,1779,1777,1770,1782,1783];
+var crucibleCombinations = ["1739:3:1780:3"];
+console.log('Found ' + crucibleCombinations.length + ' crucible combinations.');
 // At each step, 500 can go 1 way, with a maximum of 17000 in any single way. Aka n^3 expansion, pruning duplicates and constraint failures.
 // Floor is budget force allocated each way at least. So effective budget = budget - way*floor.
 // 11000 available budget, 22 steps. 22^3 = O(10,648) reforge points, including duplicates.
+
+// Expecting 84 crucible combinations.
+// Expecting 56 trait combinations.
 
 var reforge = true;
 if(reforge) {
     var reforgeCombinations1 = combineReforge(reforgeParameters1);
     var reforgeCombinations2 = combineReforge(reforgeParameters2);
-    var reforgeCombinations3 = combineReforge(reforgeParameters3);
-    var reforgeCombinations = reforgeCombinations1.concat(reforgeCombinations2).concat(reforgeCombinations3)
+    //var reforgeCombinations3 = combineReforge(reforgeParameters3);
+    var reforgeCombinations = reforgeCombinations1.concat(reforgeCombinations2)//.concat(reforgeCombinations3)
     //var reforgeCombinations = reforgeCombinations3
     //var reforgeCombinations = [["c:5000,m:5000,h:5000"],["c:2000,m:5000,h:8000"],["c:5000,m:2000,h:8000"],["c:8000,m:5000,h:2000"]]
     console.log('Found ' + reforgeCombinations.length + ' reforge combinations.');
@@ -134,11 +159,18 @@ if(reforge) {
     // Now shit gets real. We take the cartesian product of all 3 of these basically. And line-by-line add records into jobFlowData.
 
     var numJobs = 0;
+
     simCombinations.forEach((sim) => {
         talentCombinations.forEach((talent) => {
-            reforgeCombinations.forEach((reforge) => {
-                jobFlowData += sim + ';' + talent + ';' + reforge + '\n';
-                numJobs++;
+            reforgeCombinations.forEach((gear) => {
+                relicCombinations.forEach((relic) => {
+                    legendaryCombinations.forEach((legendaries) => {
+                        crucibleCombinations.forEach((crucible) => {
+                            jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';' + legendaries + ';' + crucible + '\n';
+                            numJobs++;
+                        })
+                    })
+                })
             })
         })
     })
@@ -217,13 +249,21 @@ else {
     simCombinations.forEach((sim) => {
         talentCombinations.forEach((talent) => {
             gearCombinations.forEach((gear) => {
-                jobFlowData += sim + ';' + talent + ';' + gear + '\n';
-                numJobs++;
+                relicCombinations.forEach((relic) => {
+                    legendaryCombinations.forEach((legendaries) => {
+                        crucibleCombinations.forEach((crucible) => {
+                            jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';' + legendaries + ';' + crucible + '\n';
+                            numJobs++;
+                        })
+                    })
+                })
             })
         })
     })
 }
 console.log('Found ' + numJobs + ' jobs.');
+
+var instances = 1;
 
 s3.upload({
     Bucket: bucket,
@@ -251,7 +291,7 @@ s3.upload({
                 {
                     Classification: "mapred-site",
                     Properties: {
-                        "mapreduce.tasktracker.map.tasks.maximum": "32",
+                        "mapreduce.tasktracker.map.tasks.maximum": (instances*2) + "",
                         "mapreduce.job.reduce.slowstart.completedmaps": "1.0" // So I stop getting cucked by Reduce containers. Stop fucking shuffling jesus.
                     }
                 }
@@ -270,7 +310,7 @@ s3.upload({
                 }, {
                     Name: "Core Instance Group",
                     InstanceRole: "CORE",
-                    InstanceCount: 16,
+                    InstanceCount: instances,
                     InstanceType: "c4.2xlarge",
                     Market: "ON_DEMAND"
                 }]
