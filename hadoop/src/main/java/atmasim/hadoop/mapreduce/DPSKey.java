@@ -14,6 +14,7 @@ public class DPSKey implements WritableComparable<DPSKey> {
     public Text legendaries;
     public Text relics;
     public Text crucible;
+    public Text acrid;
 
     public DPSKey() {
         modelString = new Text();

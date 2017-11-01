@@ -25,14 +25,14 @@ import atmasim.hadoop.wow.*;
  public class SimMapper  extends Mapper<SimKey, Text, DPSKey, DPSValue>{
     private Logger logger = Logger.getLogger(SimMapper.class);
 
-    GearSlot mangaza = new GearSlot(GearSlots.WAIST, "132864", "1811/3570", false);
-    GearSlot sephuz = new GearSlot(GearSlots.FINGER1, "132452", "3529/3459/3570", "150haste", "200haste", false);
+    GearSlot mangaza = new GearSlot(GearSlots.WAIST, "132864");
+    GearSlot sephuz = new GearSlot(GearSlots.FINGER1, "132452");
     GearSlot zenk;
-    GearSlot shahraz;
+    GearSlot shahraz = new GearSlot(GearSlots.SHOULDERS, "132437");
     GearSlot anunds;
     GearSlot kjbw;
-    GearSlot soul;
-    GearSlot zeks;
+    GearSlot soul = new GearSlot(GearSlots.FINGER1, "151646");
+    GearSlot zeks = new GearSlot(GearSlots.BACK, "144438");
     GearSlot hotv;
 
     private GearSlot GetLegendaryByName(String name) {
@@ -83,8 +83,8 @@ import atmasim.hadoop.wow.*;
         String talents = talentString.replace(",", "") + "\n";
         String artifact = "47:0:0:0:0:764:1:765:1:766:1:767:4:768:1:769:1:770:1:771:4:772:4:773:4:774:4:775:4:776:4:777:4:778:4:779:1:1347:1:1381:1:1573:4:1574:1:1575:1:1576:24:1650:1\n";
 
-        String header = "ptr=1\noutput=nul\nstrict_work_queue=1\nreport_details=0\npriest=\"Atmasim\"\nlevel=110\nrace=troll\nrole=spell\npriest_ignore_healing=1\nposition=back\n" + talents + artifact + "spec=shadow\ndefault_actions=1\n";
-        int threads = 8;
+        String header = "ptr=1\noutput=nul\nstrict_work_queue=1\nreport_details=0\npriest=\"Atmasim\"\nlevel=110\nrace=draenei\nrole=spell\npriest_ignore_healing=1\nposition=back\n" + talents + artifact + "spec=shadow\ndefault_actions=1\n";
+        int threads = 16;
         String gear; 
 
         //Pyrdaz is just stats, worthless to sim
@@ -108,8 +108,6 @@ import atmasim.hadoop.wow.*;
         //GearSlot off_hand = new GearSlot(GearSlots.OFF_HAND, "133958");
 
         // Upgrade to parse from parameters
-        GearSlot leg1 = null;
-        GearSlot leg2 = null;
         String setString = "set_bonus=tier19_2pc=0\nset_bonus=tier19_4pc=0\nset_bonus=tier20_2pc=0\nset_bonus=tier20_4pc=0\nset_bonus=tier21_2pc=1\nset_bonus=tier21_4pc=1\n";
         //GearSet gearSet = new GearSet(head, neck, shoulders, back, chest, wrists, hands, waist, legs, feet, finger1, finger2, trinket1, trinket2, main_hand, off_hand, setString);
         SimCharacter character = null;// = new SimCharacter(leg1.toString() +"\n" + leg2.toString() + "\n" + setString, "artifact=47:0:0:0:0:764:1:765:1:766:1:767:4:768:1:769:1:770:1:771:4:772:4:773:4:774:4:775:4:776:4:777:4:778:4:779:1:1347:1:1381:1:1573:4:1574:1:1575:1:1576:15:1650:1\n", talentString.replace(",", ""), "0");
@@ -126,6 +124,9 @@ import atmasim.hadoop.wow.*;
             String legendary1 = modifierData[2];
             String legendary2 = modifierData[3];
             String crucible = modifierData[4];
+            String acridSettings = modifierData[5];
+            // Bs hardcoding of this for now.
+            String acridIlvl = intellect.equals("i:65000") ? "960" : intellect.equals("i:56000") ? "940" : "0";
             for(String trait : traits) {
                 Pattern regex = Pattern.compile(":"+trait+":(\\d+):");
                 Matcher matcher = regex.matcher(artifact);
@@ -136,11 +137,13 @@ import atmasim.hadoop.wow.*;
                     logger.info("Updated string to " + artifact);
                 }
             }
-            leg1 = GetLegendaryByName(legendary1);
-            leg2 = GetLegendaryByName(legendary2);
+            String leg1 = legendary1.equals("none") ? "" : GetLegendaryByName(legendary1).toString();
+            String leg2 = legendary1.equals("none") ? "" :  GetLegendaryByName(legendary2).toString();
+            String acridLine = acridSettings.equals("false") ? "" : "trinket1=,id=151955,ilevel=" +acridIlvl; 
             
-            gear = neck.toString() + "\n" + leg1.toString() + "\n" + leg2.toString() + "\n" + main_hand.toString() + "\n"
-            + "gear_versatility_rating=0\ngear_intellect="+intellect.split(":")[1]
+            gear = neck.toString() + "\n" + leg1 + "\n" + leg2 + "\n" + acridLine + "\n" + main_hand.toString() + "\n"
+            + "gear_versatility_rating=0"
+            + "\ngear_intellect="+intellect.split(":")[1]
             + "\ngear_crit_rating="+ crit.split(":")[1] 
             + "\ngear_haste_rating="+ haste.split(":")[1] 
             + "\ngear_mastery_rating="+ mastery.split(":")[1] + "\n"

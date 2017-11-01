@@ -3,7 +3,7 @@ package atmasim.hadoop.wow;
 public class SimCharacter {
     String set;
     String level = "110";
-    String race = "Troll";
+    String race = "draenei";
     String role = "spell";
     String character = "priest=\"Atmasim\"";
     String spec = "shadow";

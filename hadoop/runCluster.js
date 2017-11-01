@@ -47,6 +47,7 @@ var combineSims = function(model) {
 var combineReforge = function(params) {
     var totalBudget = params.budget;
     var floor = params.floor;
+    var hfloor = params.hfloor;
     var intellect = params.intellect;
     var ceiling = params.ceiling;
     var hceiling = params.hceiling;
@@ -81,7 +82,7 @@ var combineReforge = function(params) {
     }
     var discard = {};
     var leaves = []; // Leaves are fully itemized and are the only nodes we want to look at.
-    var threshold = [createState(floor,floor,floor,intellect)];
+    var threshold = [createState(floor,floor,hfloor,intellect)];
     while(threshold.length>0) {
         var cursor = threshold.pop();
         if(discard[cursor.stringForm()]) {
@@ -122,22 +123,27 @@ var combineCrucible = function(params) {
 var simModel = require('../models.js').models[0]; // ToS
 var simCombinations = combineSims(simModel); // 28 Combinations
 console.log('Found ' + simCombinations.length + ' sim combinations.');
-var talentChoices = [[1],[1],[1],[1],[2],[3],[1]];
+var talentChoices = [[1],[1],[1],[1],[2],[1,3],[1]];
+var sothpTalentChoices = [[2],[1],[1],[1],[2,3],[1,3],[1]];
 //var talentCombinations = [[0,0,0,0,0,0,0]];
-var talentCombinations = combineTalents(talentChoices); // 36 Combinations
+var talentCombinations = combineTalents(talentChoices);
+var sothpTalentCombinations = combineTalents(sothpTalentChoices);
 console.log('Found ' + talentCombinations.length + ' talent combinations.');
-var reforgeParameters1 = {budget: 36000, step: 1000, floor: 3000, hceiling: 20000, ceiling: 18000, intellect: 40000};
-var reforgeParameters2 = {budget: 33000, step: 1000, floor: 3000, hceiling: 20000, ceiling: 18000, intellect: 44000}; 
+var acridReforgeParameters1 = {budget: 38000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 65000};
+var reforgeParameters1 = {budget: 42000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 61000}; 
+var acridReforgeParameters2 = {budget: 36000, step: 1000, floor: 3000, hceiling: 20000, hfloor:8000, ceiling: 18000, intellect: 56000};
+var reforgeParameters2 = {budget: 40000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 53000}; 
 var legendaryParameters = ["sephuz","mangaza"]//,"shahraz","zeks"]; // Soul has to be added separately because of talent issues.
-var legendaryCombinations = combineLegendaries(legendaryParameters);
+//var legendaryCombinations = combineLegendaries(legendaryParameters);
+var legendaryCombinations = ["mangaza;sephuz","mangaza;shahraz","mangaza;zeks"];
 console.log('Found ' + legendaryCombinations.length + ' legendary combinations.');
 // Take exactly 6, where a maximum of 3 from any given trait.
 var relicParameters = [779,778];
-var relicCombinations = ["779:779:779:778:778:778"];
+var relicCombinations = ["1573:775:775:775:775:775","1573:1573:775:775:775:775","1573:1573:1573:775:775:775","775:775:775:775:775:775"];
 console.log('Found ' + relicCombinations.length + ' relic combinations.');
 // 1739:3 is always required.
 var crucibleParameters = [1780,1778,1779,1777,1770,1782,1783];
-var crucibleCombinations = ["1739:3:1780:3"];
+var crucibleCombinations = ["1739:3"];
 console.log('Found ' + crucibleCombinations.length + ' crucible combinations.');
 // At each step, 500 can go 1 way, with a maximum of 17000 in any single way. Aka n^3 expansion, pruning duplicates and constraint failures.
 // Floor is budget force allocated each way at least. So effective budget = budget - way*floor.
@@ -150,26 +156,96 @@ var reforge = true;
 if(reforge) {
     var reforgeCombinations1 = combineReforge(reforgeParameters1);
     var reforgeCombinations2 = combineReforge(reforgeParameters2);
+    var acridReforgeCombinations1 = combineReforge(acridReforgeParameters1);
+    var acridReforgeCombinations2 = combineReforge(acridReforgeParameters2);
     //var reforgeCombinations3 = combineReforge(reforgeParameters3);
     var reforgeCombinations = reforgeCombinations1.concat(reforgeCombinations2)//.concat(reforgeCombinations3)
+    var acridReforgeCombinations = acridReforgeCombinations1.concat(acridReforgeCombinations2)//.concat(reforgeCombinations3)
     //var reforgeCombinations = reforgeCombinations3
     //var reforgeCombinations = [["c:5000,m:5000,h:5000"],["c:2000,m:5000,h:8000"],["c:5000,m:2000,h:8000"],["c:8000,m:5000,h:2000"]]
-    console.log('Found ' + reforgeCombinations.length + ' reforge combinations.');
+    console.log('Found ' + (reforgeCombinations.length + acridReforgeCombinations.length) + ' reforge combinations.');
 
     // Now shit gets real. We take the cartesian product of all 3 of these basically. And line-by-line add records into jobFlowData.
 
     var numJobs = 0;
 
+    // Add base info
     simCombinations.forEach((sim) => {
         talentCombinations.forEach((talent) => {
             reforgeCombinations.forEach((gear) => {
                 relicCombinations.forEach((relic) => {
                     legendaryCombinations.forEach((legendaries) => {
                         crucibleCombinations.forEach((crucible) => {
-                            jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';' + legendaries + ';' + crucible + '\n';
+                            jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';' + legendaries + ';' + crucible + ';false\n';
                             numJobs++;
                         })
                     })
+                })
+            })
+        })
+    })
+    simCombinations.forEach((sim) => {
+        talentCombinations.forEach((talent) => {
+            acridReforgeCombinations.forEach((gear) => {
+                relicCombinations.forEach((relic) => {
+                    legendaryCombinations.forEach((legendaries) => {
+                        crucibleCombinations.forEach((crucible) => {
+                            jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';' + legendaries + ';' + crucible + ';true\n';
+                            numJobs++;
+                        })
+                    })
+                })
+            })
+        })
+    })
+
+    // Soul of the High Priest
+    simCombinations.forEach((sim) => {
+        sothpTalentCombinations.forEach((talent) => {
+            reforgeCombinations.forEach((gear) => {
+                relicCombinations.forEach((relic) => {
+                        crucibleCombinations.forEach((crucible) => {
+                            jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';mangaza;soul;' + crucible + ';false\n';
+                            numJobs++;
+                        })
+                    })
+                })
+        })
+    })
+    simCombinations.forEach((sim) => {
+        sothpTalentCombinations.forEach((talent) => {
+            acridReforgeCombinations.forEach((gear) => {
+                relicCombinations.forEach((relic) => {
+                        crucibleCombinations.forEach((crucible) => {
+                            jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';mangaza;soul;' + crucible + ';true\n';
+                            numJobs++;
+                        })
+                })
+            })
+        })
+    })
+
+    // No Legendary
+    simCombinations.forEach((sim) => {
+        talentCombinations.forEach((talent) => {
+            reforgeCombinations.forEach((gear) => {
+                relicCombinations.forEach((relic) => {
+                        crucibleCombinations.forEach((crucible) => {
+                            jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';none;none;' + crucible + ';false\n';
+                            numJobs++;
+                        })
+                    })
+                })
+        })
+    })
+    simCombinations.forEach((sim) => {
+        talentCombinations.forEach((talent) => {
+            acridReforgeCombinations.forEach((gear) => {
+                relicCombinations.forEach((relic) => {
+                        crucibleCombinations.forEach((crucible) => {
+                            jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';none;none;' + crucible + ';true\n';
+                            numJobs++;
+                        })
                 })
             })
         })
@@ -263,7 +339,7 @@ else {
 }
 console.log('Found ' + numJobs + ' jobs.');
 
-var instances = 1;
+var instances = 16;
 
 s3.upload({
     Bucket: bucket,
@@ -285,6 +361,9 @@ s3.upload({
                 },
                 {
                     Name: "Hue"
+                },
+                {
+                    Name: "Ganglia"
                 }
             ],
             Configurations: [
@@ -311,7 +390,7 @@ s3.upload({
                     Name: "Core Instance Group",
                     InstanceRole: "CORE",
                     InstanceCount: instances,
-                    InstanceType: "c4.2xlarge",
+                    InstanceType: "c4.8xlarge",
                     Market: "ON_DEMAND"
                 }]
             },
