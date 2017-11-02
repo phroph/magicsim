@@ -20,11 +20,13 @@ public class AtmaSim {
   // AKA this is partitioned by model and grouped by (talent x partition). The data points are reforge (cmh), dps, and simulation
   private static Logger logger = Logger.getLogger(AtmaSim.class);
   public static int NUMBER_OF_RECORDS = 0;
+  public static int NUMBER_OF_INSTANCES = 0;
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
     Job job = Job.getInstance(conf, "atmasim");
     
     NUMBER_OF_RECORDS = Integer.parseInt(args[2]);
+    NUMBER_OF_INSTANCES = Integer.parseInt(args[3]);
     job.setJarByClass(AtmaSim.class);
     logger.info("Starting AtmaSim driver.");
     // IN: simkey:text -map-> dpskey:dpsvalue -reduce-> compositedpskey:float

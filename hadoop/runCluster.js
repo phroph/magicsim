@@ -370,7 +370,7 @@ s3.upload({
                 {
                     Classification: "mapred-site",
                     Properties: {
-                        "mapreduce.tasktracker.map.tasks.maximum": (instances*2) + "",
+                        "mapred.tasktracker.map.tasks.maximum": "2",
                         "mapreduce.job.reduce.slowstart.completedmaps": "1.0" // So I stop getting cucked by Reduce containers. Stop fucking shuffling jesus.
                     }
                 }
@@ -418,7 +418,8 @@ s3.upload({
                     Args: [
                         "hdfs:///atmasim/input-" + guid + ".txt" ,
                         "s3://atmasim/out/results-" + guid + "/",
-                        numJobs + "" // Pretty dumb but I gotta cast it to a string explicitly.
+                        numJobs + "", // Pretty dumb but I gotta cast it to a string explicitly.
+                        (36*instances) + ""
                     ]
                 }
             }],
@@ -428,7 +429,7 @@ s3.upload({
                 ScriptBootstrapAction: { 
                     Path: "s3://atmasim/bin/installGate.bash"
                 }
-            }
+            },
             ],
             LogUri: "s3://atmasim/logs/",
             VisibleToAllUsers: false,

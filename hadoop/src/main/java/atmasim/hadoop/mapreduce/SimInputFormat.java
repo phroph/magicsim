@@ -34,7 +34,7 @@ public class SimInputFormat extends FileInputFormat<SimKey, Text> {
         List<InputSplit> splits = new ArrayList<InputSplit>();
         List<FileStatus> files = listStatus(job);
         for(FileStatus file : files) {
-            int num_mappers = Integer.parseInt(job.getConfiguration().get("mapreduce.tasktracker.map.tasks.maximum"));
+            int num_mappers = AtmaSim.NUMBER_OF_INSTANCES;
             Path path = file.getPath();
             
             FileSystem fs = path.getFileSystem(job.getConfiguration());
