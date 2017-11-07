@@ -123,8 +123,8 @@ var combineCrucible = function(params) {
 var simModel = require('../models.js').models[0]; // ToS
 var simCombinations = combineSims(simModel); // 28 Combinations
 console.log('Found ' + simCombinations.length + ' sim combinations.');
-var talentChoices = [[1],[1],[1],[1],[2],[1,3],[1]];
-var sothpTalentChoices = [[2],[1],[1],[1],[2,3],[1,3],[1]];
+var talentChoices = [[1],[1],[1],[1],[2],[3],[1]];
+var sothpTalentChoices = [[2],[1],[1],[1],[2],[3],[1]];
 //var talentCombinations = [[0,0,0,0,0,0,0]];
 var talentCombinations = combineTalents(talentChoices);
 var sothpTalentCombinations = combineTalents(sothpTalentChoices);
@@ -132,7 +132,13 @@ console.log('Found ' + talentCombinations.length + ' talent combinations.');
 var acridReforgeParameters1 = {budget: 38000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 65000};
 var reforgeParameters1 = {budget: 42000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 61000}; 
 var acridReforgeParameters2 = {budget: 36000, step: 1000, floor: 3000, hceiling: 20000, hfloor:8000, ceiling: 18000, intellect: 56000};
-var reforgeParameters2 = {budget: 40000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 53000}; 
+var reforgeParameters2 = {budget: 40000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 53000};
+// +1 intellect to put it into a different int key. Soul has vastly different secondary stats, which skew it's value significantly.
+// It's closer to 1.7k but 2k has to be a round approximation for 1k step size.
+var soulAcridReforgeParameters1 = {budget: 36000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 65001};
+var soulReforgeParameters1 = {budget: 40000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 61001}; 
+var soulAcridReforgeParameters2 = {budget: 34000, step: 1000, floor: 3000, hceiling: 20000, hfloor:8000, ceiling: 18000, intellect: 56001};
+var soulReforgeParameters2 = {budget: 38000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 53001};  
 var legendaryParameters = ["sephuz","mangaza"]//,"shahraz","zeks"]; // Soul has to be added separately because of talent issues.
 //var legendaryCombinations = combineLegendaries(legendaryParameters);
 var legendaryCombinations = ["mangaza;sephuz","mangaza;shahraz","mangaza;zeks"];
@@ -158,9 +164,15 @@ if(reforge) {
     var reforgeCombinations2 = combineReforge(reforgeParameters2);
     var acridReforgeCombinations1 = combineReforge(acridReforgeParameters1);
     var acridReforgeCombinations2 = combineReforge(acridReforgeParameters2);
+    var soulReforgeCombinations1 = combineReforge(soulReforgeParameters1);
+    var soulReforgeCombinations2 = combineReforge(soulReforgeParameters2);
+    var soulAcridReforgeCombinations1 = combineReforge(soulAcridReforgeParameters1);
+    var soulAcridReforgeCombinations2 = combineReforge(soulAcridReforgeParameters2);
     //var reforgeCombinations3 = combineReforge(reforgeParameters3);
     var reforgeCombinations = reforgeCombinations1.concat(reforgeCombinations2)//.concat(reforgeCombinations3)
     var acridReforgeCombinations = acridReforgeCombinations1.concat(acridReforgeCombinations2)//.concat(reforgeCombinations3)
+    var soulReforgeCombinations = soulReforgeCombinations1.concat(soulReforgeCombinations2)//.concat(reforgeCombinations3)
+    var soulAcridReforgeCombinations = soulAcridReforgeCombinations1.concat(soulAcridReforgeCombinations2)//.concat(reforgeCombinations3)
     //var reforgeCombinations = reforgeCombinations3
     //var reforgeCombinations = [["c:5000,m:5000,h:5000"],["c:2000,m:5000,h:8000"],["c:5000,m:2000,h:8000"],["c:8000,m:5000,h:2000"]]
     console.log('Found ' + (reforgeCombinations.length + acridReforgeCombinations.length) + ' reforge combinations.');
@@ -170,6 +182,7 @@ if(reforge) {
     var numJobs = 0;
 
     // Add base info
+    /*
     simCombinations.forEach((sim) => {
         talentCombinations.forEach((talent) => {
             reforgeCombinations.forEach((gear) => {
@@ -197,12 +210,12 @@ if(reforge) {
                 })
             })
         })
-    })
+    })*/
 
     // Soul of the High Priest
     simCombinations.forEach((sim) => {
         sothpTalentCombinations.forEach((talent) => {
-            reforgeCombinations.forEach((gear) => {
+            soulReforgeCombinations.forEach((gear) => {
                 relicCombinations.forEach((relic) => {
                         crucibleCombinations.forEach((crucible) => {
                             jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';mangaza;soul;' + crucible + ';false\n';
@@ -214,7 +227,7 @@ if(reforge) {
     })
     simCombinations.forEach((sim) => {
         sothpTalentCombinations.forEach((talent) => {
-            acridReforgeCombinations.forEach((gear) => {
+            soulAcridReforgeCombinations.forEach((gear) => {
                 relicCombinations.forEach((relic) => {
                         crucibleCombinations.forEach((crucible) => {
                             jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';mangaza;soul;' + crucible + ';true\n';
