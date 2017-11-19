@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "Amazon EMR/Hadoop powered massive simming automation tool.",
   "dependencies": {
-    "aws-sdk": "~2.50.0",
+    "aws-sdk": "~2.153.0",
     "guid": "~0.0.12"
+  },
+  "scripts": {
+    "build": "node ./converter.js && gradle build && node ./uploader.js",
+    "run": "node ./runCluster.js",
+    "buildandrun": "npm run build && npm run run"
   },
   "author": "phroph",
   "license": "MIT",

@@ -12,7 +12,7 @@ public class SimCharacter {
     String talents;
     String crucible;
 
-    String fString = "ptr=%s\noutput=nul\nstrict_work_queue=1\nreport_details=0\n"+
+    String fString = "ptr=%s\noutput=nul\nstrict_work_queue=1\noptimize_expressions=1\nreport_details=0\n"+
         "%s\nlevel=%s\nrace=%s\nrole=%s\n"+
         "priest_ignore_healing=1\nposition=back\ntalents=%s"+
         "\nartifact=%s\ncrucible=%s\nspec=%s\ndefault_actions=1\n%s\n";

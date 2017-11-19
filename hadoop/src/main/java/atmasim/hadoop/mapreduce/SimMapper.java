@@ -126,7 +126,7 @@ import atmasim.hadoop.wow.*;
             String crucible = modifierData[4];
             String acridSettings = modifierData[5];
             // Bs hardcoding of this for now.
-            String acridIlvl = intellect.equals("i:65000") ? "960" : intellect.equals("i:56000") ? "940" : "0";
+            String acridIlvl = intellect.equals("i:65000") || intellect.equals("i:65001") ? "960" : intellect.equals("i:56000") || intellect.equals("i:56001") ? "940" : "0";
             for(String trait : traits) {
                 Pattern regex = Pattern.compile(":"+trait+":(\\d+):");
                 Matcher matcher = regex.matcher(artifact);

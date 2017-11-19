@@ -182,7 +182,6 @@ if(reforge) {
     var numJobs = 0;
 
     // Add base info
-    /*
     simCombinations.forEach((sim) => {
         talentCombinations.forEach((talent) => {
             reforgeCombinations.forEach((gear) => {
@@ -210,7 +209,7 @@ if(reforge) {
                 })
             })
         })
-    })*/
+    })
 
     // Soul of the High Priest
     simCombinations.forEach((sim) => {
@@ -265,94 +264,10 @@ if(reforge) {
     })
 
 }
-else {
-    var gearCombinations = [];
-    var gearParameters = {
-        template: "head=,id=%HID%,ilevel=%HILVL%%NL%neck=,id=%NID%,ilevel=%NLVL%,enchant=%NENCH%%NL%shoulders=,id=%SID%,ilevel=%SILVL%%NL%back=,id=%BID%,ilevel=%BILVL,enchant=%BENCH%%NL%chest=,id=%CID%,ilevel=%CILVL%%NL%wrists=,id=%WID%,ilevel=%WILVL%%NL%hands=,id=%HAID%,ilevel=%HAILVL%%NL%waist=,id=%WAID%,ilevel=%WAILVL%%NL%legs=,id=%LID%,ilevel=%LILVL%%NL%feet=,id=%FID%,ilevel=%FILVL%%NL%finger1=,id=%F1ID%,ilevel=%F1ILVL%,enchant=%F1ENCH%%NL%finger2=,id=%F2ID%,ilevel=%F2ILVL%,enchant=%F2ENCH%%NL%trinket1=,id=%T1ID%,ilevel=%T1ILVL%%NL%trinket2=,id=%T2ID%,ilevel=%T2ILVL%%NL%main_hand=,id=128827,bonus_id=740,gem_id=%R1ID%/%R2ID%/%R3ID%,relic_ilevel=%R1ILVL%/%R2ILVL%/%R3ILVL%%NL%off_hand=,id=133958%NL%",
-        baseGear: {
-            H: {id:"147165",lvl:930},
-            N: {id:"147013",lvl:930},
-            S: {id:"146997",lvl:930},
-            B: {id:"147163",lvl:930},
-            C: {id:"147167",lvl:930},
-            W: {id:"147000",lvl:930},
-            HA: {id:"146988",lvl:940},
-            WA: {id:"146999",lvl:930},
-            L: {id:"147166",lvl:930},
-            F: {id:"146987",lvl:930},
-            F1: {id:"147195",lvl:940},
-            F2: {id:"147020",lvl:930},
-            T2: {id:"142507",lvl:930}
-        },
-        modifications: [
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-            [{slot:"T1",id:""}],
-        ],
-        modificationReforgeParameters: {
-            min: 850,
-            max: 955,
-            stepSize: 5
-        },
-        tierCombinations: [
-            ["tier20_2pc=1","tier20_4pc=1"]
-        ]
-    };
-    gearCombinations = combineGear(gearParameters);
 
-    simCombinations.forEach((sim) => {
-        talentCombinations.forEach((talent) => {
-            gearCombinations.forEach((gear) => {
-                relicCombinations.forEach((relic) => {
-                    legendaryCombinations.forEach((legendaries) => {
-                        crucibleCombinations.forEach((crucible) => {
-                            jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';' + legendaries + ';' + crucible + '\n';
-                            numJobs++;
-                        })
-                    })
-                })
-            })
-        })
-    })
-}
 console.log('Found ' + numJobs + ' jobs.');
 
-var instances = 16;
+var instances = 1;
 
 s3.upload({
     Bucket: bucket,

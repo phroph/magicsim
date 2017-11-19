@@ -3,6 +3,28 @@ var addScaleFactor = (1.5)/(totalScaleFactor);
 var bossScaleFactor = 1/(1.5*totalScaleFactor);
 
 module.exports.models = [
+    {"dispName": "Antorus, the Burning Throne Composite", "name": "ant",
+        "model": {
+            "heavymovement_ba_st": .2/11,
+            "lightmovement_ba_st": .3/11,
+            "patchwerk_ba_st": .45/11,
+            "heavymovement_na_st": .25/11,
+            "lightmovement_na_st": 1.95/11,
+            "patchwerk_na_st": 1.9/11,
+            "heavymovement_sa_st": 1.95/11,
+            "lightmovement_sa_st": .9/11,
+            "patchwerk_sa_st": 0.05,
+            "heavymovement_ba_2t": 0.15/11,
+            "lightmovement_ba_2t": 0.7/11,
+            "patchwerk_ba_2t": 0.25/11,
+            "lightmovement_na_2t": 0.65/11,
+            "patchwerk_na_2t": 0.8/11
+        },
+        "timeModel": {
+            "250": 0.15,
+            "400": 0.85
+        }
+    },
     {"dispName": "Tomb of Sargeras Composite", "name": "tos",
         "model": {
             "patchwerk_sa_st": 0.06875,
@@ -21,7 +43,7 @@ module.exports.models = [
             "400": 0.85
         }
     },
-        {"dispName": "Nighthold Composite", "name": "nh",
+    {"dispName": "Nighthold Composite", "name": "nh",
         "model": {
             patchwerk_ba_2t: 0.025,
             patchwerk_ba_st: 0.07,
