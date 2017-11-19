@@ -120,7 +120,7 @@ var combineCrucible = function(params) {
 
 }
 
-var simModel = require('../models.js').models[0]; // ToS
+var simModel = require('../models.js').models[0]; // Antorus
 var simCombinations = combineSims(simModel); // 28 Combinations
 console.log('Found ' + simCombinations.length + ' sim combinations.');
 var talentChoices = [[1],[1],[1],[1],[2],[3],[1]];
