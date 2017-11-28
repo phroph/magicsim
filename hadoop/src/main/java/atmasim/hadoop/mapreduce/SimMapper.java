@@ -119,14 +119,15 @@ import atmasim.hadoop.wow.*;
             String crit = reforgeData[0];
             String mastery = reforgeData[1];
             String haste = reforgeData[2];
-            String intellect = reforgeData[3];
+            String versatility = reforgeData[3];
+            String intellect = reforgeData[4];
             String[] traits = modifierData[1].split(":");
             String legendary1 = modifierData[2];
             String legendary2 = modifierData[3];
             String crucible = modifierData[4];
             String acridSettings = modifierData[5];
             // Bs hardcoding of this for now.
-            String acridIlvl = intellect.equals("i:65000") || intellect.equals("i:65001") ? "960" : intellect.equals("i:56000") || intellect.equals("i:56001") ? "940" : "0";
+            String acridIlvl = intellect.equals("i:67500") || intellect.equals("i:65001") ? "960" : intellect.equals("i:48000") || intellect.equals("i:56001") ? "945" : "0";
             for(String trait : traits) {
                 Pattern regex = Pattern.compile(":"+trait+":(\\d+):");
                 Matcher matcher = regex.matcher(artifact);
@@ -142,7 +143,7 @@ import atmasim.hadoop.wow.*;
             String acridLine = acridSettings.equals("false") ? "" : "trinket1=,id=151955,ilevel=" +acridIlvl; 
             
             gear = neck.toString() + "\n" + leg1 + "\n" + leg2 + "\n" + acridLine + "\n" + main_hand.toString() + "\n"
-            + "gear_versatility_rating=0"
+            + "gear_versatility_rating="+versatility.split(":")[1]
             + "\ngear_intellect="+intellect.split(":")[1]
             + "\ngear_crit_rating="+ crit.split(":")[1] 
             + "\ngear_haste_rating="+ haste.split(":")[1] 

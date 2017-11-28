@@ -46,43 +46,51 @@ var combineSims = function(model) {
 
 var combineReforge = function(params) {
     var totalBudget = params.budget;
-    var floor = params.floor;
-    var hfloor = params.hfloor;
     var intellect = params.intellect;
-    var ceiling = params.ceiling;
+    var hfloor = params.hfloor;
     var hceiling = params.hceiling;
+    var cfloor = params.cfloor;
+    var cceiling = params.cceiling;
+    var mfloor = params.mfloor;
+    var mceiling = params.mceiling;
+    var vfloor = params.vfloor;
+    var vceiling = params.vceiling;
     var stepSize = params.step;
-    var createState = function(c,m,h,i) {
+    var createState = function(c,m,h,v,i) {
         return {
             crit: c,
             mastery: m,
             haste: h,
+            versatility: v,
             intellect: i,
-            remainingBudget: totalBudget - (c+m+h),
+            remainingBudget: totalBudget - (c+m+h+v),
             children: function() {
                 if(this.remainingBudget < stepSize) {
                     return [];
                 }
                 var children = [];
-                if(this.crit+stepSize<=ceiling) {
-                    children.push(createState(this.crit+stepSize,this.mastery,this.haste,this.intellect));
+                if(this.crit+stepSize<=cceiling) {
+                    children.push(createState(this.crit+stepSize,this.mastery,this.haste,this.versatility,this.intellect));
                 }
-                if(this.mastery+stepSize<=ceiling) {
-                    children.push(createState(this.crit,this.mastery+stepSize,this.haste,this.intellect));
+                if(this.mastery+stepSize<=mceiling) {
+                    children.push(createState(this.crit,this.mastery+stepSize,this.haste,this.versatility,this.intellect));
                 }
                 if(this.haste+stepSize<=hceiling) {
-                    children.push(createState(this.crit,this.mastery,this.haste+stepSize,this.intellect));
+                    children.push(createState(this.crit,this.mastery,this.haste+stepSize,this.versatility,this.intellect));
+                }
+                if(this.versatility+stepSize<=vceiling) {
+                    children.push(createState(this.crit,this.mastery,this.haste,this.versatility+stepSize,this.intellect));
                 }
                 return children;
             },
             stringForm: function() {
-                return "c:" + this.crit + ",m:" + this.mastery + ",h:" + this.haste + ",i:" + this.intellect;
+                return "c:" + this.crit + ",m:" + this.mastery + ",h:" + this.haste + ",v:" + this.versatility + ",i:" + this.intellect;
             }
         }
     }
     var discard = {};
     var leaves = []; // Leaves are fully itemized and are the only nodes we want to look at.
-    var threshold = [createState(floor,floor,hfloor,intellect)];
+    var threshold = [createState(cfloor,mfloor,hfloor,vfloor,intellect)];
     while(threshold.length>0) {
         var cursor = threshold.pop();
         if(discard[cursor.stringForm()]) {
@@ -129,19 +137,33 @@ var sothpTalentChoices = [[2],[1],[1],[1],[2],[3],[1]];
 var talentCombinations = combineTalents(talentChoices);
 var sothpTalentCombinations = combineTalents(sothpTalentChoices);
 console.log('Found ' + talentCombinations.length + ' talent combinations.');
-var acridReforgeParameters1 = {budget: 38000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 65000};
-var reforgeParameters1 = {budget: 42000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 61000}; 
-var acridReforgeParameters2 = {budget: 36000, step: 1000, floor: 3000, hceiling: 20000, hfloor:8000, ceiling: 18000, intellect: 56000};
-var reforgeParameters2 = {budget: 40000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 53000};
-// +1 intellect to put it into a different int key. Soul has vastly different secondary stats, which skew it's value significantly.
-// It's closer to 1.7k but 2k has to be a round approximation for 1k step size.
-var soulAcridReforgeParameters1 = {budget: 36000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 65001};
-var soulReforgeParameters1 = {budget: 40000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 61001}; 
-var soulAcridReforgeParameters2 = {budget: 34000, step: 1000, floor: 3000, hceiling: 20000, hfloor:8000, ceiling: 18000, intellect: 56001};
-var soulReforgeParameters2 = {budget: 38000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 53001};  
+var acridReforgeParameters1 = {budget: 36000, step: 500, 
+    hceiling: 16500, hfloor: 11000, 
+    cceiling: 19000, cfloor: 9000, 
+    mceiling: 8500, mfloor: 3500, 
+    vceiling: 4000, vfloor: 1000, intellect: 48000};
+//var reforgeParameters1 = {budget: 42000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 61000}; 
+var acridReforgeParameters2 = {budget: 38000, step: 500, 
+    hceiling: 175000, hfloor: 12000, 
+    cceiling: 19500, cfloor: 9500, 
+    mceiling: 8500, mfloor: 3500, 
+    vceiling: 4000, vfloor: 1000, intellect: 67500};
+//var reforgeParameters2 = {budget: 40000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 53000};
+var soulAcridReforgeParameters1 = {budget: 34000, step: 500, 
+    hceiling: 16500, hfloor: 11000, 
+    cceiling: 16500, cfloor: 6500, 
+    mceiling: 9500, mfloor: 4500, 
+    vceiling: 4000, vfloor: 1000, intellect: 48000};
+//var soulReforgeParameters1 = {budget: 40000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 61001}; 
+var soulAcridReforgeParameters2 = {budget: 36000, step: 500, 
+    hceiling: 17500, hfloor: 12000, 
+    cceiling: 17000, cfloor: 7000, 
+    mceiling: 9500, mfloor: 4500, 
+    vceiling: 4000, vfloor: 1000, intellect: 67500};
+//var soulReforgeParameters2 = {budget: 38000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 53001};  
 var legendaryParameters = ["sephuz","mangaza"]//,"shahraz","zeks"]; // Soul has to be added separately because of talent issues.
 //var legendaryCombinations = combineLegendaries(legendaryParameters);
-var legendaryCombinations = ["mangaza;sephuz","mangaza;shahraz","mangaza;zeks"];
+var legendaryCombinations = ["mangaza;sephuz"];
 console.log('Found ' + legendaryCombinations.length + ' legendary combinations.');
 // Take exactly 6, where a maximum of 3 from any given trait.
 var relicParameters = [779,778];
@@ -160,28 +182,29 @@ console.log('Found ' + crucibleCombinations.length + ' crucible combinations.');
 
 var reforge = true;
 if(reforge) {
-    var reforgeCombinations1 = combineReforge(reforgeParameters1);
-    var reforgeCombinations2 = combineReforge(reforgeParameters2);
+    //var reforgeCombinations1 = combineReforge(reforgeParameters1);
+    //var reforgeCombinations2 = combineReforge(reforgeParameters2);
     var acridReforgeCombinations1 = combineReforge(acridReforgeParameters1);
     var acridReforgeCombinations2 = combineReforge(acridReforgeParameters2);
-    var soulReforgeCombinations1 = combineReforge(soulReforgeParameters1);
-    var soulReforgeCombinations2 = combineReforge(soulReforgeParameters2);
+    //var soulReforgeCombinations1 = combineReforge(soulReforgeParameters1);
+    //var soulReforgeCombinations2 = combineReforge(soulReforgeParameters2);
     var soulAcridReforgeCombinations1 = combineReforge(soulAcridReforgeParameters1);
     var soulAcridReforgeCombinations2 = combineReforge(soulAcridReforgeParameters2);
     //var reforgeCombinations3 = combineReforge(reforgeParameters3);
-    var reforgeCombinations = reforgeCombinations1.concat(reforgeCombinations2)//.concat(reforgeCombinations3)
+    //var reforgeCombinations = reforgeCombinations1.concat(reforgeCombinations2)//.concat(reforgeCombinations3)
     var acridReforgeCombinations = acridReforgeCombinations1.concat(acridReforgeCombinations2)//.concat(reforgeCombinations3)
-    var soulReforgeCombinations = soulReforgeCombinations1.concat(soulReforgeCombinations2)//.concat(reforgeCombinations3)
+    //var soulReforgeCombinations = soulReforgeCombinations1.concat(soulReforgeCombinations2)//.concat(reforgeCombinations3)
     var soulAcridReforgeCombinations = soulAcridReforgeCombinations1.concat(soulAcridReforgeCombinations2)//.concat(reforgeCombinations3)
     //var reforgeCombinations = reforgeCombinations3
     //var reforgeCombinations = [["c:5000,m:5000,h:5000"],["c:2000,m:5000,h:8000"],["c:5000,m:2000,h:8000"],["c:8000,m:5000,h:2000"]]
-    console.log('Found ' + (reforgeCombinations.length + acridReforgeCombinations.length) + ' reforge combinations.');
+    console.log('Found ' + (/*reforgeCombinations.length +*/ acridReforgeCombinations.length) + ' reforge combinations.');
 
     // Now shit gets real. We take the cartesian product of all 3 of these basically. And line-by-line add records into jobFlowData.
 
     var numJobs = 0;
 
     // Add base info
+    /*
     simCombinations.forEach((sim) => {
         talentCombinations.forEach((talent) => {
             reforgeCombinations.forEach((gear) => {
@@ -195,7 +218,7 @@ if(reforge) {
                 })
             })
         })
-    })
+    })*/
     simCombinations.forEach((sim) => {
         talentCombinations.forEach((talent) => {
             acridReforgeCombinations.forEach((gear) => {
@@ -210,7 +233,7 @@ if(reforge) {
             })
         })
     })
-
+    /*
     // Soul of the High Priest
     simCombinations.forEach((sim) => {
         sothpTalentCombinations.forEach((talent) => {
@@ -223,7 +246,7 @@ if(reforge) {
                     })
                 })
         })
-    })
+    })*/
     simCombinations.forEach((sim) => {
         sothpTalentCombinations.forEach((talent) => {
             soulAcridReforgeCombinations.forEach((gear) => {
@@ -236,7 +259,7 @@ if(reforge) {
             })
         })
     })
-
+    /*
     // No Legendary
     simCombinations.forEach((sim) => {
         talentCombinations.forEach((talent) => {
@@ -261,13 +284,13 @@ if(reforge) {
                 })
             })
         })
-    })
+    })*/
 
 }
 
 console.log('Found ' + numJobs + ' jobs.');
 
-var instances = 1;
+var instances = 16;
 
 s3.upload({
     Bucket: bucket,
@@ -347,7 +370,7 @@ s3.upload({
                         "hdfs:///atmasim/input-" + guid + ".txt" ,
                         "s3://atmasim/out/results-" + guid + "/",
                         numJobs + "", // Pretty dumb but I gotta cast it to a string explicitly.
-                        (36*instances) + ""
+                        (36*2*instances) + ""
                     ]
                 }
             }],
@@ -361,7 +384,7 @@ s3.upload({
             ],
             LogUri: "s3://atmasim/logs/",
             VisibleToAllUsers: false,
-            ReleaseLabel: "emr-5.3.0"
+            ReleaseLabel: "emr-5.10.0"
         }, (err, data) => {
             if(err) {
                 console.log(err);
