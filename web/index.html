@@ -68,29 +68,38 @@
             $("#results").hide();
             $("#main").show();
             advancedMode = false;
-            simcMode = false;
             $('#advanced').hide();
             $('#advancedSubmit').show();
             $('#simpleSubmit').hide();
             $('#simcInput').hide();
+            simcMode = false;
+            require('nw.gui').Window.get().height = 400;
         }
         var showLoading = function() {
             $("#loading").show();
             $("#results").hide();
             $("#main").hide();
             $('#simcInput').hide();
+            simcMode = false;
+            require('nw.gui').Window.get().height = 400;
         }
         var showResults = function() {
             $("#loading").hide();
             $("#results").show();
             $("#main").hide();
             $('#simcInput').hide();
+            simcMode = false;
+            require('nw.gui').Window.get().height = 400;
         }
         var showSimc = function() {
-            $("#loading").hide();
-            $("#results").hide();
-            $("#main").hide();
-            $('#simcInput').show();
+            $('#simcInput').toggle();
+            if($('#simcInput').is(':visible')) {
+                require('nw.gui').Window.get().height = 600;
+                simcMode = true;
+            } else {
+                require('nw.gui').Window.get().height = 400;
+                simcMode = false;
+            }
         }
 
         var loadOptions = function(select, option) {
@@ -196,7 +205,6 @@
                 $('#advanced').show();
                 $('#advancedSubmit').hide();
                 $('#simpleSubmit').show();
-                $('#simcInput').hide()
                 advancedMode = true;
                 require('nw.gui').Window.get().width = 700;
             })
@@ -204,13 +212,11 @@
                 $('#advanced').hide();
                 $('#advancedSubmit').show();
                 $('#simpleSubmit').hide();
-                $('#simcInput').hide()
                 advancedMode = false;
                 require('nw.gui').Window.get().width = 300;
             })
             $("#simc").click(function() {
                 showSimc();
-                simcMode = true;
             })
             $("#submitSimc").click(function() {
                 $("#submit").click();
@@ -322,20 +328,17 @@
                             <select class="advancedOption" id="setbonus" name="setbonus"></select>
                         </div>
                     </div>
-                </div>
+                    <div id="simcInput">
+                        <h4>Input /simc Output Below:</h4>
+                        <div class="simcDiv">
+                            <textarea id="simcData"></textarea>
+                        </div>
+                    </div>
+                </div> 
                 <span class="item"><input type="submit" id="advancedSubmit" value="Advanced" ></span>
                 <span class="item"><input type="submit" id="simpleSubmit" value="Simple" ></span>
                 <span class="item"><input type="submit" id="simc" value="Simc Mode" ></span>
                 <span class="item"><input type="submit" id="submit" value="Simulate" ></span>
-            </div>
-            <div id="simcInput">
-                <h3>Input /simc Output Below:</h3>
-                <div>Please select a desired model before starting a sim.</div>
-                <div class="simcDiv">
-                    <textarea id="simcData"></textarea>
-                </div>
-                <span class="item"><input type="submit" id="cancel" value="Cancel" ></span>
-                <span class="item"><input type="submit" id="submitSimc" value="Simulate" ></span>
             </div>
             <div id="loading">
                 <div id="loadingHeader"><span id="state">Starting</span>.</div>
