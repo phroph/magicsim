@@ -1,7 +1,16 @@
-var totalScaleFactor = (1.5*7.91) + (7.97/1.5);
-var addScaleFactor = (1.5)/(totalScaleFactor);
-var bossScaleFactor = 1/(1.5*totalScaleFactor);
-
+// Adds 7.75875
+// Boss 12
+// Total 19.925
+// Desired Add Contribution = 13.9475
+// Desired Boss Contribution = 5.9775
+var addsTotal = 7.75875;
+var bossTotal = 12;
+var percentageAdds = .7;
+var total = addsTotal + bossTotal;
+var addsDesired = total * percentageAdds;
+var bossDesired = total * (1-percentageAdds);
+var addScaleFactor = addsDesired/addsTotal/total;
+var bossScaleFactor = bossDesired/bossTotal/total;
 module.exports.models = [
     {"dispName": "Antorus, the Burning Throne Composite", "name": "ant",
         "model": {
@@ -25,170 +34,185 @@ module.exports.models = [
             "400": 0.85
         }
     },
-    {"dispName": "Tomb of Sargeras Composite", "name": "tos",
-        "model": {
-            "patchwerk_sa_st": 0.06875,
-            "patchwerk_na_st": 0.125,
-            "lightmovement_ba_st": 0.05,
-            "lightmovement_sa_st": 0.1375,
-            "lightmovement_sa_2t": 0.06875,
-            "lightmovement_na_st": 0.3,
-            "lightmovement_na_2t": 0.05,
-            "heavymovement_na_st": 0.14375,
-            "heavymovement_na_2t": 0.01875,
-            "heavymovement_sa_st": 0.0375
-        },
-        "timeModel": {
-            "250": 0.15,
-            "400": 0.85
-        }
-    },
-    {"dispName": "Nighthold Composite", "name": "nh",
-        "model": {
-            patchwerk_ba_2t: 0.025,
-            patchwerk_ba_st: 0.07,
-            patchwerk_sa_2t: 0.02,
-            patchwerk_sa_st: 0.07,
-            patchwerk_na_st: 0.07,
-            lightmovement_ba_2t: 0.155,
-            lightmovement_ba_st: 0.195,
-            lightmovement_sa_2t: 0.05,
-            lightmovement_sa_st: 0.12,
-            lightmovement_na_2t: 0.03,
-            lightmovement_na_st: 0.065,
-            heavymovement_ba_st: 0.08,
-            heavymovement_sa_2t: 0.015,
-            heavymovement_sa_st: 0.035
-        },
-        "timeModel": {
-            250: .15,
-            400: .85
-        }
-    },
     {"dispName": "Mythic+ Composite", "name": "mplus",
         "model": {
-            '30_lightmovement_4_adds': 0.1*addScaleFactor,
-            '30_lightmovement_5_adds': 0.06*addScaleFactor,
-            '50_lightmovement_3_adds': 0.15*addScaleFactor,
-            '50_lightmovement_4_adds': 0.22*addScaleFactor,
-            '50_lightmovement_5_adds': 0.22*addScaleFactor,
-            '55_lightmovement_3_adds': 0.15*addScaleFactor,
-            '55_lightmovement_4_adds': 0.3*addScaleFactor,
-            '55_lightmovement_5_adds': 0.29*addScaleFactor,
-            '60_lightmovement_3_adds': 0.14*addScaleFactor,
-            '60_lightmovement_4_adds': 0.23*addScaleFactor,
-            '60_lightmovement_5_adds': 0.12*addScaleFactor,
+            '30_lightmovement_4_adds': 0.025*addScaleFactor,
+            '30_lightmovement_5_adds': 0.1*addScaleFactor,
+            '35_lightmovement_3_adds': 0.0625*addScaleFactor,
+            '35_lightmovement_4_adds': 0.15*addScaleFactor,
+            '35_lightmovement_5_adds': 0.21875*addScaleFactor,
+            '40_lightmovement_3_adds': 0.21875*addScaleFactor,
+            '40_lightmovement_4_adds': 0.15*addScaleFactor,
+            '40_lightmovement_5_adds': 0.3*addScaleFactor,
+            '45_lightmovement_3_adds': 0.2875*addScaleFactor,
+            '45_lightmovement_4_adds': 0.1375*addScaleFactor,
+            '45_lightmovement_5_adds': 0.23125*addScaleFactor,
+            '50_lightmovement_3_adds': 0.11875*addScaleFactor,
             '30_patchwerk_4_adds': 0.3*addScaleFactor,
-            '30_patchwerk_5_adds': 0.19*addScaleFactor,
-            '50_patchwerk_3_adds': 0.45*addScaleFactor,
-            '50_patchwerk_4_adds': 0.66*addScaleFactor,
-            '50_patchwerk_5_adds': 0.66*addScaleFactor,
-            '55_patchwerk_3_adds': 0.45*addScaleFactor,
-            '55_patchwerk_4_adds': 0.9*addScaleFactor,
-            '55_patchwerk_5_adds': 0.86*addScaleFactor,
-            '60_patchwerk_3_adds': 0.41*addScaleFactor,
-            '60_patchwerk_4_adds': 0.69*addScaleFactor,
-            '60_patchwerk_5_adds': 0.36*addScaleFactor,
-            patchwerk_ba_st: 0.33*bossScaleFactor,
-            patchwerk_na_st: 1.43*bossScaleFactor,
-            lightmovement_ba_st: 1.86*bossScaleFactor,
-            lightmovement_na_2t: 0.58*bossScaleFactor,
-            lightmovement_na_st: 1.2*bossScaleFactor,
-            heavymovement_ba_st: 0.2*bossScaleFactor,
-            heavymovement_na_2t: 0.2*bossScaleFactor,
-            heavymovement_na_st: 2.17*bossScaleFactor
+            '30_patchwerk_5_adds': 0.1875*addScaleFactor,
+            '35_patchwerk_3_adds': 0.45*addScaleFactor,
+            '35_patchwerk_4_adds': 0.65625*addScaleFactor,
+            '35_patchwerk_5_adds': 0.65625*addScaleFactor,
+            '40_patchwerk_3_adds': 0.45*addScaleFactor,
+            '40_patchwerk_4_adds': 0.9*addScaleFactor,
+            '40_patchwerk_5_adds': 0.8625*addScaleFactor,
+            '45_patchwerk_3_adds': 0.4125*addScaleFactor,
+            '45_patchwerk_4_adds': 0.69375*addScaleFactor,
+            '45_patchwerk_5_adds': 0.19*addScaleFactor,
+            patchwerk_na_st: (13.1275/3)*bossScaleFactor,
+            lightmovement_na_st: 2.2625*bossScaleFactor,
+            heavymovement_na_st: 0.4375*bossScaleFactor,
+            patchwerk_na_2t: (0.8/3)*bossScaleFactor,
+            lightmovement_na_2t: (0.47/3)*bossScaleFactor,
+            patchwerk_ba_st: (3.1375/3)*bossScaleFactor,
+            lightmovement_ba_st: (1.85/3)*bossScaleFactor,
+            heavymovement_ba_st: 0.24*bossScaleFactor,
+            patchwerk_sa_st: 1.855*bossScaleFactor,
+            lightmovement_sa_st: (2.11/3)*bossScaleFactor,
+            heavymovement_sa_st: 0.04*bossScaleFactor,
         },
         "timeModel": {
-            400: .85
+            90: 1.0
         }
     },
-    {"dispName": "Goroth", "name": "goroth",
+    {"dispName": "Mythic+ Trash Composite", "name": "mplus_trash",
         "model": {
-            "patchwerk_na_st": 0.2,
-            "lightmovement_na_st": 0.6,
-            "heavymovement_na_st": 0.2
+            '30_lightmovement_4_adds': 0.025/addsTotal,
+            '30_lightmovement_5_adds': 0.1/addsTotal,
+            '35_lightmovement_3_adds': 0.0625/addsTotal,
+            '35_lightmovement_4_adds': 0.15/addsTotal,
+            '35_lightmovement_5_adds': 0.21875/addsTotal,
+            '40_lightmovement_3_adds': 0.21875/addsTotal,
+            '40_lightmovement_4_adds': 0.15/addsTotal,
+            '40_lightmovement_5_adds': 0.3/addsTotal,
+            '45_lightmovement_3_adds': 0.2875/addsTotal,
+            '45_lightmovement_4_adds': 0.1375/addsTotal,
+            '45_lightmovement_5_adds': 0.23125/addsTotal,
+            '50_lightmovement_3_adds': 0.11875/addsTotal,
+            '30_patchwerk_4_adds': 0.3/addsTotal,
+            '30_patchwerk_5_adds': 0.1875/addsTotal,
+            '35_patchwerk_3_adds': 0.45/addsTotal,
+            '35_patchwerk_4_adds': 0.65625/addsTotal,
+            '35_patchwerk_5_adds': 0.65625/addsTotal,
+            '40_patchwerk_3_adds': 0.45/addsTotal,
+            '40_patchwerk_4_adds': 0.9/addsTotal,
+            '40_patchwerk_5_adds': 0.8625/addsTotal,
+            '45_patchwerk_3_adds': 0.4125/addsTotal,
+            '45_patchwerk_4_adds': 0.69375/addsTotal,
+            '45_patchwerk_5_adds': 0.19/addsTotal
         },
         "timeModel": {
-            "250": 0.15,
-            "400": 0.85
         }
     },
-    {"dispName": "Demonic Inquisition", "name": "inquisition",
+    {"dispName": "Garothi Worldbreaker", "name": "garothi",
         "model": {
-            "lightmovement_sa_2t": 0.55,
-            "lightmovement_na_2t": 0.35,
-            "heavymovement_na_st": 0.15
-        },
-        "timeModel": {
-            "250": 0.15,
-            "400": 0.85
-        }
-    },
-    {"dispName": "Harjatan", "name": "harjatan",
-        "model": {
-            "patchwerk_sa_st": 0.2,
-            "patchwerk_na_st": 0.1,
-            "lightmovement_ba_st": 0.2,
-            "lightmovement_sa_st": 0.3,
-            "heavymovement_sa_st": 0.2
-        },
-        "timeModel": {
-            "250": 0.15,
-            "400": 0.85
-        }
-    },
-    {"dispName": "Mistress Sassz'ine", "name": "mistress",
-        "model": {
-            "patchwerk_sa_st": 0.15,
-            "lightmovement_sa_st": 0.3,
-            "lightmovement_na_st": 0.35,
-            "heavymovement_na_st": 0.2
+            "lightmovement_na_st": 0.4,
+            "patchwerk_na_st": 0.6,
         },
         "timeModel": {
             "250": 0.15,
             "400": 0.85
         }
     },
-    {"dispName": "Desolate Host", "name": "host",
+    {"dispName": "Felhounds of Sargeras", "name": "hounds",
         "model": {
-            "patchwerk_sa_st": 0.2,
-            "lightmovement_sa_st": 0.5,
-            "lightmovement_na_st": 0.2,
-            "heavymovement_sa_st": 0.1
+            "lightmovement_na_2t": 0.4,
+            "patchwerk_na_2t": 0.6
         },
         "timeModel": {
             "250": 0.15,
             "400": 0.85
         }
     },
-    {"dispName": "Maiden of Vigilance", "name": "maiden",
+    {"dispName": "Antoran High Command", "name": "command",
         "model": {
-            "patchwerk_na_st": 0.5,
-            "lightmovement_na_st": 0.3,
-            "heavymovement_na_st": 0.2
+            "lightmovement_sa_st": 0.65,
+            "patchwerk_sa_st": 0.35,
         },
         "timeModel": {
             "250": 0.15,
             "400": 0.85
         }
     },
-    {"dispName": "Sisters of the Moon", "name": "sisters",
+    {"dispName": "Portal Keeper Hasabel", "name": "hasabel",
         "model": {
-            "patchwerk_na_st": 0.1,
-            "lightmovement_ba_st": 0.2,
-            "lightmovement_na_st": 0.45,
-            "heavymovement_na_st": 0.25
-        },
-        "timeModel": {
-            "250": 0.15,
-            "400": 0.85
-        }
-    },
-    {"dispName": "Fallen Avatar", "name": "avatar",
-        "model": {
-            "patchwerk_na_st": 0.1,
+            "heavymovement_na_st": 0.25,
             "lightmovement_na_st": 0.5,
-            "heavymovement_na_st": 0.2
+            "patchwerk_na_st": 0.25
+        },
+        "timeModel": {
+            "250": 0.15,
+            "400": 0.85
+        }
+    },
+    {"dispName": "Imonar the Soulhunter", "name": "imonar",
+        "model": {
+            "heavymovement_sa_st": 0.9,
+            "lightmovement_sa_st": 0.1
+        },
+        "timeModel": {
+            "250": 0.15,
+            "400": 0.85
+        }
+    },
+    {"dispName": "Kin'garoth", "name": "kingaroth",
+        "model": {
+            "patchwerk_ba_st": 0.1,
+            "lightmovement_na_st": 0.2,
+            "patchwerk_na_st": 0.15,
+            "lightmovement_ba_2t": 0.1,
+            "lightmovement_na_2t": 0.25,
+            "patchwerk_na_2t": 0.2
+        },
+        "timeModel": {
+            "250": 0.15,
+            "400": 0.85
+        }
+    },
+    {"dispName": "Varimathras", "name": "varimathras",
+        "model": {
+            "lightmovement_ba_st": 0.1,
+            "patchwerk_ba_st": 0.2,
+            "lightmovement_na_st": 0.3,
+            "patchwerk_na_st": 0.4
+        },
+        "timeModel": {
+            "250": 0.15,
+            "400": 0.85
+        }
+    },
+    {"dispName": "The Coven of Shivarra", "name": "coven",
+        "model": {
+            "heavymovement_ba_2t": 0.15,
+            "lightmovement_ba_2t": 0.6,
+            "patchwerk_ba_2t": 0.25
+        },
+        "timeModel": {
+            "250": 0.15,
+            "400": 0.85
+        }
+    },
+    {"dispName": "Aggramar", "name": "aggramar",
+        "model": {
+            "lightmovement_ba_st": 0.1,
+            "patchwerk_ba_st": 0.15,
+            "lightmovement_na_st": 0.1,
+            "patchwerk_na_st": 0.1,
+            "heavymovement_sa_st": 0.2,
+            "lightmovement_sa_st": 0.15,
+            "patchwerk_sa_st": 0.2
+        },
+        "timeModel": {
+            "250": 0.15,
+            "400": 0.85
+        }
+    },
+    {"dispName": "Argus the Unmaker", "name": "argus",
+        "model": {
+            "lightmovement_ba_st": 0.1,
+            "lightmovement_na_st": 0.45,
+            "patchwerk_na_st": 0.4,
+            "heavymovement_sa_st": 0.05,
         },
         "timeModel": {
             "250": 0.15,

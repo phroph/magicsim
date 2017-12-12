@@ -19,7 +19,12 @@ label {
     padding-right: 10px;
 }
 
-#main, #advanced, #advancedSubmit, #submit, #simpleSubmit{
+#simcInput {
+    width: 100%;
+    padding-top: 5px;
+}
+
+#main, #advanced, #advancedSubmit, #submit, #simpleSubmit, #cancel, #submitSimc {
     display: inline-block;
 }
 
@@ -58,6 +63,11 @@ label {
     border:1px solid #aaa; 
     background-color: #fff;
     padding: 3px;
+}
+
+.simcDiv {
+    margin-top: 5px;
+    margin-bottom: 15px;
 }
 
 .submit {
@@ -116,7 +126,7 @@ label {
 }
 
 .item {
-    padding: 5px;
+    margin: 5px;
 }
 
 input[type=range]{
@@ -125,6 +135,27 @@ input[type=range]{
 
 #submit {
     float: right;
+}
+
+#submitSimc {
+    float: right;
+}
+
+#cancel {
+    float: left;
+}
+
+#simcData {
+    width: 100%;
+    height: 250px;
+    padding: 10px;
+}
+
+#simc {
+    margin-left:auto;
+    margin-right:auto;
+    padding-left:5px;
+    padding-right:5px;
 }
 
 #advancedSubmit {

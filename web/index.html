@@ -6,6 +6,7 @@
         <script>
         var active = false;
         var advancedMode = false;
+        var simcMode = false;
         var race = [
             {name:"Default", value:"DEFAULT"},
             {name:"Blood Elf", value:"blood_elf"},
@@ -67,20 +68,31 @@
             $("#results").hide();
             $("#main").show();
             advancedMode = false;
+            simcMode = false;
             $('#advanced').hide();
             $('#advancedSubmit').show();
             $('#simpleSubmit').hide();
+            $('#simcInput').hide();
         }
         var showLoading = function() {
             $("#loading").show();
             $("#results").hide();
             $("#main").hide();
+            $('#simcInput').hide();
         }
         var showResults = function() {
             $("#loading").hide();
             $("#results").show();
             $("#main").hide();
+            $('#simcInput').hide();
         }
+        var showSimc = function() {
+            $("#loading").hide();
+            $("#results").hide();
+            $("#main").hide();
+            $('#simcInput').show();
+        }
+
         var loadOptions = function(select, option) {
             option.forEach((item) => {
                 select.append($("<option value=\"" + item.value + "\">" + item.name + "</option>"));
@@ -155,6 +167,7 @@
         }
         $(document).ready(function(){
             var realm,region,character;
+            var simcData = "";
             updateRealms("us");
             loadOptions($('#food'),food);
             loadOptions($('#potion'),potion);
@@ -165,6 +178,7 @@
             $('#simpleSubmit').hide();
             $("#counter").hide();
             $('#advanced').hide();
+            $('#simcInput').hide();
             showHome();
             versionCheck(process.mainModule.exports.version);
             $.ajax({type: "GET",
@@ -182,6 +196,7 @@
                 $('#advanced').show();
                 $('#advancedSubmit').hide();
                 $('#simpleSubmit').show();
+                $('#simcInput').hide()
                 advancedMode = true;
                 require('nw.gui').Window.get().width = 700;
             })
@@ -189,8 +204,20 @@
                 $('#advanced').hide();
                 $('#advancedSubmit').show();
                 $('#simpleSubmit').hide();
+                $('#simcInput').hide()
                 advancedMode = false;
                 require('nw.gui').Window.get().width = 300;
+            })
+            $("#simc").click(function() {
+                showSimc();
+                simcMode = true;
+            })
+            $("#submitSimc").click(function() {
+                $("#submit").click();
+            })
+            $("#cancel").click(function() {
+                showHome();
+                simcMode = false;
             })
             $("#submit").click(function(){
                 realm=$("#realm").val();
@@ -200,9 +227,10 @@
                 model=$("#model").val();
                 noweights=$("#noweights")[0].checked;
                 ptr=$("#ptr")[0].checked;
+                simcData=$("#simcData").val();
                 if(!active) {
                     active = true;
-                    var data;
+                    var payload;
                     if(advancedMode) {
                         var advancedOpts = JSON.stringify([
                          {name:'food', replacement: $('#food').val()},
@@ -212,13 +240,13 @@
                          {name:'race', replacement: $('#race').val()},
                          {name:'setbonus',replacement: $('#setbonus').val()}
                         ])
-                        data = {character: character, region: region, realm: realm, threads: threads, noweights: noweights, ptr: ptr, model: model, advancedMode: advancedMode, advancedOptions: advancedOpts};
+                        payload = {character: character, region: region, realm: realm, threads: threads, noweights: noweights, ptr: ptr, model: model, advancedMode: advancedMode, advancedOptions: advancedOpts, simcMode: simcMode, simcData: simcData};
                     } else {
-                        data = {character: character, region: region, realm: realm, threads: threads, noweights: noweights, ptr: ptr, model: model, advancedMode: advancedMode};
+                        payload = {character: character, region: region, realm: realm, threads: threads, noweights: noweights, ptr: ptr, model: model, advancedMode: advancedMode, simcMode: simcMode, simcData: simcData};
                     }
                     $.ajax({type: "POST",
                      url: "http://localhost:4000/sim/request", 
-                     data: {character: character, region: region, realm: realm, threads: threads, noweights: noweights, ptr: ptr, model: model, advancedMode: advancedMode, advancedOptions: advancedOpts}, 
+                     data: payload, 
                      success: function(data){
                         if(data == true) {
                             doPoll();
@@ -262,7 +290,7 @@
                             <label for="model">Model:</label>
                             <select id="model" name="model"></select>
                         </div>
-                        <div class="item"><label for="workers">Threads:</label><input type="range" name="workers" id="workers" min="1" max="8" value="4" onchange="$('#threads').text(this.value)" /> <span id="threads">4</span></div>
+                        <div class="item"><label for="workers">Threads:</label><input type="range" name="workers" id="workers" min="1" max="16" value="4" onchange="$('#threads').text(this.value)" /> <span id="threads">4</span></div>
                         <div class="item">
                             <label for="noweights">No Weights:</label><input type="checkbox" name="noweights" id="noweights" />
                             <label for="ptr">PTR Mode:</label><input type="checkbox" name="ptr" id="ptr" />
@@ -297,7 +325,17 @@
                 </div>
                 <span class="item"><input type="submit" id="advancedSubmit" value="Advanced" ></span>
                 <span class="item"><input type="submit" id="simpleSubmit" value="Simple" ></span>
+                <span class="item"><input type="submit" id="simc" value="Simc Mode" ></span>
                 <span class="item"><input type="submit" id="submit" value="Simulate" ></span>
+            </div>
+            <div id="simcInput">
+                <h3>Input /simc Output Below:</h3>
+                <div>Please select a desired model before starting a sim.</div>
+                <div class="simcDiv">
+                    <textarea id="simcData"></textarea>
+                </div>
+                <span class="item"><input type="submit" id="cancel" value="Cancel" ></span>
+                <span class="item"><input type="submit" id="submitSimc" value="Simulate" ></span>
             </div>
             <div id="loading">
                 <div id="loadingHeader"><span id="state">Starting</span>.</div>

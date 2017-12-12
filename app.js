@@ -128,8 +128,11 @@ app.post('/sim/request', function (req, res) {
             ptr: req.body.ptr == "true",
             model: req.body.model,
             advancedMode: req.body.advancedMode == "true",
-            advancedOperations: []
+            advancedOperations: [],
+            simcMode: req.body.simcMode == "true",
+            simcData: req.body.simcData
         }
+        console.log
         if(args.advancedMode) {
             args.advancedOperations = JSON.parse(req.body.advancedOptions);
         }

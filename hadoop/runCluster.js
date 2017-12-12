@@ -131,35 +131,59 @@ var combineCrucible = function(params) {
 var simModel = require('../models.js').models[0]; // Antorus
 var simCombinations = combineSims(simModel); // 28 Combinations
 console.log('Found ' + simCombinations.length + ' sim combinations.');
-var talentChoices = [[1],[1],[1],[1],[2],[3],[1]];
-var sothpTalentChoices = [[2],[1],[1],[1],[2],[3],[1]];
+var talentChoices = [[1,2],[1],[1],[1,3],[2],[3],[1,2]];
+var sothpTalentChoices = [[2],[1],[1],[1,3],[2],[3],[1,2]];
 //var talentCombinations = [[0,0,0,0,0,0,0]];
 var talentCombinations = combineTalents(talentChoices);
 var sothpTalentCombinations = combineTalents(sothpTalentChoices);
-console.log('Found ' + talentCombinations.length + ' talent combinations.');
+console.log('Found ' + (talentCombinations.length + sothpTalentCombinations.length) + ' talent combinations.');
 var acridReforgeParameters1 = {budget: 36000, step: 500, 
-    hceiling: 16500, hfloor: 11000, 
-    cceiling: 19000, cfloor: 9000, 
-    mceiling: 8500, mfloor: 3500, 
-    vceiling: 4000, vfloor: 1000, intellect: 48000};
+    hceiling: 16500, hfloor: 13000, 
+    cceiling: 19000, cfloor: 12000, 
+    mceiling: 4500, mfloor: 3500, 
+    vceiling: 2000, vfloor: 1000, intellect: 48000};
 //var reforgeParameters1 = {budget: 42000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 61000}; 
 var acridReforgeParameters2 = {budget: 38000, step: 500, 
-    hceiling: 175000, hfloor: 12000, 
-    cceiling: 19500, cfloor: 9500, 
-    mceiling: 8500, mfloor: 3500, 
-    vceiling: 4000, vfloor: 1000, intellect: 67500};
+    hceiling: 175000, hfloor: 13000, 
+    cceiling: 19500, cfloor: 12000, 
+    mceiling: 4500, mfloor: 3500, 
+    vceiling: 2000, vfloor: 1000, intellect: 67500};
 //var reforgeParameters2 = {budget: 40000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 53000};
 var soulAcridReforgeParameters1 = {budget: 34000, step: 500, 
-    hceiling: 16500, hfloor: 11000, 
-    cceiling: 16500, cfloor: 6500, 
-    mceiling: 9500, mfloor: 4500, 
-    vceiling: 4000, vfloor: 1000, intellect: 48000};
+    hceiling: 16500, hfloor: 13000, 
+    cceiling: 16500, cfloor: 12000, 
+    mceiling: 5500, mfloor: 4500, 
+    vceiling: 2000, vfloor: 1000, intellect: 48000};
 //var soulReforgeParameters1 = {budget: 40000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 61001}; 
 var soulAcridReforgeParameters2 = {budget: 36000, step: 500, 
-    hceiling: 17500, hfloor: 12000, 
-    cceiling: 17000, cfloor: 7000, 
-    mceiling: 9500, mfloor: 4500, 
-    vceiling: 4000, vfloor: 1000, intellect: 67500};
+    hceiling: 17500, hfloor: 13000, 
+    cceiling: 17000, cfloor: 12000, 
+    mceiling: 5500, mfloor: 4500, 
+    vceiling: 2000, vfloor: 1000, intellect: 67500};
+
+var arcanoReforgeParameters1 = {budget: 40000, step: 500, 
+    hceiling: 17500, hfloor: 14000, 
+    cceiling: 20000, cfloor: 13000, 
+    mceiling: 5500, mfloor: 4500, 
+    vceiling: 3000, vfloor: 2000, intellect: 44400};
+//var reforgeParameters1 = {budget: 42000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 61000}; 
+var arcanoReforgeParameters2 = {budget: 42000, step: 500, 
+    hceiling: 18500, hfloor: 14000, 
+    cceiling: 20500, cfloor: 13000, 
+    mceiling: 5500, mfloor: 4500, 
+    vceiling: 3000, vfloor: 2000, intellect: 63900};
+//var reforgeParameters2 = {budget: 40000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 53000};
+var soulArcanoReforgeParameters1 = {budget: 32000, step: 500, 
+    hceiling: 17500, hfloor: 14000, 
+    cceiling: 17500, cfloor: 13000, 
+    mceiling: 5500, mfloor: 4500, 
+    vceiling: 3000, vfloor: 2000, intellect: 44400};
+//var soulReforgeParameters1 = {budget: 40000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 61001}; 
+var soulArcanoReforgeParameters2 = {budget: 40000, step: 500, 
+    hceiling: 18500, hfloor: 14000, 
+    cceiling: 18000, cfloor: 13000, 
+    mceiling: 5500, mfloor: 4500, 
+    vceiling: 3000, vfloor: 2000, intellect: 63900};
 //var soulReforgeParameters2 = {budget: 38000, step: 1000, floor: 3000, hceiling: 20000, hfloor: 8000, ceiling: 18000, intellect: 53001};  
 var legendaryParameters = ["sephuz","mangaza"]//,"shahraz","zeks"]; // Soul has to be added separately because of talent issues.
 //var legendaryCombinations = combineLegendaries(legendaryParameters);
@@ -186,28 +210,34 @@ if(reforge) {
     //var reforgeCombinations2 = combineReforge(reforgeParameters2);
     var acridReforgeCombinations1 = combineReforge(acridReforgeParameters1);
     var acridReforgeCombinations2 = combineReforge(acridReforgeParameters2);
+    var arcanoReforgeCombinations1 = combineReforge(arcanoReforgeParameters1);
+    var arcanoReforgeCombinations2 = combineReforge(arcanoReforgeParameters2);
     //var soulReforgeCombinations1 = combineReforge(soulReforgeParameters1);
     //var soulReforgeCombinations2 = combineReforge(soulReforgeParameters2);
     var soulAcridReforgeCombinations1 = combineReforge(soulAcridReforgeParameters1);
     var soulAcridReforgeCombinations2 = combineReforge(soulAcridReforgeParameters2);
+    var soulArcanoReforgeCombinations1 = combineReforge(soulArcanoReforgeParameters1);
+    var soulArcanoReforgeCombinations2 = combineReforge(soulArcanoReforgeParameters2);
     //var reforgeCombinations3 = combineReforge(reforgeParameters3);
     //var reforgeCombinations = reforgeCombinations1.concat(reforgeCombinations2)//.concat(reforgeCombinations3)
     var acridReforgeCombinations = acridReforgeCombinations1.concat(acridReforgeCombinations2)//.concat(reforgeCombinations3)
+    var arcanoReforgeCombinations = arcanoReforgeCombinations1.concat(arcanoReforgeCombinations2)//.concat(reforgeCombinations3)
     //var soulReforgeCombinations = soulReforgeCombinations1.concat(soulReforgeCombinations2)//.concat(reforgeCombinations3)
     var soulAcridReforgeCombinations = soulAcridReforgeCombinations1.concat(soulAcridReforgeCombinations2)//.concat(reforgeCombinations3)
+    var soulArcanoReforgeCombinations = soulArcanoReforgeCombinations1.concat(soulArcanoReforgeCombinations2)//.concat(reforgeCombinations3)
     //var reforgeCombinations = reforgeCombinations3
     //var reforgeCombinations = [["c:5000,m:5000,h:5000"],["c:2000,m:5000,h:8000"],["c:5000,m:2000,h:8000"],["c:8000,m:5000,h:2000"]]
-    console.log('Found ' + (/*reforgeCombinations.length +*/ acridReforgeCombinations.length) + ' reforge combinations.');
+    console.log('Found ' + ((3*arcanoReforgeCombinations.length + acridReforgeCombinations.length + soulArcanoReforgeCombinations.length + soulAcridReforgeCombinations.length)/2) + ' reforge combinations.');
 
     // Now shit gets real. We take the cartesian product of all 3 of these basically. And line-by-line add records into jobFlowData.
 
     var numJobs = 0;
 
     // Add base info
-    /*
+    
     simCombinations.forEach((sim) => {
         talentCombinations.forEach((talent) => {
-            reforgeCombinations.forEach((gear) => {
+            arcanoReforgeCombinations.forEach((gear) => {
                 relicCombinations.forEach((relic) => {
                     legendaryCombinations.forEach((legendaries) => {
                         crucibleCombinations.forEach((crucible) => {
@@ -218,7 +248,7 @@ if(reforge) {
                 })
             })
         })
-    })*/
+    })
     simCombinations.forEach((sim) => {
         talentCombinations.forEach((talent) => {
             acridReforgeCombinations.forEach((gear) => {
@@ -233,11 +263,11 @@ if(reforge) {
             })
         })
     })
-    /*
+    
     // Soul of the High Priest
     simCombinations.forEach((sim) => {
         sothpTalentCombinations.forEach((talent) => {
-            soulReforgeCombinations.forEach((gear) => {
+            soulArcanoReforgeCombinations.forEach((gear) => {
                 relicCombinations.forEach((relic) => {
                         crucibleCombinations.forEach((crucible) => {
                             jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';mangaza;soul;' + crucible + ';false\n';
@@ -246,7 +276,7 @@ if(reforge) {
                     })
                 })
         })
-    })*/
+    })
     simCombinations.forEach((sim) => {
         sothpTalentCombinations.forEach((talent) => {
             soulAcridReforgeCombinations.forEach((gear) => {
@@ -259,8 +289,9 @@ if(reforge) {
             })
         })
     })
-    /*
+    
     // No Legendary
+    /*
     simCombinations.forEach((sim) => {
         talentCombinations.forEach((talent) => {
             reforgeCombinations.forEach((gear) => {
@@ -272,19 +303,32 @@ if(reforge) {
                     })
                 })
         })
-    })
+    })*/
     simCombinations.forEach((sim) => {
         talentCombinations.forEach((talent) => {
-            acridReforgeCombinations.forEach((gear) => {
+            arcanoReforgeCombinations.forEach((gear) => {
                 relicCombinations.forEach((relic) => {
                         crucibleCombinations.forEach((crucible) => {
-                            jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';none;none;' + crucible + ';true\n';
+                            jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';none;none;' + crucible + ';false\n';
                             numJobs++;
                         })
                 })
             })
         })
-    })*/
+    })
+
+    simCombinations.forEach((sim) => {
+        talentCombinations.forEach((talent) => {
+            arcanoReforgeCombinations.forEach((gear) => {
+                relicCombinations.forEach((relic) => {
+                        crucibleCombinations.forEach((crucible) => {
+                            jobFlowData += sim + ';' + talent + ';' + gear + ';' + relic + ';sephuz;mangaza;' + crucible + ';false\n';
+                            numJobs++;
+                        })
+                })
+            })
+        })
+    })
 
 }
 

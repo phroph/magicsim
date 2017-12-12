@@ -19,6 +19,8 @@ module.exports.run = function(window, cArgs) {
     var modelName;
     var timeModel;
     var srcbuild;
+    var simcMode;
+    var simcData;
     var advancedOperations;
 
     var testMode = false;
@@ -41,6 +43,13 @@ module.exports.run = function(window, cArgs) {
         // In that case AM should not be user exposed through CLI.
         advancedMode = cArgs.advancedMode;
         advancedOperations = cArgs.advancedOperations;
+        simcMode = cArgs.simcMode;
+        simcData = cArgs.simcData;
+        if(simcMode) {
+            console.log(simcData);
+            name = simcData.match(/[^=]+="(.+)"/)[1];
+            console.log("Found name <" + name + "> in simc data")
+        }
     } else {
         if(!argv.model) {
             modelName = 'tos';
@@ -82,7 +91,7 @@ module.exports.run = function(window, cArgs) {
     srcbuild = false;
 
     var config = { names: ["fighttime","fightstyle"], values: [[90, 250, 400],["light_movement","heavy_movement","patchwerk"]]};
-    var addConfig = { names: ["fighttime","fightstyle","adds"], values: [[30,35,50,55,60],["light_movement","patchwerk"],['3','4','5']]}
+    var addConfig = { names: ["fighttime","fightstyle","adds"], values: [[30,35,40,45,50],["light_movement","patchwerk"],['3','4','5']]}
 
     var cp = config.names.reduce(function(prev, cur) {
         var name= cur;
@@ -298,7 +307,11 @@ module.exports.run = function(window, cArgs) {
             if(!fs.existsSync('profile_builder')) {
                 fs.mkdirSync('profile_builder');
             }
-            fs.writeFileSync(path.join('profile_builder', name + '.simc'), builder);
+            if(!simcMode) {
+                fs.writeFileSync(path.join('profile_builder', name + '.simc'), builder);
+            } else {
+                fs.writeFileSync(path.join('profile_builder', name + '.simc'), simcData + "\nsave=./profile_builder/"+ name + ".simc");
+            }
             try {
                 var simcpath;
                 if (srcbuild) {

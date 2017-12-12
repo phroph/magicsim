@@ -25,6 +25,9 @@ var sum = 0;
 Object.keys(time_mapping).forEach(function(time) {
     sum += time_mapping[time];
 })
+if(sum == 0) {
+    sum = 1; // Adds only composites dont use time in the same way.
+}
 console.log("Time calibration: " + sum);
 sum = 0;
 Object.keys(fight_mapping).forEach(function(fight) {
@@ -70,6 +73,9 @@ results.forEach(function(result){
     if(result.includes('adds')) {
         weight = fight_mapping[addRes[2]];
     } else {
+        if(fight_mapping[fight] == null) {
+            return;
+        }
         weight = fight_mapping[fight]*time_mapping[time];
     }
 	damage += xpath.select1("//simulationcraft/summary/dmg/@total", doc).value*weight;
