@@ -1,0 +1,20 @@
+﻿<Window x:Class="magicsim.SimCSim"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:magicsim"
+        mc:Ignorable="d"
+        Title="magicsim" Height="300" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label x:Name="Directions" Content="Enter /simc Content Below:" HorizontalAlignment="Left" Height="30" Margin="10,10,0,0" VerticalAlignment="Top" Width="171"/>
+        <TextBox x:Name="SimC" HorizontalAlignment="Left" AcceptsTab="True" AcceptsReturn="True" Height="179" Margin="10,40,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="273"/>
+        <Button x:Name="continueButton" Content="Continue" HorizontalAlignment="Left" Margin="52,233,0,0" VerticalAlignment="Top" Click="continueButton_Click" Width="75"/>
+        <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Click="cancelButton_Click" Width="75" Margin="158,233,0,0"/>
+
+
+    </Grid>
+</Window>

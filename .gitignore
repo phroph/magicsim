@@ -50,3 +50,6 @@ hadoop/.gradle
 .gradle
 process-*.math
 simc-*.7z
+magicsim/packages
+magicsim/magicsim/bin
+magicsim/magicsim/obj

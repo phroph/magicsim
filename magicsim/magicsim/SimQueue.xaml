@@ -1,0 +1,93 @@
+﻿<Window x:Class="magicsim.SimQueue"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:magicsim"
+        mc:Ignorable="d"
+        Title="magicsim" Height="439.122" Width="566.223">
+    <Window.Resources>
+        <local:SimQueueData x:Key="simQueueData"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <Binding Source="{StaticResource simQueueData}"/>
+    </Window.DataContext>
+    <Grid Margin="0,0,0.333,9.333">
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="130" Margin="16,37,0,0" Stroke="Black" VerticalAlignment="Top" Width="249"/>
+        <Label Content="Characters to Sim:" HorizontalAlignment="Left" Margin="13,6,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.411,-0.715"/>
+        <ScrollViewer HorizontalAlignment="Left" Height="118" Margin="24,43,0,0" VerticalAlignment="Top" Width="235">
+            <ItemsControl ItemsSource="{Binding Sims}" Width="236" Height="Auto">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" Margin="0,0,0,0"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Width="100" Text="{Binding Name}" IsEnabled="{Binding Path=IsModifiable}"/>
+                            <CheckBox IsChecked="{Binding Path=IsModifiable}" VerticalAlignment="Center" />
+                            <Label Content="Rename" VerticalAlignment="Center"/>
+                            <Button Content="Remove" Click="Button_Click"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <Button Content="Add" HorizontalAlignment="Left" Margin="24,172,0,0" VerticalAlignment="Top" Width="75" Click="AddCharacter_Click"/>
+        <Slider HorizontalAlignment="Left" Margin="376,85,0,0" Value="{Binding Path=Threads}" Maximum="8" Minimum="1" VerticalAlignment="Top" Width="121"/>
+        <Label Content="Threads:" HorizontalAlignment="Left" Margin="316,79,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.688,0.297"/>
+        <Slider HorizontalAlignment="Left" Value="{Binding Path=Processes}" Maximum="8" Minimum="1" Margin="376,110,0,0" VerticalAlignment="Top" Width="121"/>
+        <Label Content="Processes:" HorizontalAlignment="Left" Margin="307,105,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.688,0.297"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="20" Margin="506,83,0,0" Stroke="Black" VerticalAlignment="Top" Width="16"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="20" Margin="506,110,0,0" Stroke="Black" VerticalAlignment="Top" Width="16"/>
+        <Label Content="{Binding Path=Threads}" HorizontalAlignment="Left" Margin="506,79,0,0" VerticalAlignment="Top"/>
+        <Label Content="{Binding Path=Processes}" HorizontalAlignment="Left" Margin="506,106,0,0" VerticalAlignment="Top"/>
+        <Label Content="Model:" HorizontalAlignment="Left" Margin="325,54,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="377,56,0,0" ItemsSource="{Binding Path=Models}" SelectedItem="{Binding Path=SelectedModel}" VerticalAlignment="Top" Width="120"/>
+        <CheckBox Content="No Stat Weights" HorizontalAlignment="Left" IsChecked="{Binding Path=DisableStatWeights}" Margin="316,139,0,0" VerticalAlignment="Top"/>
+        <CheckBox Content="PTR Mode" HorizontalAlignment="Left" IsChecked="{Binding Path=PTRMode}" Margin="446,139,0,0" VerticalAlignment="Top"/>
+        <Label Content="Pantheon Raid Trinkets:" HorizontalAlignment="Left" Margin="13,235,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.429,-0.53"/>
+        <Label Content="(Click to Remove)" FontSize="8" HorizontalAlignment="Left" Margin="13,250,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.429,-0.53"/>
+        <CheckBox Content="Enabled" HorizontalAlignment="Left" Margin="151,241,0,0" IsChecked="{Binding Path=PantheonTrinketsEnabled}" Unchecked="PantheonEnable_Unchecked" Checked="PantheonEnable_Checked" VerticalAlignment="Top"/>
+        <Button Content="Simulate" HorizontalAlignment="Left" Margin="190,364,0,0" VerticalAlignment="Top" Width="75" Click="Simulate_Click"/>
+        <Button Content="Add" IsEnabled="{Binding Path=PantheonTrinketsEnabled}" Click="PantheonUserAdd_Click" HorizontalAlignment="Left" Margin="229,303,0,0" VerticalAlignment="Top" Width="35" Height="24"/>
+        <ComboBox HorizontalAlignment="Left" IsEnabled="{Binding Path=PantheonTrinketsEnabled}" ItemsSource="{Binding Path=PantheonTrinkets}" SelectionChanged="PantheonTrinket_SelectionChanged" SelectedItem="{Binding Path=SelectedPantheonTrinket}" Margin="139,276,0,0" VerticalAlignment="Top" Width="125"/>
+        <Label Content="Haste:" HorizontalAlignment="Left" Margin="138,300,0,0" VerticalAlignment="Top"/>
+        <TextBox Name="PantheonHaste" HorizontalAlignment="Left" IsEnabled="{Binding Path=PantheonTrinketsEnabled}" Height="23" Margin="181,304,0,0" TextWrapping="Wrap" Text="{Binding Path=PantheonHastePercent}" VerticalAlignment="Top" Width="27"/>
+        <Label Content="%" HorizontalAlignment="Left" Margin="204,299,0,0" VerticalAlignment="Top"/>
+        <Label Content="Sim Parameters:" HorizontalAlignment="Left" Margin="286,6,0,0" VerticalAlignment="Top"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="288,364,0,0" Click="Cancel_Click"/>
+        <Label Content="Reforge Parameters:" HorizontalAlignment="Left" Margin="286,234,0,0" VerticalAlignment="Top"/>
+        <CheckBox Content="Enabled" HorizontalAlignment="Left" Margin="416,241,0,0" VerticalAlignment="Top" IsChecked="{Binding Path=ReforgeEnabled}"/>
+        <Label Content="(Will Greatly Impact Performance)" HorizontalAlignment="Left" Margin="286,249,0,0" FontSize="8" VerticalAlignment="Top"/>
+        <CheckBox Content="Critical Strike" HorizontalAlignment="Left" Margin="292,284,0,0" VerticalAlignment="Top" IsEnabled="{Binding Path=ReforgeEnabled}" IsChecked="{Binding Path=ReforgeCrit}" FontSize="10"/>
+        <CheckBox Content="Mastery" HorizontalAlignment="Left" Margin="374,284,0,0" VerticalAlignment="Top" IsEnabled="{Binding Path=ReforgeEnabled}" IsChecked="{Binding Path=ReforgeMastery}" FontSize="10"/>
+        <CheckBox Content="Haste" HorizontalAlignment="Left" Margin="292,302,0,0" VerticalAlignment="Top" IsEnabled="{Binding Path=ReforgeEnabled}" IsChecked="{Binding Path=ReforgeHaste}" FontSize="10"/>
+        <CheckBox Content="Versatility" HorizontalAlignment="Left" Margin="374,301,0,0" VerticalAlignment="Top" IsEnabled="{Binding Path=ReforgeEnabled}" IsChecked="{Binding Path=ReforgeVers}" FontSize="10"/>
+        <Label Content="Stats to Scale:" HorizontalAlignment="Left" Margin="286,259,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="17" Margin="490,280,0,0" TextWrapping="Wrap" IsEnabled="{Binding Path=ReforgeEnabled}" Text="{Binding Path=ReforgeStepSize}" VerticalAlignment="Top" Width="51"/>
+        <TextBox HorizontalAlignment="Left" Height="19" Margin="490,301,0,0" TextWrapping="Wrap" IsEnabled="{Binding Path=ReforgeEnabled}" Text="{Binding Path=ReforgeAmount}" VerticalAlignment="Top" Width="51"/>
+        <Label Content="Step:" HorizontalAlignment="Left" Margin="458,277,0,0" VerticalAlignment="Top" FontSize="10"/>
+        <Label Content="Amount:" HorizontalAlignment="Left" Margin="441,297,0,0" VerticalAlignment="Top" FontSize="10"/>
+        <Label Content="Advanced Stuff:" HorizontalAlignment="Left" Margin="14,201,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="66" Margin="41,269,0,0" Stroke="Black" VerticalAlignment="Top" Width="70"/>
+        <ScrollViewer IsEnabled="{Binding Path=PantheonTrinketsEnabled}" Margin="41,270,448,65.667" >
+            <ItemsControl ItemsSource="{Binding PantheonUsers}" Height="Auto" RenderTransformOrigin="0.491,-0.136" Width="51">
+                <ItemsControl.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleY="1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </ItemsControl.RenderTransform>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Height="20" Width="Auto" Content="{Binding Path=Value}" IsEnabled="{Binding Path=PantheonTrinketsEnabled}" Click="PantheonUserRemove_Click" Margin="0,0,0,0.667"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</Window>

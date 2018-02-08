@@ -1,0 +1,17 @@
+﻿<Window x:Class="magicsim.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:magicsim"
+        mc:Ignorable="d"
+        Title="magicsim" Height="300" Width="300">
+    <Grid>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="magicsim" VerticalAlignment="Top" FontSize="24"/>
+        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,42,0,0" TextWrapping="Wrap" Text="How2Priest style sims made easy" VerticalAlignment="Top" FontSize="14"/>
+        <Button x:Name="button" Content="From Armory" HorizontalAlignment="Left" Click="button_Click" Margin="63,96,0,0" VerticalAlignment="Top" Width="175" FontSize="24"/>
+        <Button x:Name="button1" Content="From /simc" HorizontalAlignment="Left" Margin="63,148,0,0" VerticalAlignment="Top" Width="175" FontSize="24" Click="button1_Click"/>
+        <Button x:Name="button1_Copy" Content="Previous Results" HorizontalAlignment="Left" Margin="63,199,0,0" VerticalAlignment="Top" Width="175" FontSize="24" Click="button1_Click"/>
+
+    </Grid>
+</Window>
