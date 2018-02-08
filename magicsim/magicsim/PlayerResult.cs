@@ -9,8 +9,12 @@ namespace magicsim
     public class PlayerResult
     {
         public string Name { get; set; }
+        public string Class { get; set; }
         public string Spec { get; set; }
+        public string ClassReadable { get; set; }
+        public string SpecReadble { get; set; }
         public double Dps { get; set; }
+        public double Damage { get; set; }
         public string MainstatType { get; set; }
         public double MainstatValue { get; set; }
         public double Crit { get; set; }

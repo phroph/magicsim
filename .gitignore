@@ -53,3 +53,5 @@ simc-*.7z
 magicsim/packages
 magicsim/magicsim/bin
 magicsim/magicsim/obj
+magicsim/.vs/magicsim/v15/Server/sqlite3/storage.ide
+magicsim/.vs/magicsim/v15/.suo

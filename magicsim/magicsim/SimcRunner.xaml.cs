@@ -31,7 +31,7 @@ namespace magicsim
             var simcData = (SimcRunnerData)sender;
             var window = new ResultsWindow();
             ((ResultData)window.DataContext).LoadResultPath("results/" + simcData.guid);
-            ((ResultData)window.DataContext).MergeResults(simcData.model);
+            ((ResultData)window.DataContext).MergeResults(simcData.model, simcData.guid);
             App.Current.MainWindow = window;
             this.Close();
             window.Show();

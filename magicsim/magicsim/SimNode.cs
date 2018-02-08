@@ -32,15 +32,16 @@ namespace magicsim
 
     public class CollectedData
     {
-        public TimelineDamage timeline_dmg;
-    }
-
-    public class TimelineDamage
-    {
         public Dps dps;
+        public Damage dmg;
     }
 
     public class Dps
+    {
+        public double mean;
+    }
+
+    public class Damage
     {
         public double mean;
     }
