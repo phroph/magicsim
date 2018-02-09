@@ -30,6 +30,8 @@ namespace magicsim
         private void button_Click(object sender, RoutedEventArgs e)
         {
             var window = new ArmorySim();
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
             isActive = true;
             App.Current.MainWindow = window;
             this.Close();
@@ -39,6 +41,8 @@ namespace magicsim
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             var window = new SimCSim();
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
             App.Current.MainWindow = window;
             isActive = true;
             this.Close();
@@ -48,6 +52,8 @@ namespace magicsim
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             var window = new SimQueue();
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
             App.Current.MainWindow = window;
             this.Close();
             window.Show();

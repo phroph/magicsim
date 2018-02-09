@@ -143,6 +143,8 @@ namespace magicsim
         private void AddCharacter_Click(object sender, RoutedEventArgs e)
         {
             var window = new SubMainWindow();
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
             App.Current.MainWindow = window;
             this.Close();
             window.Show();
@@ -276,6 +278,8 @@ namespace magicsim
                 }
             }
             var window = new SimcRunner();
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
             ((SimcRunnerData)window.DataContext).LoadSimLoadout(simList, context.Processes, selectedModel);
             App.Current.MainWindow = window;
             this.Close();
@@ -285,6 +289,8 @@ namespace magicsim
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             var window = new MainWindow();
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
             App.Current.MainWindow = window;
             SimDataManager.ResetSimData();
             this.Close();

@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace magicsim
 {
@@ -30,7 +21,9 @@ namespace magicsim
         {
             var simcData = (SimcRunnerData)sender;
             var window = new ResultsWindow();
-            ((ResultData)window.DataContext).LoadResultPath("results/" + simcData.guid);
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
+            ((ResultData)window.DataContext).LoadResultPath("results" + Path.DirectorySeparatorChar + simcData.guid);
             ((ResultData)window.DataContext).MergeResults(simcData.model, simcData.guid);
             App.Current.MainWindow = window;
             this.Close();

@@ -9,6 +9,5 @@ namespace magicsim
     public class SimResult
     {
         public SimNode sim;
-        public String filename;
     }
 }

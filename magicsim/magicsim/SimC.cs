@@ -118,7 +118,10 @@ namespace magicsim
             info.WindowStyle = ProcessWindowStyle.Hidden;
             Process.Start(info).WaitForExit();
 
-            directory = new DirectoryInfo("bin").EnumerateDirectories().ElementAt(0).ToString();
+            directory = new DirectoryInfo("bin").EnumerateDirectories().OrderByDescending((dir) =>
+            {
+                return dir.CreationTimeUtc.ToFileTimeUtc();
+            }).ElementAt(0).ToString();
         }
 
         public static byte[] ReadFully(Stream input)

@@ -70,6 +70,8 @@ namespace magicsim
                 return;
             }
             var window = new ArmoryPreloader();
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
             ((ArmoryPreloaderData)window.DataContext).LoadArmoryData(armorySimData.SelectedRegion, armorySimData.SelectedServer, armorySimData.Name);
             App.Current.MainWindow = window;
             this.Close();
@@ -81,12 +83,16 @@ namespace magicsim
             if (SubMainWindow.isActive)
             {
                 var window = new SubMainWindow();
+                window.Top = App.Current.MainWindow.Top;
+                window.Left = App.Current.MainWindow.Left;
                 App.Current.MainWindow = window;
                 this.Close();
                 window.Show();
             } else
             {
                 var window = new MainWindow();
+                window.Top = App.Current.MainWindow.Top;
+                window.Left = App.Current.MainWindow.Left;
                 App.Current.MainWindow = window;
                 this.Close();
                 window.Show();

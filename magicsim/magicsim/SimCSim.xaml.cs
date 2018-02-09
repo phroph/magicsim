@@ -29,6 +29,8 @@ namespace magicsim
             if (SubMainWindow.isActive)
             {
                 var window = new SubMainWindow();
+                window.Top = App.Current.MainWindow.Top;
+                window.Left = App.Current.MainWindow.Left;
                 App.Current.MainWindow = window;
                 this.Close();
                 window.Show();
@@ -36,6 +38,8 @@ namespace magicsim
             else
             {
                 var window = new MainWindow();
+                window.Top = App.Current.MainWindow.Top;
+                window.Left = App.Current.MainWindow.Left;
                 App.Current.MainWindow = window;
                 this.Close();
                 window.Show();
@@ -50,6 +54,8 @@ namespace magicsim
                 return;
             }
             var window = new SimcPreloader();
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
             ((SimcPreloaderData)window.DataContext).LoadArmoryData(simc);
             App.Current.MainWindow = window;
             this.Close();

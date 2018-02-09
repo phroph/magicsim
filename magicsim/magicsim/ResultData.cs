@@ -27,8 +27,9 @@ namespace magicsim
             }
         }
 
-        public ObservableCollection<SimResult> Results { get; set; }
+        public List<Tuple<SimResult, string>> Results { get; set; }
         public ObservableCollection<PlayerResult> MergedResults { get; set; }
+
         private PlayerResult _selectedPlayer;
         public PlayerResult SelectedPlayer
         {
@@ -38,12 +39,13 @@ namespace magicsim
                 if (value != _selectedPlayer)
                 {
                     _selectedPlayer = value;
-                    GetPawnString(value);
-                    GetSummaryString(value);
+                    PawnString = GetPawnString(value);
+                    SummaryString = GetSummaryString(value);
                     OnPropertyChanged("SelectedPlayer");
                 }
             }
         }
+
         private string _pawnString;
         public string PawnString
         {
@@ -83,7 +85,7 @@ namespace magicsim
         private Dictionary<string, string> playerSpecs;
         private Dictionary<string, string> playerClasses;
 
-        public string _modelName;
+        private string _modelName;
         public string ModelName
         {
             get { return _modelName; }
@@ -97,7 +99,7 @@ namespace magicsim
             }
         }
 
-        public string _modelNameShort;
+        private string _modelNameShort;
         public string ModelNameShort
         {
             get { return _modelNameShort; }
@@ -111,7 +113,7 @@ namespace magicsim
             }
         }
 
-        public string _tag;
+        private string _tag;
         public string Tag
         {
             get { return _tag; }
@@ -127,7 +129,7 @@ namespace magicsim
 
         public ResultData()
         {
-            Results = new ObservableCollection<SimResult>();
+            Results = new List<Tuple<SimResult,string>>();
             MergedResults = new ObservableCollection<PlayerResult>();
             playerCritValues = new Dictionary<string, double>();
             playerDpsValues = new Dictionary<string, double>();
@@ -143,20 +145,16 @@ namespace magicsim
 
         public void LoadResultPath(String path)
         {
-            var results = Directory.EnumerateFiles(path).Where((file) =>
-            {
-                return file.Contains(".json");
-            });
+            var results = Directory.EnumerateFiles(path, "*.json");
             Results.Clear();
             results.ToList().ForEach((result) =>
             {
-                using (StreamReader r = new StreamReader(path + "/" + result))
+                using (StreamReader r = new StreamReader(result))
                 {
                     string json = r.ReadToEnd();
 
                     SimResult res = JsonConvert.DeserializeObject<SimResult>(json);
-                    res.filename = result;
-                    Results.Add(res);
+                    Results.Add(new Tuple<SimResult,string>(res, result.Split(Path.DirectorySeparatorChar).Last()));
                 }
             });
         }
@@ -186,14 +184,14 @@ namespace magicsim
             ModelNameShort = model.dispName;
             Results.ToList().ForEach((result) =>
             {
-                var splitIndex = result.filename.IndexOf('_');
-                var time = result.filename.Substring(0, splitIndex);
-                var fight = result.filename.Substring(splitIndex).Split('.')[0];
+                var splitIndex = result.Item2.IndexOf('_');
+                var time = result.Item2.Substring(0, splitIndex);
+                var fight = result.Item2.Substring(splitIndex + 1).Split('.')[0];
                 if(model.model.ContainsKey(fight) && model.timeModel.ContainsKey(time))
                 {
                     double modelWeight = model.model[fight];
                     double timeWeight = model.timeModel[time];
-                    result.sim.players.ForEach((player) =>
+                    result.Item1.sim.players.ForEach((player) =>
                     {
                         double dps = player.collected_data.dps.mean;
                         double damage = player.collected_data.dmg.mean;
@@ -269,8 +267,8 @@ namespace magicsim
                 {
                     minDps = playerRes.Dps;
                 }
+                playerRes.Name = key;
                 playerRes.Damage = playerDamageValues[key];
-
                 playerRes.Class = playerClasses[key];
                 playerRes.ClassReadable = playerRes.Class.Replace("Deathk", "Death K").Replace("Demonh", "Demon H");
                 playerRes.Spec = playerSpecs[key];
@@ -282,19 +280,19 @@ namespace magicsim
                     playerRes.MainstatValue = playerMainStatValues[key] / playerMainStatValues[key];
                     if (playerHasteValues.ContainsKey(key))
                     {
-                        playerRes.Haste = playerHasteValues[key] / playerRes.MainstatValue;
+                        playerRes.Haste = playerHasteValues[key] / playerMainStatValues[key];
                     }
                     if (playerCritValues.ContainsKey(key))
                     {
-                        playerRes.Crit = playerCritValues[key] / playerRes.MainstatValue;
+                        playerRes.Crit = playerCritValues[key] / playerMainStatValues[key];
                     }
                     if (playerMasteryValues.ContainsKey(key))
                     {
-                        playerRes.Mastery = playerMasteryValues[key] / playerRes.MainstatValue;
+                        playerRes.Mastery = playerMasteryValues[key] / playerMainStatValues[key];
                     }
                     if (playerVersValues.ContainsKey(key))
                     {
-                        playerRes.Vers = playerVersValues[key] / playerRes.MainstatValue;
+                        playerRes.Vers = playerVersValues[key] / playerMainStatValues[key];
                     }
                 } else
                 {
@@ -307,23 +305,30 @@ namespace magicsim
             {
                 if(list.Dps != minDps)
                 {
-                    list.DpsBoost = ((list.Dps / minDps) * 100.0).ToString("F2");
+                    list.DpsBoost = (((list.Dps / minDps) - 1) * 100.0).ToString("F2") + "%";
+                } else
+                {
+                    list.DpsBoost = "";
                 }
             });
             MergedResults.Clear();
-            MergedResults.Concat(sublist.OrderByDescending(player => player.Dps));
+            sublist.OrderByDescending(player => player.Dps).ToList().ForEach((list) =>
+            {
+                MergedResults.Add(list);
+            });
+            SelectedPlayer = MergedResults[0];
             SaveResults(guid);
         }
 
         public void SaveResults(string guid)
         {
             var resultJson = JsonConvert.SerializeObject(MergedResults.ToList());
-            if(!Directory.Exists("result"))
+            if(!Directory.Exists("savedResults"))
             {
-                Directory.CreateDirectory("result");
+                Directory.CreateDirectory("savedResults");
             }
             
-            string dir = "result/" + Tag;
+            string dir = "savedResults" + Path.DirectorySeparatorChar + Tag;
             int suffix = 0;
             string fixedDir = dir;
             if(Directory.Exists(dir))
@@ -337,7 +342,7 @@ namespace magicsim
             dir = fixedDir;
             Directory.CreateDirectory(dir);
 
-            File.WriteAllText(dir + "/MergedResults.json", resultJson);
+            File.WriteAllText(dir + Path.DirectorySeparatorChar + "MergedResults.json", resultJson);
         }
 
         public string GetPawnString(PlayerResult player)

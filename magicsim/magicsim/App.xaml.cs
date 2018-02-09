@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using AutoUpdaterDotNET;
 
 namespace magicsim
 {
@@ -13,5 +14,9 @@ namespace magicsim
     /// </summary>
     public partial class App : Application
     {
+        public App() : base()
+        {
+            AutoUpdater.Start("https://raw.githubusercontent.com/phroph/magicsim/version/magicsim.xml");
+        }
     }
 }

@@ -29,6 +29,8 @@ namespace magicsim
             var context = (CustomizationData)this.DataContext;
             var profile = context.ConstructFinalProfile();
             var window = new SimQueue();
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
             ((SimQueueData)window.DataContext).AddSim(profile,context.Name);
             App.Current.MainWindow = window;
             this.Close();
@@ -121,6 +123,8 @@ namespace magicsim
             if (SubMainWindow.isActive)
             {
                 var window = new SimQueue();
+                window.Top = App.Current.MainWindow.Top;
+                window.Left = App.Current.MainWindow.Left;
                 App.Current.MainWindow = window;
                 this.Close();
                 window.Show();
@@ -128,6 +132,8 @@ namespace magicsim
             else
             {
                 var window = new MainWindow();
+                window.Top = App.Current.MainWindow.Top;
+                window.Left = App.Current.MainWindow.Left;
                 App.Current.MainWindow = window;
                 this.Close();
                 window.Show();
