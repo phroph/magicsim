@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <item>
     <version>2.0.0.0</version>
-    <url>https://raw.githubusercontent.com/phroph/magicsim/version/magicsim.xml</url>
+    <url>https://github.com/phroph/magicsim/releases/download/2.0.0.0/magicsim-2.0.0.0-anycpu.zip</url>
     <changelog>https://github.com/phroph/magicsim/releases</changelog>
     <mandatory>false</mandatory>
 </item>
