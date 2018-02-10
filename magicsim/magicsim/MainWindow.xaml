@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:magicsim"
         mc:Ignorable="d"
         Title="magicsim" Height="300" Width="300"
+        Background="WhiteSmoke"
         ResizeMode="NoResize">
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Margin="45,71,44.667,33">

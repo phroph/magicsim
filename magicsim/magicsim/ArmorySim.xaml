@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:magicsim"
         mc:Ignorable="d"
+        Background="WhiteSmoke"
         Title="magicsim" Height="230.438" Width="250">
     <Window.Resources>
         <local:ArmorySimData x:Key="armoryData"/>
@@ -13,14 +14,14 @@
         <Binding Source="{StaticResource armoryData}"/>
     </Window.DataContext>
     <Grid Margin="0,0,0.333,8.667">
-        <TextBlock x:Name="subheader" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Armory Sim Loader" VerticalAlignment="Top" FontSize="14"/>
-        <Label x:Name="nameLabel" Content="Name:" HorizontalAlignment="Left" Margin="35,52,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="name" HorizontalAlignment="Left" Height="23" Margin="79,55,0,0" TextWrapping="Wrap" Text="{Binding Path=Name}" VerticalAlignment="Top" Width="120"/>
-        <Label x:Name="serverLabel" Content="Server:" HorizontalAlignment="Left" Margin="35,83,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="servers" HorizontalAlignment="Left" Height="23" SelectedItem="Aegwynn" ItemsSource="{Binding Path=Servers}" SelectionChanged="servers_SelectionChanged" Margin="79,86,0,0" Text="" VerticalAlignment="Top" Width="120"/>
-        <Label x:Name="regionLabel" Content="Region:" HorizontalAlignment="Left" Margin="30,114,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="regions" HorizontalAlignment="Left" Height="23" SelectedItem="US" ItemsSource="{Binding Path=Regions}" SelectionChanged="regions_SelectionChanged" Margin="79,118,0,0" Text="" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="button" IsDefault="True" Content="Continue" HorizontalAlignment="Left" VerticalAlignment="Top" Width="77" Margin="35,166,0,0" Click="button_Click"/>
-        <Button x:Name="button_Copy" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="77" Margin="136,166,0,0" Click="Cancel_Click"/>
+        <Label Content="Enter Character Data:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="8,8,0,0"/>
+        <Label x:Name="nameLabel" Content="Name:" HorizontalAlignment="Left" Margin="35,42,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <TextBox x:Name="name" HorizontalAlignment="Left" Height="23" Margin="93,45,0,0" TextWrapping="Wrap" Text="{Binding Path=Name}" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="serverLabel" Content="Server:" HorizontalAlignment="Left" Margin="35,73,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <ComboBox x:Name="servers" HorizontalAlignment="Left" Height="23" SelectedItem="Aegwynn" ItemsSource="{Binding Path=Servers}" SelectionChanged="servers_SelectionChanged" Margin="93,76,0,0" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="regionLabel" Content="Region:" HorizontalAlignment="Left" Margin="30,104,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <ComboBox x:Name="regions" HorizontalAlignment="Left" Height="23" SelectedItem="US" ItemsSource="{Binding Path=Regions}" SelectionChanged="regions_SelectionChanged" Margin="93,108,0,0" Text="" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="button" IsDefault="True" Content="Continue" HorizontalAlignment="Left" VerticalAlignment="Top" Width="77" Margin="35,156,0,0" Click="button_Click"/>
+        <Button x:Name="button_Copy" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="77" Margin="136,156,0,0" Click="Cancel_Click"/>
     </Grid>
 </Window>

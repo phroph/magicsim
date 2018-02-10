@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:magicsim"
         mc:Ignorable="d"
+        Background="WhiteSmoke"
         Title="magicsim" Height="250" Width="325"
         ResizeMode="NoResize">
     <Window.Resources>
@@ -14,7 +15,7 @@
         <Binding Source="{StaticResource resultLoaderData}"/>
     </Window.DataContext>
     <Grid>
-        <ListBox ItemsSource="{Binding Path=TagList}" SelectedItem="{Binding Path=SelectedTag}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Height="125" Width="275" Margin="23,15,22,82">
+        <ListBox Background="GhostWhite" ItemsSource="{Binding Path=TagList}" SelectedItem="{Binding Path=SelectedTag}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Height="125" Width="275" Margin="23,15,22,82">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Vertical" Margin="0,0,0,0"/>
@@ -39,9 +40,9 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <TextBox Name="RenameBox" Width="125" Height="20" Text="{Binding Path=SelectedTag.Label, Mode=OneWay}" Margin="113,150,82,42" />
-        <Label Content="Selected Result:" HorizontalAlignment="Left" Margin="20,150,0,0" VerticalAlignment="Top"/>
-        <Button Content="Rename" HorizontalAlignment="Left" VerticalAlignment="Top" Width="52" Margin="245,156,0,0" FontSize="10" Click="Button_Click"/>
+        <TextBox Name="RenameBox" Width="125" Height="20" Text="{Binding Path=SelectedTag.Label, Mode=OneWay}" Margin="119,155,76,47" />
+        <Label Content="Selected Sim Run:" HorizontalAlignment="Left" Margin="17,150,0,0" VerticalAlignment="Top"/>
+        <Button Content="Rename" HorizontalAlignment="Left" VerticalAlignment="Top" Width="52" Margin="251,156,0,0" FontSize="10" Click="Button_Click"/>
         <Button Content="Load Results" HorizontalAlignment="Left" Margin="61,184,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
         <Button Content="Cancel" HorizontalAlignment="Left" Margin="178,184,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
     </Grid>
