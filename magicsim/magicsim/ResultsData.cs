@@ -63,6 +63,20 @@ namespace magicsim
             }
         }
 
+        private string _labelString;
+        public string LabelString
+        {
+            get { return _labelString; }
+            set
+            {
+                if (value != _labelString)
+                {
+                    _labelString = value;
+                    OnPropertyChanged("LabelString");
+                }
+            }
+        }
+
         private string _summaryString;
         public string SummaryString
         {
@@ -97,6 +111,7 @@ namespace magicsim
                 if (value != _modelName)
                 {
                     _modelName = value;
+                    LabelString = GetLabelString();
                     OnPropertyChanged("ModelName");
                 }
             }
@@ -125,6 +140,7 @@ namespace magicsim
                 if (value != _tag)
                 {
                     _tag = value;
+                    LabelString = GetLabelString();
                     OnPropertyChanged("Tag");
                 }
             }
@@ -144,6 +160,11 @@ namespace magicsim
             playerVersValues = new Dictionary<string, double>();
             playerSpecs = new Dictionary<string, string>();
             playerClasses = new Dictionary<string, string>();
+        }
+
+        public string GetLabelString()
+        {
+            return "Results - " + Tag + " - " + ModelName;
         }
 
         public void LoadResultPath(String path)
@@ -353,8 +374,8 @@ namespace magicsim
             dir = fixedDir;
             Directory.CreateDirectory(dir);
 
-            // Serialize ModelNameShort and ModelName
-
+            File.WriteAllText(dir + Path.DirectorySeparatorChar + "ModelName.txt", ModelName);
+            File.WriteAllText(dir + Path.DirectorySeparatorChar + "ModelNameShort.txt", ModelNameShort);
             File.WriteAllText(dir + Path.DirectorySeparatorChar + "MergedResults.json", resultJson);
         }
 
@@ -397,18 +418,26 @@ namespace magicsim
             {
                 return;
             }
-            string dir = "savedResults/" + tag;
+            string dir = "savedResults" + Path.DirectorySeparatorChar + tag;
             if (Directory.Exists(dir))
             {
-                if(!File.Exists(dir + "/MergedResults.json"))
+                if(!File.Exists(dir + Path.DirectorySeparatorChar + "MergedResults.json"))
                 {
                     MessageBox.Show("Could not find any results. They may have been deleted.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     RunningFailed(this, new EventArgs());
                 }
-                var resultJson = File.ReadAllText(dir + "/MergedResults.json");
+                var resultJson = File.ReadAllText(dir + Path.DirectorySeparatorChar + "MergedResults.json");
                 MergedResults.Clear();
                 JsonConvert.DeserializeObject<List<PlayerResult>>(resultJson).ToList().ForEach(x => MergedResults.Add(x));
                 Tag = tag;
+                if(File.Exists(dir + Path.DirectorySeparatorChar + "ModelName.txt"))
+                {
+                    ModelName = File.ReadAllText(dir + Path.DirectorySeparatorChar + "ModelName.txt");
+                }
+                if (File.Exists(dir + Path.DirectorySeparatorChar + "ModelNameShort.txt"))
+                {
+                    ModelNameShort = File.ReadAllText(dir + Path.DirectorySeparatorChar + "ModelNameShort.txt");
+                }
                 // Deserialize ModelNameShort and ModelName
                 SelectedPlayer = MergedResults[0];
             }

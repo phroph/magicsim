@@ -53,7 +53,6 @@
             <TextBox Background="GhostWhite" IsReadOnly="True" VerticalAlignment="Center" FontSize="10" Text="{Binding Path=PawnString}" HorizontalScrollBarVisibility="Visible" Height="35" HorizontalAlignment="Left" Width="350" Padding="0,0,8,0"/>
         </StackPanel>
         <Button Content="Done" HorizontalAlignment="Left" Margin="154,257,0,0" VerticalAlignment="Top" Click="Button_Click" Width="75"/>
-        <Label Content="Results - " HorizontalAlignment="Left" Margin="24,10,0,0" VerticalAlignment="Top"/>
-        <Label Content="{Binding Path=Tag}" HorizontalAlignment="Left" Margin="72,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="{Binding Path=LabelString}" HorizontalAlignment="Left" Margin="24,10,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
