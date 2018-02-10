@@ -5,13 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:magicsim"
         mc:Ignorable="d"
-        Title="magicsim" Height="300" Width="300">
+        Title="magicsim" Height="300" Width="300"
+        ResizeMode="NoResize">
     <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Margin="45,71,44.667,33">
+            <Button x:Name="button" Content="From Armory" Margin="10" HorizontalAlignment="Center" Click="button_Click" Width="180" FontSize="24"/>
+            <Button x:Name="button1" Content="From /simc" Margin="10" Height="Auto" Width="180" FontSize="24" Click="button1_Click"/>
+            <Button x:Name="previous" Content="Previous Results" Margin="10" Width="180" FontSize="24" Click="previous_Click" />
+        </StackPanel>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="magicsim" VerticalAlignment="Top" FontSize="24"/>
-        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,42,0,0" TextWrapping="Wrap" Text="How2Priest style sims made easy" VerticalAlignment="Top" FontSize="14"/>
-        <Button x:Name="button" Content="From Armory" HorizontalAlignment="Left" Click="button_Click" Margin="63,96,0,0" VerticalAlignment="Top" Width="175" FontSize="24"/>
-        <Button x:Name="button1" Content="From /simc" HorizontalAlignment="Left" Margin="63,148,0,0" VerticalAlignment="Top" Width="175" FontSize="24" Click="button1_Click"/>
-        <Button x:Name="button1_Copy" Content="Previous Results" HorizontalAlignment="Left" Margin="63,199,0,0" VerticalAlignment="Top" Width="175" FontSize="24" Click="button1_Click"/>
-
+        <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,42,0,0" TextWrapping="Wrap" Text="Advanced simming made easy" VerticalAlignment="Top" FontSize="14"/>
+        <Label Content="Created by SemicolonDash of HowToPriest" FontSize="10" HorizontalAlignment="Center" Height="23" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

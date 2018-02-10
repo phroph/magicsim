@@ -11,12 +11,14 @@ using Newtonsoft.Json.Serialization;
 using static magicsim.SimQueue;
 using System.Globalization;
 using System.Threading;
+using System.Windows;
 
 namespace magicsim
 {
-    public class ResultData : INotifyPropertyChanged
+    public class ResultsData : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler RunningFailed;
 
         protected void OnPropertyChanged(string name)
         {
@@ -27,7 +29,8 @@ namespace magicsim
             }
         }
 
-        public List<Tuple<SimResult, string>> Results { get; set; }
+        private List<Tuple<SimResult, string>> _results;
+
         public ObservableCollection<PlayerResult> MergedResults { get; set; }
 
         private PlayerResult _selectedPlayer;
@@ -107,7 +110,7 @@ namespace magicsim
             {
                 if (value != _modelNameShort)
                 {
-                    _modelName = value;
+                    _modelNameShort = value;
                     OnPropertyChanged("ModelNameShort");
                 }
             }
@@ -127,9 +130,9 @@ namespace magicsim
             }
         }
 
-        public ResultData()
+        public ResultsData()
         {
-            Results = new List<Tuple<SimResult,string>>();
+            _results = new List<Tuple<SimResult,string>>();
             MergedResults = new ObservableCollection<PlayerResult>();
             playerCritValues = new Dictionary<string, double>();
             playerDpsValues = new Dictionary<string, double>();
@@ -145,16 +148,24 @@ namespace magicsim
 
         public void LoadResultPath(String path)
         {
+            SimDataManager.ResetSimData();
             var results = Directory.EnumerateFiles(path, "*.json");
-            Results.Clear();
+            _results.Clear();
             results.ToList().ForEach((result) =>
             {
-                using (StreamReader r = new StreamReader(result))
+                try
                 {
-                    string json = r.ReadToEnd();
+                    using (StreamReader r = new StreamReader(result))
+                    {
+                        string json = r.ReadToEnd();
 
-                    SimResult res = JsonConvert.DeserializeObject<SimResult>(json);
-                    Results.Add(new Tuple<SimResult,string>(res, result.Split(Path.DirectorySeparatorChar).Last()));
+                        SimResult res = JsonConvert.DeserializeObject<SimResult>(json);
+                        _results.Add(new Tuple<SimResult, string>(res, result.Split(Path.DirectorySeparatorChar).Last()));
+                    }
+                } catch(Exception e)
+                {
+                    MessageBox.Show("Could not process generated results. Something went terribly wrong.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    RunningFailed(this, new EventArgs());
                 }
             });
         }
@@ -182,7 +193,7 @@ namespace magicsim
             double minDps = double.MaxValue;
             ModelName = model.name;
             ModelNameShort = model.dispName;
-            Results.ToList().ForEach((result) =>
+            _results.ToList().ForEach((result) =>
             {
                 var splitIndex = result.Item2.IndexOf('_');
                 var time = result.Item2.Substring(0, splitIndex);
@@ -342,6 +353,8 @@ namespace magicsim
             dir = fixedDir;
             Directory.CreateDirectory(dir);
 
+            // Serialize ModelNameShort and ModelName
+
             File.WriteAllText(dir + Path.DirectorySeparatorChar + "MergedResults.json", resultJson);
         }
 
@@ -374,21 +387,28 @@ namespace magicsim
 
         public string GetSummaryString(PlayerResult player)
         {
-            return string.Format("{0}  -  {1} ( {2} Total )", player.Name, player.Dps, player.Damage);
+            return string.Format("{0}  -  {1:n0} DPS ( {2:n0} Total )", player.Name, player.Dps, player.Damage);
         }
 
         public void LoadResults(string tag)
         {
-            if (!Directory.Exists("result"))
+            SimDataManager.ResetSimData();
+            if (!Directory.Exists("savedResults"))
             {
                 return;
             }
-            string dir = "result/" + tag;
+            string dir = "savedResults/" + tag;
             if (Directory.Exists(dir))
             {
+                if(!File.Exists(dir + "/MergedResults.json"))
+                {
+                    MessageBox.Show("Could not find any results. They may have been deleted.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    RunningFailed(this, new EventArgs());
+                }
                 var resultJson = File.ReadAllText(dir + "/MergedResults.json");
                 MergedResults.Clear();
-                MergedResults.Concat(JsonConvert.DeserializeObject<List<PlayerResult>>(resultJson));
+                JsonConvert.DeserializeObject<List<PlayerResult>>(resultJson).ToList().ForEach(x => MergedResults.Add(x));
+                // Deserialize ModelNameShort and ModelName
             }
         }
     }

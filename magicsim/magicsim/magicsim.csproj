@@ -63,7 +63,11 @@
     <Compile Include="Character.cs" />
     <Compile Include="CustomizationData.cs" />
     <Compile Include="PlayerResult.cs" />
-    <Compile Include="ResultData.cs" />
+    <Compile Include="ResultsData.cs" />
+    <Compile Include="ResultLoader.xaml.cs">
+      <DependentUpon>ResultLoader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResultLoaderData.cs" />
     <Compile Include="SimcRunnerData.cs" />
     <Compile Include="SimcRunner.xaml.cs">
       <DependentUpon>SimcRunner.xaml</DependentUpon>
@@ -96,6 +100,11 @@
       <DependentUpon>SimQueue.xaml</DependentUpon>
     </Compile>
     <Compile Include="SimQueueData.cs" />
+    <Compile Include="Tag.cs" />
+    <Page Include="ResultLoader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SimcRunner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -193,7 +202,6 @@
     <Content Include="7z.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="magicsim.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

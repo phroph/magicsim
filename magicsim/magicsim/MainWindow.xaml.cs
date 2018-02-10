@@ -44,5 +44,15 @@ namespace magicsim
             this.Close();
             window.Show();
         }
+
+        private void previous_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new ResultLoader();
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
+            App.Current.MainWindow = window;
+            this.Close();
+            window.Show();
+        }
     }
 }

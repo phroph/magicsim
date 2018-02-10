@@ -22,6 +22,28 @@ namespace magicsim
         public ResultsWindow()
         {
             InitializeComponent();
+            var context = (ResultsData)this.DataContext;
+            context.RunningFailed += Context_RunningFailed;
+        }
+
+        private void Context_RunningFailed(object sender, EventArgs e)
+        {
+            var window = new MainWindow();
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
+            App.Current.MainWindow = window;
+            this.Close();
+            window.Show();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new MainWindow();
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
+            App.Current.MainWindow = window;
+            this.Close();
+            window.Show();
         }
     }
 }

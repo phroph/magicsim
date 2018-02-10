@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace magicsim
 {
@@ -14,6 +15,7 @@ namespace magicsim
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler PreloadingComplete;
+        public event EventHandler PreloadingFailed;
 
         public string charName;
 
@@ -51,20 +53,20 @@ namespace magicsim
             Label = "Acquiring SimC Executable";
             ThreadPool.QueueUserWorkItem((_) =>
             {
-                simc = SimCManager.AcquireSimC();
-                Label = "Generating SimC Profile";
-                if (!Directory.Exists("characters"))
-                {
-                    Directory.CreateDirectory("characters");
-                }
-                Regex nameRegex = new Regex("[^=]+=\"([^\"]+)\"");
-                String name = nameRegex.Match(simcString).Groups[1].Value;
-                if(File.Exists("characters/" + name))
-                {
-                    File.Delete("characters/" + name);
-                }
-                String text = simcString + "\nsave=./characters/" + name + ".simc";
-                File.WriteAllText("characters/" + name + ".simc", text);
+            simc = SimCManager.AcquireSimC();
+            Label = "Generating SimC Profile";
+            if (!Directory.Exists("characters"))
+            {
+                Directory.CreateDirectory("characters");
+            }
+            Regex nameRegex = new Regex("[^=]+=\"([^\"]+)\"");
+            String name = nameRegex.Match(simcString).Groups[1].Value;
+            if (File.Exists("characters/" + name))
+            {
+                File.Delete("characters/" + name);
+            }
+            String text = simcString + "\nsave=./characters/" + name + ".simc";
+            File.WriteAllText("characters/" + name + ".simc", text);
                 if (simc.RunSim("characters/" + name + ".simc"))
                 {
                     Label = "SimC Profile Generated";
@@ -77,6 +79,8 @@ namespace magicsim
                 else
                 {
                     Label = "Failed to Generate Profile";
+                    MessageBox.Show("Failed to generate profile. Please check your input and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    PreloadingFailed(this, new EventArgs());
                 }
             });
         }

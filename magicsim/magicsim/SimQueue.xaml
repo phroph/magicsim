@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:magicsim"
         mc:Ignorable="d"
-        Title="magicsim" Height="439.122" Width="566.223">
+        Title="magicsim" Height="439.122" Width="566.223"
+        ResizeMode="NoResize">
     <Window.Resources>
         <local:SimQueueData x:Key="simQueueData"/>
     </Window.Resources>

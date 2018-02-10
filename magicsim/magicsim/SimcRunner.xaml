@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:magicsim"
         mc:Ignorable="d"
-        Title="magicsim" Height="360.033" Width="300">
+        Title="magicsim" Height="328.033" Width="300"
+        ResizeMode="NoResize">
     <Window.Resources>
         <local:SimcRunnerData x:Key="simcRunnerData"/>
     </Window.Resources>
@@ -137,9 +138,13 @@
             </Style>
         </Grid.Resources>
         <Control Style="{StaticResource BusyAnimationStyle}" Margin="0,0,0.333,-0.333"/>
-        <Label x:Name="Label" Content="{Binding Path=Label}" HorizontalAlignment="Center" Margin="72,244,81.333,0" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="1.563,0.54" FontWeight="Bold" Width="Auto"/>
-        <Label Content="{Binding Path=Total}" HorizontalAlignment="Left" Margin="143,190,0,0" VerticalAlignment="Top" FontSize="29" />
-        <Label Content="{Binding Path=Completed}" HorizontalAlignment="Right" Margin="0,191,160.333,0" VerticalAlignment="Top" FontSize="29" />
-        <Label Content="/" HorizontalAlignment="Left" Margin="128,190,0,0" VerticalAlignment="Top" FontSize="29" />
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                <Label Content="{Binding Path=Completed}" FontSize="29" />
+                <Label Content="/" FontSize="29" />
+                <Label Content="{Binding Path=Total}" FontSize="29" />
+            </StackPanel>
+            <Label x:Name="Label" Content="{Binding Path=Label}" FontSize="20" FontWeight="Bold" Width="Auto" Margin="0,0,0,20"/>
+        </StackPanel>
     </Grid>
 </Window>

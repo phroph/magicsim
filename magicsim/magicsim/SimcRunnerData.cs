@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using static magicsim.SimQueue;
 
 namespace magicsim
@@ -15,6 +16,7 @@ namespace magicsim
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler RunningComplete;
+        public event EventHandler RunningFailed;
 
         public string guid;
         public Model model;
@@ -135,6 +137,8 @@ namespace magicsim
                         else
                         {
                             Label = "Failed to Run a Sim";
+                            MessageBox.Show("Sims failed to be ran. Try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            RunningFailed(this, new EventArgs());
                         }
                     }
                 });

@@ -24,6 +24,29 @@ namespace magicsim
             InitializeComponent();
             var context = (ArmoryPreloaderData)this.DataContext;
             context.PreloadingComplete += Context_PreloadingComplete;
+            context.PreloadingFailed += Context_PreloadingFailed;
+        }
+
+        private void Context_PreloadingFailed(object sender, EventArgs e)
+        {
+            if (SubMainWindow.isActive)
+            {
+                var window = new SimQueue();
+                window.Top = App.Current.MainWindow.Top;
+                window.Left = App.Current.MainWindow.Left;
+                App.Current.MainWindow = window;
+                this.Close();
+                window.Show();
+            }
+            else
+            {
+                var window = new MainWindow();
+                window.Top = App.Current.MainWindow.Top;
+                window.Left = App.Current.MainWindow.Left;
+                App.Current.MainWindow = window;
+                this.Close();
+                window.Show();
+            }
         }
 
 

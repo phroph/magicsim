@@ -20,7 +20,7 @@
         <ComboBox x:Name="servers" HorizontalAlignment="Left" Height="23" SelectedItem="Aegwynn" ItemsSource="{Binding Path=Servers}" SelectionChanged="servers_SelectionChanged" Margin="79,86,0,0" Text="" VerticalAlignment="Top" Width="120"/>
         <Label x:Name="regionLabel" Content="Region:" HorizontalAlignment="Left" Margin="30,114,0,0" VerticalAlignment="Top"/>
         <ComboBox x:Name="regions" HorizontalAlignment="Left" Height="23" SelectedItem="US" ItemsSource="{Binding Path=Regions}" SelectionChanged="regions_SelectionChanged" Margin="79,118,0,0" Text="" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="button" Content="Continue" HorizontalAlignment="Left" VerticalAlignment="Top" Width="77" Margin="35,166,0,0" Click="button_Click"/>
+        <Button x:Name="button" IsDefault="True" Content="Continue" HorizontalAlignment="Left" VerticalAlignment="Top" Width="77" Margin="35,166,0,0" Click="button_Click"/>
         <Button x:Name="button_Copy" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="77" Margin="136,166,0,0" Click="Cancel_Click"/>
     </Grid>
 </Window>

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace magicsim
 {
@@ -13,6 +14,7 @@ namespace magicsim
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler PreloadingComplete;
+        public event EventHandler PreloadingFailed;
 
         protected void OnPropertyChanged(string name)
         {
@@ -72,6 +74,8 @@ namespace magicsim
                 else
                 {
                     Label = "Failed to Generate Profile";
+                    MessageBox.Show("Failed to generate profile. Please check your input and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    PreloadingFailed(this, new EventArgs());
                 }
             });
         }

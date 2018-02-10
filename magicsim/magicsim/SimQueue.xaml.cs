@@ -288,11 +288,20 @@ namespace magicsim
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult value = MessageBox.Show("This will wipe all sim setup done so far. Are you sure you want to continue?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if (value.Equals(MessageBoxResult.Yes))
+            {
+                SimDataManager.ResetSimData();
+            }
+            else
+            {
+                return;
+            }
+
             var window = new MainWindow();
             window.Top = App.Current.MainWindow.Top;
             window.Left = App.Current.MainWindow.Left;
             App.Current.MainWindow = window;
-            SimDataManager.ResetSimData();
             this.Close();
             window.Show();
         }
