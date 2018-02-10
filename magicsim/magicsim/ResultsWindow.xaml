@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:magicsim"
         mc:Ignorable="d"
         Background="WhiteSmoke"
-        Title="magicsim" Height="317.715" Width="410.224"
+        Title="magicsim" Height="320.715" Width="410.224"
         ResizeMode="NoResize">
     <Window.Resources>
         <local:ResultsData x:Key="resultData"/>
@@ -15,7 +15,7 @@
         <Binding Source="{StaticResource resultData}"/>
     </Window.DataContext>
     <Grid Margin="0,0,3.667,-0.333">
-        <ListBox Background="GhostWhite" ItemsSource="{Binding Path=MergedResults}" SelectedItem="{Binding Path=SelectedPlayer}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Height="118" Margin="24,40,25.666,123">
+        <ListBox Name="CharacterSelector" Background="GhostWhite" ItemsSource="{Binding Path=MergedResults}" SelectedItem="{Binding Path=SelectedPlayer}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Height="118" Margin="24,40,25.666,123">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Vertical" Margin="0,0,0,0"/>
@@ -48,9 +48,9 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <StackPanel Name="StatWeights" Orientation="Vertical" Background="#F3F3F3" Height="83" Margin="24,163,25.666,33">
-            <Label Content="{Binding Path=SummaryString}" FontSize="10" MinHeight="23"/>
+            <Label Content="{Binding Path=SummaryString}" FontSize="14" MinHeight="23"/>
             <Label Content="Pawn String: " FontSize="10"/>
-            <TextBox Background="GhostWhite" IsReadOnly="True" VerticalAlignment="Center" FontSize="10" Text="{Binding Path=PawnString}" HorizontalScrollBarVisibility="Visible" Height="35" RenderTransformOrigin="0.515,1.255" Margin="1,0,0,-2.333" HorizontalAlignment="Left" Width="347"/>
+            <TextBox Background="GhostWhite" IsReadOnly="True" VerticalAlignment="Center" FontSize="10" Text="{Binding Path=PawnString}" HorizontalScrollBarVisibility="Visible" Height="35" HorizontalAlignment="Left" Width="350" Padding="0,0,8,0"/>
         </StackPanel>
         <Button Content="Done" HorizontalAlignment="Left" Margin="154,257,0,0" VerticalAlignment="Top" Click="Button_Click" Width="75"/>
         <Label Content="Results - " HorizontalAlignment="Left" Margin="24,10,0,0" VerticalAlignment="Top"/>

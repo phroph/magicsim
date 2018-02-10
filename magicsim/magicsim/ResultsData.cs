@@ -327,8 +327,8 @@ namespace magicsim
             {
                 MergedResults.Add(list);
             });
-            SelectedPlayer = MergedResults[0];
             SaveResults(guid);
+            SelectedPlayer = MergedResults[0];
         }
 
         public void SaveResults(string guid)
@@ -408,7 +408,9 @@ namespace magicsim
                 var resultJson = File.ReadAllText(dir + "/MergedResults.json");
                 MergedResults.Clear();
                 JsonConvert.DeserializeObject<List<PlayerResult>>(resultJson).ToList().ForEach(x => MergedResults.Add(x));
+                Tag = tag;
                 // Deserialize ModelNameShort and ModelName
+                SelectedPlayer = MergedResults[0];
             }
         }
     }

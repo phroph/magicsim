@@ -15,35 +15,41 @@
         <Binding Source="{StaticResource resultLoaderData}"/>
     </Window.DataContext>
     <Grid>
-        <ListBox Background="GhostWhite" ItemsSource="{Binding Path=TagList}" SelectedItem="{Binding Path=SelectedTag}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Height="125" Width="275" Margin="23,15,22,82">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical" Margin="0,0,0,0"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="true">
-                            <Setter Property="Background" Value="LightGray"/>
-                        </Trigger>
-                    </Style.Triggers>
-                    <Setter Property="Background" Value="WhiteSmoke"/>
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="Margin" Value="0"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <!-- Light Gray / F3F3F3-->
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Label Width="Auto" Content="{Binding Path=Label}"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <TextBox Name="RenameBox" Width="125" Height="20" Text="{Binding Path=SelectedTag.Label, Mode=OneWay}" Margin="119,155,76,47" />
-        <Label Content="Selected Sim Run:" HorizontalAlignment="Left" Margin="17,150,0,0" VerticalAlignment="Top"/>
-        <Button Content="Rename" HorizontalAlignment="Left" VerticalAlignment="Top" Width="52" Margin="251,156,0,0" FontSize="10" Click="Button_Click"/>
-        <Button Content="Load Results" HorizontalAlignment="Left" Margin="61,184,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
-        <Button Content="Cancel" HorizontalAlignment="Left" Margin="178,184,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ListBox Margin="5" Background="GhostWhite" ItemsSource="{Binding Path=TagList}" SelectedItem="{Binding Path=SelectedTag}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Height="125" Width="276">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" Margin="0,0,0,0"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" Value="LightGray"/>
+                            </Trigger>
+                        </Style.Triggers>
+                        <Setter Property="Background" Value="WhiteSmoke"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <!-- Light Gray / F3F3F3-->
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label Width="Auto" Content="{Binding Path=Label}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Selected Sim Run:"/>
+                <TextBox Name="RenameBox" Width="125" Height="20" Text="{Binding Path=SelectedTag.Label, Mode=OneWay}" />
+                <Button Content="Rename" Width="52" Height="20" FontSize="10" Click="Button_Click"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Load Results" Margin="5" Width="75" Click="Button_Click_1"/>
+                <Button Content="Cancel" Margin="5" Width="75" Click="Button_Click_2"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
