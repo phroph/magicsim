@@ -41,7 +41,7 @@
                             <Label Width="100" Content="{Binding Path=Name}"/>
                             <Label Width="100" Content="{Binding Path=Spec}"/>
                             <Label Width="70" Content="{Binding Path=Dps}"/>
-                            <Label Padding="0 4.5 2 0" Width="38" Content="{Binding Path=DpsBoost}"/>
+                            <Label Padding="0 4.5 2 0" Content="{Binding Path=DpsBoost}"/>
                         </StackPanel>
                     </Border>
                 </DataTemplate>

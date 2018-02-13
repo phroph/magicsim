@@ -212,7 +212,7 @@ namespace magicsim
             playerMasteryValues.Clear();
             playerVersValues.Clear();
             double minDps = double.MaxValue;
-            ModelName = model.name;
+            ModelName = model.name.UppercaseWords();
             ModelNameShort = model.dispName;
             _results.ToList().ForEach((result) =>
             {
@@ -229,18 +229,23 @@ namespace magicsim
                         double damage = player.collected_data.dmg.mean;
                         string mainstat = "";
                         double mainstatValue = 0.0;
-                        if(player.scale_factors.Int > 0)
+                        if (player.scale_factors != null)
                         {
-                            mainstat = "Intellect";
-                            mainstatValue = player.scale_factors.Int;
-                        } else if(player.scale_factors.Agi > 0)
-                        {
-                            mainstat = "Agility";
-                            mainstatValue = player.scale_factors.Agi;
-                        } else if(player.scale_factors.Str > 0)
-                        {
-                            mainstat = "Strength";
-                            mainstatValue = player.scale_factors.Str;
+                            if (player.scale_factors.Int > 0)
+                            {
+                                mainstat = "Intellect";
+                                mainstatValue = player.scale_factors.Int;
+                            }
+                            else if (player.scale_factors.Agi > 0)
+                            {
+                                mainstat = "Agility";
+                                mainstatValue = player.scale_factors.Agi;
+                            }
+                            else if (player.scale_factors.Str > 0)
+                            {
+                                mainstat = "Strength";
+                                mainstatValue = player.scale_factors.Str;
+                            }
                         }
                         if (!playerCritValues.ContainsKey(player.name))
                         {
@@ -280,18 +285,21 @@ namespace magicsim
                             playerClasses[player.name] = specClass[1];
                             playerSpecs[player.name] = specClass[0];
                         }
-                        playerCritValues[player.name] += modelWeight * timeWeight * player.scale_factors.Crit;
                         playerDpsValues[player.name] += modelWeight * timeWeight * dps;
                         playerDamageValues[player.name] += modelWeight * timeWeight * damage;
-                        playerHasteValues[player.name] += modelWeight * timeWeight * player.scale_factors.Haste;
-                        playerMainStatValues[player.name] += modelWeight * timeWeight * mainstatValue;
-                        playerMasteryValues[player.name] += modelWeight * timeWeight * player.scale_factors.Mastery;
-                        playerVersValues[player.name] += modelWeight * timeWeight * player.scale_factors.Vers;
+                        if (player.scale_factors != null)
+                        {
+                            playerCritValues[player.name] += modelWeight * timeWeight * player.scale_factors.Crit;
+                            playerHasteValues[player.name] += modelWeight * timeWeight * player.scale_factors.Haste;
+                            playerMainStatValues[player.name] += modelWeight * timeWeight * mainstatValue;
+                            playerMasteryValues[player.name] += modelWeight * timeWeight * player.scale_factors.Mastery;
+                            playerVersValues[player.name] += modelWeight * timeWeight * player.scale_factors.Vers;
+                        }
                     });
                 }
             });
             List<PlayerResult> sublist = new List<PlayerResult>();
-            foreach(string key in playerMainStatTypes.Keys)
+            foreach(string key in playerDpsValues.Keys)
             {
                 var playerRes = new PlayerResult();
                 playerRes.Dps = playerDpsValues[key];
@@ -304,7 +312,7 @@ namespace magicsim
                 playerRes.Class = playerClasses[key];
                 playerRes.ClassReadable = playerRes.Class.Replace("Deathk", "Death K").Replace("Demonh", "Demon H");
                 playerRes.Spec = playerSpecs[key];
-                playerRes.SpecReadble = playerRes.Spec.Replace("Beastm", "Beast M");
+                playerRes.SpecReadable = playerRes.Spec.Replace("Beastm", "Beast M");
 
                 if (playerMainStatTypes.ContainsKey(key))
                 {
@@ -337,7 +345,7 @@ namespace magicsim
             {
                 if(list.Dps != minDps)
                 {
-                    list.DpsBoost = (((list.Dps / minDps) - 1) * 100.0).ToString("F2") + "%";
+                    list.DpsBoost = "(" + (((list.Dps / minDps) - 1) * 100.0).ToString("F2") + "%)";
                 } else
                 {
                     list.DpsBoost = "";
@@ -439,7 +447,10 @@ namespace magicsim
                     ModelNameShort = File.ReadAllText(dir + Path.DirectorySeparatorChar + "ModelNameShort.txt");
                 }
                 // Deserialize ModelNameShort and ModelName
-                SelectedPlayer = MergedResults[0];
+                if (MergedResults.Count > 0)
+                {
+                    SelectedPlayer = MergedResults[0];
+                }
             }
         }
     }

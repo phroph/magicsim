@@ -891,31 +891,7 @@ namespace magicsim
                 }
             }
         }
-        public static string UppercaseWords(string value)
-        {
-            char[] array = value.ToCharArray();
-            // Handle the first letter in the string.
-            if (array.Length >= 1)
-            {
-                if (char.IsLower(array[0]))
-                {
-                    array[0] = char.ToUpper(array[0]);
-                }
-            }
-            // Scan through the letters, checking for spaces.
-            // ... Uppercase the lowercase letters following spaces.
-            for (int i = 1; i < array.Length; i++)
-            {
-                if (array[i - 1] == ' ')
-                {
-                    if (char.IsLower(array[i]))
-                    {
-                        array[i] = char.ToUpper(array[i]);
-                    }
-                }
-            }
-            return new string(array);
-        }
+
         public void CrucibleLoader(Dictionary<String,String> classSpecDictionary, String crucible)
         {
             Tier3Crucible.Clear();
@@ -1105,10 +1081,10 @@ namespace magicsim
             var augmentRegex = new Regex("augmentation=(\\w+)");
 
             // Replace Crucible,Ilvl if flagged, tier if flagged, potion,flask,food,augment
-            _profileText = potionRegex.Replace(_profileText, "potion=" + GetKeyForValue(Potion, PotionNameMapping));
-            _profileText = flaskRegex.Replace(_profileText, "flask=" + GetKeyForValue(Flask, FlaskNameMapping));
-            _profileText = foodRegex.Replace(_profileText, "food=" + GetKeyForValue(Food, FoodNameMapping));
-            _profileText = augmentRegex.Replace(_profileText, "augmentation=" + GetKeyForValue(Rune, AugmentNameMapping));
+            _profileText = _profileText.Replace(potionRegex.Match(_profileText).Groups[0].Value, "potion=" + GetKeyForValue(Potion, PotionNameMapping));
+            _profileText = _profileText.Replace(flaskRegex.Match(_profileText).Groups[0].Value, "flask=" + GetKeyForValue(Flask, FlaskNameMapping));
+            _profileText = _profileText.Replace(foodRegex.Match(_profileText).Groups[0].Value, "food=" + GetKeyForValue(Food, FoodNameMapping));
+            _profileText = _profileText.Replace(augmentRegex.Match(_profileText).Groups[0].Value, "augmentation=" + GetKeyForValue(Rune, AugmentNameMapping));
             if(ModifyTier)
             {
                 if(T212pc)
@@ -1161,7 +1137,7 @@ namespace magicsim
             if(!_profileText.Contains("crucible="))
             {
                 var match = artifactRegex.Match(_profileText).Groups[0].Value;
-                artifactRegex.Replace(_profileText, match + "\r\ncrucible=0\r\n");
+                _profileText = _profileText.Replace(match, match + "\r\ncrucible=0\r\n");
             }
             if (Class.Equals("Priest"))
             {
@@ -1366,8 +1342,8 @@ namespace magicsim
 
             var nameClassMatch = nameClassRegex.Match(profileText);
             Name = nameClassMatch.Groups[2].Value;
-            Class = UppercaseWords(nameClassMatch.Groups[1].Value).Replace("Deathk","Death K").Replace("Demonh","Demon H");
-            Spec = UppercaseWords(specRegex.Match(profileText).Groups[1].Value).Replace("Beastm", "Beast M");
+            Class = nameClassMatch.Groups[1].Value.UppercaseWords().Replace("Deathk","Death K").Replace("Demonh","Demon H").UppercaseWords();
+            Spec = specRegex.Match(profileText).Groups[1].Value.UppercaseWords().Replace("Beastm", "Beast M");
             var crucible = crucibleRegex.Match(profileText).Groups[1].Value;
             ILvl = float.Parse(ilvlRegex.Match(profileText).Groups[1].Value);
 
@@ -1597,6 +1573,5 @@ namespace magicsim
                 }
             }
         }
-
     }
 }

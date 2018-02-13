@@ -12,7 +12,7 @@ namespace magicsim
         public string Class { get; set; }
         public string Spec { get; set; }
         public string ClassReadable { get; set; }
-        public string SpecReadble { get; set; }
+        public string SpecReadable { get; set; }
         public double Dps { get; set; }
         public double Damage { get; set; }
         public string MainstatType { get; set; }
