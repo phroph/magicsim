@@ -6,11 +6,14 @@ Magicsim is a simming application that I originally created at the beginning of 
 Magicsim is now a C# WPF application which supports x32 and x64 Windows. It comes pre-packaged with 7zip as before, but completely replaces the Node.js engine with a processing pipeline built into the WPF application.
 
 The new Magicsim provides the following features and is supported *for all classes/specs*:
-- Support for character inputs from Armory, SimC profiles (IE /simc), AutoSimc output (IE a string of profiles separated by 1 newline)
+- Support for character inputs from Armory and SimC profiles (IE /simc)
 - Support for multiple characters simmed per fight.
 - Ability to directly modify each uploaded character's name, crucible, ilvl, tiersets, and raid buffs.
 - Ability to control basic sim parameters like PTR mode, stat weights toggles, which composite model to use, threads per sim, and concurrent simc processes per run.
-- Ability to control advanced parameters like simulating raid pantheon trinkets and generating reforge plots (no support for viewing yet)
+- Ability to control advanced parameters like simulating raid pantheon trinkets and generating reforge plots (with a built-in plot viewer and storage)
+- Newer realistic heroic raid models and updated raid composite for both better performance and higher quality results (special thanks to Publik for this)
+- Updated dungeon composite to be significantly more accurate
+- Added some expression optimizations to hopefully improve sim runs
 - Results are now persisted and can be named with tags for reference and loaded at a later time.
 - When multiple characters are simmed, % differences are shown (compared against the minimum dps)
 - HTML results are also generated now for manual consumption of individual sims (these are associated with the guid in the original tag
