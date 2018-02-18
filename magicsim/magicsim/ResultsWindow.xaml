@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:magicsim"
+        xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
         mc:Ignorable="d"
         Background="WhiteSmoke"
         Title="magicsim" Height="320.715" Width="410.224"
@@ -15,44 +16,68 @@
         <Binding Source="{StaticResource resultData}"/>
     </Window.DataContext>
     <Grid Margin="0,0,3.667,-0.333">
-        <ListBox Name="CharacterSelector" Background="GhostWhite" ItemsSource="{Binding Path=MergedResults}" SelectedItem="{Binding Path=SelectedPlayer}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Height="118" Margin="24,40,25.666,123">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical" Margin="0,0,0,0"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="true">
-                            <Setter Property="Background" Value="LightGray"/>
-                        </Trigger>
-                    </Style.Triggers>
-                    <Setter Property="Background" Value="WhiteSmoke"/>
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="Margin" Value="0"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <!-- Light Gray / F3F3F3-->
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border Height="26" Width="335"  BorderBrush="Gray" BorderThickness="1" Padding="0">
-                        <StackPanel Orientation="Horizontal" Height="335" Width="auto" >
-                            <Label Width="100" Content="{Binding Path=Name}"/>
-                            <Label Width="100" Content="{Binding Path=Spec}"/>
-                            <Label Width="70" Content="{Binding Path=Dps}"/>
-                            <Label Padding="0 4.5 2 0" Content="{Binding Path=DpsBoost}"/>
+        <TabControl>
+            <TabItem Header="Results">
+                <Grid Background="#FFE5E5E5">
+                    <ListBox Name="CharacterSelector" Background="GhostWhite" ItemsSource="{Binding Path=MergedResults}" SelectedItem="{Binding Path=SelectedPlayer}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Height="118" Margin="24,26,25.667,120.667">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Vertical" Margin="0,0,0,0"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter Property="Background" Value="LightGray"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                                <Setter Property="Background" Value="WhiteSmoke"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Margin" Value="0"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <!-- Light Gray / F3F3F3-->
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Height="26" Width="335"  BorderBrush="Gray" BorderThickness="1" Padding="0">
+                                    <StackPanel Orientation="Horizontal" Height="335" Width="auto" >
+                                        <Label Width="100" Content="{Binding Path=Name}"/>
+                                        <Label Width="100" Content="{Binding Path=Spec}"/>
+                                        <Label Width="70" Content="{Binding Path=Dps}"/>
+                                        <Label Padding="0 4.5 2 0" Content="{Binding Path=DpsBoost}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <StackPanel Name="StatWeights" Orientation="Vertical" Background="#F3F3F3" Height="83" Margin="24,149,25.667,32.667">
+                        <Label Content="{Binding Path=SummaryString}" FontSize="14" MinHeight="23"/>
+                        <Label Content="Pawn String: " FontSize="10"/>
+                        <TextBox Background="GhostWhite" IsReadOnly="True" VerticalAlignment="Center" FontSize="10" Text="{Binding Path=PawnString}" HorizontalScrollBarVisibility="Visible" Height="35" HorizontalAlignment="Left" Width="350" Padding="0,0,8,0"/>
+                    </StackPanel>
+                    <Button Content="Done" HorizontalAlignment="Left" Margin="154,243,0,0" VerticalAlignment="Top" Click="Button_Click" Width="75"/>
+                    <Label Content="{Binding Path=LabelString}" HorizontalAlignment="Left" Margin="24,-4,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+            <TabItem Name="Reforge" Header="Reforge Results" IsEnabled="False">
+                <Grid Background="#FFE5E5E5">
+                    <StackPanel Orientation="Vertical">
+                        <!--
+                        <h:HelixViewport3D ZoomExtentsWhenLoaded="True" ShowCoordinateSystem="True">
+                            <h:HelixViewport3D.Camera>
+                                <PerspectiveCamera LookDirection="5,10,-10" UpDirection="0,0,1"/>
+                            </h:HelixViewport3D.Camera>
+                            <ModelVisual3D Content="{Binding Path=Lights}"/>
+                            <local:SurfacePlotVisual3D Points="{Binding Path=Data}" ColorValues="{Binding Path=ColorValues}" SurfaceBrush="{Binding Path=SurfaceBrush}"/>
+                        </h:HelixViewport3D>
+                        -->
+                        <StackPanel Orientation="Horizontal">
+                            
                         </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <StackPanel Name="StatWeights" Orientation="Vertical" Background="#F3F3F3" Height="83" Margin="24,163,25.666,33">
-            <Label Content="{Binding Path=SummaryString}" FontSize="14" MinHeight="23"/>
-            <Label Content="Pawn String: " FontSize="10"/>
-            <TextBox Background="GhostWhite" IsReadOnly="True" VerticalAlignment="Center" FontSize="10" Text="{Binding Path=PawnString}" HorizontalScrollBarVisibility="Visible" Height="35" HorizontalAlignment="Left" Width="350" Padding="0,0,8,0"/>
-        </StackPanel>
-        <Button Content="Done" HorizontalAlignment="Left" Margin="154,257,0,0" VerticalAlignment="Top" Click="Button_Click" Width="75"/>
-        <Label Content="{Binding Path=LabelString}" HorizontalAlignment="Left" Margin="24,10,0,0" VerticalAlignment="Top"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

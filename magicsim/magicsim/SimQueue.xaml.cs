@@ -269,7 +269,14 @@ namespace magicsim
                             reforge_stat += ",versatility";
                         }
                     }
-                    simProfile += "reforge_plot_stat=" + reforge_stat + "\r\nreforge_plot_amount=" + context.ReforgeAmount + "\r\nreforge_plot_step=" + context.ReforgeStepSize + "\r\nreforge_plot_output_file=" + filePrefix + "csv\r\n";
+                    if (!reforge_stat.Contains(","))
+                    {
+                        MessageBox.Show(String.Format("At least 2 stats are required to reforge. Reforging will be disabled.", sim), "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
+                    else
+                    {
+                        simProfile += "reforge_plot_stat=" + reforge_stat + "\r\nreforge_plot_amount=" + context.ReforgeAmount + "\r\nreforge_plot_step=" + context.ReforgeStepSize + "\r\nreforge_plot_output_file=" + filePrefix + "csv\r\n";
+                    }
                 }
                 
                 simProfile += "json2=" + filePrefix + "json\r\nhtml=" + filePrefix + "html\r\n";

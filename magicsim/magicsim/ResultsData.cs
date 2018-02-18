@@ -12,6 +12,7 @@ using static magicsim.SimQueue;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
+using System.Text.RegularExpressions;
 
 namespace magicsim
 {
@@ -30,6 +31,7 @@ namespace magicsim
         }
 
         private List<Tuple<SimResult, string>> _results;
+        private List<Tuple<string, string>> _reforgeResults;
 
         public ObservableCollection<PlayerResult> MergedResults { get; set; }
 
@@ -102,6 +104,11 @@ namespace magicsim
         private Dictionary<string, string> playerSpecs;
         private Dictionary<string, string> playerClasses;
 
+        // Maps player name.
+        private Dictionary<string, PlayerReforge> reforges;
+
+        public ObservableCollection<PlayerReforge> MergedReforges;
+
         private string _modelName;
         public string ModelName
         {
@@ -149,7 +156,9 @@ namespace magicsim
         public ResultsData()
         {
             _results = new List<Tuple<SimResult,string>>();
+            _reforgeResults = new List<Tuple<string, string>>();
             MergedResults = new ObservableCollection<PlayerResult>();
+            MergedReforges = new ObservableCollection<PlayerReforge>();
             playerCritValues = new Dictionary<string, double>();
             playerDpsValues = new Dictionary<string, double>();
             playerDamageValues = new Dictionary<string, double>();
@@ -160,6 +169,7 @@ namespace magicsim
             playerVersValues = new Dictionary<string, double>();
             playerSpecs = new Dictionary<string, string>();
             playerClasses = new Dictionary<string, string>();
+            reforges = new Dictionary<string, PlayerReforge>();
         }
 
         public string GetLabelString()
@@ -187,6 +197,102 @@ namespace magicsim
                 {
                     MessageBox.Show("Could not process generated results. Something went terribly wrong.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     RunningFailed(this, new EventArgs());
+                }
+            });
+            var reforgeResults = Directory.EnumerateFiles(path, "*.csv");
+            reforgeResults.ToList().ForEach((reforgeResult) =>
+            {
+                try
+                {
+                     _reforgeResults.Add(new Tuple<string, string>(File.ReadAllText(reforgeResult), reforgeResult.Split(Path.DirectorySeparatorChar).Last()));
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Could not process generated results. Something went terribly wrong.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    RunningFailed(this, new EventArgs());
+                }
+            });
+        }
+
+        public void ProcessCSVs(Model model, string guid)
+        {
+            _reforgeResults.ForEach((reforge) =>
+            {
+                var reforgeLines = reforge.Item1.Split('\n');
+                var splitIndex = reforge.Item2.IndexOf('_');
+                var time = reforge.Item2.Substring(0, splitIndex);
+                var fight = reforge.Item2.Substring(splitIndex + 1).Split('.')[0];
+                if (model.model.ContainsKey(fight))
+                {
+                    if (model.timeModel.Count == 0 || model.timeModel.ContainsKey(time))
+                    {
+                        double modelWeight = model.model[fight];
+                        double timeWeight = model.timeModel.Count != 0 ? model.timeModel[time] : 1.0;
+                        var characterDefinitionRegex = new Regex("([^ ]+) Reforge Plot Results:");
+                        var variableDefinitionRegex = new Regex("([^ ]+, )*([^ ]+)");
+                        var valueRegex = new Regex("([^ ]+, )+");
+                        var currentName = "";
+                        var mapping = new List<string>();
+                        PlayerReforge currentReforge = null;
+                        reforgeLines.ToList().ForEach((reforgeLine) =>
+                        {
+                            var charLine = characterDefinitionRegex.Match(reforgeLine);
+                            if (charLine.Success)
+                            {
+                                currentName = charLine.Groups[1].Value;
+                                if (!reforges.ContainsKey(currentName))
+                                {
+                                    reforges[currentName] = new PlayerReforge(currentName);
+                                }
+                                currentReforge = reforges[currentName];
+                            }
+                            if (valueRegex.IsMatch(reforgeLine))
+                            {
+                                var values = reforgeLine.Split(',').ToList();
+                                values = values.Take(values.Count() - 1).Select(x => x.Trim()).ToList();
+                                var statPoints = values.Take(values.Count - 2);
+                                var point = new ReforgePoint();
+                                for(int i = 0; i < statPoints.Count() && i < mapping.Count; i++)
+                                {
+                                    if (mapping[i].Equals("crit"))
+                                    {
+                                        point.Crit = int.Parse(statPoints.ElementAt(i));
+                                    }
+                                    if (mapping[i].Equals("haste"))
+                                    {
+                                        point.Haste = int.Parse(statPoints.ElementAt(i));
+                                    }
+                                    if (mapping[i].Equals("mastery"))
+                                    {
+                                        point.Mastery = int.Parse(statPoints.ElementAt(i));
+                                    }
+                                    if (mapping[i].Equals("versatility"))
+                                    {
+                                        point.Vers = int.Parse(statPoints.ElementAt(i));
+                                    }
+                                }
+                                var dpsError = double.Parse(values.Last());
+                                var dps = double.Parse(values[values.Count - 2], NumberStyles.AllowExponent);
+                                if (currentReforge != null)
+                                {
+                                    currentReforge.Dps[point] += dps * modelWeight * timeWeight;
+                                    currentReforge.DpsError[point] += dpsError * modelWeight * timeWeight;
+                                }
+                            }
+                            else if (variableDefinitionRegex.IsMatch(reforgeLine))
+                            {
+                                var values = reforgeLine.Split(',').Select(x => x.Trim()).ToList();
+                                values.ForEach((value) =>
+                                {
+                                    if(value.Contains("rating"))
+                                    {
+                                        var stat = value.Split('_')[0];
+                                        mapping.Add(stat);
+                                    }
+                                });
+                            }
+                        });
+                    }
                 }
             });
         }
@@ -361,6 +467,8 @@ namespace magicsim
             });
             SaveResults(guid);
             SelectedPlayer = MergedResults[0];
+
+            ProcessCSVs(model,guid);
         }
 
         public void SaveResults(string guid)
