@@ -1,0 +1,25 @@
+﻿max_time=350
+fight_style=patchwerk
+# movement
+
+# adds
+# WAVE 1
+# 8 Felguards
+raid_events+=/adds,count=2,first=10,duration=10,cooldown=5000
+raid_events+=/adds,count=2,first=13,duration=10,cooldown=5000
+raid_events+=/adds,count=2,first=16,duration=10,cooldown=5000
+raid_events+=/adds,count=2,first=19,duration=10,cooldown=5000
+# 1 Fel-Infused Destructor
+raid_events+=/adds,count=1,first=20,duration=10,cooldown=5000
+
+# WAVE 2
+# 8 felhounds staggered
+raid_events+=/adds,count=2,first=30,duration=3,cooldown=5000
+raid_events+=/adds,count=2,first=33,duration=3,cooldown=5000
+raid_events+=/adds,count=2,first=36,duration=3,cooldown=5000
+raid_events+=/adds,count=2,first=39,duration=3,cooldown=5000
+# 1 Fel-Infused Destructor
+raid_events+=/adds,count=1,first=40,duration=10,cooldown=5000
+# boss targets
+
+# fight modifications

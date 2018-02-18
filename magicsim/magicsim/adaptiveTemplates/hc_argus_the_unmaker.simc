@@ -1,0 +1,44 @@
+﻿max_time=600
+fight_style=patchwerk
+# movement
+# P1
+# Pie slices
+raid_events+=/movement,cooldown=21,duration=1,last=110,players_only=1,first=30
+# Soul blight
+raid_events+=/movement,cooldown=25,duration=3,last=110,players_only=1,first=37,player_chance=0.2
+# P2
+# Initial movement
+raid_events+=/movement,cooldown=10000,duration=3,first=140
+# Bombs
+raid_events+=/movement,cooldown=20,duration=5,first=155,last=240,players_only=1,player_chance=0.1
+raid_events+=/movement,cooldown=40,duration=5,first=155,last=240,players_only=1,player_chance=0.05
+# Scythes
+raid_events+=/movement,cooldown=35,duration=1.5,duration_stddev=0.5,first=160,last=240,players_only=1,player_chance=0.5
+# P4
+# Swirls
+raid_events+=/movement,cooldown=5,duration=1.5,duration_stddev=0.5,first=485,players_only=1,player_chance=0.15
+
+# adds
+# Constellar Designates
+raid_events+=/adds,count=1,first=260,duration=45,cooldown=10000,min_distance=10,max_distance=25
+raid_events+=/adds,count=1,first=260,duration=70,cooldown=10000,min_distance=10,max_distance=25
+raid_events+=/adds,count=1,first=260,duration=80,cooldown=10000,min_distance=10,max_distance=25
+raid_events+=/adds,count=1,first=260,duration=90,cooldown=10000,min_distance=10,max_distance=25
+raid_events+=/adds,count=1,first=260,duration=100,cooldown=10000,min_distance=10,max_distance=25
+raid_events+=/adds,count=1,first=260,duration=115,cooldown=10000,min_distance=10,max_distance=25
+raid_events+=/adds,count=1,first=260,duration=115,cooldown=10000,min_distance=10,max_distance=25
+# Orbs
+raid_events+=/adds,count=3,first=450,duration=3,cooldown=10000,min_distance=15,max_distance=30
+raid_events+=/adds,count=4,first=500,duration=4,cooldown=10000,min_distance=15,max_distance=30
+raid_events+=/adds,count=5,first=550,duration=5,cooldown=10000,min_distance=15,max_distance=30
+
+# boss targets
+raid_events+=/invulnerable,cooldown=10000,duration=160,first=243,duration_stddev=1
+raid_events+=/damage_done_buff,cooldown=10000,duration=27,multiplier=0.05,first=23
+raid_events+=/damage_done_buff,cooldown=10000,duration=27,multiplier=0.1,first=50
+raid_events+=/damage_done_buff,cooldown=10000,duration=27,multiplier=0.15,first=77
+raid_events+=/damage_done_buff,cooldown=10000,duration=30,multiplier=0.2,first=104
+raid_events+=/damage_done_buff,cooldown=10000,duration=100,multiplier=0.1,first=270
+
+# fight modifications
+bloodlust_time=460

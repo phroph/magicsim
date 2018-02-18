@@ -219,83 +219,86 @@ namespace magicsim
                 var splitIndex = result.Item2.IndexOf('_');
                 var time = result.Item2.Substring(0, splitIndex);
                 var fight = result.Item2.Substring(splitIndex + 1).Split('.')[0];
-                if(model.model.ContainsKey(fight) && model.timeModel.ContainsKey(time))
+                if(model.model.ContainsKey(fight))
                 {
-                    double modelWeight = model.model[fight];
-                    double timeWeight = model.timeModel[time];
-                    result.Item1.sim.players.ForEach((player) =>
+                    if (model.timeModel == null || (model.timeModel != null && model.timeModel.ContainsKey(time)))
                     {
-                        double dps = player.collected_data.dps.mean;
-                        double damage = player.collected_data.dmg.mean;
-                        string mainstat = "";
-                        double mainstatValue = 0.0;
-                        if (player.scale_factors != null)
+                        double modelWeight = model.model[fight];
+                        double timeWeight = model.timeModel != null ? model.timeModel[time]: 1.0;
+                        result.Item1.sim.players.ForEach((player) =>
                         {
-                            if (player.scale_factors.Int > 0)
+                            double dps = player.collected_data.dps.mean;
+                            double damage = player.collected_data.dmg.mean;
+                            string mainstat = "";
+                            double mainstatValue = 0.0;
+                            if (player.scale_factors != null)
                             {
-                                mainstat = "Intellect";
-                                mainstatValue = player.scale_factors.Int;
+                                if (player.scale_factors.Int > 0)
+                                {
+                                    mainstat = "Intellect";
+                                    mainstatValue = player.scale_factors.Int;
+                                }
+                                else if (player.scale_factors.Agi > 0)
+                                {
+                                    mainstat = "Agility";
+                                    mainstatValue = player.scale_factors.Agi;
+                                }
+                                else if (player.scale_factors.Str > 0)
+                                {
+                                    mainstat = "Strength";
+                                    mainstatValue = player.scale_factors.Str;
+                                }
                             }
-                            else if (player.scale_factors.Agi > 0)
+                            if (!playerCritValues.ContainsKey(player.name))
                             {
-                                mainstat = "Agility";
-                                mainstatValue = player.scale_factors.Agi;
+                                playerCritValues[player.name] = 0.0;
                             }
-                            else if (player.scale_factors.Str > 0)
+                            if (!playerDpsValues.ContainsKey(player.name))
                             {
-                                mainstat = "Strength";
-                                mainstatValue = player.scale_factors.Str;
+                                playerDpsValues[player.name] = 0.0;
                             }
-                        }
-                        if (!playerCritValues.ContainsKey(player.name))
-                        {
-                            playerCritValues[player.name] = 0.0;
-                        }
-                        if (!playerDpsValues.ContainsKey(player.name))
-                        {
-                            playerDpsValues[player.name] = 0.0;
-                        }
-                        if (!playerDamageValues.ContainsKey(player.name))
-                        {
-                            playerDamageValues[player.name] = 0.0;
-                        }
-                        if (!playerHasteValues.ContainsKey(player.name))
-                        {
-                            playerHasteValues[player.name] = 0.0;
-                        }
-                        if (!playerMainStatValues.ContainsKey(player.name))
-                        {
-                            playerMainStatValues[player.name] = 0.0;
-                        }
-                        if (!playerMainStatTypes.ContainsKey(player.name) && mainstat.Length > 0)
-                        {
-                            playerMainStatTypes[player.name] = mainstat;
-                        }
-                        if (!playerMasteryValues.ContainsKey(player.name))
-                        {
-                            playerMasteryValues[player.name] = 0.0;
-                        }
-                        if (!playerVersValues.ContainsKey(player.name))
-                        {
-                            playerVersValues[player.name] = 0.0;
-                        }
-                        if (!playerClasses.ContainsKey(player.name))
-                        {
-                            var specClass = player.specialization.Replace("Death K", "Deathk").Replace("Demon H", "Demonh").Replace("Beast M", "Beastm").Split(' ');
-                            playerClasses[player.name] = specClass[1];
-                            playerSpecs[player.name] = specClass[0];
-                        }
-                        playerDpsValues[player.name] += modelWeight * timeWeight * dps;
-                        playerDamageValues[player.name] += modelWeight * timeWeight * damage;
-                        if (player.scale_factors != null)
-                        {
-                            playerCritValues[player.name] += modelWeight * timeWeight * player.scale_factors.Crit;
-                            playerHasteValues[player.name] += modelWeight * timeWeight * player.scale_factors.Haste;
-                            playerMainStatValues[player.name] += modelWeight * timeWeight * mainstatValue;
-                            playerMasteryValues[player.name] += modelWeight * timeWeight * player.scale_factors.Mastery;
-                            playerVersValues[player.name] += modelWeight * timeWeight * player.scale_factors.Vers;
-                        }
-                    });
+                            if (!playerDamageValues.ContainsKey(player.name))
+                            {
+                                playerDamageValues[player.name] = 0.0;
+                            }
+                            if (!playerHasteValues.ContainsKey(player.name))
+                            {
+                                playerHasteValues[player.name] = 0.0;
+                            }
+                            if (!playerMainStatValues.ContainsKey(player.name))
+                            {
+                                playerMainStatValues[player.name] = 0.0;
+                            }
+                            if (!playerMainStatTypes.ContainsKey(player.name) && mainstat.Length > 0)
+                            {
+                                playerMainStatTypes[player.name] = mainstat;
+                            }
+                            if (!playerMasteryValues.ContainsKey(player.name))
+                            {
+                                playerMasteryValues[player.name] = 0.0;
+                            }
+                            if (!playerVersValues.ContainsKey(player.name))
+                            {
+                                playerVersValues[player.name] = 0.0;
+                            }
+                            if (!playerClasses.ContainsKey(player.name))
+                            {
+                                var specClass = player.specialization.Replace("Death K", "Deathk").Replace("Demon H", "Demonh").Replace("Beast M", "Beastm").Split(' ');
+                                playerClasses[player.name] = specClass[1];
+                                playerSpecs[player.name] = specClass[0];
+                            }
+                            playerDpsValues[player.name] += modelWeight * timeWeight * dps;
+                            playerDamageValues[player.name] += modelWeight * timeWeight * damage;
+                            if (player.scale_factors != null)
+                            {
+                                playerCritValues[player.name] += modelWeight * timeWeight * player.scale_factors.Crit;
+                                playerHasteValues[player.name] += modelWeight * timeWeight * player.scale_factors.Haste;
+                                playerMainStatValues[player.name] += modelWeight * timeWeight * mainstatValue;
+                                playerMasteryValues[player.name] += modelWeight * timeWeight * player.scale_factors.Mastery;
+                                playerVersValues[player.name] += modelWeight * timeWeight * player.scale_factors.Vers;
+                            }
+                        });
+                    }
                 }
             });
             List<PlayerResult> sublist = new List<PlayerResult>();

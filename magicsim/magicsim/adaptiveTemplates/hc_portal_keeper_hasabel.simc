@@ -1,0 +1,33 @@
+﻿max_time=540
+fight_style=patchwerk
+# movement
+# Felstorm Barrage
+raid_events+=/movement,cooldown=35,duration=2.5,duration_stddev=1,first=25,players_only=1
+
+# adds
+# Imps
+raid_events+=/adds,count=1,first=35,duration=2,cooldown=50,max_distance=30
+raid_events+=/adds,count=1,first=36,duration=2,cooldown=50,max_distance=30
+raid_events+=/adds,count=1,first=37,duration=2,cooldown=50,max_distance=30
+raid_events+=/adds,count=1,first=38,duration=2,cooldown=50,max_distance=30,last=237
+raid_events+=/adds,count=1,first=39,duration=2,cooldown=50,max_distance=30,last=388
+raid_events+=/adds,count=1,first=40,duration=2,cooldown=50,max_distance=30
+raid_events+=/adds,count=1,first=41,duration=2,cooldown=50,max_distance=30
+raid_events+=/adds,count=1,first=42,duration=2,cooldown=50,max_distance=30
+raid_events+=/adds,count=1,first=43,duration=2,cooldown=50,max_distance=30,last=242
+raid_events+=/adds,count=1,first=44,duration=2,cooldown=50,max_distance=30,last=393
+raid_events+=/adds,count=1,first=45,duration=2,cooldown=50,max_distance=30
+raid_events+=/adds,count=1,first=46,duration=2,cooldown=50,max_distance=30
+raid_events+=/adds,count=1,first=47,duration=2,cooldown=50,max_distance=30
+raid_events+=/adds,count=1,first=48,duration=2,cooldown=50,max_distance=30
+# Skitterers
+raid_events+=/adds,count=1,first=238,duration=5,cooldown=50,max_distance=30
+raid_events+=/adds,count=1,first=243,duration=5,cooldown=50,max_distance=30
+# Hungering Stalkers
+raid_events+=/adds,count=1,first=389,duration=4,cooldown=50,max_distance=30
+raid_events+=/adds,count=1,first=393,duration=4,cooldown=50,max_distance=30
+
+# boss targets
+
+# fight modifications
+bloodlust_percent=30

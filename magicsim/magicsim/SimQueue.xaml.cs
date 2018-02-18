@@ -188,93 +188,102 @@ namespace magicsim
             }
             var guid = Guid.NewGuid().ToString().Substring(0, 8);
             var simList = new List<string>();
-            foreach (var time in selectedModel.timeModel.Keys)
-            {
-                foreach(var sim in selectedModel.model.Keys)
+            var createModelSim = new Action<string, string>((string sim, string time) => {
+                var simProfile = "";
+                if (context.PTRMode)
                 {
-                    var simContent = sim.ToLower();
-                    var style = simContent.Split('_')[0];
-                    var simProfile = "";
-                    if(context.PTRMode)
+                    simProfile += "ptr=1";
+                }
+                context.Sims.ToList().ForEach((simChar) =>
+                {
+                    var nameRegex = new Regex(simChar.Profile.Split('"')[0] + "\"(\\w+)\"");
+                    simChar.Profile = simChar.Profile.Replace(nameRegex.Match(simChar.Profile).Groups[1].Value, simChar.Name);
+                    simProfile += simChar.Profile + "\r\n";
+                });
+                simProfile += "iterations=10000\r\nthreads=" + context.Threads + "\r\noptimize_expressions=1\r\noptimal_raid=1\r\n";
+                if(time != null)
+                {
+                    simProfile += "max_time=" + time + "\r\n";
+                }
+                if (Directory.EnumerateFiles("adaptiveTemplates").Contains(sim + ".simc"))
+                {
+                    simProfile += File.ReadAllText("adaptiveTemplates" + System.IO.Path.DirectorySeparatorChar + sim + ".simc");
+                } else
+                {
+                    MessageBox.Show(String.Format("Couldn't find template \"{0}\" requested. Sim results will be skewed.", sim), "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+                if (context.DisableStatWeights)
+                {
+                    simProfile += "calculate_scale_factors=0\r\n";
+                }
+                else
+                {
+                    simProfile += "calculate_scale_factors=1\r\n";
+                }
+                if (context.PantheonTrinketsEnabled)
+                {
+                    simProfile += "legion.pantheon_trinket_users=" + GeneratePantheonString();
+                }
+                if (context.ReforgeEnabled)
+                {
+                    var reforge_stat = "";
+                    if (context.ReforgeCrit)
                     {
-                        simProfile += "ptr=1";
+                        reforge_stat += "crit";
                     }
-                    context.Sims.ToList().ForEach((simChar) =>
+                    if (context.ReforgeHaste)
                     {
-                        var nameRegex = new Regex(simChar.Profile.Split('"')[0] + "\"(\\w+)\"");
-                        simChar.Profile = simChar.Profile.Replace(nameRegex.Match(simChar.Profile).Groups[1].Value, simChar.Name);
-                        simProfile += simChar.Profile + "\r\n";
-                    });
-                    simProfile += "iterations=10000\r\nthreads=" + context.Threads + "\r\noptimize_expressions=1\r\nmax_time=" + time + "\r\nvary_combat_length=0.20\r\noptimal_raid=1\r\nfight_style=" + style + "\r\nenemy=enemy1\r\n";
-                    if (simContent.Contains("2t"))
-                    { 
-                        simProfile += "enemy=enemy2\r\nraid_events+=/move_enemy,name=enemy2,cooldown=2000,duration=1000,x=-27,y=-27\r\n";
-                    }
-                    if (simContent.Contains("sa"))
-                    {
-                        simProfile += "raid_events+=/adds,count=3,first=45,cooldown=45,duration=10,distance=5\r\n";
-                    }
-                    if (simContent.Contains("ba"))
-                    {
-                        simProfile += "raid_events+=/adds,count=1,first=30,cooldown=60,duration=20\r\n";
-                    }
-                    if (context.DisableStatWeights)
-                    {
-                        simProfile += "calculate_scale_factors=0\r\n";
-                    }
-                    else
-                    {
-                        simProfile += "calculate_scale_factors=1\r\n";
-                    }
-                    if(context.PantheonTrinketsEnabled)
-                    {
-                        simProfile += "legion.pantheon_trinket_users=" + GeneratePantheonString();
-                    }
-                    if(context.ReforgeEnabled)
-                    {
-                        var reforge_stat = "";
-                        if(context.ReforgeCrit)
+                        if (reforge_stat.Equals(""))
                         {
-                            reforge_stat += "crit";
+                            reforge_stat += "haste";
                         }
-                        if(context.ReforgeHaste)
+                        else
                         {
-                            if(reforge_stat.Equals(""))
-                            {
-                                reforge_stat += "haste";
-                            } else
-                            {
-                                reforge_stat += ",haste";
-                            }
+                            reforge_stat += ",haste";
                         }
-                        if (context.ReforgeMastery)
-                        {
-                            if (reforge_stat.Equals(""))
-                            {
-                                reforge_stat += "mastery";
-                            }
-                            else
-                            {
-                                reforge_stat += ",mastery";
-                            }
-                        }
-                        if (context.ReforgeVers)
-                        {
-                            if (reforge_stat.Equals(""))
-                            {
-                                reforge_stat += "versatility";
-                            }
-                            else
-                            {
-                                reforge_stat += ",versatility";
-                            }
-                        }
-                        simProfile += "reforge_plot_stat=" + reforge_stat + "\r\nreforge_plot_amount=" + context.ReforgeAmount + "\r\nreforge_plot_step=" + context.ReforgeStepSize + "\r\n";
                     }
-                    
-                    var filePrefix = "results/" + guid + "/" + time + "_" + sim + ".";
-                    simProfile += "json2=" + filePrefix + "json\r\nhtml=" + filePrefix + "html\r\n";
-                    simList.Add(simProfile);
+                    if (context.ReforgeMastery)
+                    {
+                        if (reforge_stat.Equals(""))
+                        {
+                            reforge_stat += "mastery";
+                        }
+                        else
+                        {
+                            reforge_stat += ",mastery";
+                        }
+                    }
+                    if (context.ReforgeVers)
+                    {
+                        if (reforge_stat.Equals(""))
+                        {
+                            reforge_stat += "versatility";
+                        }
+                        else
+                        {
+                            reforge_stat += ",versatility";
+                        }
+                    }
+                    simProfile += "reforge_plot_stat=" + reforge_stat + "\r\nreforge_plot_amount=" + context.ReforgeAmount + "\r\nreforge_plot_step=" + context.ReforgeStepSize + "\r\n";
+                }
+
+                var filePrefix = "results/" + guid + "/" + time + "_" + sim + ".";
+                simProfile += "json2=" + filePrefix + "json\r\nhtml=" + filePrefix + "html\r\n";
+                simList.Add(simProfile);
+            });
+            foreach (var sim in selectedModel.model.Keys)
+            {
+                if (selectedModel.timeModel != null)
+                {
+                    foreach (var time in selectedModel.timeModel.Keys)
+                    {
+
+                        createModelSim(sim, time);
+                    }
+                }
+                else
+                {
+                    createModelSim(sim, null);
                 }
             }
             var window = new SimcRunner();

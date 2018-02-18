@@ -1,0 +1,40 @@
+﻿max_time=550
+fight_style=patchwerk
+# movement
+# Whirling Saber
+raid_events+=/movement,cooldown=30,duration=1,first=10,last=200,players_only=1,player_chance=0.2
+raid_events+=/movement,cooldown=30,duration=1,first=400,players_only=1,player_chance=0.2
+# Storm of Darkness
+# could spawn one under you, so not totally 100%
+raid_events+=/movement,cooldown=60,duration=2,duration_stddev=1,first=30,last=330,players_only=1,player_chance=0.8
+# Shadow Blades
+raid_events+=/movement,cooldown=30,duration=1,first=12,last=375,players_only=1,player_chance=0.1
+
+# adds
+# Machinations of Aman'Thul - 4
+# assume two adds die in 20s, other two take 40s
+raid_events+=/adds,count=1,first=95,duration=20,cooldown=5000,max_distance=30
+raid_events+=/adds,count=1,first=95,duration=20,cooldown=5000,max_distance=30
+raid_events+=/adds,count=1,first=95,duration=40,cooldown=5000,max_distance=30
+raid_events+=/adds,count=1,first=95,duration=40,cooldown=5000,max_distance=30
+# Fury of Golganneth - 4
+raid_events+=/adds,count=1,first=190,duration=20,cooldown=5000,max_distance=30
+raid_events+=/adds,count=1,first=190,duration=20,cooldown=5000,max_distance=30
+raid_events+=/adds,count=1,first=190,duration=20,cooldown=5000,max_distance=30
+raid_events+=/adds,count=1,first=190,duration=30,cooldown=5000,max_distance=30
+# Flames of Khaz'goroth - spawn 8 assume 6 in range
+raid_events+=/adds,count=1,first=285,duration=10,cooldown=5000,max_distance=30
+raid_events+=/adds,count=1,first=285,duration=10,cooldown=5000,max_distance=30
+raid_events+=/adds,count=1,first=285,duration=15,cooldown=5000,max_distance=30
+raid_events+=/adds,count=1,first=285,duration=20,cooldown=5000,max_distance=30
+raid_events+=/adds,count=1,first=285,duration=25,cooldown=5000,max_distance=30
+raid_events+=/adds,count=1,first=285,duration=30,cooldown=5000,max_distance=30
+
+# boss targets
+enemy=Fluffy_Pillow
+enemy=enemy2
+# coven must be 18 yards away from each other
+raid_events+=/move_enemy,name=enemy2,cooldown=2000,duration=1000,distance_min=18,distance_max=30
+
+# fight modifications
+bloodlust_time=95

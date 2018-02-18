@@ -1,0 +1,2 @@
+﻿fight_style=heavymovement
+raid_events+=/adds,count=1,first=30,cooldown=60,duration=20

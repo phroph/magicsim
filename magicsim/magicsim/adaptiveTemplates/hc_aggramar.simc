@@ -1,0 +1,46 @@
+﻿max_time=480
+fight_style=patchwerk
+# movement
+# P1
+# Wake of Flames
+raid_events+=/movement,cooldown=25,duration=1,first=7,last=35,player_chance=0.3,players_only=1
+# Tank Combo (Stack -> Knockback -> Stack -> Knockback and Runaway)
+raid_events+=/movement,cooldown=60,duration=1.5,first=35,last=60,players_only=1
+raid_events+=/movement,cooldown=60,duration=3,first=38,last=60,players_only=1
+raid_events+=/movement,cooldown=60,duration=1.5,first=43,last=60,players_only=1
+raid_events+=/movement,cooldown=60,duration=4,first=46,last=60,players_only=1
+# P2 Swirls
+raid_events+=/movement,cooldown=5,duration=1,first=63,last=105,player_chance=0.1,players_only=1
+# P1 second time
+# Wake of Flames and Flare
+raid_events+=/movement,cooldown=25,duration=2,duration_stddev=1,first=117,last=260,player_chance=0.7,players_only=1
+# Tank Combo (Stack -> Knockback -> Stack -> Knockback and Runaway)
+raid_events+=/movement,cooldown=60,duration=1.5,first=140,last=259,players_only=1
+raid_events+=/movement,cooldown=60,duration=3,first=143,last=260,players_only=1
+raid_events+=/movement,cooldown=60,duration=1.5,first=148,last=260,players_only=1
+raid_events+=/movement,cooldown=60,duration=4,first=151,last=260,players_only=1
+# P2 Swirls, second time.
+raid_events+=/movement,cooldown=5,duration=1,first=265,last=307,player_chance=0.2,players_only=1
+# P1 final time
+# Wake of Flames and Flare
+raid_events+=/movement,cooldown=25,duration=2,duration_stddev=1,first=315,player_chance=0.7,players_only=1
+# Tank Combo (Stack -> Knockback -> Stack -> Knockback and Runaway)
+raid_events+=/movement,cooldown=60,duration=1.5,first=335,players_only=1
+raid_events+=/movement,cooldown=60,duration=3,first=338,last=260,players_only=1
+raid_events+=/movement,cooldown=60,duration=1.5,first=343,last=260,players_only=1
+raid_events+=/movement,cooldown=60,duration=4,first=346,last=260,players_only=1
+
+# adds
+# Flames
+raid_events+=/adds,count=2,cooldown=1000,duration=34,first=62
+raid_events+=/adds,count=1,cooldown=1000,duration=45,first=62
+raid_events+=/adds,count=2,cooldown=1000,duration=30,first=262
+raid_events+=/adds,count=2,cooldown=1000,duration=40,first=262
+# Embers
+
+# boss targets
+raid_events+=/invulnerable,cooldown=1000,duration=47,first=60
+raid_events+=/invulnerable,cooldown=1000,duration=42,first=260
+
+# fight modifications
+bloodlust_time=262

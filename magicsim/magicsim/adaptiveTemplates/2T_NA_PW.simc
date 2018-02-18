@@ -1,0 +1,4 @@
+﻿fight_style=patchwerk
+enemy=Fluffy_Pillow
+enemy=enemy2
+raid_events+=/move_enemy,name=enemy2,cooldown=2000,duration=1000,x=-27,y=-27

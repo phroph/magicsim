@@ -1,0 +1,26 @@
+﻿max_time=250
+fight_style=patchwerk
+# movement
+# consuming sphere happens about every minute for about 15 seconds
+raid_events+=/movement,cooldown=65,duration=1.5,first=60,players_only=1
+raid_events+=/movement,cooldown=65,duration=1.5,first=63,players_only=1
+raid_events+=/movement,cooldown=65,duration=1.5,first=66,players_only=1
+raid_events+=/movement,cooldown=65,duration=1.5,first=69,players_only=1
+raid_events+=/movement,cooldown=65,duration=1.5,first=72,players_only=1
+# Enflamed spread
+raid_events+=/movement,cooldown=105,duration=2,first=50,players_only=1
+# Gaze Movement
+raid_events+=/movement,cooldown=105,duration=2,duration_stddev=1,first=85,players_only=1,player_chance=0.2
+# Flare
+raid_events+=/movement,cooldown=105,duration=2,duration_stddev=1,first=15,players_only=1
+raid_events+=/stun,cooldown=105,duration=4,first=13,players_only=1,player_chance=0.1
+
+# adds
+
+# boss targets
+# add in second boss spread away from the first boss
+enemy=Fluffy_Pillow
+enemy=enemy2
+raid_events+=/move_enemy,name=enemy2,cooldown=2000,duration=1000,x=-27,y=-27
+
+# fight modifications

@@ -1,0 +1,13 @@
+﻿max_time=300
+fight_style=patchwerk
+# movement
+# Dark Fissure
+raid_events+=/movement,cooldown=30,duration=1,first=30,players_only=1
+# Necrotic Embrace
+raid_events+=/movement,cooldown=30,duration=5,first=36,players_only=1,player_chance=0.04
+
+# adds
+
+# boss targets
+
+# fight modifications

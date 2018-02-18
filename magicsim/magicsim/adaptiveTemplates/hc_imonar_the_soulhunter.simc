@@ -1,0 +1,29 @@
+﻿max_time=330
+fight_style=patchwerk
+# movement
+# Phase 1
+# Mines
+raid_events+=/movement,cooldown=15,duration=1,first=6,last=110,player_chance=0.3,players_only=1
+# Sleep targetted on you
+raid_events+=/movement,cooldown=12,duration=1.5,first=10,last=110,player_chance=0.1,players_only=1
+# Chance of sleep getting dispelled near you
+raid_events+=/movement,cooldown=12,duration=8,first=12,last=110,player_chance=0.05,players_only=1
+# Phase 2
+# Mines
+raid_events+=/movement,cooldown=13,duration=1,first=140,last=250,player_chance=0.3,players_only=1
+# Charged Blasts from ships
+raid_events+=/movement,cooldown=20,duration=3,duration_stddev=1.5,first=145,last=250,player_chance=0.1,players_only=1
+# Phase 3
+# Just everything
+raid_events+=/movement,cooldown=10,duration=1,duration_stddev=1.5,first=295,player_chance=0.3,players_only=1
+
+# adds
+
+# boss targets
+# Movement + Invulerability when transitioning. First transition is faster due to less traps. Figure it's not worth modeling movement since the boss will be invulnerable regardless.
+raid_events+=/invulnerable,cooldown=1000,duration=25,first=110
+# Second transition
+raid_events+=/invulnerable,cooldown=1000,duration=40,first=250
+
+# fight modifications
+bloodlust_time=295

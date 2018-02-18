@@ -1,0 +1,30 @@
+﻿max_time=300
+fight_style=patchwerk
+# movement
+# decimation comes out about every 10s during the phases where the boss is active, will make a forced event every 30s (i.e. youll get targeted by every 3rd decimation)
+# first set before adds come out
+raid_events+=/movement,cooldown=31,duration=3.5,last=85,player_chance=0.3,players_only=1
+# Surging Fel during first add phase
+raid_events+=/movement,cooldown=7,duration=2,first=85,last=110,player_chance=0.2,players_only=1
+# second set in between add phases
+raid_events+=/movement,cooldown=16,duration=3.5,first=110,last=215,player_chance=0.2,players_only=1
+# Surging Fel during and after second add phase
+raid_events+=/movement,cooldown=7,duration=2,first=195,player_chance=0.2,players_only=1
+
+# adds
+# decimator/anihilator come out twice for ~25s each
+raid_events+=/adds,count=1,cooldown=1000,duration=25,first=85
+raid_events+=/adds,count=1,cooldown=1000,duration=25,first=85
+# second set of adds only has 1 target
+raid_events+=/adds,count=1,cooldown=1000,duration=25,first=195
+
+# boss targets
+# decimator/anihilator come out and invuln the Boss
+# first event to happen in the first 2 minutes only once after 1 minute
+raid_events+=/invulnerable,cooldown=1000,duration=26,first=84
+# second event to happen in the last 2 minutes only once after 1 minute
+raid_events+=/invulnerable,cooldown=1000,duration=26,first=194
+
+# fight modifications
+bloodlust_time=-80
+priest_suppress_sephuz=1

@@ -1,216 +1,281 @@
 ﻿[
   {
-    "dispName": "Antorus, the Burning Throne Composite",
+    "dispName": "Heroic Antorus, the Burning Throne Composite",
+    "name": "ant2",
+    "model": {
+      "hc_aggramar": 0.09090909090909090909090909090909,
+      "hc_antoran_high_command": 0.09090909090909090909090909090909,
+      "hc_argus_the_unmaker": 0.09090909090909090909090909090909,
+      "hc_coven_of_shivarra": 0.09090909090909090909090909090909,
+      "hc_eonar": 0.09090909090909090909090909090909,
+      "hc_felhounds_of_sargeras": 0.09090909090909090909090909090909,
+      "hc_garothi_worldbreaker": 0.09090909090909090909090909090909,
+      "hc_imonar_the_soulhunter": 0.09090909090909090909090909090909,
+      "hc_kingaroth": 0.09090909090909090909090909090909,
+      "hc_portal_keeper_hasabel": 0.09090909090909090909090909090909,
+      "hc_varimathras": 0.09090909090909090909090909090909
+    }
+  },
+  {
+    "dispName": "Classic Antorus, the Burning Throne Composite",
     "name": "ant",
     "model": {
-      "heavymovement_ba_st": 0.018181818181818184,
-      "lightmovement_ba_st": 0.02727272727272727,
-      "patchwerk_ba_st": 0.04090909090909091,
-      "heavymovement_na_st": 0.022727272727272728,
-      "lightmovement_na_st": 0.17727272727272728,
-      "patchwerk_na_st": 0.17272727272727273,
-      "heavymovement_sa_st": 0.17727272727272728,
-      "lightmovement_sa_st": 0.08181818181818182,
-      "patchwerk_sa_st": 0.05,
-      "heavymovement_ba_2t": 0.013636363636363636,
-      "lightmovement_ba_2t": 0.06363636363636363,
-      "patchwerk_ba_2t": 0.022727272727272728,
-      "lightmovement_na_2t": 0.05909090909090909,
-      "patchwerk_na_2t": 0.07272727272727274
+      "ST_BA_HM": 0.01818181818,
+      "ST_BA_LM": 0.02727272727,
+      "ST_BA_PW": 0.04090909091,
+      "ST_NA_HM": 0.02272727273,
+      "ST_NA_LM": 0.1772727273,
+      "ST_NA_PW": 0.1727272727,
+      "ST_SA_HM": 0.1772727273,
+      "ST_SA_LM": 0.08181818182,
+      "ST_SA_PW": 0.05,
+      "2T_BA_HM": 0.01363636364,
+      "2T_BA_LM": 0.06363636364,
+      "2T_BA_PW": 0.02272727273,
+      "2T_NA_LM": 0.05909090909,
+      "2T_NA_PW": 0.07272727273
     },
-    "timeModel": {
-      "250": 0.15,
-      "400": 0.85
-    }
+    "timeModel": { "378": 1.0 }
   },
   {
     "dispName": "Tomb of Sargeras Composite",
     "name": "tos",
     "model": {
-      "patchwerk_sa_st": 0.06875,
-      "patchwerk_na_st": 0.125,
-      "lightmovement_ba_st": 0.05,
-      "lightmovement_sa_st": 0.1375,
-      "lightmovement_sa_2t": 0.06875,
-      "lightmovement_na_st": 0.3,
-      "lightmovement_na_2t": 0.05,
-      "heavymovement_na_st": 0.14375,
-      "heavymovement_na_2t": 0.01875,
-      "heavymovement_sa_st": 0.0375
+      "ST_SA_PW": 0.06875,
+      "ST_NA_PW": 0.125,
+      "ST_BA_LM": 0.05,
+      "ST_SA_LM": 0.1375,
+      "2T_SA_LM": 0.06875,
+      "ST_NA_LM": 0.3,
+      "2T_NA_LM": 0.05,
+      "ST_NA_HM": 0.14375,
+      "2T_NA_HM": 0.01875,
+      "ST_SA_HM": 0.0375
     },
-    "timeModel": {
-      "250": 0.15,
-      "400": 0.85
-    }
+    "timeModel": { "378": 1.0 }
   },
   {
     "dispName": "Nighthold Composite",
     "name": "nh",
     "model": {
-      "patchwerk_ba_2t": 0.025,
-      "patchwerk_ba_st": 0.07,
-      "patchwerk_sa_2t": 0.02,
-      "patchwerk_sa_st": 0.07,
-      "patchwerk_na_st": 0.07,
-      "lightmovement_ba_2t": 0.155,
-      "lightmovement_ba_st": 0.195,
-      "lightmovement_sa_2t": 0.05,
-      "lightmovement_sa_st": 0.12,
-      "lightmovement_na_2t": 0.03,
-      "lightmovement_na_st": 0.065,
-      "heavymovement_ba_st": 0.08,
-      "heavymovement_sa_2t": 0.015,
-      "heavymovement_sa_st": 0.035
+      "2T_BA_PW": 0.025,
+      "ST_BA_PW": 0.07,
+      "2T_SA_PW": 0.02,
+      "ST_SA_PW": 0.07,
+      "ST_NA_PW": 0.07,
+      "2T_BA_LM": 0.155,
+      "ST_BA_LM": 0.195,
+      "2T_SA_LM": 0.05,
+      "ST_SA_LM": 0.12,
+      "2T_NA_LM": 0.03,
+      "ST_NA_LM": 0.065,
+      "ST_BA_HM": 0.08,
+      "2T_SA_HM": 0.015,
+      "ST_SA_HM": 0.035
     },
-    "timeModel": {
-      "250": 0.15,
-      "400": 0.85
-    }
+    "timeModel": { "378": 1.0 }
   },
   {
     "dispName": "Mythic+ Composite",
     "name": "mplus",
     "model": {
-      "30_lightmovement_4_adds": 0.008731929756476181,
-      "30_lightmovement_5_adds": 0.005239157853885708,
-      "50_lightmovement_3_adds": 0.013097894634714271,
-      "50_lightmovement_4_adds": 0.0192102454642476,
-      "50_lightmovement_5_adds": 0.0192102454642476,
-      "55_lightmovement_3_adds": 0.013097894634714271,
-      "55_lightmovement_4_adds": 0.026195789269428543,
-      "55_lightmovement_5_adds": 0.025322596293780922,
-      "60_lightmovement_3_adds": 0.012224701659066655,
-      "60_lightmovement_4_adds": 0.020083438439895216,
-      "60_lightmovement_5_adds": 0.010478315707771416,
-      "30_patchwerk_4_adds": 0.026195789269428543,
-      "30_patchwerk_5_adds": 0.016590666537304743,
-      "50_patchwerk_3_adds": 0.03929368390414282,
-      "50_patchwerk_4_adds": 0.0576307363927428,
-      "50_patchwerk_5_adds": 0.0576307363927428,
-      "55_patchwerk_3_adds": 0.03929368390414282,
-      "55_patchwerk_4_adds": 0.07858736780828564,
-      "55_patchwerk_5_adds": 0.07509459590569516,
-      "60_patchwerk_3_adds": 0.03580091200155234,
-      "60_patchwerk_4_adds": 0.060250315319685645,
-      "60_patchwerk_5_adds": 0.03143494712331425,
-      "patchwerk_ba_st": 0.012806830309498397,
-      "patchwerk_na_st": 0.055496264674493055,
-      "lightmovement_ba_st": 0.07218395265353643,
-      "lightmovement_na_2t": 0.022508974483360818,
-      "lightmovement_na_st": 0.04657029203453963,
-      "heavymovement_ba_st": 0.007761715339089938,
-      "heavymovement_na_2t": 0.007761715339089938,
-      "heavymovement_na_st": 0.08421461142912583
-    },
-    "timeModel": { "400": 0.85 }
-  },
-  {
-    "dispName": "Goroth",
-    "name": "goroth",
-    "model": {
-      "patchwerk_na_st": 0.2,
-      "lightmovement_na_st": 0.6,
-      "heavymovement_na_st": 0.2
-    },
-    "timeModel": {
-      "250": 0.15,
-      "400": 0.85
+      "90_ST_NA_PW": 0.1822721598002497,
+      "90_ST_NA_LM": 0.0940491052850603,
+      "90_ST_NA_HM": 0.0183104452767374,
+      "90_2T_NA_PW": 0.0112359550561798,
+      "90_2T_NA_LM": 0.0066583437369954,
+      "90_ST_BA_PW": 0.0436953807740325,
+      "90_ST_BA_LM": 0.0258010819808573,
+      "90_ST_BA_HM": 0.0099875156054931,
+      "90_ST_SA_PW": 0.0774032459425718,
+      "90_ST_SA_LM": 0.029130253849355,
+      "90_ST_SA_HM": 0.0016645859342489,
+      "25_lightmovement_3_adds": 0.0083229296712443,
+      "30_lightmovement_3_adds": 0.0104036620890553,
+      "30_lightmovement_4_adds": 0.0033291718684977,
+      "30_lightmovement_5_adds": 0.0091552226383687,
+      "35_lightmovement_3_adds": 0.0033291718684977,
+      "35_lightmovement_4_adds": 0.0062421972534332,
+      "35_lightmovement_5_adds": 0.0133166874739908,
+      "40_lightmovement_3_adds": 0.0195588847274241,
+      "40_lightmovement_4_adds": 0.0066583437369954,
+      "40_lightmovement_5_adds": 0.0145651269246775,
+      "45_lightmovement_3_adds": 0.0145651269246775,
+      "45_lightmovement_4_adds": 0.005826050769871,
+      "45_lightmovement_5_adds": 0.011652101539742,
+      "50_lightmovement_3_adds": 0.0049937578027466,
+      "50_lightmovement_5_adds": 0.0020807324178111,
+      "55_lightmovement_5_adds": 0.0008322929671244278,
+      "60_lightmovement_3_adds": 0.0012484394506866,
+      "60_lightmovement_4_adds": 0.0041614648356221,
+      "60_lightmovement_5_adds": 0.0041614648356221,
+      "10_patchwerk_4_adds": 0.0008322929671244278,
+      "10_patchwerk_5_adds": 0.0012484394506866,
+      "20_patchwerk_3_adds": 0.0008322929671244278,
+      "20_patchwerk_4_adds": 0.0012484394506866,
+      "25_patchwerk_3_adds": 0.0020807324178111,
+      "30_patchwerk_3_adds": 0.0041614648356221,
+      "30_patchwerk_4_adds": 0.0129005409904286,
+      "30_patchwerk_5_adds": 0.0124843945068664,
+      "35_patchwerk_3_adds": 0.0270495214315439,
+      "35_patchwerk_4_adds": 0.0295464003329172,
+      "35_patchwerk_5_adds": 0.0341240116521015,
+      "40_patchwerk_3_adds": 0.0270495214315439,
+      "40_patchwerk_4_adds": 0.0374531835205993,
+      "40_patchwerk_5_adds": 0.0561797752808989,
+      "45_patchwerk_3_adds": 0.0183104452767374,
+      "45_patchwerk_4_adds": 0.0287141073657928,
+      "45_patchwerk_5_adds": 0.0245526425301706,
+      "50_patchwerk_4_adds": 0.0020807324178111,
+      "50_patchwerk_5_adds": 0.0083229296712443,
+      "55_patchwerk_3_adds": 0.0020807324178111,
+      "55_patchwerk_5_adds": 0.0054099042863088,
+      "60_patchwerk_3_adds": 0.0012484394506866,
+      "60_patchwerk_4_adds": 0.0070744902205576,
+      "60_patchwerk_5_adds": 0.0104036620890553
     }
   },
   {
-    "dispName": "Demonic Inquisition",
-    "name": "inquisition",
+    "dispName": "Mythic+ Boss Composite",
+    "name": "mplus_boss",
     "model": {
-      "lightmovement_sa_2t": 0.55,
-      "lightmovement_na_2t": 0.35,
-      "heavymovement_na_st": 0.15
-    },
-    "timeModel": {
-      "250": 0.15,
-      "400": 0.85
+      "90_ST_NA_PW": 0.3643926788685524,
+      "90_ST_NA_LM": 0.1880199667221298,
+      "90_ST_NA_HM": 0.0366056572379368,
+      "90_2T_NA_PW": 0.0224625623960067,
+      "90_2T_NA_LM": 0.0133111480865225,
+      "90_ST_BA_PW": 0.0873544093178037,
+      "90_ST_BA_LM": 0.0515806988352745,
+      "90_ST_BA_HM": 0.0199667221297837,
+      "90_ST_SA_PW": 0.1547420965058236,
+      "90_ST_SA_LM": 0.0582362728785358,
+      "90_ST_SA_HM": 0.0033277870216306
     }
   },
   {
-    "dispName": "Harjatan",
-    "name": "harjatan",
+    "dispName": "Mythic+ Trash Composite",
+    "name": "mplus_trash",
     "model": {
-      "patchwerk_sa_st": 0.2,
-      "patchwerk_na_st": 0.1,
-      "lightmovement_ba_st": 0.2,
-      "lightmovement_sa_st": 0.3,
-      "heavymovement_sa_st": 0.2
-    },
-    "timeModel": {
-      "250": 0.15,
-      "400": 0.85
+      "25_lightmovement_3_adds": 0.0166527893422148,
+      "30_lightmovement_3_adds": 0.0208159866777685,
+      "30_lightmovement_4_adds": 0.0066611157368859,
+      "30_lightmovement_5_adds": 0.0183180682764363,
+      "35_lightmovement_3_adds": 0.0066611157368859,
+      "35_lightmovement_4_adds": 0.0124895920066611,
+      "35_lightmovement_5_adds": 0.0266444629475437,
+      "40_lightmovement_3_adds": 0.0391340549542048,
+      "40_lightmovement_4_adds": 0.0133222314737719,
+      "40_lightmovement_5_adds": 0.0291423813488759,
+      "45_lightmovement_3_adds": 0.0291423813488759,
+      "45_lightmovement_4_adds": 0.0116569525395504,
+      "45_lightmovement_5_adds": 0.0233139050791007,
+      "50_lightmovement_3_adds": 0.0099916736053289,
+      "50_lightmovement_5_adds": 0.0041631973355537,
+      "55_lightmovement_5_adds": 0.0016652789342215,
+      "60_lightmovement_3_adds": 0.0024979184013322,
+      "60_lightmovement_4_adds": 0.0083263946711074,
+      "60_lightmovement_5_adds": 0.0083263946711074,
+      "10_patchwerk_4_adds": 0.0016652789342215,
+      "10_patchwerk_5_adds": 0.0024979184013322,
+      "20_patchwerk_3_adds": 0.0016652789342215,
+      "20_patchwerk_4_adds": 0.0024979184013322,
+      "25_patchwerk_3_adds": 0.0041631973355537,
+      "30_patchwerk_3_adds": 0.0083263946711074,
+      "30_patchwerk_4_adds": 0.025811823480433,
+      "30_patchwerk_5_adds": 0.0249791840133222,
+      "35_patchwerk_3_adds": 0.0541215653621982,
+      "35_patchwerk_4_adds": 0.0591174021648626,
+      "35_patchwerk_5_adds": 0.0682764363030808,
+      "40_patchwerk_3_adds": 0.0541215653621982,
+      "40_patchwerk_4_adds": 0.0749375520399667,
+      "40_patchwerk_5_adds": 0.11240632805995,
+      "45_patchwerk_3_adds": 0.0366361365528726,
+      "45_patchwerk_4_adds": 0.0574521232306411,
+      "45_patchwerk_5_adds": 0.0491257285595337,
+      "50_patchwerk_4_adds": 0.0041631973355537,
+      "50_patchwerk_5_adds": 0.0166527893422148,
+      "55_patchwerk_3_adds": 0.0041631973355537,
+      "55_patchwerk_5_adds": 0.0108243130724396,
+      "60_patchwerk_3_adds": 0.0024979184013322,
+      "60_patchwerk_4_adds": 0.0141548709408826,
+      "60_patchwerk_5_adds": 0.0208159866777685
     }
   },
   {
-    "dispName": "Mistress Sassz'ine",
-    "name": "mistress",
+    "dispName": "Heroic Garothi Worldbreaker",
+    "name": "garothi",
     "model": {
-      "patchwerk_sa_st": 0.15,
-      "lightmovement_sa_st": 0.3,
-      "lightmovement_na_st": 0.35,
-      "heavymovement_na_st": 0.2
-    },
-    "timeModel": {
-      "250": 0.15,
-      "400": 0.85
+      "hc_garothi_worldbreaker": 1.0
     }
   },
   {
-    "dispName": "Desolate Host",
-    "name": "host",
+    "dispName": "Heroic Felhounds of Sargeras",
+    "name": "hounds",
     "model": {
-      "patchwerk_sa_st": 0.2,
-      "lightmovement_sa_st": 0.5,
-      "lightmovement_na_st": 0.2,
-      "heavymovement_sa_st": 0.1
-    },
-    "timeModel": {
-      "250": 0.15,
-      "400": 0.85
+      "hc_felhounds_of_sargeras": 1.0
     }
   },
   {
-    "dispName": "Maiden of Vigilance",
-    "name": "maiden",
+    "dispName": "Heroic Antoran High Command",
+    "name": "high_command",
     "model": {
-      "patchwerk_na_st": 0.5,
-      "lightmovement_na_st": 0.3,
-      "heavymovement_na_st": 0.2
-    },
-    "timeModel": {
-      "250": 0.15,
-      "400": 0.85
+      "hc_antoran_high_command": 1.0
     }
   },
   {
-    "dispName": "Sisters of the Moon",
-    "name": "sisters",
+    "dispName": "Heroic Portal Keeper Hasabel",
+    "name": "hasabel",
     "model": {
-      "patchwerk_na_st": 0.1,
-      "lightmovement_ba_st": 0.2,
-      "lightmovement_na_st": 0.45,
-      "heavymovement_na_st": 0.25
-    },
-    "timeModel": {
-      "250": 0.15,
-      "400": 0.85
+      "hc_portal_keeper_hasabel": 1.0
     }
   },
   {
-    "dispName": "Fallen Avatar",
-    "name": "avatar",
+    "dispName": "Heroic The Defense of Eonar",
+    "name": "eonar",
     "model": {
-      "patchwerk_na_st": 0.1,
-      "lightmovement_na_st": 0.5,
-      "heavymovement_na_st": 0.2
-    },
-    "timeModel": {
-      "250": 0.15,
-      "400": 0.85
+      "hc_eonar": 1.0
+    }
+  },
+  {
+    "dispName": "Heroic Imonar the Soulhunter",
+    "name": "imonar",
+    "model": {
+      "hc_imonar_the_soulhunter": 1.0
+    }
+  },
+  {
+    "dispName": "Heroic Kin'garoth",
+    "name": "kingaroth",
+    "model": {
+      "hc_kingaroth": 1.0
+    }
+  },
+  {
+    "dispName": "Heroic Varimathras",
+    "name": "varimathras",
+    "model": {
+      "hc_varimathras": 1.0
+    }
+  },
+  {
+    "dispName": "Heroic Coven of Shivarra",
+    "name": "coven",
+    "model": {
+      "hc_coven_of_shivarra": 1.0
+    }
+  },
+  {
+    "dispName": "Heroic Aggramar",
+    "name": "aggramar",
+    "model": {
+      "hc_aggramar": 1.0
+    }
+  },
+  {
+    "dispName": "Heroic Argus the Unmaker",
+    "name": "argus",
+    "model": {
+      "hc_argus_the_unmaker": 1.0
     }
   }
 ]

@@ -1,0 +1,3 @@
+﻿max_time=90
+fight_style=patchwerk
+raid_events+=/adds,count=1,first=30,cooldown=60,duration=20
