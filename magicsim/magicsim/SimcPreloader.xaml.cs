@@ -53,6 +53,8 @@ namespace magicsim
         {
             var simcData = (SimcPreloaderData)sender;
             var window = new CustomizationWindow();
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
             ((CustomizationData)window.DataContext).LoadProfilePath("characters/" + simcData.charName + ".simc");
             App.Current.MainWindow = window;
             this.Close();

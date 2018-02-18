@@ -205,13 +205,18 @@ namespace magicsim
                 {
                     simProfile += "max_time=" + time + "\r\n";
                 }
-                if (Directory.EnumerateFiles("adaptiveTemplates").Contains(sim + ".simc"))
+                if (Directory.EnumerateFiles("adaptiveTemplates").Contains("adaptiveTemplates" + System.IO.Path.DirectorySeparatorChar + sim + ".simc"))
                 {
                     simProfile += File.ReadAllText("adaptiveTemplates" + System.IO.Path.DirectorySeparatorChar + sim + ".simc");
                 } else
                 {
                     MessageBox.Show(String.Format("Couldn't find template \"{0}\" requested. Sim results will be skewed.", sim), "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    return;
                 }
+
+                var filePrefix = time != null ? "results" + System.IO.Path.DirectorySeparatorChar + guid + System.IO.Path.DirectorySeparatorChar + time + "_" + sim + "." 
+                    : "results" + System.IO.Path.DirectorySeparatorChar + guid + System.IO.Path.DirectorySeparatorChar + sim + ".";
+
                 if (context.DisableStatWeights)
                 {
                     simProfile += "calculate_scale_factors=0\r\n";
@@ -264,16 +269,15 @@ namespace magicsim
                             reforge_stat += ",versatility";
                         }
                     }
-                    simProfile += "reforge_plot_stat=" + reforge_stat + "\r\nreforge_plot_amount=" + context.ReforgeAmount + "\r\nreforge_plot_step=" + context.ReforgeStepSize + "\r\n";
+                    simProfile += "reforge_plot_stat=" + reforge_stat + "\r\nreforge_plot_amount=" + context.ReforgeAmount + "\r\nreforge_plot_step=" + context.ReforgeStepSize + "\r\nreforge_plot_output_file=" + filePrefix + "csv\r\n";
                 }
-
-                var filePrefix = "results/" + guid + "/" + time + "_" + sim + ".";
+                
                 simProfile += "json2=" + filePrefix + "json\r\nhtml=" + filePrefix + "html\r\n";
                 simList.Add(simProfile);
             });
             foreach (var sim in selectedModel.model.Keys)
             {
-                if (selectedModel.timeModel != null)
+                if (selectedModel.timeModel.Count != 0)
                 {
                     foreach (var time in selectedModel.timeModel.Keys)
                     {

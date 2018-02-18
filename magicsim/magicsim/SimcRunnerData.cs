@@ -93,7 +93,7 @@ namespace magicsim
                 Label = "Running Simc Profiles";
                 ThreadPool.QueueUserWorkItem((_) =>
                 {
-                    var filenameRegex = new Regex("json2=results/([^/]+/[^/]+).json");
+                    var filenameRegex = new Regex(String.Format("json2=results\\{0}([^\\{0}]+\\{0}[^\\{0}]+).json", Path.DirectorySeparatorChar));
                     while (true)
                     {
                         var profile = "";
@@ -107,22 +107,22 @@ namespace magicsim
                             topHandle++;
                         }
                         var fileName = filenameRegex.Match(profile).Groups[1].Value;
-                        guid = fileName.Split('/')[0];
-                        if(!Directory.Exists("sims/" + guid))
+                        guid = fileName.Split(Path.DirectorySeparatorChar)[0];
+                        if(!Directory.Exists("sims" + Path.DirectorySeparatorChar + guid))
                         {
-                            Directory.CreateDirectory("sims/" + guid);
+                            Directory.CreateDirectory("sims" + Path.DirectorySeparatorChar + guid);
                         }
-                        if (!Directory.Exists("results/"))
+                        if (!Directory.Exists("results" + Path.DirectorySeparatorChar))
                         {
-                            Directory.CreateDirectory("results/");
+                            Directory.CreateDirectory("results" + Path.DirectorySeparatorChar);
                         }
-                        if (!Directory.Exists("results/" + guid))
+                        if (!Directory.Exists("results" + Path.DirectorySeparatorChar + guid))
                         {
-                            Directory.CreateDirectory("results/" + guid);
+                            Directory.CreateDirectory("results" + Path.DirectorySeparatorChar + guid);
                         }
 
-                        File.WriteAllText("sims/" + fileName + ".simc", profile);
-                        if (simc.RunSim("sims/" + fileName + ".simc"))
+                        File.WriteAllText("sims" + Path.DirectorySeparatorChar + fileName + ".simc", profile);
+                        if (simc.RunSim("sims" + Path.DirectorySeparatorChar + fileName + ".simc"))
                         {
                             Completed++;
                             App.Current.Dispatcher.Invoke(() =>

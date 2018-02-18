@@ -221,10 +221,10 @@ namespace magicsim
                 var fight = result.Item2.Substring(splitIndex + 1).Split('.')[0];
                 if(model.model.ContainsKey(fight))
                 {
-                    if (model.timeModel == null || (model.timeModel != null && model.timeModel.ContainsKey(time)))
+                    if (model.timeModel.Count == 0 || model.timeModel.ContainsKey(time))
                     {
                         double modelWeight = model.model[fight];
-                        double timeWeight = model.timeModel != null ? model.timeModel[time]: 1.0;
+                        double timeWeight = model.timeModel.Count != 0 ? model.timeModel[time]: 1.0;
                         result.Item1.sim.players.ForEach((player) =>
                         {
                             double dps = player.collected_data.dps.mean;
