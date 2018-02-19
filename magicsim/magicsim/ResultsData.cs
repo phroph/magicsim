@@ -214,6 +214,11 @@ namespace magicsim
             });
         }
 
+        public void SaveCSVs(string guid)
+        {
+
+        }
+
         public void ProcessCSVs(Model model, string guid)
         {
             _reforgeResults.ForEach((reforge) =>
@@ -295,6 +300,7 @@ namespace magicsim
                     }
                 }
             });
+            SaveCSVs(guid);
         }
 
         public void MergeResults(Model model, string guid)

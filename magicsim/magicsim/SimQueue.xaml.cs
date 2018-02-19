@@ -207,7 +207,7 @@ namespace magicsim
                 }
                 if (Directory.EnumerateFiles("adaptiveTemplates").Contains("adaptiveTemplates" + System.IO.Path.DirectorySeparatorChar + sim + ".simc"))
                 {
-                    simProfile += File.ReadAllText("adaptiveTemplates" + System.IO.Path.DirectorySeparatorChar + sim + ".simc");
+                    simProfile += File.ReadAllText("adaptiveTemplates" + System.IO.Path.DirectorySeparatorChar + sim + ".simc") + "\r\n";
                 } else
                 {
                     MessageBox.Show(String.Format("Couldn't find template \"{0}\" requested. Sim results will be skewed.", sim), "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);

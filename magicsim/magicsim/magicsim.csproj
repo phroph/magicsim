@@ -37,6 +37,12 @@
     <Reference Include="AutoUpdater.NET, Version=1.4.6.0, Culture=neutral, PublicKeyToken=942f95247e354701, processorArchitecture=MSIL">
       <HintPath>..\packages\Autoupdater.NET.Official.1.4.6\lib\net452\AutoUpdater.NET.dll</HintPath>
     </Reference>
+    <Reference Include="HelixToolkit, Version=1.1.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+      <HintPath>..\packages\HelixToolkit.1.1.0\lib\portable-net45+win8+wpa81+wp8\HelixToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="HelixToolkit.Wpf, Version=1.1.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+      <HintPath>..\packages\HelixToolkit.Wpf.1.1.0\lib\net45\HelixToolkit.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -62,6 +68,7 @@
     </ApplicationDefinition>
     <Compile Include="Character.cs" />
     <Compile Include="CustomizationData.cs" />
+    <Compile Include="PlayerReforge.cs" />
     <Compile Include="PlayerResult.cs" />
     <Compile Include="ResultsData.cs" />
     <Compile Include="ResultLoader.xaml.cs">
