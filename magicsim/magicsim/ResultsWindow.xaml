@@ -7,7 +7,7 @@
         xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
         mc:Ignorable="d"
         Background="WhiteSmoke"
-        Title="magicsim" Height="320.715" Width="410.224"
+        Title="magicsim" Height="350.715" Width="410.224"
         ResizeMode="NoResize">
     <Window.Resources>
         <local:ResultsData x:Key="resultData"/>
@@ -56,7 +56,7 @@
                         <Label Content="Pawn String: " FontSize="10"/>
                         <TextBox Background="GhostWhite" IsReadOnly="True" VerticalAlignment="Center" FontSize="10" Text="{Binding Path=PawnString}" HorizontalScrollBarVisibility="Visible" Height="35" HorizontalAlignment="Left" Width="350" Padding="0,0,8,0"/>
                     </StackPanel>
-                    <Button Content="Done" HorizontalAlignment="Left" Margin="154,243,0,0" VerticalAlignment="Top" Click="Button_Click" Width="75"/>
+                    <Button Content="Done" HorizontalAlignment="Left" Margin="154,266,0,0" VerticalAlignment="Top" Click="Button_Click" Width="75"/>
                     <Label Content="{Binding Path=LabelString}" HorizontalAlignment="Left" Margin="24,-4,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
