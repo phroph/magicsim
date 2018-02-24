@@ -60,22 +60,28 @@
                     <Label Content="{Binding Path=LabelString}" HorizontalAlignment="Left" Margin="24,-4,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
-            <TabItem Name="Reforge" Header="Reforge Results" IsEnabled="False">
+            <TabItem Name="Reforge" Header="Reforge Results" IsEnabled="{Binding Path=HasReforge}">
                 <Grid Background="#FFE5E5E5">
-                    <StackPanel Orientation="Vertical">
-                        <!--
-                        <h:HelixViewport3D ZoomExtentsWhenLoaded="True" ShowCoordinateSystem="True">
-                            <h:HelixViewport3D.Camera>
-                                <PerspectiveCamera LookDirection="5,10,-10" UpDirection="0,0,1"/>
-                            </h:HelixViewport3D.Camera>
-                            <ModelVisual3D Content="{Binding Path=Lights}"/>
-                            <local:SurfacePlotVisual3D Points="{Binding Path=Data}" ColorValues="{Binding Path=ColorValues}" SurfaceBrush="{Binding Path=SurfaceBrush}"/>
-                        </h:HelixViewport3D>
-                        -->
-                        <StackPanel Orientation="Horizontal">
-                            
-                        </StackPanel>
-                    </StackPanel>
+                    <TabControl ItemsSource="{Binding Path=MergedMeshedReforges}" Height="Auto">
+                        <TabControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=PlayerName}"/>
+                            </DataTemplate>
+                        </TabControl.ItemTemplate>
+                        <TabControl.ContentTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <h:HelixViewport3D Height="200" ZoomExtentsWhenLoaded="True">
+                                    <h:DefaultLights/>
+                                    <local:ReforgePlot/>
+                                </h:HelixViewport3D>
+                                <StackPanel Orientation="Horizontal">
+
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                        </TabControl.ContentTemplate>
+                    </TabControl>
                 </Grid>
             </TabItem>
         </TabControl>

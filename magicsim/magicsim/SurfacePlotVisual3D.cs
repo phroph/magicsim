@@ -16,6 +16,10 @@ using HelixToolkit.Wpf;
 
 namespace magicsim
 {
+    /// <summary>
+    /// As noted in the copyright, this file is largely copied from samples taken from the Helix Toolkit website. Adjustments were made to fit our domain but it was largely used as-was.
+    /// Helix Toolkit samples were published under MIT License, as is this tool.
+    /// </summary>
     public class SurfacePlotVisual3D : ModelVisual3D
     {
         public static readonly DependencyProperty PointsProperty =
@@ -29,19 +33,15 @@ namespace magicsim
         public static readonly DependencyProperty SurfaceBrushProperty =
             DependencyProperty.Register("SurfaceBrush", typeof(Brush), typeof(SurfacePlotVisual3D),
                                         new UIPropertyMetadata(null, ModelChanged));
-
-        private readonly ModelVisual3D visualChild;
+        
 
         public SurfacePlotVisual3D()
         {
-            IntervalX = 1;
-            IntervalY = 1;
-            IntervalZ = 0.25;
+            IntervalX = 0.1;
+            IntervalY = 0.1;
+            IntervalZ = 1000;
             FontSize = 0.06;
             LineThickness = 0.01;
-
-            visualChild = new ModelVisual3D();
-            Children.Add(visualChild);
         }
 
         /// <summary>
@@ -50,7 +50,13 @@ namespace magicsim
         public Point3D[,] Points
         {
             get { return (Point3D[,])GetValue(PointsProperty); }
-            set { SetValue(PointsProperty, value); }
+            set
+            {
+                if (GetValue(PointsProperty) != value)
+                {
+                    SetValue(PointsProperty, value);
+                }
+            }
         }
 
         /// <summary>
@@ -62,7 +68,12 @@ namespace magicsim
         public double[,] ColorValues
         {
             get { return (double[,])GetValue(ColorValuesProperty); }
-            set { SetValue(ColorValuesProperty, value); }
+            set {
+                if (GetValue(ColorValuesProperty) != value)
+                {
+                    SetValue(ColorValuesProperty, value);
+                }
+            }
         }
 
         /// <summary>
@@ -71,7 +82,12 @@ namespace magicsim
         public Brush SurfaceBrush
         {
             get { return (Brush)GetValue(SurfaceBrushProperty); }
-            set { SetValue(SurfaceBrushProperty, value); }
+            set {
+                if (GetValue(SurfaceBrushProperty) != value)
+                {
+                    SetValue(SurfaceBrushProperty, value);
+                }
+            }
         }
 
 
@@ -84,18 +100,25 @@ namespace magicsim
 
         private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((SurfacePlotVisual3D)d).UpdateModel();
+            if ((double[,])d.GetValue(ColorValuesProperty) != null && (Brush)d.GetValue(SurfaceBrushProperty) != null
+                && (Point3D[,])d.GetValue(PointsProperty) != null)
+            {
+                ((SurfacePlotVisual3D)d).UpdateModel();
+            }
         }
 
         private void UpdateModel()
         {
-            visualChild.Content = CreateModel();
+            this.Content = CreateModel();
         }
 
         private Model3D CreateModel()
         {
-            var plotModel = new Model3DGroup();
 
+            var viewport = this.GetViewport3D();
+            var plotModel = new Model3DGroup();
+            var Children = plotModel.Children;
+            plotModel.Children = null;
             int rows = Points.GetUpperBound(0) + 1;
             int columns = Points.GetUpperBound(1) + 1;
             double minX = double.MaxValue;
@@ -107,6 +130,7 @@ namespace magicsim
             double minColorValue = double.MaxValue;
             double maxColorValue = double.MinValue;
             for (int i = 0; i < rows; i++)
+            {
                 for (int j = 0; j < columns; j++)
                 {
                     double x = Points[i, j].X;
@@ -124,16 +148,28 @@ namespace magicsim
                         minColorValue = Math.Min(minColorValue, ColorValues[i, j]);
                     }
                 }
+            }
+
+            IntervalX = (maxX - minX) / 5.0;
+            IntervalY = (maxY - minY) / 5.0;
+            IntervalZ = (maxZ - minZ) / 5.0;
+            FontSize = 0.01;
+            LineThickness = 0.005;
 
             // make color value 0 at texture coordinate 0.5
             if (Math.Abs(minColorValue) < Math.Abs(maxColorValue))
+            {
                 minColorValue = -maxColorValue;
+            }
             else
+            {
                 maxColorValue = -minColorValue;
+            }
 
             // set the texture coordinates by z-value or ColorValue
             var texcoords = new Point[rows, columns];
             for (int i = 0; i < rows; i++)
+            {
                 for (int j = 0; j < columns; j++)
                 {
                     double u = (Points[i, j].Z - minZ) / (maxZ - minZ);
@@ -141,9 +177,30 @@ namespace magicsim
                         u = (ColorValues[i, j] - minColorValue) / (maxColorValue - minColorValue);
                     texcoords[i, j] = new Point(u, u);
                 }
+            }
 
             var surfaceMeshBuilder = new MeshBuilder();
-            surfaceMeshBuilder.AddRectangularMesh(Points, texcoords);
+            if (rows == 1 || columns == 1)
+            {
+                var pointList = new List<Point3D>();
+                var texturePoints = new List<double>();
+                var diameters = new List<double>();
+                for(int i = 0; i < rows; i++)
+                {
+                    for(int j = 0; j < columns; j++)
+                    {
+                        pointList.Add(Points[i, j]);
+                        texturePoints.Add(texcoords[i, j].X);
+                        diameters.Add(LineThickness*5.0);
+                    }
+                }
+                surfaceMeshBuilder.AddTube(pointList, texturePoints.ToArray(), diameters.ToArray(), 9, false, true, true);
+            }
+            else
+            {
+                surfaceMeshBuilder.AddRectangularMesh(Points, texcoords, false, true);
+
+            }
 
             var surfaceModel = new GeometryModel3D(surfaceMeshBuilder.ToMesh(),
                                                    MaterialHelper.CreateMaterial(SurfaceBrush, null, null, 1, 0));
@@ -154,64 +211,57 @@ namespace magicsim
             {
                 double j = (x - minX) / (maxX - minX) * (columns - 1);
                 var path = new List<Point3D> { new Point3D(x, minY, minZ) };
-                for (int i = 0; i < rows; i++)
-                {
-                    path.Add(BilinearInterpolation(Points, i, j));
-                }
                 path.Add(new Point3D(x, maxY, minZ));
 
-                axesMeshBuilder.AddTube(path, LineThickness, 9, false);
-                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(x.ToString(), Brushes.Black, true, FontSize,
-                                                                           new Point3D(x, minY - FontSize * 2.5, minZ),
+                axesMeshBuilder.AddTube(path, LineThickness, 9, false, true, true);
+                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(x.ToString("F4"), Brushes.Black, true, FontSize,
+                                                                           new Point3D(x, minY - FontSize * 6, minZ),
                                                                            new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
-                plotModel.Children.Add(label);
+                label.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), 90.0), new Point3D(label.Bounds.SizeX/2 + label.Bounds.Location.X, label.Bounds.SizeY / 2 + label.Bounds.Location.Y, 0.0));
+                Children.Add(label);
             }
 
             {
                 GeometryModel3D label = TextCreator.CreateTextLabelModel3D("X-axis", Brushes.Black, true, FontSize,
                                                                            new Point3D((minX + maxX) * 0.5,
-                                                                                       minY - FontSize * 6, minZ),
+                                                                                       minY - FontSize * 9, minZ),
                                                                            new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
-                plotModel.Children.Add(label);
+                Children.Add(label);
             }
 
             for (double y = minY; y <= maxY; y += IntervalY)
             {
                 double i = (y - minY) / (maxY - minY) * (rows - 1);
                 var path = new List<Point3D> { new Point3D(minX, y, minZ) };
-                for (int j = 0; j < columns; j++)
-                {
-                    path.Add(BilinearInterpolation(Points, i, j));
-                }
                 path.Add(new Point3D(maxX, y, minZ));
 
-                axesMeshBuilder.AddTube(path, LineThickness, 9, false);
-                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(y.ToString(), Brushes.Black, true, FontSize,
-                                                                           new Point3D(minX - FontSize * 3, y, minZ),
+                axesMeshBuilder.AddTube(path, LineThickness, 9, false, true, true);
+                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(y.ToString("F4"), Brushes.Black, true, FontSize,
+                                                                           new Point3D(minX - FontSize * 6, y, minZ),
                                                                            new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
-                plotModel.Children.Add(label);
+                Children.Add(label);
             }
             {
                 GeometryModel3D label = TextCreator.CreateTextLabelModel3D("Y-axis", Brushes.Black, true, FontSize,
                                                                            new Point3D(minX - FontSize * 10,
                                                                                        (minY + maxY) * 0.5, minZ),
                                                                            new Vector3D(0, 1, 0), new Vector3D(-1, 0, 0));
-                plotModel.Children.Add(label);
+                Children.Add(label);
             }
-            double z0 = (int)(minZ / IntervalZ) * IntervalZ;
-            for (double z = z0; z <= maxZ + double.Epsilon; z += IntervalZ)
+            //double z0 = (int)(minZ / IntervalZ) * IntervalZ;
+            for (double z = minZ; z <= maxZ + double.Epsilon; z += IntervalZ)
             {
-                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(z.ToString(), Brushes.Black, true, FontSize,
+                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(z.ToString("F4"), Brushes.Black, true, FontSize,
                                                                            new Point3D(minX - FontSize * 3, maxY, z),
                                                                            new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
-                plotModel.Children.Add(label);
+                Children.Add(label);
             }
             {
                 GeometryModel3D label = TextCreator.CreateTextLabelModel3D("Z-axis", Brushes.Black, true, FontSize,
                                                                            new Point3D(minX - FontSize * 10, maxY,
                                                                                        (minZ + maxZ) * 0.5),
                                                                            new Vector3D(0, 0, 1), new Vector3D(1, 0, 0));
-                plotModel.Children.Add(label);
+                Children.Add(label);
             }
 
 
@@ -220,9 +270,10 @@ namespace magicsim
 
             var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh(), Materials.Black);
 
-            plotModel.Children.Add(surfaceModel);
-            plotModel.Children.Add(axesModel);
+            Children.Add(surfaceModel);
+            Children.Add(axesModel);
 
+            plotModel.Children = Children;
             return plotModel;
         }
 
@@ -230,8 +281,8 @@ namespace magicsim
         {
             int n = p.GetUpperBound(0);
             int m = p.GetUpperBound(1);
-            var i0 = (int)i;
-            var j0 = (int)j;
+            var i0 = (long)i;
+            var j0 = (long)j;
             if (i0 + 1 >= n) i0 = n - 2;
             if (j0 + 1 >= m) j0 = m - 2;
 
@@ -239,10 +290,29 @@ namespace magicsim
             if (j < 0) j = 0;
             double u = i - i0;
             double v = j - j0;
-            Vector3D v00 = p[i0, j0].ToVector3D();
-            Vector3D v01 = p[i0, j0 + 1].ToVector3D();
-            Vector3D v10 = p[i0 + 1, j0].ToVector3D();
-            Vector3D v11 = p[i0 + 1, j0 + 1].ToVector3D();
+            Vector3D v00 = 
+                i0>=0 && j0>=0 ? p[i0, j0].ToVector3D() :
+                j0 == -2 && i0 > 0 ? p[i0, 0].ToVector3D() :
+                j0 == -2 ? p[0, 0].ToVector3D() :
+                i0 == -2 && j0 > 0 ? p[0, j0].ToVector3D() :
+                i0 == -2 ? p[0, 0].ToVector3D() :
+                i0 >= 0 ? p[i0, 0].ToVector3D() :
+                j0 >= 0 ? p[0, j0].ToVector3D() :
+                p[0,0].ToVector3D();
+            Vector3D v01 =
+                j0 == -2 && i0 > 0 ? p[i0, 0].ToVector3D() :
+                j0 == -2 ? p[0, 0].ToVector3D() :
+                i0 >= 0 ? p[i0, j0 + 1].ToVector3D() :
+                p[0, j0 + 1].ToVector3D();
+            Vector3D v10 =
+                i0 == -2 && j0 > 0 ? p[0, j0].ToVector3D() :
+                i0 == -2 ? p[0, 0].ToVector3D() :
+                j0 >= 0 ? p[i0 + 1, j0].ToVector3D() :
+                p[i0 + 1, 0].ToVector3D();
+            Vector3D v11 =
+                j0 == -2 ? p[i0 + 1, 0].ToVector3D() :
+                i0 == -2 ? p[0, j0 + 1].ToVector3D() :
+                p[i0 + 1, j0 + 1].ToVector3D();
             Vector3D v0 = v00 * (1 - u) + v10 * u;
             Vector3D v1 = v01 * (1 - u) + v11 * u;
             return (v0 * (1 - v) + v1 * v).ToPoint3D();

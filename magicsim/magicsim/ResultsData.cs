@@ -124,7 +124,44 @@ namespace magicsim
         private Dictionary<string, PlayerReforge> reforges;
         private Dictionary<string, Player> players;
 
-        public ObservableCollection<PlayerReforge> MergedReforges;
+        private ObservableCollection<ViewerReadyPlayerReforge> _mergedMeshedReforges;
+        public ObservableCollection<ViewerReadyPlayerReforge> MergedMeshedReforges {
+            get
+            {
+                return _mergedMeshedReforges;
+            }
+            set
+            {
+                if(_mergedMeshedReforges != value)
+                {
+                    try
+                    {
+                        _mergedMeshedReforges.CollectionChanged -= _mergedMeshedReforges_CollectionChanged;
+                    }
+                    catch(Exception)
+                    {
+                        // In case of catastrophy.
+                    }
+                    _mergedMeshedReforges = value;
+                    _mergedMeshedReforges.CollectionChanged += _mergedMeshedReforges_CollectionChanged;
+                    OnPropertyChanged("MergedMeshedReforges");
+                    // The sole reason we go through this arduous process:
+                    OnPropertyChanged("HasReforge");
+                }
+            }
+        }
+
+        private void _mergedMeshedReforges_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged("HasReforge");
+        }
+
+        public bool HasReforge {
+            get
+            {
+                return MergedMeshedReforges.Count>0;
+            }
+        }
 
         private string _modelName;
         public string ModelName
@@ -169,8 +206,6 @@ namespace magicsim
                 }
             }
         }
-
-        public ObservableCollection<Tuple<string,Point3D[,],double[,]>> NamedDataColorValueSets { get; set; }
 
         public double[,] ColorValues { get; set; }
 
@@ -220,7 +255,6 @@ namespace magicsim
             _results = new List<Tuple<SimResult,string>>();
             _reforgeResults = new List<Tuple<string, string>>();
             MergedResults = new ObservableCollection<PlayerResult>();
-            MergedReforges = new ObservableCollection<PlayerReforge>();
             playerCritValues = new Dictionary<string, double>();
             playerDpsValues = new Dictionary<string, double>();
             playerDamageValues = new Dictionary<string, double>();
@@ -233,7 +267,7 @@ namespace magicsim
             playerClasses = new Dictionary<string, string>();
             reforges = new Dictionary<string, PlayerReforge>();
             players = new Dictionary<string, Player>();
-            NamedDataColorValueSets = new ObservableCollection<Tuple<string, Point3D[,], double[,]>>();
+            MergedMeshedReforges = new ObservableCollection<ViewerReadyPlayerReforge>();
         }
 
         public string GetLabelString()
@@ -284,6 +318,8 @@ namespace magicsim
             List<Point3D> unsearchedSpace = points.OrderBy(x => x.X).ThenBy(x => x.Y).ToList();
             List<Point3D> unsearchedSubspace = null;
             Point3D? previous = null;
+            var max = points.Max(p => p.Z);
+            var min = points.Min(p => p.Z);
             while(unsearchedSpace.Count > 0)
             {
                 Point3D cursor = new Point3D();
@@ -306,14 +342,23 @@ namespace magicsim
                     try
                     {
                         // Filter out all the nodes that we believe are in a different row. IE: they are farther to the x-pos direction than they are to the y-pos direction. And take the one with the smallest Y distance to us (closest-in-row).
+                        var subcalculation1 = unsearchedSubspace.Select(x => new Tuple<double,double>(x.Y - previous.Value.Y, x.X - previous.Value.X));
                         cursor = unsearchedSubspace.Where(x => x.Y - previous.Value.Y > x.X - previous.Value.X).OrderBy(x => x.Y - previous.Value.Y).First();
                         // Cut out all nodes that are disencluded from the row (since cursor was the closest we found valid, anything closer than cursor is no longer valid for the row).
                         // We also skip cursor obviously because it will be added the to searched space at the end of the loop.
                         // Note: We don't cut out all nodes that were too far away because our row may 'drift' in a direction over time and we don't want to filter out nodes too aggresively that may actually be in our row.
                         // We can optimize this heuristic in the future.
-                        unsearchedSubspace = unsearchedSubspace.SkipWhile(x => !x.Equals(cursor)).Skip(1).ToList();
+                        try
+                        {
+                            unsearchedSubspace = unsearchedSubspace.SkipWhile(x => !x.Equals(cursor)).Skip(1).ToList();
+                        }
+                        catch (Exception)
+                        {
+                            // We don't care if we fail here, just means subspace is empty.
+                            unsearchedSubspace.Clear();
+                        }
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
                         // Couldn't find a valid entry in the subspace. Null out so we start a new row.
                         previous = null;
@@ -331,6 +376,7 @@ namespace magicsim
             // Convert associativeMatrix into a multidimensional array. Currently a naive implementation assuming they are front-lined up and get back-padded.
             var columns = associativeMatrix.Max(x => x.Count);
             var rows = associativeMatrix.Count;
+
             var matrix = new Point3D[rows, columns];
             for(int i=0; i<rows; i++)
             {
@@ -344,6 +390,19 @@ namespace magicsim
                     {
                         matrix[i, j] = row[j];
                     }
+                }
+            }
+
+            //2000000000000
+
+            // Int.parse(str[0])*10*(str.length)
+            // Scale the z output
+            var scaleFactor = int.Parse(min.ToString().Substring(0, 1)) * Math.Pow(10, min.ToString().Length-1);
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    matrix[i, j].Z /= scaleFactor;
                 }
             }
             return matrix;
@@ -362,25 +421,25 @@ namespace magicsim
                 bool haste = false, crit = false, mastery = false, vers = false;
                 int total = gear.crit + gear.haste + gear.mastery + gear.vers;
                 double x = 0, y = 0, z = reforgeData.Dps[point];
-                if(point.Crit != 0)
+                if(point.Crit != int.MinValue)
                 {
                     stats++;;
                     point.Crit += gear.crit;
                     crit = true;
                 }
-                if (point.Haste != 0)
+                if (point.Haste != int.MinValue)
                 {
                     stats++;
                     point.Haste += gear.haste;
                     haste = true;
                 }
-                if (point.Mastery != 0)
+                if (point.Mastery != int.MinValue)
                 {
                     stats++;
                     point.Mastery += gear.mastery;
                     mastery = true;
                 }
-                if (point.Vers != 0)
+                if (point.Vers != int.MinValue)
                 {
                     stats++;
                     point.Vers += gear.vers;
@@ -459,7 +518,7 @@ namespace magicsim
         public double[,] FindGradientY(Point3D[,] data)
         {
             int n = data.GetUpperBound(0) + 1;
-            int m = data.GetUpperBound(0) + 1;
+            int m = data.GetUpperBound(1) + 1;
             var K = new double[n, m];
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < m; j++)
@@ -484,7 +543,57 @@ namespace magicsim
 
         public void SaveCSVs(string guid)
         {
+            //Serializing PlayerReforge is tricky... Player reforge needs to be broken down into two dictionaries keyed by a common key. That means two lists will be stored and correlated.
+            //Basically restructuring the data structure of the form string -> ... -> string -> primitive that can be reversed.
 
+            var dpsPart = new Dictionary<string, Dictionary<string,double>>();
+            var dpsErrorPart = new Dictionary<string, Dictionary<string, double>>();
+            var reforgeDefinitionPart = new Dictionary<string, Dictionary<string, Dictionary<string,double>>>();
+            reforges.Keys.ToList().ForEach((name) =>
+            {
+                var reforge = reforges[name];
+                var dpsSubpart = new Dictionary<string, double>();
+                var dpsErrorSubpart = new Dictionary<string, double>();
+                var reforgeDefinitionSubpart = new Dictionary<string, Dictionary<string, double>>();
+                dpsPart[name] = dpsSubpart;
+                dpsErrorPart[name] = dpsErrorSubpart;
+                reforgeDefinitionPart[name] = reforgeDefinitionSubpart;
+
+                for (int i = 0; i < reforge.Dps.Keys.Count; i++)
+                {
+                    var reforgePoint = reforge.Dps.Keys.ElementAt(i);
+                    // Shared associative key.
+                    var dps = reforge.Dps[reforgePoint];
+                    var error = reforge.DpsError[reforgePoint];
+                    var reforgeSubdictionary = new Dictionary<string, double>();
+                    var subpartKey = i.ToString();
+                    reforgeSubdictionary["Crit"] = reforgePoint.Crit;
+                    reforgeSubdictionary["Haste"] = reforgePoint.Haste;
+                    reforgeSubdictionary["Mastery"] = reforgePoint.Mastery;
+                    reforgeSubdictionary["Vers"] = reforgePoint.Vers;
+                    dpsSubpart[subpartKey] = dps;
+                    dpsErrorSubpart[subpartKey] = error;
+                    reforgeDefinitionSubpart[subpartKey] = reforgeSubdictionary;
+                }
+            }); 
+            var dpsData = new Dictionary<string, Dictionary<string, Dictionary<string,double>>>();
+            dpsData["Dps"] = dpsPart;
+            dpsData["DpsError"] = dpsErrorPart;
+            var reforgeDictionary = new Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string,double>>>>();
+            reforgeDictionary["DpsData"] = dpsData;
+            reforgeDictionary["ReforgeDefinitions"] = reforgeDefinitionPart;
+
+            var reforgeJson = JsonConvert.SerializeObject(reforgeDictionary);
+            var playerJson = JsonConvert.SerializeObject(players);
+            if (!Directory.Exists("savedResults"))
+            {
+                Directory.CreateDirectory("savedResults");
+            }
+
+            string dir = "savedResults" + Path.DirectorySeparatorChar + Tag;
+            
+            File.WriteAllText(dir + Path.DirectorySeparatorChar + "ReforgeDictionary.json", reforgeJson);
+            File.WriteAllText(dir + Path.DirectorySeparatorChar + "PlayerDictionary.json", playerJson);
         }
 
         public void ProcessCSVs(Model model, string guid)
@@ -578,6 +687,21 @@ namespace magicsim
                 }
             });
             SaveCSVs(guid);
+            Generate3DCollateral();
+        }
+
+        private void Generate3DCollateral()
+        {
+            foreach (var playerName in reforges.Keys)
+            {
+                var playerReforge = reforges[playerName];
+                var dataMesh = CreateDataArray(playerReforge);
+                GearResults gear = players[playerName].GetStats();
+                var lights = new Model3DGroup();
+                lights.Children.Add(new AmbientLight(Colors.White));
+                var meshReforge = new ViewerReadyPlayerReforge(playerName, gear, dataMesh, FindGradientY(dataMesh), BrushHelper.CreateGradientBrush(Colors.Red, Colors.White, Colors.Blue), lights);
+                MergedMeshedReforges.Add(meshReforge);
+            }
         }
 
         public void MergeResults(Model model, string guid)
@@ -601,8 +725,8 @@ namespace magicsim
             playerMasteryValues.Clear();
             playerVersValues.Clear();
             double minDps = double.MaxValue;
-            ModelName = model.name.UppercaseWords();
-            ModelNameShort = model.dispName;
+            ModelName = model.dispName.UppercaseWords();
+            ModelNameShort = model.name;
             _results.ToList().ForEach((result) =>
             {
                 var splitIndex = result.Item2.IndexOf('_');
@@ -847,6 +971,58 @@ namespace magicsim
                 {
                     SelectedPlayer = MergedResults[0];
                 }
+            }
+            LoadCSVs(dir);
+        }
+
+        private void LoadCSVs(string dir)
+        {
+            if (!Directory.Exists("savedResults"))
+            {
+                return;
+            }
+            if (Directory.Exists(dir))
+            {
+                if (!File.Exists(dir + Path.DirectorySeparatorChar + "PlayerDictionary.json"))
+                {
+                    return;
+                }
+
+                var playerJson = File.ReadAllText(dir + Path.DirectorySeparatorChar + "PlayerDictionary.json");
+                players = JsonConvert.DeserializeObject<Dictionary<string, Player>>(playerJson);
+
+                //Deserializing reforge dictionary is not fun as it needs to be mostly inverted and have some keys reformed from inverted data.
+                var reforgeJson = File.ReadAllText(dir + Path.DirectorySeparatorChar + "ReforgeDictionary.json");
+                var reforgeDictionary = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, double>>>>>(reforgeJson);
+                // Lookups: playername -> reforgename (index) -> value
+                var reforgeDpsLookup = reforgeDictionary["DpsData"]["Dps"];
+                var reforgeDpsErrorLookup = reforgeDictionary["DpsData"]["DpsError"];
+                var playerReforgeLookup = reforgeDictionary["ReforgeDefinitions"].Select((playerKVP) =>
+                {
+                    return new KeyValuePair<string, Dictionary<string, ReforgePoint>>(playerKVP.Key, playerKVP.Value.Select((reforgeKVP) =>
+                     {
+                         var reforgeData = reforgeKVP.Value;
+                         var reforgePoint = new ReforgePoint();
+                         reforgePoint.Crit = (int)reforgeData["Crit"];
+                         reforgePoint.Haste = (int)reforgeData["Haste"];
+                         reforgePoint.Mastery = (int)reforgeData["Mastery"];
+                         reforgePoint.Vers = (int)reforgeData["Vers"];
+                         return new KeyValuePair<string, ReforgePoint>(reforgeKVP.Key, reforgePoint);
+                     }).ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+                }).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                reforges = playerReforgeLookup.Select((playerKVP) =>
+                {
+                    var reforge = new PlayerReforge(playerKVP.Key);
+                    playerKVP.Value.Keys.ToList().ForEach((reforgeIndex) =>
+                    {
+                        var reforgePoint = playerReforgeLookup[playerKVP.Key][reforgeIndex];
+                        reforge.DpsError[reforgePoint] = reforgeDpsErrorLookup[playerKVP.Key][reforgeIndex];
+                        reforge.Dps[reforgePoint] = reforgeDpsLookup[playerKVP.Key][reforgeIndex];
+                    });
+                    return new KeyValuePair<string, PlayerReforge>(playerKVP.Key, reforge);
+                }).ToDictionary(kvp => kvp.Key, kvp => kvp.Value); ;
+                // We want playername -> playerreforge
+                Generate3DCollateral();
             }
         }
     }

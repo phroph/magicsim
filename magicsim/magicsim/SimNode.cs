@@ -110,9 +110,9 @@ namespace magicsim
 
     public class Attribute
     {
-        public int strength;
-        public int agility;
-        public int intellect;
+        public double strength;
+        public double agility;
+        public double intellect;
     }
 
     public class Dps

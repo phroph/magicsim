@@ -8,10 +8,10 @@ namespace magicsim
 {
     public class ReforgePoint
     {
-        public int Crit = 0;
-        public int Haste = 0;
-        public int Vers = 0;
-        public int Mastery = 0;
+        public int Crit = int.MinValue;
+        public int Haste = int.MinValue;
+        public int Vers = int.MinValue;
+        public int Mastery = int.MinValue;
     }
 
     public class ReforgePointEqualityComparer : IEqualityComparer<ReforgePoint>

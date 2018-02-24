@@ -68,8 +68,12 @@
     </ApplicationDefinition>
     <Compile Include="Character.cs" />
     <Compile Include="CustomizationData.cs" />
+    <Compile Include="ViewerReadyPlayerReforge.cs" />
     <Compile Include="PlayerReforge.cs" />
     <Compile Include="PlayerResult.cs" />
+    <Compile Include="ReforgePlot.xaml.cs">
+      <DependentUpon>ReforgePlot.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ResultsData.cs" />
     <Compile Include="ResultLoader.xaml.cs">
       <DependentUpon>ResultLoader.xaml</DependentUpon>
@@ -108,7 +112,12 @@
       <DependentUpon>SimQueue.xaml</DependentUpon>
     </Compile>
     <Compile Include="SimQueueData.cs" />
+    <Compile Include="SurfacePlotVisual3D.cs" />
     <Compile Include="Tag.cs" />
+    <Page Include="ReforgePlot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ResultLoader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
