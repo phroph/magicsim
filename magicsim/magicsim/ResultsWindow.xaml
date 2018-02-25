@@ -71,7 +71,7 @@
                         <TabControl.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
-                                <h:HelixViewport3D Height="200" ZoomExtentsWhenLoaded="True">
+                                <h:HelixViewport3D Height="250" ZoomExtentsWhenLoaded="True">
                                     <h:DefaultLights/>
                                     <local:ReforgePlot/>
                                 </h:HelixViewport3D>

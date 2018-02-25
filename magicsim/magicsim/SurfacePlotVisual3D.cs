@@ -13,6 +13,9 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
+using MIConvexHull;
+using System.Linq;
+using System.Drawing.Drawing2D;
 
 namespace magicsim
 {
@@ -136,6 +139,10 @@ namespace magicsim
                     double x = Points[i, j].X;
                     double y = Points[i, j].Y;
                     double z = Points[i, j].Z;
+                    if(x == 0 && y == 0 && z == 0)
+                    {
+                        continue;
+                    }
                     maxX = Math.Max(maxX, x);
                     maxY = Math.Max(maxY, y);
                     maxZ = Math.Max(maxZ, z);
@@ -191,20 +198,48 @@ namespace magicsim
                     {
                         pointList.Add(Points[i, j]);
                         texturePoints.Add(texcoords[i, j].X);
-                        diameters.Add(LineThickness*5.0);
+                        diameters.Add(LineThickness*4.0);
                     }
                 }
                 surfaceMeshBuilder.AddTube(pointList, texturePoints.ToArray(), diameters.ToArray(), 9, false, true, true);
+                var mesh = surfaceMeshBuilder.ToMesh();
+
+                var surfaceModel = new GeometryModel3D(mesh,
+                                                       MaterialHelper.CreateMaterial(SurfaceBrush, null, null, 1, 0));
+                surfaceModel.BackMaterial = surfaceModel.Material;
+                Children.Add(surfaceModel);
             }
             else
             {
-                surfaceMeshBuilder.AddRectangularMesh(Points, texcoords, false, true);
+                var vertexZMapping = new Dictionary<Vertex, double>();
+                var vertices = new List<Vertex>();
+                for (int i = 0; i < rows; i++)
+                {
+                    for (int j = 0; j < columns; j++)
+                    {
+                        if (Points[i, j].X == 0.0 && Points[i, j].Y == 0.0 && Points[i, j].Z == 0.0)
+                        {
+                            continue;
+                        }
+                        var vertex = new Vertex(Points[i, j].X, Points[i, j].Y);
+                        vertices.Add(vertex);
+                        vertexZMapping[vertex] = Points[i, j].Z;
+                    }
+                }
 
+                var mesh = VoronoiMesh.Create<Vertex, Cell>(vertices);
+
+                foreach (var cell in mesh.Vertices)
+                {
+                    // 3D-ify it.
+                    Children.Add(cell.Visual.CreateModel(new Point3DCollection(cell.Vertices.Select(vertex =>
+                    {
+                        var vertexPoint = vertex.ToPoint();
+                        return new Point3D(vertexPoint.X, vertexPoint.Y, vertexZMapping[vertex]);
+                    })), Color.FromArgb((byte)255,(byte)255,(byte)0,(byte)0)));
+                }
             }
 
-            var surfaceModel = new GeometryModel3D(surfaceMeshBuilder.ToMesh(),
-                                                   MaterialHelper.CreateMaterial(SurfaceBrush, null, null, 1, 0));
-            surfaceModel.BackMaterial = surfaceModel.Material;
 
             var axesMeshBuilder = new MeshBuilder();
             for (double x = minX; x <= maxX; x += IntervalX)
@@ -270,52 +305,10 @@ namespace magicsim
 
             var axesModel = new GeometryModel3D(axesMeshBuilder.ToMesh(), Materials.Black);
 
-            Children.Add(surfaceModel);
             Children.Add(axesModel);
 
             plotModel.Children = Children;
             return plotModel;
-        }
-
-        private static Point3D BilinearInterpolation(Point3D[,] p, double i, double j)
-        {
-            int n = p.GetUpperBound(0);
-            int m = p.GetUpperBound(1);
-            var i0 = (long)i;
-            var j0 = (long)j;
-            if (i0 + 1 >= n) i0 = n - 2;
-            if (j0 + 1 >= m) j0 = m - 2;
-
-            if (i < 0) i = 0;
-            if (j < 0) j = 0;
-            double u = i - i0;
-            double v = j - j0;
-            Vector3D v00 = 
-                i0>=0 && j0>=0 ? p[i0, j0].ToVector3D() :
-                j0 == -2 && i0 > 0 ? p[i0, 0].ToVector3D() :
-                j0 == -2 ? p[0, 0].ToVector3D() :
-                i0 == -2 && j0 > 0 ? p[0, j0].ToVector3D() :
-                i0 == -2 ? p[0, 0].ToVector3D() :
-                i0 >= 0 ? p[i0, 0].ToVector3D() :
-                j0 >= 0 ? p[0, j0].ToVector3D() :
-                p[0,0].ToVector3D();
-            Vector3D v01 =
-                j0 == -2 && i0 > 0 ? p[i0, 0].ToVector3D() :
-                j0 == -2 ? p[0, 0].ToVector3D() :
-                i0 >= 0 ? p[i0, j0 + 1].ToVector3D() :
-                p[0, j0 + 1].ToVector3D();
-            Vector3D v10 =
-                i0 == -2 && j0 > 0 ? p[0, j0].ToVector3D() :
-                i0 == -2 ? p[0, 0].ToVector3D() :
-                j0 >= 0 ? p[i0 + 1, j0].ToVector3D() :
-                p[i0 + 1, 0].ToVector3D();
-            Vector3D v11 =
-                j0 == -2 ? p[i0 + 1, 0].ToVector3D() :
-                i0 == -2 ? p[0, j0 + 1].ToVector3D() :
-                p[i0 + 1, j0 + 1].ToVector3D();
-            Vector3D v0 = v00 * (1 - u) + v10 * u;
-            Vector3D v1 = v01 * (1 - u) + v11 * u;
-            return (v0 * (1 - v) + v1 * v).ToPoint3D();
         }
     }
 }

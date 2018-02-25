@@ -385,18 +385,15 @@ namespace magicsim
                 {
                     if(j >= row.Count)
                     {
-                        matrix[i, j] = new Point3D(0.0,0.0,0.0);
+                        matrix[i, j] = new Point3D(0, 0, 0);
                     } else
                     {
                         matrix[i, j] = row[j];
                     }
                 }
             }
-
-            //2000000000000
-
-            // Int.parse(str[0])*10*(str.length)
-            // Scale the z output
+            
+            // Scale the Z-axis otherwise the graph stretches obnoxiously and is comptuationally expensive to scale.
             var scaleFactor = int.Parse(min.ToString().Substring(0, 1)) * Math.Pow(10, min.ToString().Length-1);
             for (int i = 0; i < rows; i++)
             {
@@ -408,6 +405,19 @@ namespace magicsim
             return matrix;
         }
 
+        public double[,] Transpose(double[,] matrix)
+        {
+            var newMatrix = new double[matrix.GetUpperBound(1), matrix.GetUpperBound(0)];
+            for (int i = 0; i < matrix.GetUpperBound(1); i++)
+            {
+                for (int j = 0; j < matrix.GetUpperBound(0); j++)
+                {
+                    newMatrix[i, j] = matrix[j, i];
+                }
+            }
+            return newMatrix;
+        }
+        
         public Point3D[,] CreateDataArray(PlayerReforge reforgeData)
         {
             // calculate MinX,MaxX, MinY,MaxY
@@ -536,7 +546,14 @@ namespace magicsim
                     double dy = p10.Y - p00.Y;
                     double dz = p10.Z - p00.Z;
 
-                    K[i, j] = dz / dy;
+                    if (dy == 0 || dz == 0)
+                    {
+                        K[i, j] = 0;
+                    }
+                    else
+                    {
+                        K[i, j] = dz / dy;
+                    }
                 }
             return K;
         }
@@ -699,7 +716,7 @@ namespace magicsim
                 GearResults gear = players[playerName].GetStats();
                 var lights = new Model3DGroup();
                 lights.Children.Add(new AmbientLight(Colors.White));
-                var meshReforge = new ViewerReadyPlayerReforge(playerName, gear, dataMesh, FindGradientY(dataMesh), BrushHelper.CreateGradientBrush(Colors.Red, Colors.White, Colors.Blue), lights);
+                var meshReforge = new ViewerReadyPlayerReforge(playerName, gear, dataMesh, FindGradientY(dataMesh), BrushHelper.CreateGradientBrush(Colors.Red, Colors.Blue, Colors.Green), lights);
                 MergedMeshedReforges.Add(meshReforge);
             }
         }

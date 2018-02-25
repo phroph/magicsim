@@ -48,6 +48,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -66,8 +67,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Cell.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="CustomizationData.cs" />
+    <Compile Include="Vertex.cs" />
     <Compile Include="ViewerReadyPlayerReforge.cs" />
     <Compile Include="PlayerReforge.cs" />
     <Compile Include="PlayerResult.cs" />
@@ -541,6 +544,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\MIConvexHull\MIConvexHull.csproj">
+      <Project>{2337776D-7D0C-40AA-A439-C26C3CE24FAB}</Project>
+      <Name>MIConvexHull</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
