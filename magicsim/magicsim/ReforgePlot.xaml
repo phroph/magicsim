@@ -1,4 +1,5 @@
 ﻿<local:SurfacePlotVisual3D x:Class="magicsim.ReforgePlot"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-             xmlns:local="clr-namespace:magicsim" Points="{Binding Path=PlayerMesh}" ColorValues="{Binding Path=MeshColors}" SurfaceBrush="{Binding Path=SurfaceBrush}"/>
+             xmlns:local="clr-namespace:magicsim" Points="{Binding Path=PlayerMesh}" ColorValues="{Binding Path=MeshColors}" SurfaceBrush="{Binding Path=SurfaceBrush}" 
+                           XAxisName="{Binding Path=XAxis}" YAxisName="{Binding Path=YAxis}" ZAxisName="{Binding Path=ZAxis}"/>

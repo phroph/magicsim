@@ -11,8 +11,11 @@ namespace magicsim
         public Brush SurfaceBrush { get; set; }
         public double[,] MeshColors { get; set; }
         public Model3DGroup Lights { get; set; }
+        public string XAxis { get; set; }
+        public string YAxis { get; set; }
+        public string ZAxis { get; set; }
 
-        public ViewerReadyPlayerReforge(string name, GearResults gear, Point3D[,] mesh, double[,] meshTex, Brush brush, Model3DGroup lights)
+        public ViewerReadyPlayerReforge(string name, GearResults gear, Point3D[,] mesh, double[,] meshTex, Brush brush, Model3DGroup lights, string xLabel, string yLabel, string zLabel)
         {
             this.PlayerName = name;
             this.PlayerGear = gear;
@@ -20,6 +23,9 @@ namespace magicsim
             this.SurfaceBrush = brush;
             this.MeshColors = meshTex;
             this.Lights = lights;
+            this.XAxis = xLabel;
+            this.YAxis = yLabel;
+            this.ZAxis = zLabel;
         }
     }
 }

@@ -42,8 +42,9 @@ namespace magicsim
         {
             Cell f;
 
-            public Model3D CreateModel(Point3DCollection points, Color color)
+            public Model3D CreateModel(Point3DCollection points, Color colorStart, Color colorEnd)
             {
+                var centroid = this.f.GetCentroid();
                 // center = Sum(p[i]) / 4
                 var center = points.Aggregate(new Vector3D(), (a, c) => a + (Vector3D)c) / (double)points.Count;
 
@@ -56,7 +57,7 @@ namespace magicsim
                 {
                     Children = new MaterialCollection
                 {
-                    new DiffuseMaterial(new SolidColorBrush(color) { Opacity = 1.00 })
+                    new DiffuseMaterial(new LinearGradientBrush(colorStart, colorEnd, 0.0) { Opacity = 1.00 })
                 }
                 };
 
@@ -108,9 +109,6 @@ namespace magicsim
             public FaceVisual(Cell f)
             {
                 this.f = f;
-
-                var fill = new SolidColorBrush(Color.FromRgb((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255)));
-                f.Brush = fill;
             }
         }
 
@@ -173,7 +171,7 @@ namespace magicsim
             return new Point(s * dx, s * dy);
         }
 
-        Point GetCentroid()
+        public Point GetCentroid()
         {
             return new Point(Vertices.Select(v => v.Position[0]).Average(), Vertices.Select(v => v.Position[1]).Average());
         }

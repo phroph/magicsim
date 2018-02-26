@@ -36,7 +36,19 @@ namespace magicsim
         public static readonly DependencyProperty SurfaceBrushProperty =
             DependencyProperty.Register("SurfaceBrush", typeof(Brush), typeof(SurfacePlotVisual3D),
                                         new UIPropertyMetadata(null, ModelChanged));
-        
+
+        public static readonly DependencyProperty XAxisNameProperty =
+            DependencyProperty.Register("XAxisName", typeof(string), typeof(SurfacePlotVisual3D),
+                                        new UIPropertyMetadata(null, ModelChanged));
+
+        public static readonly DependencyProperty YAxisNameProperty =
+            DependencyProperty.Register("YAxisName", typeof(string), typeof(SurfacePlotVisual3D),
+                                        new UIPropertyMetadata(null, ModelChanged));
+
+        public static readonly DependencyProperty ZAxisNameProperty =
+            DependencyProperty.Register("ZAxisName", typeof(string), typeof(SurfacePlotVisual3D),
+                                        new UIPropertyMetadata(null, ModelChanged));
+
 
         public SurfacePlotVisual3D()
         {
@@ -45,6 +57,40 @@ namespace magicsim
             IntervalZ = 1000;
             FontSize = 0.06;
             LineThickness = 0.01;
+        }
+
+        public string XAxisName
+        {
+            get { return (string)GetValue(XAxisNameProperty); }
+            set
+            {
+                if ((string)GetValue(XAxisNameProperty) != value)
+                {
+                    SetValue(XAxisNameProperty, value);
+                }
+            }
+        }
+        public string YAxisName
+        {
+            get { return (string)GetValue(YAxisNameProperty); }
+            set
+            {
+                if ((string)GetValue(YAxisNameProperty) != value)
+                {
+                    SetValue(YAxisNameProperty, value);
+                }
+            }
+        }
+        public string ZAxisName
+        {
+            get { return (string)GetValue(ZAxisNameProperty); }
+            set
+            {
+                if ((string)GetValue(ZAxisNameProperty) != value)
+                {
+                    SetValue(ZAxisNameProperty, value);
+                }
+            }
         }
 
         /// <summary>
@@ -104,7 +150,8 @@ namespace magicsim
         private static void ModelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if ((double[,])d.GetValue(ColorValuesProperty) != null && (Brush)d.GetValue(SurfaceBrushProperty) != null
-                && (Point3D[,])d.GetValue(PointsProperty) != null)
+                && (Point3D[,])d.GetValue(PointsProperty) != null && (string)d.GetValue(XAxisNameProperty) != null
+                 && (string)d.GetValue(YAxisNameProperty) != null && (string)d.GetValue(ZAxisNameProperty) != null)
             {
                 ((SurfacePlotVisual3D)d).UpdateModel();
             }
@@ -157,9 +204,9 @@ namespace magicsim
                 }
             }
 
-            IntervalX = (maxX - minX) / 5.0;
-            IntervalY = (maxY - minY) / 5.0;
-            IntervalZ = (maxZ - minZ) / 5.0;
+            IntervalX = (maxX - minX) / 6.0;
+            IntervalY = (maxY - minY) / 6.0;
+            IntervalZ = (maxZ - minZ) / 6.0;
             FontSize = 0.01;
             LineThickness = 0.005;
 
@@ -186,9 +233,9 @@ namespace magicsim
                 }
             }
 
-            var surfaceMeshBuilder = new MeshBuilder();
             if (rows == 1 || columns == 1)
             {
+                var surfaceMeshBuilder = new MeshBuilder();
                 var pointList = new List<Point3D>();
                 var texturePoints = new List<double>();
                 var diameters = new List<double>();
@@ -198,7 +245,7 @@ namespace magicsim
                     {
                         pointList.Add(Points[i, j]);
                         texturePoints.Add(texcoords[i, j].X);
-                        diameters.Add(LineThickness*4.0);
+                        diameters.Add(LineThickness*2.0);
                     }
                 }
                 surfaceMeshBuilder.AddTube(pointList, texturePoints.ToArray(), diameters.ToArray(), 9, false, true, true);
@@ -227,16 +274,35 @@ namespace magicsim
                     }
                 }
 
-                var mesh = VoronoiMesh.Create<Vertex, Cell>(vertices);
+                var mesh = DelaunayTriangulation<Vertex, Cell>.Create(vertices, 1e-10);
 
-                foreach (var cell in mesh.Vertices)
+                foreach (var cell in mesh.Cells)
                 {
                     // 3D-ify it.
+                    var min = cell.Vertices.Min(vertex => vertexZMapping[vertex]);
+                    var max = cell.Vertices.Max(vertex => vertexZMapping[vertex]);
+                    var minPercentile = (min - minZ) / (maxZ - minZ);
+                    var maxPercentile = (max - minZ) / (maxZ - minZ);
+
+                    // R = Distance from end.
+                    // G = Distance from start.
+                    // B = Distance from middle
+                    var minR = Math.Round(255.0 * (1 - minPercentile));
+                    var minG = Math.Round(255.0 * (minPercentile));
+                    var minB = Math.Round(255.0 * (Math.Abs(0.5 - minPercentile) / 0.5));
+
+                    var maxR = Math.Round(255.0 * (1 - maxPercentile));
+                    var maxG = Math.Round(255.0 * (maxPercentile));
+                    var maxB = Math.Round(255.0 * (Math.Abs(0.5 - maxPercentile) / 0.5));
+
+
+                    var minColor = Color.FromArgb((byte)255, (byte)minR, (byte)minG, (byte)minB);
+                    var maxColor = Color.FromArgb((byte)255, (byte)maxR, (byte)maxG, (byte)maxB);
                     Children.Add(cell.Visual.CreateModel(new Point3DCollection(cell.Vertices.Select(vertex =>
                     {
                         var vertexPoint = vertex.ToPoint();
                         return new Point3D(vertexPoint.X, vertexPoint.Y, vertexZMapping[vertex]);
-                    })), Color.FromArgb((byte)255,(byte)255,(byte)0,(byte)0)));
+                    })), minColor, maxColor));
                 }
             }
 
@@ -257,7 +323,7 @@ namespace magicsim
             }
 
             {
-                GeometryModel3D label = TextCreator.CreateTextLabelModel3D("X-axis", Brushes.Black, true, FontSize,
+                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(XAxisName, Brushes.Black, true, FontSize,
                                                                            new Point3D((minX + maxX) * 0.5,
                                                                                        minY - FontSize * 9, minZ),
                                                                            new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
@@ -277,7 +343,7 @@ namespace magicsim
                 Children.Add(label);
             }
             {
-                GeometryModel3D label = TextCreator.CreateTextLabelModel3D("Y-axis", Brushes.Black, true, FontSize,
+                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(YAxisName, Brushes.Black, true, FontSize,
                                                                            new Point3D(minX - FontSize * 10,
                                                                                        (minY + maxY) * 0.5, minZ),
                                                                            new Vector3D(0, 1, 0), new Vector3D(-1, 0, 0));
@@ -292,7 +358,7 @@ namespace magicsim
                 Children.Add(label);
             }
             {
-                GeometryModel3D label = TextCreator.CreateTextLabelModel3D("Z-axis", Brushes.Black, true, FontSize,
+                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(ZAxisName, Brushes.Black, true, FontSize,
                                                                            new Point3D(minX - FontSize * 10, maxY,
                                                                                        (minZ + maxZ) * 0.5),
                                                                            new Vector3D(0, 0, 1), new Vector3D(1, 0, 0));

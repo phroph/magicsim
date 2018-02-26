@@ -51,6 +51,8 @@ namespace magicsim
 
         public ObservableCollection<PlayerResult> MergedResults { get; set; }
 
+        string xLabel, yLabel, zLabel;
+
         private PlayerResult _selectedPlayer;
         public PlayerResult SelectedPlayer
         {
@@ -392,30 +394,24 @@ namespace magicsim
                     }
                 }
             }
-            
+
+            zLabel = "DPS";
             // Scale the Z-axis otherwise the graph stretches obnoxiously and is comptuationally expensive to scale.
             var scaleFactor = int.Parse(min.ToString().Substring(0, 1)) * Math.Pow(10, min.ToString().Length-1);
-            for (int i = 0; i < rows; i++)
+            // 1 10 100 1000 1000
+            if (min.ToString().Length >= 4)
             {
-                for (int j = 0; j < columns; j++)
+                var labels = new string[] { "K", "K+", "K++", "M", "M+", "M++", "MM", "MM+", "MM++", "MMM" };
+                zLabel = "DPS (" + labels[(min.ToString().Length - 4)] + ")";
+                for (int i = 0; i < rows; i++)
                 {
-                    matrix[i, j].Z /= scaleFactor;
+                    for (int j = 0; j < columns; j++)
+                    {
+                        matrix[i, j].Z /= scaleFactor;
+                    }
                 }
             }
             return matrix;
-        }
-
-        public double[,] Transpose(double[,] matrix)
-        {
-            var newMatrix = new double[matrix.GetUpperBound(1), matrix.GetUpperBound(0)];
-            for (int i = 0; i < matrix.GetUpperBound(1); i++)
-            {
-                for (int j = 0; j < matrix.GetUpperBound(0); j++)
-                {
-                    newMatrix[i, j] = matrix[j, i];
-                }
-            }
-            return newMatrix;
         }
         
         public Point3D[,] CreateDataArray(PlayerReforge reforgeData)
@@ -459,33 +455,42 @@ namespace magicsim
                 {
                     if (haste)
                     {
+                        xLabel = "Haste / Total";
                         x = (double)point.Haste / (double)total;
                         if(crit)
                         {
+                            yLabel = "Crit / Total";
                             y = (double)point.Crit / (double)total;
                         } else if(mastery)
                         {
+                            yLabel = "Mastery / Total";
                             y = (double)point.Mastery / (double)total;
                         } else if(vers)
                         {
+                            yLabel = "Vers / Total";
                             y = (double)point.Vers / (double)total;
                         }
                     }
                     else if (crit)
                     {
+                        xLabel = "Crit / Total";
                         x = (double)point.Crit / (double)total;
                         if (mastery)
                         {
+                            yLabel = "Mastery / Total";
                             y = (double)point.Mastery / (double)total;
                         }
                         else if (vers)
                         {
+                            yLabel = "Vers / Total";
                             y = (double)point.Vers / (double)total;
                         }
                     }
                     else if (mastery)
                     {
+                        xLabel = "Mastery / Total";
                         x = (double)point.Mastery / (double)total;
+                        yLabel = "Vers / Total";
                         y = (double)point.Vers / (double)total;
                     }
                 }
@@ -493,31 +498,39 @@ namespace magicsim
                 {
                     if(haste)
                     {
+                        xLabel = "Haste / Total";
                         x = (double)point.Haste / (double)total;
                         if(crit)
                         {
                             if(mastery)
                             {
+                                yLabel = "Crit - Mastery / Total";
                                 y = (double)(point.Crit - point.Mastery) / (double)total;
                             }
                             else if (vers)
                             {
+                                yLabel = "Crit - Vers / Total";
                                 y = (double)(point.Crit - point.Vers) / (double)total;
                             }
                         } else if(mastery)
                         {
+                            yLabel = "Mastery - Vers / Total";
                             y = (double)(point.Mastery - point.Vers) / (double)(total);
                         }
                     }
                     else if(crit)
                     {
+                        xLabel = "Crit / Total";
                         x = (double)point.Crit / (double)total;
+                        yLabel = "Mastery - Vers / Total";
                         y = (double)(point.Mastery - point.Vers) / (double)total;
                     }
                 }
                 if(stats == 4)
                 {
+                    xLabel = "Haste - Crit / Total";
                     x = (double)(point.Haste - point.Crit) / (double)total;
+                    yLabel = "Mastery - Vers / Total";
                     y = (double)(point.Mastery - point.Vers) / (double)total;
                 }
                 pointList.Add(new Point3D(x, y, z));
@@ -716,7 +729,7 @@ namespace magicsim
                 GearResults gear = players[playerName].GetStats();
                 var lights = new Model3DGroup();
                 lights.Children.Add(new AmbientLight(Colors.White));
-                var meshReforge = new ViewerReadyPlayerReforge(playerName, gear, dataMesh, FindGradientY(dataMesh), BrushHelper.CreateGradientBrush(Colors.Red, Colors.Blue, Colors.Green), lights);
+                var meshReforge = new ViewerReadyPlayerReforge(playerName, gear, dataMesh, FindGradientY(dataMesh), BrushHelper.CreateGradientBrush(Colors.Red, Colors.Blue, Colors.Green), lights, xLabel, yLabel, zLabel);
                 MergedMeshedReforges.Add(meshReforge);
             }
         }
