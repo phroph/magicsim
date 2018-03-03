@@ -276,6 +276,10 @@ namespace magicsim
                         {
                             MessageBox.Show(String.Format("At least 2 stats are required to reforge. Reforging will be disabled.", sim), "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                         }
+                        else if (context.ReforgeAmount == 0 || context.ReforgeStepSize == 0)
+                        {
+                            MessageBox.Show("No reforging size supplied. Reforging will be disabled", "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        }
                         else
                         {
                             simProfile += "reforge_plot_stat=" + reforge_stat + "\r\nreforge_plot_amount=" + context.ReforgeAmount + "\r\nreforge_plot_step=" + context.ReforgeStepSize + "\r\nreforge_plot_output_file=" + filePrefix + "csv\r\n";
