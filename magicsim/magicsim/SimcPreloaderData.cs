@@ -53,20 +53,32 @@ namespace magicsim
             Label = "Acquiring SimC Executable";
             ThreadPool.QueueUserWorkItem((_) =>
             {
-            simc = SimCManager.AcquireSimC();
-            Label = "Generating SimC Profile";
-            if (!Directory.Exists("characters"))
-            {
-                Directory.CreateDirectory("characters");
-            }
-            Regex nameRegex = new Regex("[^=]+=\"([^\"]+)\"");
-            String name = nameRegex.Match(simcString).Groups[1].Value;
-            if (File.Exists("characters/" + name))
-            {
-                File.Delete("characters/" + name);
-            }
-            String text = simcString + "\nsave=./characters/" + name + ".simc";
-            File.WriteAllText("characters/" + name + ".simc", text);
+                try
+                {
+                    simc = SimCManager.AcquireSimC();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Could not acquire SimC because of an Exception: " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        PreloadingFailed(this, new EventArgs());
+                    });
+                    return;
+                }
+                Label = "Generating SimC Profile";
+                if (!Directory.Exists("characters"))
+                {
+                    Directory.CreateDirectory("characters");
+                }
+                Regex nameRegex = new Regex("[^=]+=\"([^\"]+)\"");
+                String name = nameRegex.Match(simcString).Groups[1].Value;
+                if (File.Exists("characters/" + name))
+                {
+                    File.Delete("characters/" + name);
+                }
+                String text = simcString + "\nsave=./characters/" + name + ".simc";
+                File.WriteAllText("characters/" + name + ".simc", text);
                 if (simc.RunSim("characters/" + name + ".simc"))
                 {
                     Label = "SimC Profile Generated";

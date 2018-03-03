@@ -113,11 +113,12 @@ namespace magicsim
                     Console.Write("Warning: Error deleting file");
                 }
             }
-            var zipExec = Is64BitOperatingSystem() ? "7z-x64.exe" : "7z.exe";
+            var zipExecDir = Is64BitOperatingSystem() ? "7z64" : "7z";
+            var zipExec = zipExecDir + Path.DirectorySeparatorChar + "7z.exe";
             ProcessStartInfo info = new ProcessStartInfo(zipExec, " x -obin -y " + filename);
             info.WindowStyle = ProcessWindowStyle.Hidden;
             Process.Start(info).WaitForExit();
-
+            
             directory = new DirectoryInfo("bin").EnumerateDirectories().OrderByDescending((dir) =>
             {
                 return dir.CreationTimeUtc.ToFileTimeUtc();
@@ -140,9 +141,7 @@ namespace magicsim
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
-
         
-
         public bool RunSim(String profilePath)
         {
             ProcessStartInfo info = new ProcessStartInfo("bin\\" + directory + "\\simc.exe", profilePath);

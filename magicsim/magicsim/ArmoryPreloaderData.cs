@@ -46,11 +46,23 @@ namespace magicsim
 
         public void LoadArmoryData(String region, String server, String name)
         {
-            SimC simc;
+            SimC simc = null;
             Label = "Acquiring SimC Executable";
             ThreadPool.QueueUserWorkItem((_) =>
             {
-                simc = SimCManager.AcquireSimC();
+                try
+                {
+                    simc = SimCManager.AcquireSimC();
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show("Could not acquire SimC because of an Exception: " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        PreloadingFailed(this, new EventArgs());
+                    });
+                    return;
+                }
                 Label = "Generating Armory Profile";
                 var text = File.ReadAllText("templates/armory.simc").Replace("%region%", region).Replace("%realm%", server).Replace("%name%", name);
                 if (!Directory.Exists("characters"))
