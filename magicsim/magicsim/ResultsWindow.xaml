@@ -52,12 +52,12 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                     <StackPanel Name="StatWeights" Orientation="Vertical" Background="#F3F3F3" Height="83" Margin="24,149,25.667,32.667">
-                        <Label Content="{Binding Path=SummaryString}" FontSize="14" MinHeight="23"/>
+                        <Label Content="{Binding SummaryString}" FontSize="14" MinHeight="23" VerticalAlignment="Bottom" Margin="0,0,-0.333,0"/>
                         <Label Content="Pawn String: " FontSize="10"/>
-                        <TextBox Background="GhostWhite" IsReadOnly="True" VerticalAlignment="Center" FontSize="10" Text="{Binding Path=PawnString}" HorizontalScrollBarVisibility="Visible" Height="35" HorizontalAlignment="Left" Width="350" Padding="0,0,8,0"/>
+                        <TextBox Background="GhostWhite" IsReadOnly="True" VerticalAlignment="Center" FontSize="10" Text="{Binding PawnString}" HorizontalScrollBarVisibility="Visible" Height="35" HorizontalAlignment="Left" Width="350" Padding="0,0,8,0"/>
                     </StackPanel>
-                    <Button Content="Done" HorizontalAlignment="Left" Margin="154,266,0,0" VerticalAlignment="Top" Click="Button_Click" Width="75"/>
-                    <Label Content="{Binding Path=LabelString}" HorizontalAlignment="Left" Margin="24,-4,0,0" VerticalAlignment="Top"/>
+                    <Button Content="Done" HorizontalAlignment="Left" Margin="153,259,0,0" VerticalAlignment="Top" Click="Button_Click" Width="75"/>
+                    <Label Content="{Binding Path=LabelString}" HorizontalAlignment="Left" Margin="24,6,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Name="Reforge" Header="Reforge Results" IsEnabled="{Binding Path=HasReforge}">
@@ -69,17 +69,17 @@
                             </DataTemplate>
                         </TabControl.ItemTemplate>
                         <TabControl.ContentTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Vertical">
-                                <h:HelixViewport3D Height="250" ZoomExtentsWhenLoaded="True">
-                                    <h:DefaultLights/>
-                                    <local:ReforgePlot/>
-                                </h:HelixViewport3D>
-                                <StackPanel Orientation="Horizontal">
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical">
+                                    <h:HelixViewport3D Height="250" ZoomExtentsWhenLoaded="True">
+                                        <h:DefaultLights/>
+                                        <local:ReforgePlot/>
+                                    </h:HelixViewport3D>
+                                    <StackPanel Orientation="Horizontal">
 
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
-                        </DataTemplate>
+                            </DataTemplate>
                         </TabControl.ContentTemplate>
                     </TabControl>
                 </Grid>

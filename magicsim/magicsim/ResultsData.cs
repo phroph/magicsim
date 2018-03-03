@@ -34,6 +34,7 @@ namespace magicsim
 
     public class ResultsData : INotifyPropertyChanged
     {
+        public static int ShrinkingFactor = 4;
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler RunningFailed;
 
@@ -52,6 +53,7 @@ namespace magicsim
         public ObservableCollection<PlayerResult> MergedResults { get; set; }
 
         string xLabel, yLabel, zLabel;
+        int total, statCount;
 
         private PlayerResult _selectedPlayer;
         public PlayerResult SelectedPlayer
@@ -420,77 +422,79 @@ namespace magicsim
             // columns*rows should equal total reforges
             var data = new Point3D[0, 0];
             var pointList = new List<Point3D>();
-            GearResults gear = players[reforgeData.PlayerName].GetStats();
+            total = 2* ShrinkingFactor * (reforgeData.Dps.Max(kvp => Math.Max(kvp.Key.Vers,Math.Max(kvp.Key.Mastery,Math.Max(kvp.Key.Crit,kvp.Key.Haste)))));
+            
+            //GearResults gear = players[reforgeData.PlayerName].GetStats();
             foreach (var point in reforgeData.Dps.Keys)
             {
                 var stats = 0;
                 bool haste = false, crit = false, mastery = false, vers = false;
-                int total = gear.crit + gear.haste + gear.mastery + gear.vers;
                 double x = 0, y = 0, z = reforgeData.Dps[point];
                 if(point.Crit != int.MinValue)
                 {
                     stats++;;
-                    point.Crit += gear.crit;
+                    //point.Crit += gear.crit;
                     crit = true;
                 }
                 if (point.Haste != int.MinValue)
                 {
                     stats++;
-                    point.Haste += gear.haste;
+                    //point.Haste += gear.haste;
                     haste = true;
                 }
                 if (point.Mastery != int.MinValue)
                 {
                     stats++;
-                    point.Mastery += gear.mastery;
+                    //point.Mastery += gear.mastery;
                     mastery = true;
                 }
                 if (point.Vers != int.MinValue)
                 {
                     stats++;
-                    point.Vers += gear.vers;
+                    //point.Vers += gear.vers;
                     vers = true;
                 }
+                statCount = stats;
                 if(stats == 2)
                 {
                     if (haste)
                     {
-                        xLabel = "Haste / Total";
+                        xLabel = "(Haste)";
                         x = (double)point.Haste / (double)total;
                         if(crit)
                         {
-                            yLabel = "Crit / Total";
+                            yLabel = "(Crit)";
                             y = (double)point.Crit / (double)total;
                         } else if(mastery)
                         {
-                            yLabel = "Mastery / Total";
+                            yLabel = "(Mastery)";
                             y = (double)point.Mastery / (double)total;
                         } else if(vers)
                         {
-                            yLabel = "Vers / Total";
+                            yLabel = "(Vers)";
                             y = (double)point.Vers / (double)total;
                         }
                     }
                     else if (crit)
                     {
-                        xLabel = "Crit / Total";
+                        xLabel = "(Crit)";
                         x = (double)point.Crit / (double)total;
                         if (mastery)
                         {
-                            yLabel = "Mastery / Total";
+                            yLabel = "(Mastery)";
                             y = (double)point.Mastery / (double)total;
                         }
                         else if (vers)
                         {
-                            yLabel = "Vers / Total";
+                            yLabel = "(Vers)";
                             y = (double)point.Vers / (double)total;
                         }
                     }
                     else if (mastery)
                     {
-                        xLabel = "Mastery / Total";
+                        xLabel = "(Mastery)";
                         x = (double)point.Mastery / (double)total;
-                        yLabel = "Vers / Total";
+                        yLabel = "(Vers)";
                         y = (double)point.Vers / (double)total;
                     }
                 }
@@ -498,39 +502,40 @@ namespace magicsim
                 {
                     if(haste)
                     {
-                        xLabel = "Haste / Total";
+                        xLabel = "(Haste)";
                         x = (double)point.Haste / (double)total;
                         if(crit)
                         {
                             if(mastery)
                             {
-                                yLabel = "Crit - Mastery / Total";
+                                yLabel = "<-- More Crit | More Mastery -->";
                                 y = (double)(point.Crit - point.Mastery) / (double)total;
                             }
                             else if (vers)
                             {
-                                yLabel = "Crit - Vers / Total";
+                                yLabel = "<-- More Crit | More Vers -->";
                                 y = (double)(point.Crit - point.Vers) / (double)total;
                             }
                         } else if(mastery)
                         {
-                            yLabel = "Mastery - Vers / Total";
+                            yLabel = "<-- More Mastery | More Vers -->";
                             y = (double)(point.Mastery - point.Vers) / (double)(total);
                         }
                     }
                     else if(crit)
                     {
-                        xLabel = "Crit / Total";
+                        xLabel = "(Crit)";
                         x = (double)point.Crit / (double)total;
-                        yLabel = "Mastery - Vers / Total";
+                        yLabel = "<-- More Mastery | More Vers -->";
                         y = (double)(point.Mastery - point.Vers) / (double)total;
                     }
                 }
                 if(stats == 4)
                 {
-                    xLabel = "Haste - Crit / Total";
+                    // Label is flipped for readability.
+                    xLabel = "<-- More Crit | More Haste -->";
                     x = (double)(point.Haste - point.Crit) / (double)total;
-                    yLabel = "Mastery - Vers / Total";
+                    yLabel = "<-- More Mastery | More Vers -->";
                     y = (double)(point.Mastery - point.Vers) / (double)total;
                 }
                 pointList.Add(new Point3D(x, y, z));
@@ -729,7 +734,7 @@ namespace magicsim
                 GearResults gear = players[playerName].GetStats();
                 var lights = new Model3DGroup();
                 lights.Children.Add(new AmbientLight(Colors.White));
-                var meshReforge = new ViewerReadyPlayerReforge(playerName, gear, dataMesh, FindGradientY(dataMesh), BrushHelper.CreateGradientBrush(Colors.Red, Colors.Blue, Colors.Green), lights, xLabel, yLabel, zLabel);
+                var meshReforge = new ViewerReadyPlayerReforge(playerName, gear, dataMesh, FindGradientY(dataMesh), BrushHelper.CreateGradientBrush(Colors.Red, Colors.Blue, Colors.Green), lights, xLabel, yLabel, zLabel, total, statCount);
                 MergedMeshedReforges.Add(meshReforge);
             }
         }
@@ -904,6 +909,15 @@ namespace magicsim
             {
                 MergedResults.Add(list);
             });
+            if (MergedResults.Count == 0)
+            {
+                MessageBox.Show("Failed to find results.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    RunningFailed(this, new EventArgs());
+                });
+                return;
+            }
             SaveResults(guid);
             SelectedPlayer = MergedResults[0];
 
@@ -969,12 +983,17 @@ namespace magicsim
             return string.Format("{0}  -  {1:n0} DPS ( {2:n0} Total )", player.Name, player.Dps, player.Damage);
         }
 
-        public void LoadResults(string tag)
+        public bool LoadResults(string tag)
         {
             SimDataManager.ResetSimData();
             if (!Directory.Exists("savedResults"))
             {
-                return;
+                MessageBox.Show("No saved results exist. Trying to load the impossible.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    RunningFailed(this, new EventArgs());
+                });
+                return false; 
             }
             string dir = "savedResults" + Path.DirectorySeparatorChar + tag;
             if (Directory.Exists(dir))
@@ -982,7 +1001,11 @@ namespace magicsim
                 if(!File.Exists(dir + Path.DirectorySeparatorChar + "MergedResults.json"))
                 {
                     MessageBox.Show("Could not find any results. They may have been deleted.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    RunningFailed(this, new EventArgs());
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        RunningFailed(this, new EventArgs());
+                    });
+                    return false;
                 }
                 var resultJson = File.ReadAllText(dir + Path.DirectorySeparatorChar + "MergedResults.json");
                 MergedResults.Clear();
@@ -1003,6 +1026,7 @@ namespace magicsim
                 }
             }
             LoadCSVs(dir);
+            return true;
         }
 
         private void LoadCSVs(string dir)

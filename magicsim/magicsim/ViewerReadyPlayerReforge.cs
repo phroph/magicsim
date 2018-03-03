@@ -14,8 +14,10 @@ namespace magicsim
         public string XAxis { get; set; }
         public string YAxis { get; set; }
         public string ZAxis { get; set; }
+        public int Total { get; set; }
+        public int StatCount { get; set; }
 
-        public ViewerReadyPlayerReforge(string name, GearResults gear, Point3D[,] mesh, double[,] meshTex, Brush brush, Model3DGroup lights, string xLabel, string yLabel, string zLabel)
+        public ViewerReadyPlayerReforge(string name, GearResults gear, Point3D[,] mesh, double[,] meshTex, Brush brush, Model3DGroup lights, string xLabel, string yLabel, string zLabel, int total, int statcount)
         {
             this.PlayerName = name;
             this.PlayerGear = gear;
@@ -26,6 +28,8 @@ namespace magicsim
             this.XAxis = xLabel;
             this.YAxis = yLabel;
             this.ZAxis = zLabel;
+            this.Total = total;
+            this.StatCount = statcount;
         }
     }
 }

@@ -48,6 +48,14 @@ namespace magicsim
         public static readonly DependencyProperty ZAxisNameProperty =
             DependencyProperty.Register("ZAxisName", typeof(string), typeof(SurfacePlotVisual3D),
                                         new UIPropertyMetadata(null, ModelChanged));
+        
+        public static readonly DependencyProperty TotalProperty =
+            DependencyProperty.Register("Total", typeof(int), typeof(SurfacePlotVisual3D),
+                                        new UIPropertyMetadata(0, ModelChanged));
+
+        public static readonly DependencyProperty StatCountProperty =
+            DependencyProperty.Register("StatCount", typeof(int), typeof(SurfacePlotVisual3D),
+                                        new UIPropertyMetadata(0, ModelChanged));
 
 
         public SurfacePlotVisual3D()
@@ -89,6 +97,28 @@ namespace magicsim
                 if ((string)GetValue(ZAxisNameProperty) != value)
                 {
                     SetValue(ZAxisNameProperty, value);
+                }
+            }
+        }
+        public int Total
+        {
+            get { return (int)GetValue(TotalProperty); }
+            set
+            {
+                if ((int)GetValue(TotalProperty) != value)
+                {
+                    SetValue(TotalProperty, value);
+                }
+            }
+        }
+        public int StatCount
+        {
+            get { return (int)GetValue(StatCountProperty); }
+            set
+            {
+                if ((int)GetValue(StatCountProperty) != value)
+                {
+                    SetValue(StatCountProperty, value);
                 }
             }
         }
@@ -151,7 +181,8 @@ namespace magicsim
         {
             if ((double[,])d.GetValue(ColorValuesProperty) != null && (Brush)d.GetValue(SurfaceBrushProperty) != null
                 && (Point3D[,])d.GetValue(PointsProperty) != null && (string)d.GetValue(XAxisNameProperty) != null
-                 && (string)d.GetValue(YAxisNameProperty) != null && (string)d.GetValue(ZAxisNameProperty) != null)
+                 && (string)d.GetValue(YAxisNameProperty) != null && (string)d.GetValue(ZAxisNameProperty) != null
+                 && (int)d.GetValue(TotalProperty) != 0 && (int)d.GetValue(StatCountProperty) != 0)
             {
                 ((SurfacePlotVisual3D)d).UpdateModel();
             }
@@ -206,7 +237,7 @@ namespace magicsim
 
             IntervalX = (maxX - minX) / 6.0;
             IntervalY = (maxY - minY) / 6.0;
-            IntervalZ = (maxZ - minZ) / 6.0;
+            IntervalZ = (maxZ - minZ) / 5.0;
             FontSize = 0.01;
             LineThickness = 0.005;
 
@@ -283,17 +314,14 @@ namespace magicsim
                     var max = cell.Vertices.Max(vertex => vertexZMapping[vertex]);
                     var minPercentile = (min - minZ) / (maxZ - minZ);
                     var maxPercentile = (max - minZ) / (maxZ - minZ);
-
-                    // R = Distance from end.
-                    // G = Distance from start.
-                    // B = Distance from middle
-                    var minR = Math.Round(255.0 * (1 - minPercentile));
+                    
+                    var minR = Math.Round(255.0 * (1 - 0.3 * minPercentile));
                     var minG = Math.Round(255.0 * (minPercentile));
-                    var minB = Math.Round(255.0 * (Math.Abs(0.5 - minPercentile) / 0.5));
+                    var minB = Math.Round(255.0 * (Math.Abs(0.5 - minPercentile) * 2));
 
-                    var maxR = Math.Round(255.0 * (1 - maxPercentile));
+                    var maxR = Math.Round(255.0 * (1 - 0.3 * maxPercentile));
                     var maxG = Math.Round(255.0 * (maxPercentile));
-                    var maxB = Math.Round(255.0 * (Math.Abs(0.5 - maxPercentile) / 0.5));
+                    var maxB = Math.Round(255.0 * (Math.Abs(0.5 - maxPercentile) * 2));
 
 
                     var minColor = Color.FromArgb((byte)255, (byte)minR, (byte)minG, (byte)minB);
@@ -306,6 +334,13 @@ namespace magicsim
                 }
             }
 
+            //2 Stat
+            //x=stat=x*total
+            //y=stat2=y*total
+            //3 Stat
+            //x=stat1=x*total
+            //y_1=stat2=(-x*total-y*total)/2
+            //y_2=stat3=y*total+(-x*total-y*total)/2
 
             var axesMeshBuilder = new MeshBuilder();
             for (double x = minX; x <= maxX; x += IntervalX)
@@ -315,17 +350,23 @@ namespace magicsim
                 path.Add(new Point3D(x, maxY, minZ));
 
                 axesMeshBuilder.AddTube(path, LineThickness, 9, false, true, true);
-                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(x.ToString("F4"), Brushes.Black, true, FontSize,
+
+                var labelString = (x * ResultsData.ShrinkingFactor).ToString("F4");
+                if (StatCount == 2 || StatCount == 3)
+                {
+                    labelString = (x * Total).ToString("F0");
+                }
+                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(labelString, Brushes.Black, true, FontSize,
                                                                            new Point3D(x, minY - FontSize * 6, minZ),
                                                                            new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
-                label.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), 90.0), new Point3D(label.Bounds.SizeX/2 + label.Bounds.Location.X, label.Bounds.SizeY / 2 + label.Bounds.Location.Y, 0.0));
+                label.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), -90.0), new Point3D(label.Bounds.SizeX/2 + label.Bounds.Location.X, label.Bounds.SizeY / 2 + label.Bounds.Location.Y, 0.0));
                 Children.Add(label);
             }
 
             {
                 GeometryModel3D label = TextCreator.CreateTextLabelModel3D(XAxisName, Brushes.Black, true, FontSize,
                                                                            new Point3D((minX + maxX) * 0.5,
-                                                                                       minY - FontSize * 9, minZ),
+                                                                                       minY - FontSize * 12, minZ),
                                                                            new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
                 Children.Add(label);
             }
@@ -337,8 +378,13 @@ namespace magicsim
                 path.Add(new Point3D(maxX, y, minZ));
 
                 axesMeshBuilder.AddTube(path, LineThickness, 9, false, true, true);
-                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(y.ToString("F4"), Brushes.Black, true, FontSize,
-                                                                           new Point3D(minX - FontSize * 6, y, minZ),
+                var labelString = (y * ResultsData.ShrinkingFactor).ToString("F4");
+                if(StatCount == 2)
+                {
+                    labelString = (y * Total).ToString("F0");
+                }
+                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(labelString, Brushes.Black, true, FontSize,
+                                                                           new Point3D(minX - FontSize * 4, y, minZ),
                                                                            new Vector3D(1, 0, 0), new Vector3D(0, 1, 0));
                 Children.Add(label);
             }
@@ -347,19 +393,20 @@ namespace magicsim
                                                                            new Point3D(minX - FontSize * 10,
                                                                                        (minY + maxY) * 0.5, minZ),
                                                                            new Vector3D(0, 1, 0), new Vector3D(-1, 0, 0));
+                label.Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), 180.0), new Point3D(label.Bounds.SizeX / 2 + label.Bounds.Location.X, label.Bounds.SizeY / 2 + label.Bounds.Location.Y, 0.0));
                 Children.Add(label);
             }
             //double z0 = (int)(minZ / IntervalZ) * IntervalZ;
             for (double z = minZ; z <= maxZ + double.Epsilon; z += IntervalZ)
             {
                 GeometryModel3D label = TextCreator.CreateTextLabelModel3D(z.ToString("F4"), Brushes.Black, true, FontSize,
-                                                                           new Point3D(minX - FontSize * 3, maxY, z),
+                                                                           new Point3D(minX - FontSize * 4, maxY + .015, z),
                                                                            new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
                 Children.Add(label);
             }
             {
                 GeometryModel3D label = TextCreator.CreateTextLabelModel3D(ZAxisName, Brushes.Black, true, FontSize,
-                                                                           new Point3D(minX - FontSize * 10, maxY,
+                                                                           new Point3D(minX - FontSize * 10, maxY + .015,
                                                                                        (minZ + maxZ) * 0.5),
                                                                            new Vector3D(0, 0, 1), new Vector3D(1, 0, 0));
                 Children.Add(label);
