@@ -70,6 +70,7 @@
     <Compile Include="Cell.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="CustomizationData.cs" />
+    <Compile Include="Job.cs" />
     <Compile Include="Vertex.cs" />
     <Compile Include="ViewerReadyPlayerReforge.cs" />
     <Compile Include="PlayerReforge.cs" />

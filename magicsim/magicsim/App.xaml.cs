@@ -14,9 +14,11 @@ namespace magicsim
     /// </summary>
     public partial class App : Application
     {
+        public static Job Job;
         public App() : base()
         {
             AutoUpdater.Start("https://raw.githubusercontent.com/phroph/magicsim/version/magicsim.xml");
+            Job = new Job();
         }
     }
 }

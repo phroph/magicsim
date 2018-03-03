@@ -138,11 +138,18 @@ namespace magicsim
             }
         }
 
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
+        
+
         public bool RunSim(String profilePath)
         {
             ProcessStartInfo info = new ProcessStartInfo("bin\\" + directory + "\\simc.exe", profilePath);
             info.WindowStyle = ProcessWindowStyle.Hidden;
+
             var process = Process.Start(info);
+            App.Job.AddProcess(process.Handle);
             process.WaitForExit();
             var exitCode = process.ExitCode;
             if(exitCode == 0)
