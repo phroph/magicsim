@@ -3,17 +3,16 @@
     "dispName": "Heroic Antorus, the Burning Throne Composite",
     "name": "ant2",
     "model": {
-      "hc_aggramar": 0.09090909090909090909090909090909,
-      "hc_antoran_high_command": 0.09090909090909090909090909090909,
-      "hc_argus_the_unmaker": 0.09090909090909090909090909090909,
-      "hc_coven_of_shivarra": 0.09090909090909090909090909090909,
-      "hc_eonar": 0.09090909090909090909090909090909,
-      "hc_felhounds_of_sargeras": 0.09090909090909090909090909090909,
-      "hc_garothi_worldbreaker": 0.09090909090909090909090909090909,
-      "hc_imonar_the_soulhunter": 0.09090909090909090909090909090909,
-      "hc_kingaroth": 0.09090909090909090909090909090909,
-      "hc_portal_keeper_hasabel": 0.09090909090909090909090909090909,
-      "hc_varimathras": 0.09090909090909090909090909090909
+      "hc_aggramar": 0.1,
+      "hc_antoran_high_command": 0.1,
+      "hc_argus_the_unmaker": 0.1,
+      "hc_coven_of_shivarra": 0.1,
+      "hc_felhounds_of_sargeras": 0.1,
+      "hc_garothi_worldbreaker": 0.1,
+      "hc_imonar_the_soulhunter": 0.1,
+      "hc_kingaroth": 0.1,
+      "hc_portal_keeper_hasabel": 0.1,
+      "hc_varimathras": 0.1
     }
   },
   {
@@ -227,13 +226,6 @@
     "name": "hasabel",
     "model": {
       "hc_portal_keeper_hasabel": 1.0
-    }
-  },
-  {
-    "dispName": "Heroic The Defense of Eonar",
-    "name": "eonar",
-    "model": {
-      "hc_eonar": 1.0
     }
   },
   {
