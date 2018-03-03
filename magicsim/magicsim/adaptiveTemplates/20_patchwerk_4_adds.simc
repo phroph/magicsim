@@ -1,9 +1,8 @@
-﻿max_time=450
+﻿max_time=150
 fight_style=patchwerk
 
 enemy=Fluffball
-enemy_fixed_health_percentage=80
-raid_events+=/move_enemy,name=Fluffball,cooldown=2000,duration=1000,x=-67,y=-67
-raid_events+=/invulnerable,cooldown=1000,duration=1000,first=0
-raid_events+=/adds,count=4,duration=20,cooldown=35
+raid_events+=/invulnerable,cooldown=30,duration=10,first=20
+raid_events+=/adds,count=3,duration=20,cooldown=30
+raid_events+=/stun,cooldown=30,duration=10,first=20
 override.bloodlust=0

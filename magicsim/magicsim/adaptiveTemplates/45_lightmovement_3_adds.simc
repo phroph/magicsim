@@ -1,9 +1,8 @@
-﻿max_time=450
+﻿max_time=150
 fight_style=lightmovement
 
 enemy=Fluffball
-enemy_fixed_health_percentage=80
-raid_events+=/move_enemy,name=Fluffball,cooldown=2000,duration=1000,x=-67,y=-67
-raid_events+=/invulnerable,cooldown=1000,duration=1000,first=0
-raid_events+=/adds,count=3,duration=45,cooldown=60
+raid_events+=/invulnerable,cooldown=55,duration=10,first=45
+raid_events+=/adds,count=2,duration=45,cooldown=55
+raid_events+=/stun,cooldown=55,duration=10,first=45
 override.bloodlust=0
