@@ -87,6 +87,15 @@ namespace magicsim
             this.model = model;
             Label = "Acquiring SimC Executable";
             var topHandle = 0;
+            if (0 == Total)
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    Label = "All Sims Completed";
+                    RunningComplete(this, new EventArgs());
+                });
+                return;
+            }
             simc = SimCManager.AcquireSimC();
             for (int i = 0; i < processCount; i++)
             {
@@ -145,7 +154,6 @@ namespace magicsim
                         }
                     }
                 });
-
             }
         }
     }
