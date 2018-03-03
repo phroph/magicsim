@@ -138,7 +138,10 @@ namespace magicsim
                         {
                             Label = "Failed to Run a Sim";
                             MessageBox.Show("Sims failed to be ran. Try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                            RunningFailed(this, new EventArgs());
+                            App.Current.Dispatcher.Invoke(() =>
+                            {
+                                RunningFailed(this, new EventArgs());
+                            });
                         }
                     }
                 });

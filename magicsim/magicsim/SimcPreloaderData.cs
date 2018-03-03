@@ -80,7 +80,11 @@ namespace magicsim
                 {
                     Label = "Failed to Generate Profile";
                     MessageBox.Show("Failed to generate profile. Please check your input and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    PreloadingFailed(this, new EventArgs());
+
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        PreloadingFailed(this, new EventArgs());
+                    });
                 }
             });
         }

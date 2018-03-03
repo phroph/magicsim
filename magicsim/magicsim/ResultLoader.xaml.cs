@@ -43,7 +43,11 @@ namespace magicsim
             var window = new ResultsWindow();
             var context = (ResultLoaderData) this.DataContext;
             var windowContext = (ResultsData) window.DataContext;
-            windowContext.LoadResults(context.SelectedTag.Label);
+            if (!windowContext.LoadResults(context.SelectedTag.Label))
+            {
+                this.Close();
+                return;
+            }
             window.Top = App.Current.MainWindow.Top;
             window.Left = App.Current.MainWindow.Left;
             App.Current.MainWindow = window;
