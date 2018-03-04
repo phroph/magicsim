@@ -34,7 +34,7 @@ namespace magicsim
 
     public class ResultsData : INotifyPropertyChanged
     {
-        public static int ShrinkingFactor = 4;
+        public static int ShrinkingFactor = 2;
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler RunningFailed;
 
@@ -399,12 +399,12 @@ namespace magicsim
 
             zLabel = "DPS";
             // Scale the Z-axis otherwise the graph stretches obnoxiously and is comptuationally expensive to scale.
-            var scaleFactor = int.Parse(min.ToString().Substring(0, 1)) * Math.Pow(10, min.ToString().Length-1);
+            double scaleFactor = Math.Pow(10, ((int)min).ToString().Length-1);
             // 1 10 100 1000 1000
             if (min.ToString().Length >= 4)
             {
                 var labels = new string[] { "K", "K+", "K++", "M", "M+", "M++", "MM", "MM+", "MM++", "MMM" };
-                zLabel = "DPS (" + labels[(min.ToString().Length - 4)] + ")";
+                zLabel = "DPS (" + labels[(((int)min).ToString().Length - 4)] + ")";
                 for (int i = 0; i < rows; i++)
                 {
                     for (int j = 0; j < columns; j++)
@@ -422,7 +422,7 @@ namespace magicsim
             // columns*rows should equal total reforges
             var data = new Point3D[0, 0];
             var pointList = new List<Point3D>();
-            total = 2* ShrinkingFactor * (reforgeData.Dps.Max(kvp => Math.Max(kvp.Key.Vers,Math.Max(kvp.Key.Mastery,Math.Max(kvp.Key.Crit,kvp.Key.Haste)))));
+            total = 2 * ShrinkingFactor * (reforgeData.Dps.Max(kvp => Math.Max(kvp.Key.Vers,Math.Max(kvp.Key.Mastery,Math.Max(kvp.Key.Crit,kvp.Key.Haste)))));
             
             //GearResults gear = players[reforgeData.PlayerName].GetStats();
             foreach (var point in reforgeData.Dps.Keys)
