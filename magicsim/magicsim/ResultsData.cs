@@ -405,6 +405,7 @@ namespace magicsim
             {
                 var labels = new string[] { "K", "K+", "K++", "M", "M+", "M++", "MM", "MM+", "MM++", "MMM" };
                 zLabel = "DPS (" + labels[(((int)min).ToString().Length - 4)] + ")";
+                
                 for (int i = 0; i < rows; i++)
                 {
                     for (int j = 0; j < columns; j++)
@@ -727,15 +728,22 @@ namespace magicsim
 
         private void Generate3DCollateral()
         {
-            foreach (var playerName in reforges.Keys)
+            try
             {
-                var playerReforge = reforges[playerName];
-                var dataMesh = CreateDataArray(playerReforge);
-                GearResults gear = players[playerName].GetStats();
-                var lights = new Model3DGroup();
-                lights.Children.Add(new AmbientLight(Colors.White));
-                var meshReforge = new ViewerReadyPlayerReforge(playerName, gear, dataMesh, FindGradientY(dataMesh), BrushHelper.CreateGradientBrush(Colors.Red, Colors.Blue, Colors.Green), lights, xLabel, yLabel, zLabel, total, statCount);
-                MergedMeshedReforges.Add(meshReforge);
+                foreach (var playerName in reforges.Keys)
+                {
+                    var playerReforge = reforges[playerName];
+                    var dataMesh = CreateDataArray(playerReforge);
+                    GearResults gear = players[playerName].GetStats();
+                    var lights = new Model3DGroup();
+                    lights.Children.Add(new AmbientLight(Colors.White));
+                    var meshReforge = new ViewerReadyPlayerReforge(playerName, gear, dataMesh, FindGradientY(dataMesh), BrushHelper.CreateGradientBrush(Colors.Red, Colors.Blue, Colors.Green), lights, xLabel, yLabel, zLabel, total, statCount);
+                    MergedMeshedReforges.Add(meshReforge);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to create reforge results. Please report this issue.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
