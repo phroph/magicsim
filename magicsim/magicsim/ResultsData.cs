@@ -728,9 +728,9 @@ namespace magicsim
 
         private void Generate3DCollateral()
         {
-            try
+            foreach (var playerName in reforges.Keys)
             {
-                foreach (var playerName in reforges.Keys)
+                try
                 {
                     var playerReforge = reforges[playerName];
                     var dataMesh = CreateDataArray(playerReforge);
@@ -740,10 +740,10 @@ namespace magicsim
                     var meshReforge = new ViewerReadyPlayerReforge(playerName, gear, dataMesh, FindGradientY(dataMesh), BrushHelper.CreateGradientBrush(Colors.Red, Colors.Blue, Colors.Green), lights, xLabel, yLabel, zLabel, total, statCount);
                     MergedMeshedReforges.Add(meshReforge);
                 }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Failed to create reforge results. Please report this issue.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                catch (Exception)
+                {
+                    MessageBox.Show(String.Format("Failed to create reforge results for players {0}. Please report this issue.", playerName), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
