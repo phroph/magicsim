@@ -54,7 +54,7 @@
                     <StackPanel Name="StatWeights" Orientation="Vertical" Background="#F3F3F3" Height="83" Margin="24,149,25.667,32.667">
                         <Label Content="{Binding SummaryString}" FontSize="14" MinHeight="23" VerticalAlignment="Bottom" Margin="0,0,-0.333,0"/>
                         <Label Content="Pawn String: " FontSize="10"/>
-                        <TextBox Background="GhostWhite" IsReadOnly="True" VerticalAlignment="Center" FontSize="10" Text="{Binding PawnString}" HorizontalScrollBarVisibility="Visible" Height="35" HorizontalAlignment="Left" Width="350" Padding="0,0,8,0"/>
+                        <TextBox Background="GhostWhite" IsReadOnly="True" VerticalAlignment="Center" FontSize="10" Text="{Binding PawnString}" HorizontalScrollBarVisibility="Visible" Height="35" HorizontalAlignment="Stretch" Padding="0,0,8,0"/>
                     </StackPanel>
                     <Button Content="Done" HorizontalAlignment="Left" Margin="153,259,0,0" VerticalAlignment="Top" Click="Button_Click" Width="75"/>
                     <Label Content="{Binding Path=LabelString}" HorizontalAlignment="Left" Margin="24,6,0,0" VerticalAlignment="Top"/>
