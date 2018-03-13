@@ -151,6 +151,7 @@ namespace magicsim
                             {
                                 RunningFailed(this, new EventArgs());
                             });
+                            return;
                         }
                     }
                 });
