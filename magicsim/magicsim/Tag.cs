@@ -34,7 +34,7 @@ namespace magicsim
                     {
                         if(!Directory.Exists("savedResults"))
                         {
-                            MessageBox.Show("No saved runs to rename. Run a sim first.", "Error", MessageBoxButton.OK, MessageBoxImage.Stop);
+                            MessageBox.Show("No saved runs to rename. Run a sim first.", "Stop", MessageBoxButton.OK, MessageBoxImage.Stop);
                         }
                         if (value == "" || value == null)
                         {

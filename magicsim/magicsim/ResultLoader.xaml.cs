@@ -31,6 +31,12 @@ namespace magicsim
             // Looks quirky, but the internal setting on Label can fail due to name conflicts and bad input
             // This reverts to known working and also satisfies the implicit expectation from the next line that Label==Text at the end of this block.
             // If not quite the equality that was expected at first glance.
+            if (context.SelectedTag == null)
+            {
+                MessageBox.Show("Please select a sim to rename.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             context.SelectedTag.Label = RenameBox.Text;
             if(context.SelectedTag.Label != RenameBox.Text)
             {
