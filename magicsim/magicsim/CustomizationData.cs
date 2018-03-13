@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace magicsim
 {
@@ -1327,250 +1328,257 @@ namespace magicsim
 
         public void LoadProfilePath(String path)
         {
-            _profileText = File.ReadAllText(path);
-            var profileText = _profileText;
-            //Parse and update values.
-            var nameClassRegex = new Regex("([^=])=\\\"?([^\\r\\n\\\"]+)\\\"?");
-            var specRegex = new Regex("spec=(\\w+)");
-            var crucibleRegex = new Regex("crucible=([^\r\n]+)");
-            var ilvlRegex = new Regex("gear_ilvl=(\\d+.?\\d*)");
-            var tierRegex = new Regex("set_bonus=tier(\\d+)_(\\d)pc=1");
-            var potionRegex = new Regex("potion=(\\w+)");
-            var flaskRegex = new Regex("flask=(\\w+)");
-            var foodRegex = new Regex("food=(\\w+)");
-            var augmentRegex = new Regex("augmentation=(\\w+)");
+            try
+            {
+                _profileText = File.ReadAllText(path);
+                var profileText = _profileText;
+                //Parse and update values.
+                var nameClassRegex = new Regex("([^=])=\\\"?([^\\r\\n\\\"]+)\\\"?");
+                var specRegex = new Regex("spec=(\\w+)");
+                var crucibleRegex = new Regex("crucible=([^\r\n]+)");
+                var ilvlRegex = new Regex("gear_ilvl=(\\d+.?\\d*)");
+                var tierRegex = new Regex("set_bonus=tier(\\d+)_(\\d)pc=1");
+                var potionRegex = new Regex("potion=(\\w+)");
+                var flaskRegex = new Regex("flask=(\\w+)");
+                var foodRegex = new Regex("food=(\\w+)");
+                var augmentRegex = new Regex("augmentation=(\\w+)");
 
-            var nameClassMatch = nameClassRegex.Match(profileText);
-            Name = nameClassMatch.Groups[2].Value;
-            Class = nameClassMatch.Groups[1].Value.UppercaseWords().Replace("Deathk","Death K").Replace("Demonh","Demon H").UppercaseWords();
-            Spec = specRegex.Match(profileText).Groups[1].Value.UppercaseWords().Replace("Beastm", "Beast M");
-            var crucible = crucibleRegex.Match(profileText).Groups[1].Value;
-            ILvl = float.Parse(ilvlRegex.Match(profileText).Groups[1].Value);
+                var nameClassMatch = nameClassRegex.Match(profileText);
+                Name = nameClassMatch.Groups[2].Value;
+                Class = nameClassMatch.Groups[1].Value.UppercaseWords().Replace("Deathk", "Death K").Replace("Demonh", "Demon H").UppercaseWords();
+                Spec = specRegex.Match(profileText).Groups[1].Value.UppercaseWords().Replace("Beastm", "Beast M");
+                var crucible = crucibleRegex.Match(profileText).Groups[1].Value;
+                ILvl = float.Parse(ilvlRegex.Match(profileText).Groups[1].Value);
 
-            Potion = PotionNameMapping[potionRegex.Match(profileText).Groups[1].Value];
-            Flask = FlaskNameMapping[flaskRegex.Match(profileText).Groups[1].Value];
-            Food = FoodNameMapping[foodRegex.Match(profileText).Groups[1].Value];
-            Rune = AugmentNameMapping[augmentRegex.Match(profileText).Groups[1].Value];
+                Potion = PotionNameMapping[potionRegex.Match(profileText).Groups[1].Value];
+                Flask = FlaskNameMapping[flaskRegex.Match(profileText).Groups[1].Value];
+                Food = FoodNameMapping[foodRegex.Match(profileText).Groups[1].Value];
+                Rune = AugmentNameMapping[augmentRegex.Match(profileText).Groups[1].Value];
 
-            var tierMatches = tierRegex.Matches(profileText);
-            for(int i = 0; i < tierMatches.Count; i++)
-            {
-                var match = tierMatches[i];
-                if(match.Groups[1].Value.Equals("21"))
+                var tierMatches = tierRegex.Matches(profileText);
+                for (int i = 0; i < tierMatches.Count; i++)
                 {
-                    if(match.Groups[2].Value.Equals("2"))
+                    var match = tierMatches[i];
+                    if (match.Groups[1].Value.Equals("21"))
                     {
-                        T212pc = true;
+                        if (match.Groups[2].Value.Equals("2"))
+                        {
+                            T212pc = true;
+                        }
+                        else if (match.Groups[2].Value.Equals("4"))
+                        {
+                            T214pc = true;
+                        }
                     }
-                    else if (match.Groups[2].Value.Equals("4"))
+                    if (match.Groups[1].Value.Equals("20"))
                     {
-                        T214pc = true;
+                        if (match.Groups[2].Value.Equals("2"))
+                        {
+                            T202pc = true;
+                        }
+                        else if (match.Groups[2].Value.Equals("4"))
+                        {
+                            T204pc = true;
+                        }
+                    }
+                    if (match.Groups[1].Equals("19"))
+                    {
+                        if (match.Groups[2].Value.Equals("2"))
+                        {
+                            T192pc = true;
+                        }
+                        else if (match.Groups[2].Value.Equals("4"))
+                        {
+                            T194pc = true;
+                        }
                     }
                 }
-                if (match.Groups[1].Value.Equals("20"))
-                {
-                    if (match.Groups[2].Value.Equals("2"))
-                    {
-                        T202pc = true;
-                    }
-                    else if (match.Groups[2].Value.Equals("4"))
-                    {
-                        T204pc = true;
-                    }
-                }
-                if (match.Groups[1].Equals("19"))
-                {
-                    if (match.Groups[2].Value.Equals("2"))
-                    {
-                        T192pc = true;
-                    }
-                    else if (match.Groups[2].Value.Equals("4"))
-                    {
-                        T194pc = true;
-                    }
-                }
-            }
 
-            Tier1 = 0;
-            if (Class.Equals("Priest"))
-            {
-                if (Spec.Equals("Shadow"))
+                Tier1 = 0;
+                if (Class.Equals("Priest"))
                 {
-                    CrucibleLoader(ShadowPriestCrucibleMapping, crucible);
+                    if (Spec.Equals("Shadow"))
+                    {
+                        CrucibleLoader(ShadowPriestCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Discipline"))
+                    {
+                        CrucibleLoader(DisciplinePriestCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Holy"))
+                    {
+                        CrucibleLoader(HolyPriestCrucibleMapping, crucible);
+                    }
                 }
-                else if (Spec.Equals("Discipline"))
+                else if (Class.Equals("Mage"))
                 {
-                    CrucibleLoader(DisciplinePriestCrucibleMapping, crucible);
+                    if (Spec.Equals("Arcane"))
+                    {
+                        CrucibleLoader(ArcaneMageCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Frost"))
+                    {
+                        CrucibleLoader(FrostMageCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Fire"))
+                    {
+                        CrucibleLoader(FireMageCrucibleMapping, crucible);
+                    }
                 }
-                else if (Spec.Equals("Holy"))
+                else if (Class.Equals("Warrior"))
                 {
-                    CrucibleLoader(HolyPriestCrucibleMapping, crucible);
+                    if (Spec.Equals("Protection"))
+                    {
+                        CrucibleLoader(ProtectionWarriorCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Arms"))
+                    {
+                        CrucibleLoader(ArmsWarriorCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Fury"))
+                    {
+                        CrucibleLoader(FuryWarriorCrucibleMapping, crucible);
+                    }
+                }
+                else if (Class.Equals("Hunter"))
+                {
+                    if (Spec.Equals("Beast Mastery"))
+                    {
+                        CrucibleLoader(BeastMasteryHunterCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Survival"))
+                    {
+                        CrucibleLoader(SurvivalHunterCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Marksman"))
+                    {
+                        CrucibleLoader(MarksmanHunterCrucibleMapping, crucible);
+                    }
+                }
+                else if (Class.Equals("Demon Hunter"))
+                {
+                    if (Spec.Equals("Havoc"))
+                    {
+                        CrucibleLoader(HavocDemonHunterCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Vengeance"))
+                    {
+                        CrucibleLoader(VengeanceDemonHunterCrucibleMapping, crucible);
+                    }
+                }
+                else if (Class.Equals("Monk"))
+                {
+                    if (Spec.Equals("Windwalker"))
+                    {
+                        CrucibleLoader(WindwalkerMonkCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Mistweaver"))
+                    {
+                        CrucibleLoader(MistweaverMonkCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Brewmaster"))
+                    {
+                        CrucibleLoader(BrewmasterMonkCrucibleMapping, crucible);
+                    }
+                }
+                else if (Class.Equals("Warlock"))
+                {
+                    if (Spec.Equals("Affliction"))
+                    {
+                        CrucibleLoader(AfflictionWarlockCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Demonology"))
+                    {
+                        CrucibleLoader(DemonologyWarlockCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Destruction"))
+                    {
+                        CrucibleLoader(DestructionWarlockCrucibleMapping, crucible);
+                    }
+                }
+                else if (Class.Equals("Paladin"))
+                {
+                    if (Spec.Equals("Holy"))
+                    {
+                        CrucibleLoader(HolyPaladinCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Retribution"))
+                    {
+                        CrucibleLoader(RetributionPaladinCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Protection"))
+                    {
+                        CrucibleLoader(ProtectionPaladinCrucibleMapping, crucible);
+                    }
+                }
+                else if (Class.Equals("Death Knight"))
+                {
+                    if (Spec.Equals("Unholy"))
+                    {
+                        CrucibleLoader(UnholyDeathKnightCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Frost"))
+                    {
+                        CrucibleLoader(FrostDeathKnightCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Blood"))
+                    {
+                        CrucibleLoader(BloodDeathKnightCrucibleMapping, crucible);
+                    }
+                }
+                else if (Class.Equals("Shaman"))
+                {
+                    if (Spec.Equals("Enhancement"))
+                    {
+                        CrucibleLoader(EnhancementShamanCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Elemental"))
+                    {
+                        CrucibleLoader(ElementalShamanCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Restoration"))
+                    {
+                        CrucibleLoader(RestorationShamanCrucibleMapping, crucible);
+                    }
+                }
+                else if (Class.Equals("Druid"))
+                {
+                    if (Spec.Equals("Restoration"))
+                    {
+                        CrucibleLoader(RestorationDruidCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Feral"))
+                    {
+                        CrucibleLoader(FeralDruidCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Balance"))
+                    {
+                        CrucibleLoader(BalanceDruidCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Guardian"))
+                    {
+                        CrucibleLoader(GuardianDruidCrucibleMapping, crucible);
+                    }
+                }
+                else if (Class.Equals("Rogue"))
+                {
+                    if (Spec.Equals("Subtlety"))
+                    {
+                        CrucibleLoader(SubtletyRogueCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Assassination"))
+                    {
+                        CrucibleLoader(AssassinationRogueCrucibleMapping, crucible);
+                    }
+                    else if (Spec.Equals("Outlaw"))
+                    {
+                        CrucibleLoader(OutlawRogueCrucibleMapping, crucible);
+                    }
                 }
             }
-            else if (Class.Equals("Mage"))
+            catch(Exception e)
             {
-                if (Spec.Equals("Arcane"))
-                {
-                    CrucibleLoader(ArcaneMageCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Frost"))
-                {
-                    CrucibleLoader(FrostMageCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Fire"))
-                {
-                    CrucibleLoader(FireMageCrucibleMapping, crucible);
-                }
-            }
-            else if (Class.Equals("Warrior"))
-            {
-                if (Spec.Equals("Protection"))
-                {
-                    CrucibleLoader(ProtectionWarriorCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Arms"))
-                {
-                    CrucibleLoader(ArmsWarriorCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Fury"))
-                {
-                    CrucibleLoader(FuryWarriorCrucibleMapping, crucible);
-                }
-            }
-            else if (Class.Equals("Hunter"))
-            {
-                if (Spec.Equals("Beast Mastery"))
-                {
-                    CrucibleLoader(BeastMasteryHunterCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Survival"))
-                {
-                    CrucibleLoader(SurvivalHunterCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Marksman"))
-                {
-                    CrucibleLoader(MarksmanHunterCrucibleMapping, crucible);
-                }
-            }
-            else if (Class.Equals("Demon Hunter"))
-            {
-                if (Spec.Equals("Havoc"))
-                {
-                    CrucibleLoader(HavocDemonHunterCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Vengeance"))
-                {
-                    CrucibleLoader(VengeanceDemonHunterCrucibleMapping, crucible);
-                }
-            }
-            else if (Class.Equals("Monk"))
-            {
-                if (Spec.Equals("Windwalker"))
-                {
-                    CrucibleLoader(WindwalkerMonkCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Mistweaver"))
-                {
-                    CrucibleLoader(MistweaverMonkCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Brewmaster"))
-                {
-                    CrucibleLoader(BrewmasterMonkCrucibleMapping, crucible);
-                }
-            }
-            else if (Class.Equals("Warlock"))
-            {
-                if (Spec.Equals("Affliction"))
-                {
-                    CrucibleLoader(AfflictionWarlockCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Demonology"))
-                {
-                    CrucibleLoader(DemonologyWarlockCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Destruction"))
-                {
-                    CrucibleLoader(DestructionWarlockCrucibleMapping, crucible);
-                }
-            }
-            else if (Class.Equals("Paladin"))
-            {
-                if (Spec.Equals("Holy"))
-                {
-                    CrucibleLoader(HolyPaladinCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Retribution"))
-                {
-                    CrucibleLoader(RetributionPaladinCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Protection"))
-                {
-                    CrucibleLoader(ProtectionPaladinCrucibleMapping, crucible);
-                }
-            }
-            else if (Class.Equals("Death Knight"))
-            {
-                if (Spec.Equals("Unholy"))
-                {
-                    CrucibleLoader(UnholyDeathKnightCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Frost"))
-                {
-                    CrucibleLoader(FrostDeathKnightCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Blood"))
-                {
-                    CrucibleLoader(BloodDeathKnightCrucibleMapping, crucible);
-                }
-            }
-            else if (Class.Equals("Shaman"))
-            {
-                if (Spec.Equals("Enhancement"))
-                {
-                    CrucibleLoader(EnhancementShamanCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Elemental"))
-                {
-                    CrucibleLoader(ElementalShamanCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Restoration"))
-                {
-                    CrucibleLoader(RestorationShamanCrucibleMapping, crucible);
-                }
-            }
-            else if (Class.Equals("Druid"))
-            {
-                if (Spec.Equals("Restoration"))
-                {
-                    CrucibleLoader(RestorationDruidCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Feral"))
-                {
-                    CrucibleLoader(FeralDruidCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Balance"))
-                {
-                    CrucibleLoader(BalanceDruidCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Guardian"))
-                {
-                    CrucibleLoader(GuardianDruidCrucibleMapping, crucible);
-                }
-            }
-            else if (Class.Equals("Rogue"))
-            {
-                if (Spec.Equals("Subtlety"))
-                {
-                    CrucibleLoader(SubtletyRogueCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Assassination"))
-                {
-                    CrucibleLoader(AssassinationRogueCrucibleMapping, crucible);
-                }
-                else if (Spec.Equals("Outlaw"))
-                {
-                    CrucibleLoader(OutlawRogueCrucibleMapping, crucible);
-                }
+                MessageBox.Show("Ran into an issue loading your profile: " + e.Message, "Error", MessageBoxButton.OK);
             }
         }
     }
