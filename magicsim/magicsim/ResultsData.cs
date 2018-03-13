@@ -1033,7 +1033,14 @@ namespace magicsim
                     SelectedPlayer = MergedResults[0];
                 }
             }
-            LoadCSVs(dir);
+            try
+            {
+                LoadCSVs(dir);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show("Could not load CSVs: " + e.Message);
+            }
             return true;
         }
 
@@ -1084,7 +1091,14 @@ namespace magicsim
                     return new KeyValuePair<string, PlayerReforge>(playerKVP.Key, reforge);
                 }).ToDictionary(kvp => kvp.Key, kvp => kvp.Value); ;
                 // We want playername -> playerreforge
-                Generate3DCollateral();
+                try
+                {
+                    Generate3DCollateral();
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show("Could not generate 3d collateral: " + e.Message);
+                }
             }
         }
     }

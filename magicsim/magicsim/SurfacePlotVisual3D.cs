@@ -190,12 +190,18 @@ namespace magicsim
 
         private void UpdateModel()
         {
-            this.Content = CreateModel();
+            try
+            {
+                this.Content = CreateModel();
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show("Could not create the model: " + e.Message);
+            }
         }
 
         private Model3D CreateModel()
         {
-
             var viewport = this.GetViewport3D();
             var plotModel = new Model3DGroup();
             var Children = plotModel.Children;
