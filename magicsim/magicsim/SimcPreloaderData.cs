@@ -71,7 +71,7 @@ namespace magicsim
                 {
                     Directory.CreateDirectory("characters");
                 }
-                Regex nameRegex = new Regex("[^=]+=\"([^\"]+)\"");
+                Regex nameRegex = new Regex("[^=]+=\"?([^\r\n\"]+)\"?");
                 String name = nameRegex.Match(simcString).Groups[1].Value;
                 if (File.Exists("characters/" + name))
                 {
