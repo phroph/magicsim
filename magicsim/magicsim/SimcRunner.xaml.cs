@@ -2,6 +2,9 @@
 using System.Linq;
 using System.IO;
 using System.Windows;
+using System.Collections.Generic;
+using static magicsim.SimQueue;
+using System.Text.RegularExpressions;
 
 namespace magicsim
 {
@@ -13,11 +16,15 @@ namespace magicsim
         public SimcRunner()
         {
             InitializeComponent();
-            var context = (SimcRunnerData)this.DataContext;
-            context.RunningComplete += Context_RunningComplete;
-            context.RunningFailed += Context_RunningFailed;
         }
-        
+
+        public void LoadMagicsimLoadout(List<string> profileset, int processCount, Model model)
+        {
+            var filenameRegex = new Regex(String.Format("json2=results\\{0}([^\\{0}]+\\{0}[^\\{0}]+).json", Path.DirectorySeparatorChar));
+            ((SimcRunnerData)this.DataContext).ExecuteSimRun(profileset, filenameRegex, processCount, Context_RunningFailed, Context_RunningComplete, "sims", "results", true);
+        }
+
+
         private void Context_RunningComplete(object sender, EventArgs e)
         {
             var simcData = (SimcRunnerData)sender;

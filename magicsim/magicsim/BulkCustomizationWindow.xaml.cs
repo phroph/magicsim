@@ -1,37 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace magicsim
 {
     /// <summary>
     /// Interaction logic for CustomizationWindow.xaml
     /// </summary>
-    public partial class CustomizationWindow : Window
+    public partial class BulkCustomizationWindow : Window
     {
-        public CustomizationWindow()
+        public BulkCustomizationWindow()
         {
             InitializeComponent();
         }
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            var context = (CustomizationData)this.DataContext;
-            var profile = context.ConstructFinalProfile();
+            var context = (BulkCustomizationData)this.DataContext;
             var window = new SimQueue();
             window.Top = App.Current.MainWindow.Top;
             window.Left = App.Current.MainWindow.Left;
-            ((SimQueueData)window.DataContext).AddSim(profile,context.Name);
+            context.CustomizationDataList.ToList().ForEach((customizationData) =>
+            {
+                var profile = customizationData.ConstructFinalProfile();
+                ((SimQueueData)window.DataContext).AddSim(profile, customizationData.Name);
+            });
             App.Current.MainWindow = window;
             this.Close();
             window.Show();

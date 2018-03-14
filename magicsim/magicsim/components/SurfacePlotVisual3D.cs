@@ -15,9 +15,8 @@ using System.Windows.Media.Media3D;
 using HelixToolkit.Wpf;
 using MIConvexHull;
 using System.Linq;
-using System.Drawing.Drawing2D;
 
-namespace magicsim
+namespace magicsim.components
 {
     /// <summary>
     /// As noted in the copyright, this file is largely copied from samples taken from the Helix Toolkit website. Adjustments were made to fit our domain but it was largely used as-was.

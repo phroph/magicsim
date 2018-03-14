@@ -322,7 +322,7 @@ namespace magicsim
             var window = new SimcRunner();
             window.Top = App.Current.MainWindow.Top;
             window.Left = App.Current.MainWindow.Left;
-            ((SimcRunnerData)window.DataContext).LoadSimLoadout(simList, context.Processes, selectedModel);
+            window.LoadMagicsimLoadout(simList, context.Processes, selectedModel);
             App.Current.MainWindow = window;
             this.Close();
             window.Show();

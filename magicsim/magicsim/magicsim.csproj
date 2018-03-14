@@ -52,6 +52,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -72,13 +73,20 @@
     </ApplicationDefinition>
     <Compile Include="Cell.cs" />
     <Compile Include="Character.cs" />
+    <Compile Include="components\PlayerCustomizationGrid.xaml.cs">
+      <DependentUpon>PlayerCustomizationGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BulkCustomizationData.cs" />
     <Compile Include="CustomizationData.cs" />
+    <Compile Include="BulkCustomizationWindow.xaml.cs">
+      <DependentUpon>BulkCustomizationWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Job.cs" />
     <Compile Include="Vertex.cs" />
     <Compile Include="ViewerReadyPlayerReforge.cs" />
     <Compile Include="PlayerReforge.cs" />
     <Compile Include="PlayerResult.cs" />
-    <Compile Include="ReforgePlot.xaml.cs">
+    <Compile Include="components\ReforgePlot.xaml.cs">
       <DependentUpon>ReforgePlot.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResultsData.cs" />
@@ -119,11 +127,19 @@
       <DependentUpon>SimQueue.xaml</DependentUpon>
     </Compile>
     <Compile Include="SimQueueData.cs" />
-    <Compile Include="SurfacePlotVisual3D.cs" />
+    <Compile Include="components\SurfacePlotVisual3D.cs" />
     <Compile Include="Tag.cs" />
-    <Page Include="ReforgePlot.xaml">
+    <Page Include="components\PlayerCustomizationGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="components\ReforgePlot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BulkCustomizationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ResultLoader.xaml">
       <SubType>Designer</SubType>

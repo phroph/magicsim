@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:magicsim"
+        xmlns:c="clr-namespace:magicsim.components"
         xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
         mc:Ignorable="d"
         Background="WhiteSmoke"
@@ -73,7 +74,7 @@
                                 <StackPanel Orientation="Vertical">
                                     <h:HelixViewport3D Height="250" ZoomExtentsWhenLoaded="True">
                                         <h:DefaultLights/>
-                                        <local:ReforgePlot/>
+                                        <c:ReforgePlot/>
                                     </h:HelixViewport3D>
                                     <StackPanel Orientation="Horizontal">
 
