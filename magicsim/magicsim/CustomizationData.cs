@@ -1070,7 +1070,7 @@ namespace magicsim
 
         public string ConstructFinalProfile()
         {
-            var nameClassRegex = new Regex("([^=])=\"?([^\r\n\"]+)\"?");
+            var nameClassRegex = new Regex("([^=]+)=\"?([^\r\n\"]+)\"?");
             var specRegex = new Regex("spec=(\\w+)");
             var crucibleRegex = new Regex("crucible=([^\r\n]+)");
             var artifactRegex = new Regex("artifact=([^\r\n]+)");
@@ -1333,7 +1333,7 @@ namespace magicsim
                 _profileText = File.ReadAllText(path);
                 var profileText = _profileText;
                 //Parse and update values.
-                var nameClassRegex = new Regex("([^=])=\"?([^\r\n\"]+)\"?");
+                var nameClassRegex = new Regex("([^=]+)=\"?([^\r\n\"]+)\"?");
                 var specRegex = new Regex("spec=(\\w+)");
                 var crucibleRegex = new Regex("crucible=([^\r\n]+)");
                 var ilvlRegex = new Regex("gear_ilvl=(\\d+.?\\d*)");

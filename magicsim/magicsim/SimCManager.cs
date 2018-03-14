@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace magicsim
 {
@@ -15,7 +16,14 @@ namespace magicsim
             {
                 return simc;
             }
-            simc = new SimC();
+            try
+            {
+                simc = new SimC();
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
             return simc;
         }
     }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:magicsim"
         mc:Ignorable="d"
         Background="WhiteSmoke"
-        Title="magicsim" Height="300" Width="300"
+        Title="magicsim" Height="307.604" Width="300"
         ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>

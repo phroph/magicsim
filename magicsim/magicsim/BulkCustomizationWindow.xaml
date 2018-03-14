@@ -15,19 +15,15 @@
         <Binding Source="{StaticResource bulkCustomizationData}"/>
     </Window.DataContext>
     <Grid Margin="0,0,-7,4">
-        <TabControl ItemsSource="{Binding Path=CustomizationDataList}" Width="Auto">
+        <TabControl ItemsSource="{Binding Path=CustomizationDataList}" Height="Auto" Width="Auto">
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Path=PlayerName}"/>
+                    <TextBlock Text="{Binding Path=Name}"/>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
                 <DataTemplate>
-                    <c:PlayerCustomizationGrid>
-                        <c:PlayerCustomizationGrid.DataContext>
-                            <Binding Source="{RelativeSource Self}"/>
-                        </c:PlayerCustomizationGrid.DataContext>
-                    </c:PlayerCustomizationGrid>
+                    <c:PlayerCustomizationGrid/>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>

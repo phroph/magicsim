@@ -87,7 +87,7 @@ namespace magicsim
                 file.Write(array, 0, array.Length);
                 file.Close();
             }
-            if(!Directory.Exists("bin"))
+            if (!Directory.Exists("bin"))
             {
                 Directory.CreateDirectory("bin");
             }
@@ -98,7 +98,8 @@ namespace magicsim
                 try
                 {
                     file.Delete();
-                } catch(Exception)
+                }
+                catch (Exception)
                 {
                     Console.Write("Warning: Error deleting file");
                 }
@@ -108,7 +109,8 @@ namespace magicsim
                 try
                 {
                     dir.Delete(true);
-                } catch(Exception)
+                }
+                catch (Exception)
                 {
                     Console.Write("Warning: Error deleting file");
                 }
@@ -118,11 +120,12 @@ namespace magicsim
             ProcessStartInfo info = new ProcessStartInfo(zipExec, " x -obin -y " + filename);
             info.WindowStyle = ProcessWindowStyle.Hidden;
             Process.Start(info).WaitForExit();
-            
+
             directory = new DirectoryInfo("bin").EnumerateDirectories().OrderByDescending((dir) =>
             {
                 return dir.CreationTimeUtc.ToFileTimeUtc();
             }).ElementAt(0).ToString();
+
         }
 
         public static byte[] ReadFully(Stream input)

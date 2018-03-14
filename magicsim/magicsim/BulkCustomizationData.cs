@@ -24,7 +24,7 @@ namespace magicsim
             }
         }
 
-        public ObservableCollection<CustomizationData> CustomizationDataList;
+        public ObservableCollection<CustomizationData> CustomizationDataList { get; set; }
 
         public BulkCustomizationData()
         {

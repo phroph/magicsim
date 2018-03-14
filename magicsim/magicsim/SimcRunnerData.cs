@@ -79,9 +79,7 @@ namespace magicsim
         }
 
         public Object simLock = new Object();
-
-        // profileset, resultname regex, process count, failure callback, success callback
-
+        
         public void ExecuteSimRun(List<string> profiles, Regex filenameRegex, int processCount, EventHandler failureHandler, EventHandler successHandler, String writeDir, String resultDir, Boolean hasGuid)
         {
             RunningComplete += successHandler;
@@ -100,76 +98,95 @@ namespace magicsim
                 });
                 return;
             }
-            simc = SimCManager.AcquireSimC();
-            for (int i = 0; i < processCount; i++)
+            ThreadPool.QueueUserWorkItem((_) =>
             {
-                Label = "Running Simc Profiles";
-                ThreadPool.QueueUserWorkItem((_) =>
+                try
                 {
-                    while (true)
+                    simc = SimCManager.AcquireSimC();
+                    for (int i = 0; i < processCount; i++)
                     {
-                        var profile = "";
-                        lock (simLock)
+                        Label = "Running Simc Profiles";
+                        ThreadPool.QueueUserWorkItem((__) =>
                         {
-                            if (topHandle == profiles.Count)
+                            while (true)
                             {
-                                return;
-                            }
-                            profile = profiles[topHandle];
-                            topHandle++;
-                        }
-                        var fileName = filenameRegex.Match(profile).Groups[1].Value;
-                        if (!Directory.Exists(resultDir + Path.DirectorySeparatorChar))
-                        {
-                            Directory.CreateDirectory(resultDir + Path.DirectorySeparatorChar);
-                        }
-
-
-                        if (hasGuid)
-                        {
-                            guid = fileName.Split(Path.DirectorySeparatorChar)[0];
-                            if (!Directory.Exists(writeDir + Path.DirectorySeparatorChar + guid))
-                            {
-                                Directory.CreateDirectory(writeDir + Path.DirectorySeparatorChar + guid);
-                            }
-                            if (!Directory.Exists(resultDir + Path.DirectorySeparatorChar + guid))
-                            {
-                                Directory.CreateDirectory(resultDir + Path.DirectorySeparatorChar + guid);
-                            }
-                        }
-
-                        File.WriteAllText(writeDir + Path.DirectorySeparatorChar + fileName + ".simc", profile);
-                        if (simc.RunSim(writeDir + Path.DirectorySeparatorChar + fileName + ".simc"))
-                        {
-                            Completed++;
-                            App.Current.Dispatcher.Invoke(() =>
-                            {
-                                if (Completed == Total)
+                                var profile = "";
+                                lock (simLock)
                                 {
-                                    Label = "All Sims Completed";
-                                    RunningComplete(this, new EventArgs());
-                                    WindowCleanup(this, new EventArgs());
-                                    RunningComplete -= successHandler;
-                                    RunningFailed -= failureHandler;
+                                    if (topHandle == profiles.Count)
+                                    {
+                                        return;
+                                    }
+                                    profile = profiles[topHandle];
+                                    topHandle++;
                                 }
-                            });
-                        }
-                        else
-                        {
-                            Label = "Failed to Run a Sim";
-                            MessageBox.Show("Sims failed to be ran. Try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                            App.Current.Dispatcher.Invoke(() =>
-                            {
-                                RunningFailed(this, new EventArgs());
-                                WindowCleanup(this, new EventArgs());
-                                RunningComplete -= successHandler;
-                                RunningFailed -= failureHandler;
-                            });
-                            return;
-                        }
+                                var fileName = filenameRegex.Match(profile).Groups[1].Value;
+                                if (!Directory.Exists(resultDir + Path.DirectorySeparatorChar))
+                                {
+                                    Directory.CreateDirectory(resultDir + Path.DirectorySeparatorChar);
+                                }
+
+
+                                if (hasGuid)
+                                {
+                                    guid = fileName.Split(Path.DirectorySeparatorChar)[0];
+                                    if (!Directory.Exists(writeDir + Path.DirectorySeparatorChar + guid))
+                                    {
+                                        Directory.CreateDirectory(writeDir + Path.DirectorySeparatorChar + guid);
+                                    }
+                                    if (!Directory.Exists(resultDir + Path.DirectorySeparatorChar + guid))
+                                    {
+                                        Directory.CreateDirectory(resultDir + Path.DirectorySeparatorChar + guid);
+                                    }
+                                }
+
+                                File.WriteAllText(writeDir + Path.DirectorySeparatorChar + fileName + ".simc", profile);
+                                if (simc.RunSim(writeDir + Path.DirectorySeparatorChar + fileName + ".simc"))
+                                {
+                                    Completed++;
+                                    App.Current.Dispatcher.Invoke(() =>
+                                    {
+                                        if (Completed == Total)
+                                        {
+                                            Label = "All Sims Completed";
+                                            RunningComplete(this, new EventArgs());
+                                            WindowCleanup(this, new EventArgs());
+                                            RunningComplete -= successHandler;
+                                            RunningFailed -= failureHandler;
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    Label = "Failed to Run a Sim";
+                                    MessageBox.Show("Sims failed to be ran. Try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                    App.Current.Dispatcher.Invoke(() =>
+                                    {
+                                        RunningFailed(this, new EventArgs());
+                                        WindowCleanup(this, new EventArgs());
+                                        RunningComplete -= successHandler;
+                                        RunningFailed -= failureHandler;
+                                    });
+                                    return;
+                                }
+                            }
+                        });
                     }
-                });
-            }
+                }
+                catch(Exception e)
+                {
+                    Label = "Failed to Run a Sim";
+                    MessageBox.Show("Sims failed to be ran because SimC could not be acquired. Try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        RunningFailed(this, new EventArgs());
+                        WindowCleanup(this, new EventArgs());
+                        RunningComplete -= successHandler;
+                        RunningFailed -= failureHandler;
+                    });
+                    return;
+                }
+            });
         }
     }
 }

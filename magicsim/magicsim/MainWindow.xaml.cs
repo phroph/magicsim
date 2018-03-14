@@ -54,5 +54,15 @@ namespace magicsim
             this.Close();
             window.Show();
         }
+
+        private void batch_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new BulkSimLoader();
+            window.Top = App.Current.MainWindow.Top;
+            window.Left = App.Current.MainWindow.Left;
+            App.Current.MainWindow = window;
+            this.Close();
+            window.Show();
+        }
     }
 }
