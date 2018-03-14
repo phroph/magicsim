@@ -82,6 +82,9 @@
       <DependentUpon>BulkCustomizationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Job.cs" />
+    <Compile Include="BulkSimLoader.xaml.cs">
+      <DependentUpon>BulkSimLoader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vertex.cs" />
     <Compile Include="ViewerReadyPlayerReforge.cs" />
     <Compile Include="PlayerReforge.cs" />
@@ -146,6 +149,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SimcRunner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="BulkSimLoader.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
