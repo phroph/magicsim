@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using Path = System.IO.Path;
+
 namespace magicsim
 {
     /// <summary>
@@ -342,7 +344,9 @@ namespace magicsim
             window.Top = App.Current.MainWindow.Top;
             window.Left = App.Current.MainWindow.Left;
             ((ResultsData)window.DataContext).LoadResultPath("results" + System.IO.Path.DirectorySeparatorChar + simcData.guid);
-            ((ResultsData)window.DataContext).MergeResults(simcData.model, simcData.guid);
+
+            var htmls = Directory.EnumerateFiles("results" + System.IO.Path.DirectorySeparatorChar + simcData.guid, "*.html");
+            ((ResultsData)window.DataContext).MergeResults(simcData.model, simcData.guid, htmls);
             App.Current.MainWindow = window;
             this.Close();
             window.Show();

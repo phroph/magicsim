@@ -747,7 +747,7 @@ namespace magicsim
             }
         }
 
-        public void MergeResults(Model model, string guid)
+        public void MergeResults(Model model, string guid, IEnumerable<string> htmls)
         {
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
             Tag = "";
@@ -926,13 +926,13 @@ namespace magicsim
                 });
                 return;
             }
-            SaveResults(guid);
+            SaveResults(guid, htmls);
             SelectedPlayer = MergedResults[0];
 
             ProcessCSVs(model,guid);
         }
 
-        public void SaveResults(string guid)
+        public void SaveResults(string guid, IEnumerable<string> htmls)
         {
             var resultJson = JsonConvert.SerializeObject(MergedResults.ToList());
             if(!Directory.Exists("savedResults"))
@@ -953,6 +953,11 @@ namespace magicsim
             }
             dir = fixedDir;
             Directory.CreateDirectory(dir);
+
+            htmls.ToList().ForEach((html) =>
+            {
+                File.Copy(html, dir + Path.DirectorySeparatorChar + html.Split(Path.DirectorySeparatorChar).Last());
+            });
 
             File.WriteAllText(dir + Path.DirectorySeparatorChar + "ModelName.txt", ModelName);
             File.WriteAllText(dir + Path.DirectorySeparatorChar + "ModelNameShort.txt", ModelNameShort);
