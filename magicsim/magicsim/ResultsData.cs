@@ -774,13 +774,13 @@ namespace magicsim
             var tagBuilder = "";
             if (currentCulture.DateTimeFormat.ShortDatePattern.IndexOf("M") < currentCulture.DateTimeFormat.ShortDatePattern.IndexOf("d"))
             {
-                tagBuilder = DateTime.Today.Month.ToString().PadLeft(2, '0') + DateTime.Today.Day.ToString().PadLeft(2, '0') + DateTime.Today.Year.ToString();
+                tagBuilder = DateTime.Today.Month.ToString().PadLeft(2, '0') + "-" + DateTime.Today.Day.ToString().PadLeft(2, '0') + "-" + DateTime.Today.Year.ToString();
             }
             else
             {
-                tagBuilder = DateTime.Today.Day.ToString().PadLeft(2, '0') + DateTime.Today.Month.ToString().PadLeft(2, '0') + DateTime.Today.Year.ToString();
+                tagBuilder = DateTime.Today.Day.ToString().PadLeft(2, '0') + "-" + DateTime.Today.Month.ToString().PadLeft(2, '0') + "-" + DateTime.Today.Year.ToString();
             }
-            tagBuilder += "-" + guid;
+            tagBuilder += ";" + model.name + ";" + guid;
             Tag = tagBuilder;
             playerCritValues.Clear();
             playerDpsValues.Clear();
