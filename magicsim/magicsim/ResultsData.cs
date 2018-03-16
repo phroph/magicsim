@@ -85,16 +85,30 @@ namespace magicsim
             }
         }
 
-        private string _labelString;
-        public string LabelString
+        private string _saveName;
+        public string SaveName
         {
-            get { return _labelString; }
+            get { return _saveName; }
             set
             {
-                if (value != _labelString)
+                if (value != _saveName)
                 {
-                    _labelString = value;
-                    OnPropertyChanged("LabelString");
+                    _saveName = value;
+                    OnPropertyChanged("SaveName");
+                }
+            }
+        }
+
+        private string _modelName;
+        public string ModelName
+        {
+            get { return _modelName; }
+            set
+            {
+                if (value != _modelName)
+                {
+                    _modelName = value;
+                    OnPropertyChanged("ModelName");
                 }
             }
         }
@@ -167,21 +181,6 @@ namespace magicsim
             }
         }
 
-        private string _modelName;
-        public string ModelName
-        {
-            get { return _modelName; }
-            set
-            {
-                if (value != _modelName)
-                {
-                    _modelName = value;
-                    LabelString = GetLabelString();
-                    OnPropertyChanged("ModelName");
-                }
-            }
-        }
-
         private string _modelNameShort;
         public string ModelNameShort
         {
@@ -202,11 +201,38 @@ namespace magicsim
             get { return _tag; }
             set
             {
-                if (value != _tag)
+                if (_tag != value)
                 {
-                    _tag = value;
-                    LabelString = GetLabelString();
-                    OnPropertyChanged("Tag");
+                    try
+                    {
+                        if (!Directory.Exists("savedResults"))
+                        {
+                            MessageBox.Show("No saved runs to rename. Run a sim first.", "Stop", MessageBoxButton.OK, MessageBoxImage.Stop);
+                        }
+                        if (value.Length == 0 || value == null)
+                        {
+                            MessageBox.Show("Invalid name. Try a different name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+                        if (_tag != null && _tag.Length > 0)
+                        {
+                            if (Directory.EnumerateDirectories("savedResults").Where(x => x.Split(Path.DirectorySeparatorChar).Last().Equals(_tag)).Count() > 0)
+                            {
+                                Directory.Move("savedResults" + Path.DirectorySeparatorChar + _tag, "savedResults" + Path.DirectorySeparatorChar + value);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Couldn't find the result to rename.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
+                            }
+                        }
+                        _tag = value;
+                        OnPropertyChanged("Tag");
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Could not rename this saved run. Try a different name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
         }
@@ -272,11 +298,6 @@ namespace magicsim
             reforges = new Dictionary<string, PlayerReforge>();
             players = new Dictionary<string, Player>();
             MergedMeshedReforges = new ObservableCollection<ViewerReadyPlayerReforge>();
-        }
-
-        public string GetLabelString()
-        {
-            return "Results - " + Tag + " - " + ModelName;
         }
 
         public void LoadResultPath(String path)
@@ -750,16 +771,17 @@ namespace magicsim
         public void MergeResults(Model model, string guid, IEnumerable<string> htmls)
         {
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
-            Tag = "";
+            var tagBuilder = "";
             if (currentCulture.DateTimeFormat.ShortDatePattern.IndexOf("M") < currentCulture.DateTimeFormat.ShortDatePattern.IndexOf("d"))
             {
-                Tag = DateTime.Today.Month.ToString().PadLeft(2, '0') + DateTime.Today.Day.ToString().PadLeft(2, '0') + DateTime.Today.Year.ToString();
+                tagBuilder = DateTime.Today.Month.ToString().PadLeft(2, '0') + DateTime.Today.Day.ToString().PadLeft(2, '0') + DateTime.Today.Year.ToString();
             }
             else
             {
-                Tag = DateTime.Today.Day.ToString().PadLeft(2, '0') + DateTime.Today.Month.ToString().PadLeft(2, '0') + DateTime.Today.Year.ToString();
+                tagBuilder = DateTime.Today.Day.ToString().PadLeft(2, '0') + DateTime.Today.Month.ToString().PadLeft(2, '0') + DateTime.Today.Year.ToString();
             }
-            Tag += "-" + guid;
+            tagBuilder += "-" + guid;
+            Tag = tagBuilder;
             playerCritValues.Clear();
             playerDpsValues.Clear();
             playerHasteValues.Clear();

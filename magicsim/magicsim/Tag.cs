@@ -41,12 +41,17 @@ namespace magicsim
                             MessageBox.Show("Invalid name. Try a different name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                             return;
                         }
-                        if (_label != null && Directory.EnumerateFiles("savedResults").Where(x => x.Equals(_label)).Count() > 0)
+                        if (_label != null)
                         {
-                            Directory.Move("savedResults" + Path.DirectorySeparatorChar + _label, "savedResults" + Path.DirectorySeparatorChar + value);
-                        } else
-                        {
-                            MessageBox.Show("Existing saved run not found. Please select a run to rename.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            if (Directory.EnumerateDirectories("savedResults").Where(x => x.Split(Path.DirectorySeparatorChar).Last().Equals(_label)).Count() > 0)
+                            {
+                                Directory.Move("savedResults" + Path.DirectorySeparatorChar + _label, "savedResults" + Path.DirectorySeparatorChar + value);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Couldn't find the result to rename.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                                return;
+                            }
                         }
                         _label = value;
                         OnPropertyChanged("Label");

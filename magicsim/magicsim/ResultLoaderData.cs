@@ -40,7 +40,6 @@ namespace magicsim
                     OnPropertyChanged("SelectedTag");
                 }
             }
-            
         }
 
         public ResultLoaderData()

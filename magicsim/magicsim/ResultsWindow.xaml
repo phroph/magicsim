@@ -8,7 +8,7 @@
         xmlns:h="clr-namespace:HelixToolkit.Wpf;assembly=HelixToolkit.Wpf" 
         mc:Ignorable="d"
         Background="WhiteSmoke"
-        Title="magicsim" Height="350.715" Width="410.224"
+        Title="magicsim" Height="383.847" Width="410.224"
         ResizeMode="NoResize">
     <Window.Resources>
         <local:ResultsData x:Key="resultData"/>
@@ -16,49 +16,55 @@
     <Window.DataContext>
         <Binding Source="{StaticResource resultData}"/>
     </Window.DataContext>
-    <Grid Margin="0,0,3.667,-0.333">
+    <Grid>
         <TabControl>
             <TabItem Header="Results">
                 <Grid Background="#FFE5E5E5">
-                    <ListBox Name="CharacterSelector" Background="GhostWhite" ItemsSource="{Binding Path=MergedResults}" SelectedItem="{Binding Path=SelectedPlayer}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Height="118" Margin="24,26,25.667,120.667">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Vertical" Margin="0,0,0,0"/>
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Style.Triggers>
-                                    <Trigger Property="IsSelected" Value="true">
-                                        <Setter Property="Background" Value="LightGray"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                                <Setter Property="Background" Value="WhiteSmoke"/>
-                                <Setter Property="Padding" Value="0"/>
-                                <Setter Property="Margin" Value="0"/>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <!-- Light Gray / F3F3F3-->
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Border Height="26" Width="335"  BorderBrush="Gray" BorderThickness="1" Padding="0">
-                                    <StackPanel Orientation="Horizontal" Height="335" Width="auto" >
-                                        <Label Width="100" Content="{Binding Path=Name}"/>
-                                        <Label Width="100" Content="{Binding Path=Spec}"/>
-                                        <Label Width="70" Content="{Binding Path=Dps}"/>
-                                        <Label Padding="0 4.5 2 0" Content="{Binding Path=DpsBoost}"/>
-                                    </StackPanel>
-                                </Border>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                    <StackPanel Name="StatWeights" Orientation="Vertical" Background="#F3F3F3" Height="83" Margin="24,149,25.667,32.667">
-                        <Label Content="{Binding SummaryString}" FontSize="14" MinHeight="23" VerticalAlignment="Bottom" Margin="0,0,-0.333,0"/>
-                        <Label Content="Pawn String: " FontSize="10"/>
-                        <TextBox Background="GhostWhite" IsReadOnly="True" VerticalAlignment="Center" FontSize="10" Text="{Binding PawnString}" HorizontalScrollBarVisibility="Visible" Height="35" HorizontalAlignment="Stretch" Padding="0,0,8,0"/>
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Margin="30 10 0 0">
+                            <Label Content="Result Name:"/>
+                            <TextBox Name="RenameBox" Width="125" Height="20" FontSize="10" Text="{Binding Path=Tag, Mode=OneWay}" />
+                            <Button Content="Rename" Width="52" Height="20" FontSize="10" Click="Rename_Click"/>
+                        </StackPanel>
+                        <Label Content="{Binding Path=ModelName}" Height="25" Margin="30 5 0 0"/>
+                        <ListBox Name="CharacterSelector" Background="GhostWhite" ItemsSource="{Binding Path=MergedResults}" Margin="0 10 0 5" SelectedItem="{Binding Path=SelectedPlayer}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Height="118" Width="325">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical" Margin="0,0,0,0"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="true">
+                                            <Setter Property="Background" Value="LightGray"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                    <Setter Property="Background" Value="WhiteSmoke"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="Margin" Value="0"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Height="26" Width="335"  BorderBrush="Gray" BorderThickness="1" Padding="0">
+                                        <StackPanel Orientation="Horizontal" Height="335" Width="auto" >
+                                            <Label Width="100" Content="{Binding Path=Name}"/>
+                                            <Label Width="100" Content="{Binding Path=Spec}"/>
+                                            <Label Width="70" Content="{Binding Path=Dps}"/>
+                                            <Label Padding="0 4.5 2 0" Content="{Binding Path=DpsBoost}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <StackPanel Name="StatWeights" Orientation="Vertical" Background="#F3F3F3" Height="83" Width="325">
+                            <Label Content="{Binding SummaryString}" FontSize="14" MinHeight="23" VerticalAlignment="Bottom"/>
+                            <Label Content="Pawn String: " FontSize="10"/>
+                            <TextBox Name="PawnBox" Background="GhostWhite" IsReadOnly="True" VerticalAlignment="Center" FontSize="10" Text="{Binding PawnString}" HorizontalScrollBarVisibility="Visible" Height="35" HorizontalAlignment="Stretch" Padding="0,0,8,0"/>
+                        </StackPanel>
+                        <Button Content="Done" HorizontalAlignment="Center" Click="Button_Click" Width="75" Margin="10"/>
                     </StackPanel>
-                    <Button Content="Done" HorizontalAlignment="Left" Margin="153,259,0,0" VerticalAlignment="Top" Click="Button_Click" Width="75"/>
-                    <Label Content="{Binding Path=LabelString}" HorizontalAlignment="Left" Margin="24,6,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Name="Reforge" Header="Reforge Results" IsEnabled="{Binding Path=HasReforge}">
