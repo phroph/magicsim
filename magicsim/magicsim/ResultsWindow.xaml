@@ -23,7 +23,7 @@
                     <StackPanel Orientation="Vertical">
                         <StackPanel Orientation="Horizontal" Margin="30 10 0 0">
                             <Label Content="Result Name:"/>
-                            <TextBox Name="RenameBox" Width="125" Height="20" FontSize="10" Text="{Binding Path=Tag, Mode=OneWay}" />
+                            <TextBox Name="RenameBox" Width="150" Height="20" FontSize="10" Text="{Binding Path=Tag, Mode=OneWay}" />
                             <Button Content="Rename" Width="52" Height="20" FontSize="10" Click="Rename_Click"/>
                         </StackPanel>
                         <Label Content="{Binding Path=ModelName}" Height="25" Margin="30 5 0 0"/>
@@ -47,8 +47,8 @@
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Border Height="26" Width="335"  BorderBrush="Gray" BorderThickness="1" Padding="0">
-                                        <StackPanel Orientation="Horizontal" Height="335" Width="auto" >
+                                    <Border Height="26" Width="320"  BorderBrush="Gray" BorderThickness="1" Padding="0">
+                                        <StackPanel Orientation="Horizontal" Height="30" Width="Auto" >
                                             <Label Width="100" Content="{Binding Path=Name}"/>
                                             <Label Width="100" Content="{Binding Path=Spec}"/>
                                             <Label Width="70" Content="{Binding Path=Dps}"/>
