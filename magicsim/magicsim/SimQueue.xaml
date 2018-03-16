@@ -9,6 +9,9 @@
         ResizeMode="NoResize">
     <Window.Resources>
         <local:SimQueueData x:Key="simQueueData"/>
+        <Style x:Key="LongSliderTooltip" TargetType="Slider">
+            <Setter Property="ToolTipService.ShowDuration" Value="20000"/>
+        </Style>
     </Window.Resources>
     <Window.DataContext>
         <Binding Source="{StaticResource simQueueData}"/>
@@ -40,17 +43,17 @@
                             </ItemsControl>
                         </ScrollViewer>
                         <Button Content="Add" HorizontalAlignment="Left" Margin="24,172,0,0" VerticalAlignment="Top" Width="75" Click="AddCharacter_Click"/>
-                        <Slider HorizontalAlignment="Left" Margin="376,85,0,0" Value="{Binding Threads}" Maximum="8" Minimum="1" VerticalAlignment="Top" Width="121">
+                        <Slider Style="{StaticResource LongSliderTooltip}" HorizontalAlignment="Left" Margin="376,85,0,0" Value="{Binding Threads}" Maximum="8" Minimum="1" VerticalAlignment="Top" Width="121">
                             <Slider.ToolTip>
                                 <ToolTip>
                                     <DockPanel Width="185" Height="80">
-                                        <TextBlock TextWrapping="Wrap">Determines how much CPU resources SimC will use. I do not recommend exceeded the default value. Reduce this value if you see system instability or crashes.</TextBlock>
+                                        <TextBlock TextWrapping="Wrap">Determines how much CPU resources SimC will use. I do not recommend exceeding the default value. Reduce this value if you see system instability or crashes.</TextBlock>
                                     </DockPanel>
                                 </ToolTip>
                             </Slider.ToolTip>
                         </Slider>
                         <Label Content="Threads:" HorizontalAlignment="Left" Margin="316,79,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.688,0.297"/>
-                        <Slider HorizontalAlignment="Left" Value="{Binding Processes}" Maximum="8" Minimum="1" Margin="376,110,0,0" VerticalAlignment="Top" Width="121">
+                        <Slider Style="{StaticResource LongSliderTooltip}" HorizontalAlignment="Left" Value="{Binding Processes}" Maximum="8" Minimum="1" Margin="376,110,0,0" VerticalAlignment="Top" Width="121">
                             <Slider.ToolTip>
                                 <ToolTip>
                                     <DockPanel Width="225" Height="80">
@@ -71,7 +74,7 @@
                         <CheckBox Content="PTR Mode" HorizontalAlignment="Left" IsChecked="{Binding PTRMode}" Margin="446,139,0,0" VerticalAlignment="Top"/>
                         <StackPanel Orientation="Horizontal" Margin="300,170,0,0">
                             <Label Content="Fixed Iteration" FontSize="12" />
-                            <Slider Maximum="1" Minimum="0" Value="{Binding FixedIterationOrError}" Width="75">
+                            <Slider Style="{StaticResource LongSliderTooltip}" Maximum="1" Minimum="0" Value="{Binding FixedIterationOrError}" Width="75">
                                 <Slider.ToolTip>
                                     <ToolTip>
                                         <DockPanel Width="200" Height="80">
@@ -87,7 +90,7 @@
                 <TabItem Header="Advanced">
                     <Grid Height="200" Margin="0,0,0.333,0">
                         <Label Content="Pantheon Raid Trinkets:" HorizontalAlignment="Left" Margin="13,42,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.429,-0.53"/>
-                        <Label Content="(Click to Remove)" FontSize="8" HorizontalAlignment="Left" Margin="13,57,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.429,-0.53"/>
+                        <Label Content="(Click to remove)" FontSize="8" HorizontalAlignment="Left" Margin="13,57,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.429,-0.53"/>
                         <CheckBox Content="Enabled" HorizontalAlignment="Left" Margin="151,48,0,0" IsChecked="{Binding PantheonTrinketsEnabled}" Unchecked="PantheonEnable_Unchecked" Checked="PantheonEnable_Checked" VerticalAlignment="Top"/>
                         <Button Content="Add" IsEnabled="{Binding PantheonTrinketsEnabled}" Click="PantheonUserAdd_Click" HorizontalAlignment="Left" Margin="229,110,0,0" VerticalAlignment="Top" Width="35" Height="24"/>
                         <ComboBox HorizontalAlignment="Left" IsEnabled="{Binding PantheonTrinketsEnabled}" ItemsSource="{Binding PantheonTrinkets}" SelectionChanged="PantheonTrinket_SelectionChanged" SelectedItem="{Binding SelectedPantheonTrinket}" Margin="139,83,0,0" VerticalAlignment="Top" Width="125"/>
@@ -96,7 +99,7 @@
                         <Label Content="%" HorizontalAlignment="Left" Margin="204,106,0,0" VerticalAlignment="Top"/>
                         <Label Content="Reforge Parameters:" HorizontalAlignment="Left" Margin="286,41,0,0" VerticalAlignment="Top"/>
                         <CheckBox Content="Enabled" HorizontalAlignment="Left" Margin="416,48,0,0" VerticalAlignment="Top" IsChecked="{Binding ReforgeEnabled}"/>
-                        <Label Content="(Will Greatly Impact Performance)" HorizontalAlignment="Left" Margin="286,56,0,0" FontSize="8" VerticalAlignment="Top"/>
+                        <Label Content="(Will greatly iimpact performance)" HorizontalAlignment="Left" Margin="286,56,0,0" FontSize="8" VerticalAlignment="Top"/>
                         <CheckBox Content="Critical Strike" HorizontalAlignment="Left" Margin="292,91,0,0" VerticalAlignment="Top" IsEnabled="{Binding ReforgeEnabled}" IsChecked="{Binding ReforgeCrit}" FontSize="10"/>
                         <CheckBox Content="Mastery" HorizontalAlignment="Left" Margin="374,91,0,0" VerticalAlignment="Top" IsEnabled="{Binding ReforgeEnabled}" IsChecked="{Binding ReforgeMastery}" FontSize="10"/>
                         <CheckBox Content="Haste" HorizontalAlignment="Left" Margin="292,109,0,0" VerticalAlignment="Top" IsEnabled="{Binding ReforgeEnabled}" IsChecked="{Binding ReforgeHaste}" FontSize="10"/>
@@ -119,7 +122,7 @@
                     </Grid>
                 </TabItem>
             </TabControl>
-            <StackPanel Orientation="Horizontal" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Height="25" HorizontalAlignment="Center" Margin="0 10 0 0" VerticalAlignment="Center">
                 <Button Content="Simulate" Width="75" Click="Simulate_Click" Margin="0,0,15,0"/>
                 <Button Content="Cancel" Width="75"  Click="Cancel_Click" Margin="15,0,0,0"/>
             </StackPanel>

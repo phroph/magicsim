@@ -13,7 +13,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical">
-            <TextBlock x:Name="Directions" Text="Enter a list of profiles separated by a single newline below:" HorizontalAlignment="Left" Height="50" TextWrapping="Wrap" Margin="10,10,0,0" VerticalAlignment="Bottom" FontSize="13"/>
+            <TextBlock x:Name="Directions" Text="Enter a list of profiles separated by a single newline each below:" HorizontalAlignment="Left" Height="50" TextWrapping="Wrap" Margin="10,10,0,0" VerticalAlignment="Bottom" FontSize="13"/>
             <TextBox x:Name="SimC" HorizontalAlignment="Center" AcceptsTab="True" AcceptsReturn="True" Height="184" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="273" Margin="11,0,10.667,0"/>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0 5 0 0" HorizontalAlignment="Center">
                 <Button x:Name="continueButton" IsDefault="True"  Content="Continue" Click="continueButton_Click" Margin="5" Width="75"/>
