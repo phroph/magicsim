@@ -6,17 +6,16 @@
         xmlns:local="clr-namespace:magicsim"
         mc:Ignorable="d"
         Background="WhiteSmoke"
-        Title="magicsim" Height="307.604" Width="300"
+        Title="magicsim" Height="320.604" Width="300"
         ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Vertical">
-            <Label x:Name="Directions" Content="Enter a list of profiles separated" HorizontalAlignment="Left" Height="26" Margin="10,0,0,0" VerticalAlignment="Bottom" FontSize="13"/>
-            <Label x:Name="Directions2" Content="by a single newline below:" HorizontalAlignment="Left" Height="27" Margin="10,0,0,0" VerticalAlignment="Bottom" FontSize="13"/>
+            <TextBlock x:Name="Directions" Text="Enter a list of profiles separated by a single newline below:" HorizontalAlignment="Left" Height="50" TextWrapping="Wrap" Margin="10,10,0,0" VerticalAlignment="Bottom" FontSize="13"/>
             <TextBox x:Name="SimC" HorizontalAlignment="Center" AcceptsTab="True" AcceptsReturn="True" Height="184" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="273" Margin="11,0,10.667,0"/>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0 5 0 0" HorizontalAlignment="Center">
                 <Button x:Name="continueButton" IsDefault="True"  Content="Continue" Click="continueButton_Click" Margin="5" Width="75"/>
                 <Button x:Name="cancelButton" Content="Cancel" Click="cancelButton_Click" Margin="5"  Width="75"/>
             </StackPanel>
