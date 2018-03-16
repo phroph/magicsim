@@ -40,9 +40,25 @@
                             </ItemsControl>
                         </ScrollViewer>
                         <Button Content="Add" HorizontalAlignment="Left" Margin="24,172,0,0" VerticalAlignment="Top" Width="75" Click="AddCharacter_Click"/>
-                        <Slider HorizontalAlignment="Left" Margin="376,85,0,0" Value="{Binding Threads}" Maximum="8" Minimum="1" VerticalAlignment="Top" Width="121"/>
+                        <Slider HorizontalAlignment="Left" Margin="376,85,0,0" Value="{Binding Threads}" Maximum="8" Minimum="1" VerticalAlignment="Top" Width="121">
+                            <Slider.ToolTip>
+                                <ToolTip>
+                                    <DockPanel Width="185" Height="80">
+                                        <TextBlock TextWrapping="Wrap">Determines how much CPU resources SimC will use. I do not recommend exceeded the default value. Reduce this value if you see system instability or crashes.</TextBlock>
+                                    </DockPanel>
+                                </ToolTip>
+                            </Slider.ToolTip>
+                        </Slider>
                         <Label Content="Threads:" HorizontalAlignment="Left" Margin="316,79,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.688,0.297"/>
-                        <Slider HorizontalAlignment="Left" Value="{Binding Processes}" Maximum="8" Minimum="1" Margin="376,110,0,0" VerticalAlignment="Top" Width="121"/>
+                        <Slider HorizontalAlignment="Left" Value="{Binding Processes}" Maximum="8" Minimum="1" Margin="376,110,0,0" VerticalAlignment="Top" Width="121">
+                            <Slider.ToolTip>
+                                <ToolTip>
+                                    <DockPanel Width="225" Height="80">
+                                        <TextBlock TextWrapping="Wrap">Determines how many simultaneous SimC processes that will run at any given time. I heavily do not recommend changing this value unless you proportionately decrease threads or have a multi-CPU machine.</TextBlock>
+                                    </DockPanel>
+                                </ToolTip>
+                            </Slider.ToolTip>
+                        </Slider>
                         <Label Content="Processes:" HorizontalAlignment="Left" Margin="307,105,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.688,0.297"/>
                         <Label Content="Sim Parameters:" HorizontalAlignment="Left" Margin="286,6,0,0" VerticalAlignment="Top"/>
                         <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="20" Margin="506,83,0,0" Stroke="Black" VerticalAlignment="Top" Width="16"/>
@@ -53,6 +69,19 @@
                         <ComboBox HorizontalAlignment="Left" Margin="377,56,0,0" ItemsSource="{Binding Models}" SelectedItem="{Binding SelectedModel}" VerticalAlignment="Top" Width="120"/>
                         <CheckBox Content="No Stat Weights" HorizontalAlignment="Left" IsChecked="{Binding DisableStatWeights}" Margin="316,139,0,0" VerticalAlignment="Top"/>
                         <CheckBox Content="PTR Mode" HorizontalAlignment="Left" IsChecked="{Binding PTRMode}" Margin="446,139,0,0" VerticalAlignment="Top"/>
+                        <StackPanel Orientation="Horizontal" Margin="300,170,0,0">
+                            <Label Content="Fixed Iteration" FontSize="12" />
+                            <Slider Maximum="1" Minimum="0" Value="{Binding FixedIterationOrError}" Width="75">
+                                <Slider.ToolTip>
+                                    <ToolTip>
+                                        <DockPanel Width="200" Height="80">
+                                            <TextBlock TextWrapping="Wrap">Fixed iteration (10k iterations) gives very accurate results for most specs while fixed error (0.1% error) gives consistent accuracy and faster performance for most specs. </TextBlock>
+                                        </DockPanel>
+                                    </ToolTip>
+                                </Slider.ToolTip>
+                            </Slider>
+                            <Label Content="Fixed Error" FontSize="12" />
+                        </StackPanel>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Advanced">

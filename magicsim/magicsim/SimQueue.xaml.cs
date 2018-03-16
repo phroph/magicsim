@@ -204,7 +204,8 @@ namespace magicsim
                         simChar.Profile = simChar.Profile.Replace(nameRegex.Match(simChar.Profile).Groups[1].Value, simChar.Name);
                         simProfile += simChar.Profile + "\r\n";
                     });
-                    simProfile += "iterations=10000\r\nthreads=" + context.Threads + "\r\noptimize_expressions=1\r\noptimal_raid=1\r\n";
+                    simProfile += context.FixedIterationOrError == 0 ? "iterations=10000" : "target_error=0.1";
+                    simProfile += "\r\nthreads=" + context.Threads + "\r\noptimize_expressions=1\r\noptimal_raid=1\r\n";
                     if (time != null)
                     {
                         simProfile += "max_time=" + time + "\r\n";

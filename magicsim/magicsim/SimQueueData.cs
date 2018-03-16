@@ -33,6 +33,7 @@ namespace magicsim
             BackingData.PantheonTrinkets.Add("Norgannon's Prowess");
             SelectedPantheonTrinket = "Aman'Thul's Vision";
             PantheonHastePercent = 20.0f;
+            FixedIterationOrError = 1;
             Threads = Environment.ProcessorCount;
         }
 
@@ -272,6 +273,19 @@ namespace magicsim
                 {
                     BackingData._ReforgeAmount = value;
                     OnPropertyChanged("ReforgeAmount");
+                }
+            }
+        }
+
+        public int FixedIterationOrError
+        {
+            get { return BackingData._FixedIterationOrError; }
+            set
+            {
+                if (value != BackingData._FixedIterationOrError)
+                {
+                    BackingData._FixedIterationOrError = value;
+                    OnPropertyChanged("FixedIterationOrError");
                 }
             }
         }

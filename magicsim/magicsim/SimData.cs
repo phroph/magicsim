@@ -28,6 +28,7 @@ namespace magicsim
         internal int _ReforgeStepSize;
         internal int _ReforgeAmount;
         internal string _SelectedModel;
+        internal int _FixedIterationOrError;
 
         
 
