@@ -130,6 +130,7 @@ namespace magicsim
                                 if (hasGuid)
                                 {
                                     guid = fileName.Split(Path.DirectorySeparatorChar)[0];
+                                    Label = "Running Sim Set " + guid;
                                     if (!Directory.Exists(writeDir + Path.DirectorySeparatorChar + guid))
                                     {
                                         Directory.CreateDirectory(writeDir + Path.DirectorySeparatorChar + guid);
