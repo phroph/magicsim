@@ -7,7 +7,8 @@
         xmlns:c="clr-namespace:magicsim.components"
         Background="WhiteSmoke"
         mc:Ignorable="d"
-        Title="magicsim" Height="464.825" Width="490.676">
+        Title="magicsim" Height="464.825" Width="490.676"
+        ResizeMode="NoResize">
     <Window.Resources>
         <local:CustomizationData x:Key="customizationData"/>
     </Window.Resources>
