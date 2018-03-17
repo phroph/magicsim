@@ -69,9 +69,9 @@ namespace magicsim
                 {
                     Directory.CreateDirectory("characters");
                 }
-                if(File.Exists("characters/" + name))
+                if(File.Exists("characters/" + name + ".simc"))
                 {
-                    File.Delete("characters/" + name);
+                    File.Delete("characters/" + name + ".simc");
                 }
                 File.WriteAllText("characters/" + name + ".simc", text);
                 if (simc.RunSim("characters/" + name + ".simc"))
