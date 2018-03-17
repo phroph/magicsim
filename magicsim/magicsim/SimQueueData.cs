@@ -25,6 +25,7 @@ namespace magicsim
         public SimQueueData()
         {
             BackingData = SimDataManager.GetSimData();
+            BackingData.PantheonTrinkets.Clear();
             BackingData.PantheonTrinkets.Add("Aman'Thul's Vision");
             BackingData.PantheonTrinkets.Add("Aggramar's Conviction");
             BackingData.PantheonTrinkets.Add("Eonar's Compassion"); //hasted

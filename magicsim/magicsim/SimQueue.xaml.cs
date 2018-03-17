@@ -36,6 +36,7 @@ namespace magicsim
                 
                 List<Model> items = JsonConvert.DeserializeObject<List<Model>>(json);
                 models = items;
+                context.Models.Clear();
                 items.ForEach((item) =>
                 {
                     context.Models.Add(item.dispName);
