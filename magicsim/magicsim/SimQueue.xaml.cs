@@ -75,6 +75,10 @@ namespace magicsim
         private void PantheonUserAdd_Click(object sender, RoutedEventArgs e)
         {
             var context = (SimQueueData)this.DataContext;
+            if (!context.PantheonTrinketsEnabled)
+            {
+                return;
+            }
             if (context.SelectedPantheonTrinket.Equals("Golganneth's Vitality"))
             {
                 var haste = context.PantheonHastePercent / 100.0;
@@ -106,6 +110,10 @@ namespace magicsim
         private void PantheonTrinket_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var context = (SimQueueData)this.DataContext;
+            if(!context.PantheonTrinketsEnabled)
+            {
+                return;
+            }
             if(PantheonHaste == null)
             {
                 return;
