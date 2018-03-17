@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
              xmlns:local="clr-namespace:magicsim">
     <Label x:Name="CharacterName" Content="{Binding Path=Name}" FontSize="24" HorizontalAlignment="Left" Height="42" Margin="10,10,0,0" VerticalAlignment="Top" Width="273"/>
-    <Label x:Name="SpecClass" Content="{Binding Path=SpecClass}" HorizontalAlignment="Left" Height="25" Margin="10,39,0,0" VerticalAlignment="Top" Width="97"/>
+    <Label x:Name="SpecClass" Content="{Binding Path=SpecClass}" HorizontalAlignment="Left" Height="25" Margin="10,39,0,0" VerticalAlignment="Top" Width="250"/>
     <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="135" Margin="10,69,0,0" Stroke="Black" VerticalAlignment="Top" Width="186"/>
     <ComboBox x:Name="Potion" HorizontalAlignment="Left" Margin="69,96,0,0" ItemsSource="{Binding Path=Potions}" SelectedItem="{Binding Path=Potion}" VerticalAlignment="Top" Width="120"/>
     <ComboBox x:Name="Flask" HorizontalAlignment="Left" Margin="69,123,0,0" ItemsSource="{Binding Path=Flasks}" SelectedItem="{Binding Path=Flask}" VerticalAlignment="Top" Width="120"/>
