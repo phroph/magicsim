@@ -1,1 +1,0 @@
-require('./runModule.js').run();

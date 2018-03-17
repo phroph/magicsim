@@ -1,1 +1,0 @@
-node .\bnode_modules\npm\bin\npm-cli.js %*
