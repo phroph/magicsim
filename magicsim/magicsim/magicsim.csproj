@@ -594,6 +594,6 @@ for /f "usebackq delims=" %25%25a in (`"WMIC DATAFILE WHERE name='%25EXEPATH%25'
     for /f "delims=" %25%25# in ("%25%25a") do set "%25%25#"
 )
 IF /I $(ConfigurationName)==Release echo The version is %25version%25
-IF /I $(ConfigurationName)==Release powershell -Command "&amp; {&amp;'Compress-Archive' -Force -Path $(TargetDir) -Destination $(TargetDir)..\magicsim-%25version%25.zip}"</PostBuildEvent>
+IF /I $(ConfigurationName)==Release powershell -Command "&amp; {&amp;'Compress-Archive' -Force -Path $(TargetDir)* -Destination $(TargetDir)..\magicsim-%25version%25.zip}"</PostBuildEvent>
   </PropertyGroup>
 </Project>
