@@ -21,5 +21,8 @@ The new Magicsim provides the following features and is supported *for all class
 
 The new Magicsim should be a much more seamless experience and should be future proof going into Battle for Azeroth and will continue to serve your simming needs, better and better.
 
+**Looking for a download?**
+You'll find the newest package here: https://github.com/phroph/magicsim/releases/latest/
+
 
 It goes without saying but... Special thanks to Djriff, Anshlun, N1gh7h4wk, Publik, the rest of Shadow Team (and the greater HowToPriest staff), the simc developers, the general H2P community, and really anyone who uses this. None of this would be possible without all of your help and support (as well as bug reports and feature suggestions).
