@@ -242,8 +242,9 @@ namespace magicsim.components
 
             IntervalX = (maxX - minX) / 6.0;
             IntervalY = (maxY - minY) / 6.0;
-            IntervalZ = (maxZ - minZ) / 5.0;
-            FontSize = 0.01;
+            IntervalZ = (maxZ - minZ) / 1.0;
+            FontSize = 0.03;
+            var FontScale = 1;
             LineThickness = 0.005;
 
             // make color value 0 at texture coordinate 0.5
@@ -402,18 +403,21 @@ namespace magicsim.components
                 Children.Add(label);
             }
             //double z0 = (int)(minZ / IntervalZ) * IntervalZ;
+            var zTrans = IntervalZ/3;
             for (double z = minZ; z <= maxZ + double.Epsilon; z += IntervalZ)
             {
-                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(z.ToString("F4"), Brushes.Black, true, FontSize,
+                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(z.ToString("F4"), Brushes.Black, true, FontSize/FontScale,
                                                                            new Point3D(minX - FontSize * 4, maxY + .015, z),
                                                                            new Vector3D(1, 0, 0), new Vector3D(0, 0, 1));
+                label.Transform = new TranslateTransform3D(new Vector3D(0, 0, zTrans));
                 Children.Add(label);
             }
             {
-                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(ZAxisName, Brushes.Black, true, FontSize,
+                GeometryModel3D label = TextCreator.CreateTextLabelModel3D(ZAxisName, Brushes.Black, true, FontSize / FontScale,
                                                                            new Point3D(minX - FontSize * 10, maxY + .015,
                                                                                        (minZ + maxZ) * 0.5),
                                                                            new Vector3D(0, 0, 1), new Vector3D(1, 0, 0));
+                label.Transform = new TranslateTransform3D(new Vector3D(0, 0, IntervalZ));
                 Children.Add(label);
             }
 
