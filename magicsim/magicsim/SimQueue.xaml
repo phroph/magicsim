@@ -109,8 +109,8 @@
                         <TextBox HorizontalAlignment="Left" Height="19" Margin="490,108,0,0" TextWrapping="Wrap" IsEnabled="{Binding ReforgeEnabled}" Text="{Binding ReforgeAmount}" VerticalAlignment="Top" Width="51"/>
                         <Label Content="Step:" HorizontalAlignment="Left" Margin="458,84,0,0" VerticalAlignment="Top" FontSize="10"/>
                         <Label Content="Amount:" HorizontalAlignment="Left" Margin="441,104,0,0" VerticalAlignment="Top" FontSize="10"/>
-                        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="70" Margin="41,76,0,0" Stroke="Black" VerticalAlignment="Top" Width="70"/>
-                        <ScrollViewer IsEnabled="{Binding PantheonTrinketsEnabled}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="41,76,0,0" Width="70" Height="70"  >
+                        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="115" Margin="41,76,0,0" Stroke="Black" VerticalAlignment="Top" Width="70"/>
+                        <ScrollViewer IsEnabled="{Binding PantheonTrinketsEnabled}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="41,76,0,0" Width="70" Height="115"  >
                             <ItemsControl ItemsSource="{Binding PantheonUsers}" Height="Auto" Width="51">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
