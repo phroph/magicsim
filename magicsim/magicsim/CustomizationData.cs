@@ -44,10 +44,11 @@ namespace magicsim
         {
             {"the_hungry_magister", "The Hungry Magister"},
             {"hungry_magister", "The Hungry Magister"},
-            {"seed-battered_fish_plate", "Seed-Battered Fish PLate"},
+            {"seed-battered_fish_plate", "Seed-Battered Fish Plate"},
             {"nightborne_delicacy_platter", "Nightborne Delicacy Platter"},
             {"azshari_salad", "Azshari Salad"},
-            {"lemon_herb_filet", "Lemon Herb Filet" }
+            {"lemon_herb_filet", "Lemon Herb Filet" },
+            {"lavish_suramar_feast", "Lavish Suramar Feast" }
         };
 
         private Dictionary<String, String> AugmentNameMapping = new Dictionary<string, string>
@@ -65,7 +66,7 @@ namespace magicsim
             Potions = new ObservableCollection<string>(new List<string> { "Unbending Potion", "Potion of Prolonged Power", "Potion of Deadly Grace", "Potion of the Old War" });
             Runes = new ObservableCollection<string>(new List<string> { "Defiled Augment Rune" });
             Flasks = new ObservableCollection<string>(new List<string> { "Flask of the Whispered Pact", "Flask of the Seventh Demon", "Flask of Ten Thousand Scars", "Flask of the Countless Armies" });
-            Foods = new ObservableCollection<string>(new List<string> { "Azshari Salad", "Nightborne Delicacy Platter", "Seed-Battered Fish Plate", "The Hungry Magister", "Lemon Herb Filet" });
+            Foods = new ObservableCollection<string>(new List<string> { "Azshari Salad", "Nightborne Delicacy Platter", "Seed-Battered Fish Plate", "The Hungry Magister", "Lemon Herb Filet", "Lavish Suramar Feast" });
             Tier1Crucible = new ObservableCollection<int>(new List<int> { 0, 1, 2, 3 });
             Tier2Crucible = new ObservableCollection<string>(Tier2CrucibleMapping.Values.ToList().Union(new List<string>{ "None" }));
             Tier3Crucible = new ObservableCollection<string>(new List<string> { "None" });
