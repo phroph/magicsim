@@ -205,10 +205,6 @@ namespace magicsim
                 {
                     try
                     {
-                        if (!Directory.Exists("savedResults"))
-                        {
-                            MessageBox.Show("No saved runs to rename. Run a sim first.", "Stop", MessageBoxButton.OK, MessageBoxImage.Stop);
-                        }
                         if (value.Length == 0 || value == null)
                         {
                             MessageBox.Show("Invalid name. Try a different name.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -216,6 +212,10 @@ namespace magicsim
                         }
                         if (_tag != null && _tag.Length > 0)
                         {
+                            if (!Directory.Exists("savedResults"))
+                            {
+                                MessageBox.Show("No saved runs to rename. Run a sim first.", "Stop", MessageBoxButton.OK, MessageBoxImage.Stop);
+                            }
                             if (Directory.EnumerateDirectories("savedResults").Where(x => x.Split(Path.DirectorySeparatorChar).Last().Equals(_tag)).Count() > 0)
                             {
                                 Directory.Move("savedResults" + Path.DirectorySeparatorChar + _tag, "savedResults" + Path.DirectorySeparatorChar + value);
