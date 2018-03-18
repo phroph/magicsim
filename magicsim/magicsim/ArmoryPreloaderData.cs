@@ -53,6 +53,15 @@ namespace magicsim
                 try
                 {
                     simc = SimCManager.AcquireSimC();
+                    if(simc == null)
+                    {
+                        MessageBox.Show("Could not acquire SimC. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            PreloadingFailed(this, new EventArgs());
+                        });
+                        return;
+                    }
                 }
                 catch(Exception e)
                 {

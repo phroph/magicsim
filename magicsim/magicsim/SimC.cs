@@ -119,7 +119,13 @@ namespace magicsim
             var zipExec = zipExecDir + Path.DirectorySeparatorChar + "7z.exe";
             ProcessStartInfo info = new ProcessStartInfo(zipExec, " x -obin -y " + filename);
             info.WindowStyle = ProcessWindowStyle.Hidden;
-            Process.Start(info).WaitForExit();
+            var sevenZip = Process.Start(info);
+            sevenZip.WaitForExit();
+            if(sevenZip.ExitCode != 0)
+            {
+                File.Delete(filename);
+                throw new Exception("7zip failed to terminate successfully.");
+            }
 
             directory = new DirectoryInfo("bin").EnumerateDirectories().OrderByDescending((dir) =>
             {
