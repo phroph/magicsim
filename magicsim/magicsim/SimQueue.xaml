@@ -99,7 +99,7 @@
                         <Label Content="%" HorizontalAlignment="Left" Margin="204,106,0,0" VerticalAlignment="Top"/>
                         <Label Content="Reforge Parameters:" HorizontalAlignment="Left" Margin="286,41,0,0" VerticalAlignment="Top"/>
                         <CheckBox Content="Enabled" HorizontalAlignment="Left" Margin="416,48,0,0" VerticalAlignment="Top" IsChecked="{Binding ReforgeEnabled}"/>
-                        <Label Content="(Will greatly iimpact performance)" HorizontalAlignment="Left" Margin="286,56,0,0" FontSize="8" VerticalAlignment="Top"/>
+                        <Label Content="(Will greatly impact performance)" HorizontalAlignment="Left" Margin="286,56,0,0" FontSize="8" VerticalAlignment="Top"/>
                         <CheckBox Content="Critical Strike" HorizontalAlignment="Left" Margin="292,91,0,0" VerticalAlignment="Top" IsEnabled="{Binding ReforgeEnabled}" IsChecked="{Binding ReforgeCrit}" FontSize="10"/>
                         <CheckBox Content="Mastery" HorizontalAlignment="Left" Margin="374,91,0,0" VerticalAlignment="Top" IsEnabled="{Binding ReforgeEnabled}" IsChecked="{Binding ReforgeMastery}" FontSize="10"/>
                         <CheckBox Content="Haste" HorizontalAlignment="Left" Margin="292,109,0,0" VerticalAlignment="Top" IsEnabled="{Binding ReforgeEnabled}" IsChecked="{Binding ReforgeHaste}" FontSize="10"/>
