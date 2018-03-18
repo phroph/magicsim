@@ -35,7 +35,7 @@ namespace magicsim
             SelectedPantheonTrinket = "Aman'Thul's Vision";
             PantheonHastePercent = 20.0f;
             FixedIterationOrError = 1;
-            Threads = Environment.ProcessorCount;
+            Threads = Math.Min(8, Environment.ProcessorCount);
         }
 
         public ObservableCollection<Sim> Sims
