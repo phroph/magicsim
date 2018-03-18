@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,11 @@ namespace magicsim
             {"whispered_pact", "Flask of the Whispered Pact"},
             {"seventh_demon", "Flask of the Seventh Demon"},
             {"ten_thousand_scars", "Flask of Ten Thousand Scars"},
-            {"countless_armies", "Flask of the Countless Armies"}
+            {"countless_armies", "Flask of the Countless Armies"},
+            {"flask_of_the_whispered_pact", "Flask of the Whispered Pact"},
+            {"flask_of_the_seventh_demon", "Flask of the Seventh Demon"},
+            {"flask_of_ten_thousand_scars", "Flask of Ten Thousand Scars"},
+            {"flask_of_the_countless_armies", "Flask of the Countless Armies"}
         };
 
         private Dictionary<String, String> PotionNameMapping = new Dictionary<string, string>
@@ -1349,12 +1354,29 @@ namespace magicsim
                 Class = nameClassMatch.Groups[1].Value.UppercaseWords().Replace("Deathk", "Death K").Replace("Demonh", "Demon H").UppercaseWords();
                 Spec = specRegex.Match(profileText).Groups[1].Value.UppercaseWords().Replace("Beastm", "Beast M");
                 var crucible = crucibleRegex.Match(profileText).Groups[1].Value;
-                ILvl = float.Parse(ilvlRegex.Match(profileText).Groups[1].Value);
+                var fixedCulture = CultureInfo.CreateSpecificCulture("en-US");
+                ILvl = float.Parse(ilvlRegex.Match(profileText).Groups[1].Value, fixedCulture); // Easy fix to convert EU to US style decimal notation.
 
-                Potion = PotionNameMapping[potionRegex.Match(profileText).Groups[1].Value];
-                Flask = FlaskNameMapping[flaskRegex.Match(profileText).Groups[1].Value];
-                Food = FoodNameMapping[foodRegex.Match(profileText).Groups[1].Value];
-                Rune = AugmentNameMapping[augmentRegex.Match(profileText).Groups[1].Value];
+                var potionName = potionRegex.Match(profileText).Groups[1].Value;
+                var flaskName = flaskRegex.Match(profileText).Groups[1].Value;
+                var foodName = foodRegex.Match(profileText).Groups[1].Value;
+                var runeName = augmentRegex.Match(profileText).Groups[1].Value;
+                if (PotionNameMapping.ContainsKey(potionName))
+                {
+                    Potion = PotionNameMapping[potionName];
+                }
+                if (FlaskNameMapping.ContainsKey(flaskName))
+                {
+                    Flask = FlaskNameMapping[flaskName];
+                }
+                if (FoodNameMapping.ContainsKey(foodName))
+                {
+                    Food = FoodNameMapping[foodName];
+                }
+                if (AugmentNameMapping.ContainsKey(runeName))
+                {
+                    Rune = AugmentNameMapping[runeName];
+                }
 
                 var tierMatches = tierRegex.Matches(profileText);
                 for (int i = 0; i < tierMatches.Count; i++)
