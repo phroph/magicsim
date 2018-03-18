@@ -992,22 +992,23 @@ namespace magicsim
             {
                 return "No Pawn strings were generated in this run.";
             }
-            string pawnString = "( Pawn: v1: \"" + player.Name + "_" + ModelNameShort + "_selfsim\": Class=" + player.Class + ", Spec=" + player.Spec + ", " + player.MainstatType + "=" + player.MainstatValue.ToString("F4");
+            var fixedCulture = CultureInfo.CreateSpecificCulture("en-US");
+            string pawnString = "( Pawn: v1: \"" + player.Name + "_" + ModelNameShort + "_selfsim\": Class=" + player.Class + ", Spec=" + player.Spec + ", " + player.MainstatType + "=" + player.MainstatValue.ToString("F4", fixedCulture);
             if(player.Haste > 0.0)
             {
-                pawnString += ", HasteRating=" + player.Haste.ToString("F4");
+                pawnString += ", HasteRating=" + player.Haste.ToString("F4", fixedCulture);
             }
             if (player.Crit > 0.0)
             {
-                pawnString += ", CritRating=" + player.Crit.ToString("F4");
+                pawnString += ", CritRating=" + player.Crit.ToString("F4", fixedCulture);
             }
             if (player.Mastery > 0.0)
             {
-                pawnString += ", MasteryRating=" + player.Mastery.ToString("F4");
+                pawnString += ", MasteryRating=" + player.Mastery.ToString("F4", fixedCulture);
             }
             if (player.Vers > 0.0)
             {
-                pawnString += ", Versatility=" + player.Vers.ToString("F4");
+                pawnString += ", Versatility=" + player.Vers.ToString("F4", fixedCulture);
             }
             pawnString += " )";
             return pawnString;
