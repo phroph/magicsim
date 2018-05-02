@@ -209,12 +209,14 @@ namespace magicsim
                     }
                     context.Sims.ToList().ForEach((simChar) =>
                     {
-                        var nameRegex = new Regex(simChar.Profile.Split('"')[0] + "\"(\\w+)\"");
                         simChar.Profile = simChar.Profile.Replace(nameRegex.Match(simChar.Profile).Groups[1].Value, simChar.Name);
                         simProfile += simChar.Profile + "\r\n";
                     });
-                    simProfile += context.FixedIterationOrError == 0 ? "iterations=10000" : "target_error=0.1";
-                    simProfile += "\r\nthreads=" + context.Threads + "\r\noptimize_expressions=1\r\noptimal_raid=1\r\n";
+                    if(context.FixedIterationOrError != 0)
+                    {
+                        simProfile += "target_error=0.1\r\n";
+                    }
+                    simProfile += "iterations=10000\r\nthreads=" + context.Threads + "\r\noptimize_expressions=1\r\noptimal_raid=1\r\n";
                     if (time != null)
                     {
                         simProfile += "max_time=" + time + "\r\n";
