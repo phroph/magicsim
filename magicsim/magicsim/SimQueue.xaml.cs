@@ -209,6 +209,7 @@ namespace magicsim
                     }
                     context.Sims.ToList().ForEach((simChar) =>
                     {
+                        var nameRegex = new Regex("[^=]+=\"?([^\r\n\"]+)\"?");
                         simChar.Profile = simChar.Profile.Replace(nameRegex.Match(simChar.Profile).Groups[1].Value, simChar.Name);
                         simProfile += simChar.Profile + "\r\n";
                     });
