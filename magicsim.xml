@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <item>
-    <version>2.0.1.1</version>
-    <url>https://github.com/phroph/magicsim/releases/download/2.0.1.1/magicsim-2.0.1.1.zip</url>
+    <version>2.0.1.2</version>
+    <url>https://github.com/phroph/magicsim/releases/download/2.0.1.2/magicsim-2.0.1.2.zip</url>
     <changelog>https://github.com/phroph/magicsim/releases</changelog>
-    <checksum algorithm="SHA512">0750437088c5d9ccb9948b8b579594b48f2e786b81d961c164e3c9f523183a6184bf535ed2bb494415c133c153a3b45ff15bdbdea17178e1af414126b8107dbf</checksum>
+    <checksum algorithm="SHA512">1abe7bd42825e045c0879a4b21ef3243ce3aa15d18dab8f9d91286835446dc1944d7d6b250746b46bee0bd813236a5275fc4dde304aa083916a942c6c07a0aa2</checksum>
     <mandatory>false</mandatory>
 </item>
