@@ -309,7 +309,7 @@ namespace magicsim
             { "1039","Scythe of the Stars"},
             { "1038","Solar Stabbing"},
             { "1040","Falling Star"},
-            { "1281","Dark Side of the Moon"},
+            { "1036","Dark Side of the Moon"},
             { "1042","Empowerment"},
             { "1035","Touch of the Moon"},
             { "1034","Bladed Feathers"}
