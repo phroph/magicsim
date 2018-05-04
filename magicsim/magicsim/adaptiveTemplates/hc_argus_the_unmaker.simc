@@ -33,7 +33,7 @@ raid_events+=/adds,count=4,first=500,duration=4,cooldown=10000,min_distance=15,m
 raid_events+=/adds,count=5,first=550,duration=5,cooldown=10000,min_distance=15,max_distance=30
 
 # boss targets
-raid_events+=/invulnerable,cooldown=10000,duration=160,first=243,duration_stddev=1
+# raid_events+=/invulnerable,cooldown=10000,duration=160,first=243,duration_stddev=1
 raid_events+=/damage_done_buff,cooldown=10000,duration=27,multiplier=0.05,first=23
 raid_events+=/damage_done_buff,cooldown=10000,duration=27,multiplier=0.1,first=50
 raid_events+=/damage_done_buff,cooldown=10000,duration=27,multiplier=0.15,first=77

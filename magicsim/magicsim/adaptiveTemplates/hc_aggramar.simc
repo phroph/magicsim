@@ -39,8 +39,8 @@ raid_events+=/adds,count=2,cooldown=1000,duration=40,first=262
 # Embers
 
 # boss targets
-raid_events+=/invulnerable,cooldown=1000,duration=47,first=60
-raid_events+=/invulnerable,cooldown=1000,duration=42,first=260
+# raid_events+=/invulnerable,cooldown=1000,duration=47,first=60
+# raid_events+=/invulnerable,cooldown=1000,duration=42,first=260
 
 # fight modifications
 bloodlust_time=262

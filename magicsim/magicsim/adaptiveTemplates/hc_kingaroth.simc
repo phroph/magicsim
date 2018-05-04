@@ -21,7 +21,7 @@ raid_events+=/adds,count=1,cooldown=120,duration=30,first=71
 
 # boss targets
 # TODO: Replace with moving boss away for more realistic model? Boss still takes 1% damage, can proc ToF, and often gets refreshed on
-raid_events+=/invulnerable,cooldown=120,duration=40,first=38
+# raid_events+=/invulnerable,cooldown=120,duration=40,first=38
 raid_events+=/damage_done_buff,cooldown=120,duration=3,multiplier=0.9,first=40
 raid_events+=/damage_done_buff,cooldown=120,duration=3,multiplier=0.8,first=43
 raid_events+=/damage_done_buff,cooldown=120,duration=3,multiplier=0.7,first=46

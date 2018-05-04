@@ -21,9 +21,9 @@ raid_events+=/movement,cooldown=10,duration=1,duration_stddev=1.5,first=295,play
 
 # boss targets
 # Movement + Invulerability when transitioning. First transition is faster due to less traps. Figure it's not worth modeling movement since the boss will be invulnerable regardless.
-raid_events+=/invulnerable,cooldown=1000,duration=25,first=110
+# raid_events+=/invulnerable,cooldown=1000,duration=25,first=110
 # Second transition
-raid_events+=/invulnerable,cooldown=1000,duration=40,first=250
+# raid_events+=/invulnerable,cooldown=1000,duration=40,first=250
 
 # fight modifications
 bloodlust_time=295

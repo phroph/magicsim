@@ -21,9 +21,9 @@ raid_events+=/adds,count=1,cooldown=1000,duration=25,first=195
 # boss targets
 # decimator/anihilator come out and invuln the Boss
 # first event to happen in the first 2 minutes only once after 1 minute
-raid_events+=/invulnerable,cooldown=1000,duration=26,first=84
+# raid_events+=/invulnerable,cooldown=1000,duration=26,first=84
 # second event to happen in the last 2 minutes only once after 1 minute
-raid_events+=/invulnerable,cooldown=1000,duration=26,first=194
+# raid_events+=/invulnerable,cooldown=1000,duration=26,first=194
 
 # fight modifications
 bloodlust_time=-80
