@@ -76,7 +76,7 @@ namespace magicsim
         {
             string htmlResponse = new StreamReader(WebRequest.CreateHttp("http://downloads.simulationcraft.org/?C=M;O=D").GetResponse().GetResponseStream()).ReadToEnd();
             var osString = Is64BitOperatingSystem() ? "win64" : "win32";
-            Regex expression = new Regex(@"simc-([^-]+-[^-]+)-" + osString + @"-([^\.]+)\.7z");
+            Regex expression = new Regex(@"simc-735-02-" + osString + @"-([^\.]+)\.7z");
             var match = expression.Match(htmlResponse);
             var filename = match.Groups[0].Value;
             var address = "http://downloads.simulationcraft.org/" + filename;
