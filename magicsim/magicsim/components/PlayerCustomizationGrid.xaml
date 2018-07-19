@@ -28,15 +28,15 @@
     <CheckBox x:Name="T194pc" Content="T19 4pc" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="321,165,0,0" Checked="Tier_Change" Unchecked="Tier_Change" IsChecked="{Binding Path=T194pc}" IsEnabled="{Binding Path=ModifyTier}"/>
     <CheckBox x:Name="TierToggle" Content="Modify" HorizontalAlignment="Left" Margin="397,145,0,0" IsChecked="{Binding Path=ModifyTier}" Checked="Tier_Change" Unchecked="Tier_Change" VerticalAlignment="Top"/>
     <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="149" Margin="10,209,0,0" Stroke="Black" VerticalAlignment="Top" Width="452"/>
-    <Label x:Name="CrucibleLabel" Content="Crucible:" HorizontalAlignment="Left" Margin="10,209,0,0" VerticalAlignment="Top"/>
-    <Label x:Name="Tier1CrucibleLabel" Content="Netherlight Fortification (Tier 1): " HorizontalAlignment="Left" Margin="34,228,0,0" VerticalAlignment="Top"/>
-    <ComboBox x:Name="Tier1" HorizontalAlignment="Left" Margin="217,232,0,0" ItemsSource="{Binding Path=Tier1Crucible}" SelectedItem="{Binding Path=Tier1}" VerticalAlignment="Top" Width="38"/>
-    <ComboBox x:Name="Tier21" HorizontalAlignment="Left" Margin="34,280,0,0" ItemsSource="{Binding Path=Tier2Crucible}" SelectedItem="{Binding Path=Tier21}" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="Tier22" HorizontalAlignment="Left" Margin="177,280,0,0" ItemsSource="{Binding Path=Tier2Crucible}" SelectedItem="{Binding Path=Tier22}" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="Tier23" HorizontalAlignment="Left" Margin="321,280,0,0" ItemsSource="{Binding Path=Tier2Crucible}" SelectedItem="{Binding Path=Tier23}" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="Tier31" HorizontalAlignment="Left" Margin="34,323,0,0" ItemsSource="{Binding Path=Tier3Crucible}" SelectedItem="{Binding Path=Tier31}" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="Tier32" HorizontalAlignment="Left" Margin="177,323,0,0" ItemsSource="{Binding Path=Tier3Crucible}" SelectedItem="{Binding Path=Tier32}" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="Tier33" HorizontalAlignment="Left" Margin="321,323,0,0" ItemsSource="{Binding Path=Tier3Crucible}" SelectedItem="{Binding Path=Tier33}" VerticalAlignment="Top" Width="120"/>
+    <Label x:Name="CrucibleLabel" IsEnabled="False" Content="Crucible (NO LONGER IN GAME):" HorizontalAlignment="Left" Margin="10,209,0,0" VerticalAlignment="Top"/>
+    <Label x:Name="Tier1CrucibleLabel" IsEnabled="False" Content="Netherlight Fortification (Tier 1): " HorizontalAlignment="Left" Margin="34,228,0,0" VerticalAlignment="Top"/>
+    <ComboBox x:Name="Tier1" IsEnabled="False" HorizontalAlignment="Left" Margin="217,232,0,0" VerticalAlignment="Top" Width="38"/>
+    <ComboBox x:Name="Tier21" IsEnabled="False" HorizontalAlignment="Left" Margin="34,280,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="Tier22" HorizontalAlignment="Left" IsEnabled="False" Margin="177,280,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="Tier23" HorizontalAlignment="Left" IsEnabled="False" Margin="321,280,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="Tier31" HorizontalAlignment="Left" IsEnabled="False" Margin="34,323,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="Tier32" HorizontalAlignment="Left" IsEnabled="False" Margin="177,323,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="Tier33" HorizontalAlignment="Left" IsEnabled="False" Margin="321,323,0,0" VerticalAlignment="Top" Width="120"/>
     <Label x:Name="Tier2Label" Content="Tier 2:" HorizontalAlignment="Left" Margin="34,254,0,0" VerticalAlignment="Top"/>
     <Label x:Name="Tier3Label" Content="Tier 3:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="34,297,0,0"/>
 </Grid>
