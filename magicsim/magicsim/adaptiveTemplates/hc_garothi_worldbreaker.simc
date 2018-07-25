@@ -27,4 +27,3 @@ raid_events+=/adds,count=1,cooldown=1000,duration=25,first=195
 
 # fight modifications
 bloodlust_time=-80
-priest_suppress_sephuz=1

@@ -37,4 +37,3 @@ raid_events+=/stun,cooldown=1000,duration=6
 
 # fight modifications
 bloodlust_time=162
-priest_suppress_sephuz=1
