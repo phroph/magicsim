@@ -17,6 +17,6 @@
         </StackPanel>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="magicsim" VerticalAlignment="Top" FontSize="24"/>
         <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,42,0,0" TextWrapping="Wrap" Text="Advanced simming made easy" VerticalAlignment="Top" FontSize="14"/>
-        <Label Content="Created by SemicolonDash of HowToPriest" FontSize="10" HorizontalAlignment="Center" Height="23" VerticalAlignment="Bottom"/>
+        <Label Content="Created by SemicolonDash of Warcraft Priests" FontSize="10" HorizontalAlignment="Center" Height="23" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>
