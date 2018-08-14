@@ -1,0 +1,40 @@
+[
+  {
+    "name": "None",
+    "simc_names": [
+      "disabled"
+    ]
+  },
+  {
+    "name": "Battle Potion of Agility",
+    "simc_names": [
+      "battle_potion_of_agility"
+    ]
+  },
+  {
+    "name": "Battle Potion of Strength",
+    "simc_names": [
+      "battle_potion_of_strength"
+    ]
+  },
+  {
+    "name": "Battle Potion of Intellect",
+    "simc_names": [
+      "battle_potion_of_intellect"
+    ]
+  },
+  {
+    "name": "Potion of Rising Death",
+    "simc_names": [
+      "potion_of_rising_death",
+      "rising_death"
+    ]
+  },
+  {
+    "name": "Potion of Bursting Blood",
+    "simc_names": [
+      "potion_of_bursting_blood",
+      "bursting_blood"
+    ]
+  }
+]

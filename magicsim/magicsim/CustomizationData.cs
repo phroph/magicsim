@@ -1,4 +1,5 @@
-﻿using System;
+﻿using magicsim.objectModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -23,43 +24,13 @@ namespace magicsim
             {
                 handler(this, new PropertyChangedEventArgs(name));
             }
-        } 
+        }
 
-        private Dictionary<String, String> FlaskNameMapping = new Dictionary<string, string>
-        {
-            {"whispered_pact", "Flask of the Whispered Pact"},
-            {"seventh_demon", "Flask of the Seventh Demon"},
-            {"ten_thousand_scars", "Flask of Ten Thousand Scars"},
-            {"countless_armies", "Flask of the Countless Armies"},
-            {"flask_of_the_whispered_pact", "Flask of the Whispered Pact"},
-            {"flask_of_the_seventh_demon", "Flask of the Seventh Demon"},
-            {"flask_of_ten_thousand_scars", "Flask of Ten Thousand Scars"},
-            {"flask_of_the_countless_armies", "Flask of the Countless Armies"}
-        };
-
-        private Dictionary<String, String> PotionNameMapping = new Dictionary<string, string>
-        {
-            {"prolonged_power", "Potion of Prolonged Power"},
-            {"unbending", "Unbending Potion"},
-            {"deadly_grace", "Potion of Deadly Grace"},
-            {"old_war", "Potion of the Old War"}
-        };
-
-        private Dictionary<String, String> FoodNameMapping = new Dictionary<string, string>
-        {
-            {"the_hungry_magister", "The Hungry Magister"},
-            {"hungry_magister", "The Hungry Magister"},
-            {"seed-battered_fish_plate", "Seed-Battered Fish Plate"},
-            {"nightborne_delicacy_platter", "Nightborne Delicacy Platter"},
-            {"azshari_salad", "Azshari Salad"},
-            {"lemon_herb_filet", "Lemon Herb Filet" },
-            {"lavish_suramar_feast", "Lavish Suramar Feast" }
-        };
-
-        private Dictionary<String, String> AugmentNameMapping = new Dictionary<string, string>
-        {
-            {"defiled", "Defiled Augment Rune"}
-        };
+        public Dictionary<string, Dictionary<string, List<Azerite>>> AzeriteMapping;
+        public List<Consumable> FlaskNameMapping;
+        public List<Consumable> PotionNameMapping;
+        public List<Consumable> FoodNameMapping;
+        public List<Consumable> AugmentNameMapping;
 
         public CustomizationData()
         {
@@ -68,14 +39,16 @@ namespace magicsim
             Class = "Class";
             Spec = "Spec";
             Name = "Name";
-            Potions = new ObservableCollection<string>(new List<string> { "Unbending Potion", "Potion of Prolonged Power", "Potion of Deadly Grace", "Potion of the Old War" });
-            Runes = new ObservableCollection<string>(new List<string> { "Defiled Augment Rune" });
-            Flasks = new ObservableCollection<string>(new List<string> { "Flask of the Whispered Pact", "Flask of the Seventh Demon", "Flask of Ten Thousand Scars", "Flask of the Countless Armies" });
-            Foods = new ObservableCollection<string>(new List<string> { "Azshari Salad", "Nightborne Delicacy Platter", "Seed-Battered Fish Plate", "The Hungry Magister", "Lemon Herb Filet", "Lavish Suramar Feast" });
-            Potion = Potions[0];
-            Rune = Runes[0];
-            Flask = Flasks[0];
-            Food = Foods[0];
+            Potions = new ObservableCollection<string>();
+            Runes = new ObservableCollection<string>();
+            Flasks = new ObservableCollection<string>();
+            Foods = new ObservableCollection<string>();
+            Ring1 = new ObservableCollection<string>();
+            Ring2 = new ObservableCollection<string>();
+            Ring4 = new ObservableCollection<string>();
+            Ring1Mapping = new List<Azerite>();
+            Ring2Mapping = new List<Azerite>();
+            Ring4Mapping = new List<Azerite>();
         }
 
         private string _class;
@@ -86,12 +59,15 @@ namespace magicsim
         private string _rune;
         private string _name;
 
-        private bool _t212pc;
-        private bool _t214pc;
-        private bool _t202pc;
-        private bool _t204pc;
-        private bool _t192pc;
-        private bool _t194pc;
+        private string _headRing1;
+        private string _headRing2;
+        private string _headRing4;
+        private string _chestRing1;
+        private string _chestRing2;
+        private string _chestRing4;
+        private string _shoulderRing1;
+        private string _shoulderRing2;
+        private string _shoulderRing4;
 
         private bool _modifyIlvl;
         private bool _modifyTier;
@@ -102,8 +78,123 @@ namespace magicsim
         public ObservableCollection<String> Flasks { get; set; }
         public ObservableCollection<String> Runes { get; set; }
         public ObservableCollection<String> Foods { get; set; }
-       
-        
+        public ObservableCollection<String> Ring1 { get; set; }
+        public ObservableCollection<String> Ring2 { get; set; }
+        public ObservableCollection<String> Ring4 { get; set; }
+        public List<Azerite> Ring1Mapping { get; set; }
+        public List<Azerite> Ring2Mapping { get; set; }
+        public List<Azerite> Ring4Mapping { get; set; }
+
+        public String HeadRing1
+        {
+            get { return _headRing1; }
+            set
+            {
+                if (value != _headRing1)
+                {
+                    _headRing1 = value;
+                    OnPropertyChanged("HeadRing1");
+                }
+            }
+        }
+        public String HeadRing2
+        {
+            get { return _headRing2; }
+            set
+            {
+                if (value != _headRing2)
+                {
+                    _headRing2 = value;
+                    OnPropertyChanged("HeadRing2");
+                }
+            }
+        }
+        public String HeadRing4
+        {
+            get { return _headRing4; }
+            set
+            {
+                if (value != _headRing4)
+                {
+                    _headRing4 = value;
+                    OnPropertyChanged("HeadRing4");
+                }
+            }
+        }
+        public String ChestRing1
+        {
+            get { return _chestRing1; }
+            set
+            {
+                if (value != _chestRing1)
+                {
+                    _chestRing1 = value;
+                    OnPropertyChanged("ChestRing1");
+                }
+            }
+        }
+        public String ChestRing2
+        {
+            get { return _chestRing2; }
+            set
+            {
+                if (value != _chestRing2)
+                {
+                    _chestRing2 = value;
+                    OnPropertyChanged("ChestRing2");
+                }
+            }
+        }
+        public String ChestRing4
+        {
+            get { return _chestRing4; }
+            set
+            {
+                if (value != _chestRing4)
+                {
+                    _chestRing4 = value;
+                    OnPropertyChanged("ChestRing4");
+                }
+            }
+        }
+        public String ShouldersRing1
+        {
+            get { return _shoulderRing1; }
+            set
+            {
+                if (value != _shoulderRing1)
+                {
+                    _shoulderRing1 = value;
+                    OnPropertyChanged("ShouldersRing1");
+                }
+            }
+        }
+        public String ShouldersRing2
+        {
+            get { return _shoulderRing2; }
+            set
+            {
+                if (value != _shoulderRing2)
+                {
+                    _shoulderRing2 = value;
+                    OnPropertyChanged("ShouldersRing2");
+                }
+            }
+        }
+        public String ShouldersRing4
+        {
+            get { return _shoulderRing4; }
+            set
+            {
+                if (value != _shoulderRing4)
+                {
+                    _shoulderRing4 = value;
+                    OnPropertyChanged("ShouldersRing4");
+                }
+            }
+        }
+
+
         public String Class
         {
             get { return _class; }
@@ -194,79 +285,7 @@ namespace magicsim
                 }
             }
         }
-
-        public bool T212pc
-        {
-            get { return _t212pc; }
-            set
-            {
-                if (value != _t212pc)
-                {
-                    _t212pc = value;
-                    OnPropertyChanged("T212pc");
-                }
-            }
-        }
-        public bool T214pc
-        {
-            get { return _t214pc; }
-            set
-            {
-                if (value != _t214pc)
-                {
-                    _t214pc = value;
-                    OnPropertyChanged("T214pc");
-                }
-            }
-        }
-        public bool T202pc
-        {
-            get { return _t202pc; }
-            set
-            {
-                if (value != _t202pc)
-                {
-                    _t202pc = value;
-                    OnPropertyChanged("T202pc");
-                }
-            }
-        }
-        public bool T204pc
-        {
-            get { return _t204pc; }
-            set
-            {
-                if (value != _t204pc)
-                {
-                    _t204pc = value;
-                    OnPropertyChanged("T204pc");
-                }
-            }
-        }
-        public bool T192pc
-        {
-            get { return _t192pc; }
-            set
-            {
-                if (value != _t192pc)
-                {
-                    _t192pc = value;
-                    OnPropertyChanged("T192pc");
-                }
-            }
-        }
-        public bool T194pc
-        {
-            get { return _t194pc; }
-            set
-            {
-                if (value != _t194pc)
-                {
-                    _t194pc = value;
-                    OnPropertyChanged("T194pc");
-                }
-            }
-        }
+        
         public float ILvl
         {
             get { return _ilvl; }
@@ -304,13 +323,13 @@ namespace magicsim
             }
         }
         
-        public string GetKeyForValue(string value, Dictionary<string,string> mapping)
+        public string GetSimcName(string value, List<Consumable> mapping)
         {
-            foreach(var key in mapping.Keys)
+            foreach(var consumable in mapping)
             {
-                if(mapping[key].Equals(value))
+                if(consumable.name.Equals(value))
                 {
-                    return key;
+                    return consumable.simc_names[0];
                 }
             }
             return "";
@@ -332,60 +351,243 @@ namespace magicsim
             var augmentRegex = new Regex("augmentation=(\\w+)");
 
             // Replace Ilvl if flagged, tier if flagged, potion,flask,food,augment
-            _profileText = _profileText.Replace(potionRegex.Match(_profileText).Groups[0].Value, "potion=" + GetKeyForValue(Potion, PotionNameMapping));
-            _profileText = _profileText.Replace(flaskRegex.Match(_profileText).Groups[0].Value, "flask=" + GetKeyForValue(Flask, FlaskNameMapping));
-            _profileText = _profileText.Replace(foodRegex.Match(_profileText).Groups[0].Value, "food=" + GetKeyForValue(Food, FoodNameMapping));
-            _profileText = _profileText.Replace(augmentRegex.Match(_profileText).Groups[0].Value, "augmentation=" + GetKeyForValue(Rune, AugmentNameMapping));
+            _profileText = _profileText.Replace(potionRegex.Match(_profileText).Groups[0].Value, "potion=" + GetSimcName(Potion, PotionNameMapping));
+            _profileText = _profileText.Replace(flaskRegex.Match(_profileText).Groups[0].Value, "flask=" + GetSimcName(Flask, FlaskNameMapping));
+            _profileText = _profileText.Replace(foodRegex.Match(_profileText).Groups[0].Value, "food=" + GetSimcName(Food, FoodNameMapping));
+            _profileText = _profileText.Replace(augmentRegex.Match(_profileText).Groups[0].Value, "augmentation=" + GetSimcName(Rune, AugmentNameMapping));
+            
+            _profileText = UnloadAzerite(_profileText);
+
             if(ModifyTier)
             {
-                if(T212pc)
-                {
-                    _profileText += "\r\nset_bonus=tier21_2pc=1";
-                } else
-                {
-                    _profileText += "\r\nset_bonus=tier21_2pc=0";
-                }
-                if (T214pc)
-                {
-                    _profileText += "\r\nset_bonus=tier21_4pc=1";
-                } else
-                {
-                    _profileText += "\r\nset_bonus=tier21_4pc=0";
-                }
-                if (T202pc)
-                {
-                    _profileText += "\r\nset_bonus=tier20_2pc=1";
-                } else
-                {
-                    _profileText += "\r\nset_bonus=tier20_2pc=0";
-                }
-                if (T204pc)
-                {
-                    _profileText += "\r\nset_bonus=tier20_4pc=1";
-                } else
-                {
-                    _profileText += "\r\nset_bonus=tier20_4pc=0";
-                }
-                if (T192pc)
-                {
-                    _profileText += "\r\nset_bonus=tier19_2pc=1";
-                } else
-                {
-                    _profileText += "\r\nset_bonus=tier19_2pc=0";
-                }
-                if (T194pc)
-                {
-                    _profileText += "\r\nset_bonus=tier19_4pc=1";
-                } else
-                {
-                    _profileText += "\r\nset_bonus=tier19_4pc=0";
-                }
+                
             }
             if(ModifyIlvl)
             {
                 _profileText += "\r\nscale_to_itemlevel=" + ILvl;
             }
             return _profileText;
+        }
+
+        private String UnloadAzerite(String profileText)
+        {
+            var _profileText = profileText;
+
+            string headPowers = "";
+            string shoulderPowers = "";
+            string chestPowers = "";
+            var azeriteHeadRegex = new Regex("head=(.*)azerite_powers=[^\r\n,]+(.*)");
+            var azeriteShoulderRegex = new Regex("shoulders?=(.*)azerite_powers=[^\r\n,]+(.*)");
+            var azeriteChestRegex = new Regex("chest=(.*)azerite_powers=[^\r\n,]+(.*)");
+
+            if (Ring1Mapping.Exists(x => x.Name.Equals(HeadRing1)))
+            {
+                headPowers += Ring1Mapping.Find(x => x.Name.Equals(HeadRing1)).Id + "/";
+            }
+            if (Ring2Mapping.Exists(x => x.Name.Equals(HeadRing2)))
+            {
+                headPowers += Ring2Mapping.Find(x => x.Name.Equals(HeadRing2)).Id + "/";
+            }
+            if (Ring4Mapping.Exists(x => x.Name.Equals(HeadRing4)))
+            {
+                headPowers += Ring4Mapping.Find(x => x.Name.Equals(HeadRing4)).Id + "/";
+            }
+
+            if (Ring1Mapping.Exists(x => x.Name.Equals(ChestRing1)))
+            {
+                chestPowers += Ring1Mapping.Find(x => x.Name.Equals(ChestRing1)).Id + "/";
+            }
+            if (Ring2Mapping.Exists(x => x.Name.Equals(ChestRing2)))
+            {
+                chestPowers += Ring2Mapping.Find(x => x.Name.Equals(ChestRing2)).Id + "/";
+            }
+            if (Ring4Mapping.Exists(x => x.Name.Equals(ChestRing4)))
+            {
+                chestPowers += Ring4Mapping.Find(x => x.Name.Equals(ChestRing4)).Id + "/";
+            }
+
+            if (Ring1Mapping.Exists(x => x.Name.Equals(ShouldersRing1)))
+            {
+                shoulderPowers += Ring1Mapping.Find(x => x.Name.Equals(ShouldersRing1)).Id + "/";
+            }
+            if (Ring2Mapping.Exists(x => x.Name.Equals(ShouldersRing2)))
+            {
+                shoulderPowers += Ring2Mapping.Find(x => x.Name.Equals(ShouldersRing2)).Id + "/";
+            }
+            if (Ring4Mapping.Exists(x => x.Name.Equals(ShouldersRing4)))
+            {
+                shoulderPowers += Ring4Mapping.Find(x => x.Name.Equals(ShouldersRing4)).Id + "/";
+            }
+            shoulderPowers = shoulderPowers.ToString();
+
+            if (headPowers.Length > 0)
+            {
+                if (azeriteHeadRegex.Match(profileText).Success)
+                {
+                    _profileText = _profileText.Replace(azeriteHeadRegex.Match(_profileText).Groups[0].Value, "head=" + azeriteHeadRegex.Match(_profileText).Groups[1] + "azerite_powers=" + headPowers.Substring(0, headPowers.Count() - 1) + azeriteHeadRegex.Match(_profileText).Groups[2]);
+                }
+                else
+                {
+                    _profileText = _profileText.Replace(new Regex("head=([^\r\n]*)").Match(_profileText).Groups[0].Value, new Regex("head=([^\r\n]*)").Match(_profileText).Groups[0].Value + ",azerite_powers=" + headPowers.Substring(0, headPowers.Count() - 1));
+                }
+            }
+
+
+            if (shoulderPowers.Length > 0)
+            {
+                if (azeriteShoulderRegex.Match(profileText).Success)
+                {
+                    _profileText = _profileText.Replace(azeriteShoulderRegex.Match(_profileText).Groups[0].Value, "shoulders=" + azeriteShoulderRegex.Match(_profileText).Groups[1] + "azerite_powers=" + shoulderPowers.Substring(0, shoulderPowers.Count() - 1) + azeriteShoulderRegex.Match(_profileText).Groups[2]);
+                }
+                else
+                {
+                    _profileText = _profileText.Replace(new Regex("shoulders=([^\r\n]*)").Match(_profileText).Groups[0].Value, new Regex("shoulders=([^\r\n]*)").Match(_profileText).Groups[0].Value + ",azerite_powers=" + shoulderPowers.Substring(0, shoulderPowers.Count() - 1));
+                }
+            }
+
+            if (chestPowers.Length > 0)
+            {
+                if (azeriteChestRegex.Match(profileText).Success)
+                {
+                    _profileText = _profileText.Replace(azeriteChestRegex.Match(_profileText).Groups[0].Value, "chest=" + azeriteChestRegex.Match(_profileText).Groups[1] + "azerite_powers=" + chestPowers.Substring(0, chestPowers.Count() - 1) + azeriteChestRegex.Match(_profileText).Groups[2]);
+                }
+                else
+                {
+                    _profileText = _profileText.Replace(new Regex("chest=([^\r\n]*)").Match(_profileText).Groups[0].Value, new Regex("chest=([^\r\n]*)").Match(_profileText).Groups[0].Value + ",azerite_powers=" + chestPowers.Substring(0, chestPowers.Count() - 1));
+                }
+            }
+
+            return _profileText;
+        }
+
+        private void LoadAzerite(String profileText)
+        {
+            var azeriteHeadRegex = new Regex("head=.*azerite_powers=([^\r\n,]+).*");
+            var azeriteShoulderRegex = new Regex("shoulders?=.*azerite_powers=([^\r\n,]+).*");
+            var azeriteChestRegex = new Regex("chest=.*azerite_powers=([^\r\n,]+).*");
+            var azeriteHelm = azeriteHeadRegex.Match(profileText);
+            if (azeriteHelm.Success)
+            {
+                var value = azeriteHelm.Groups[1].Value;
+                if (!azeriteHelm.Groups[1].Value.Contains("/"))
+                {
+                    if (Ring1Mapping.Exists(x => x.Id.Equals(value)))
+                    {
+                        HeadRing1 = Ring1Mapping.Find(x => x.Id.Equals(value)).Name;
+                    }
+                    else if (Ring2Mapping.Exists(x => x.Id.Equals(value)))
+                    {
+                        HeadRing2 = Ring2Mapping.Find(x => x.Id.Equals(value)).Name;
+                    }
+                    else if (Ring4Mapping.Exists(x => x.Id.Equals(value)))
+                    {
+                        HeadRing4 = Ring4Mapping.Find(x => x.Id.Equals(value)).Name;
+                    }
+                    // Ring3 gets skipped
+                }
+                else
+                {
+                    var traits = azeriteHelm.Groups[1].Value.Split('/');
+                    foreach (var trait in traits)
+                    {
+                        if (Ring1Mapping.Exists(x => x.Id.Equals(trait)))
+                        {
+                            HeadRing1 = Ring1Mapping.Find(x => x.Id.Equals(trait)).Name;
+                        }
+                        else if (Ring2Mapping.Exists(x => x.Id.Equals(trait)))
+                        {
+                            HeadRing2 = Ring2Mapping.Find(x => x.Id.Equals(trait)).Name;
+                        }
+                        else if (Ring4Mapping.Exists(x => x.Id.Equals(trait)))
+                        {
+                            HeadRing4 = Ring4Mapping.Find(x => x.Id.Equals(trait)).Name;
+                        }
+                        // Ring3 gets skipped
+                    }
+                }
+            }
+            var azeriteShoulder = azeriteShoulderRegex.Match(profileText);
+            if (azeriteShoulder.Success)
+            {
+                var value = azeriteShoulder.Groups[1].Value;
+                if (!azeriteShoulder.Groups[1].Value.Contains("/"))
+                {
+                    if (Ring1Mapping.Exists(x => x.Id.Equals(value)))
+                    {
+                        ShouldersRing1 = Ring1Mapping.Find(x => x.Id.Equals(value)).Name;
+                    }
+                    else if (Ring2Mapping.Exists(x => x.Id.Equals(value)))
+                    {
+                        ShouldersRing2 = Ring2Mapping.Find(x => x.Id.Equals(value)).Name;
+                    }
+                    else if (Ring4Mapping.Exists(x => x.Id.Equals(value)))
+                    {
+                        ShouldersRing4 = Ring4Mapping.Find(x => x.Id.Equals(value)).Name;
+                    }
+                    // Ring3 gets skipped
+                }
+                else
+                {
+                    var traits = azeriteShoulder.Groups[1].Value.Split('/');
+                    foreach (var trait in traits)
+                    {
+                        if (Ring1Mapping.Exists(x => x.Id.Equals(trait)))
+                        {
+                            ShouldersRing1 = Ring1Mapping.Find(x => x.Id.Equals(trait)).Name;
+                        }
+                        else if (Ring2Mapping.Exists(x => x.Id.Equals(trait)))
+                        {
+                            ShouldersRing2 = Ring2Mapping.Find(x => x.Id.Equals(trait)).Name;
+                        }
+                        else if (Ring4Mapping.Exists(x => x.Id.Equals(trait)))
+                        {
+                            ShouldersRing4 = Ring4Mapping.Find(x => x.Id.Equals(trait)).Name;
+                        }
+                        // Ring3 gets skipped
+                    }
+                }
+            }
+            var azeriteChest = azeriteChestRegex.Match(profileText);
+            if (azeriteChest.Success)
+            {
+                var value = azeriteChest.Groups[1].Value;
+                if (!azeriteChest.Groups[1].Value.Contains("/"))
+                {
+                    if (Ring1Mapping.Exists(x => x.Id.Equals(value)))
+                    {
+                        ChestRing1 = Ring1Mapping.Find(x => x.Id.Equals(value)).Name;
+                    }
+                    else if (Ring2Mapping.Exists(x => x.Id.Equals(value)))
+                    {
+                        ChestRing2 = Ring2Mapping.Find(x => x.Id.Equals(value)).Name;
+                    }
+                    else if (Ring4Mapping.Exists(x => x.Id.Equals(value)))
+                    {
+                        ChestRing4 = Ring4Mapping.Find(x => x.Id.Equals(value)).Name;
+                    }
+                    // Ring3 gets skipped
+                }
+                else
+                {
+                    var traits = azeriteChest.Groups[1].Value.Split('/');
+                    foreach (var trait in traits)
+                    {
+                        if (Ring1Mapping.Exists(x => x.Id.Equals(trait)))
+                        {
+                            ChestRing1 = Ring1Mapping.Find(x => x.Id.Equals(trait)).Name;
+                        }
+                        else if (Ring2Mapping.Exists(x => x.Id.Equals(trait)))
+                        {
+                            ChestRing2 = Ring2Mapping.Find(x => x.Id.Equals(trait)).Name;
+                        }
+                        else if (Ring4Mapping.Exists(x => x.Id.Equals(trait)))
+                        {
+                            ChestRing4 = Ring4Mapping.Find(x => x.Id.Equals(trait)).Name;
+                        }
+                        // Ring3 gets skipped
+                    }
+                }
+            }
         }
 
         public void LoadProfilePath(String path)
@@ -403,72 +605,109 @@ namespace magicsim
                 var flaskRegex = new Regex("flask=(\\w+)");
                 var foodRegex = new Regex("food=(\\w+)");
                 var augmentRegex = new Regex("augmentation=(\\w+)");
-
+                
                 var nameClassMatch = nameClassRegex.Match(profileText);
                 Name = nameClassMatch.Groups[2].Value;
                 Class = nameClassMatch.Groups[1].Value.UppercaseWords().Replace("Deathk", "Death K").Replace("Demonh", "Demon H").UppercaseWords();
                 Spec = specRegex.Match(profileText).Groups[1].Value.UppercaseWords().Replace("Beastm", "Beast M");
                 var fixedCulture = CultureInfo.CreateSpecificCulture("en-US");
                 ILvl = float.Parse(ilvlRegex.Match(profileText).Groups[1].Value, fixedCulture); // Easy fix to convert EU to US style decimal notation.
+                // Ring 1
+                Ring1.Add("None");
+                Ring1.Add("");
+                Ring1.Add("- " + Class + " -");
+                Ring1.Add("    - " + Spec + " -");
+                AzeriteMapping[Class.ToLower().Replace(" ", "_")][Spec.ToLower().Replace(" ", "_")].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
+                Ring1.Add("");
+                Ring1.Add("- PVE -");
+                Ring1.Add("    - Magni -");
+                AzeriteMapping["pve"]["magni"].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
+                Ring1.Add("");
+                Ring1.Add("    - Uldir -");
+                AzeriteMapping["pve"]["uldir"].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
+                Ring1.Add("");
+                Ring1.Add("    - World -");
+                AzeriteMapping["pve"]["location"].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
+                Ring1.Add("");
+                Ring1.Add("    - Dungeons -");
+                AzeriteMapping["pve"]["dungeon"].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
+                Ring1.Add("");
+                Ring1.Add("- PVP -");
+                Ring1.Add("    - Horde -");
+                AzeriteMapping["pvp"]["horde"].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
+                Ring1.Add("");
+                Ring1.Add("    - Alliance -");
+                AzeriteMapping["pvp"]["alliance"].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
+                Ring1.Add("");
+                Ring1.Add("- Professions -");
+                Ring1.Add("    - Engineering -");
+                AzeriteMapping["profession"]["engineering"].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
+                // Ring 2
+                Ring2.Add("None");
+                Ring2.Add("");
+                Ring2.Add("- Role -");
+                if (new List<String> { "Demon Hunter", "Death Knight", "Monk", "Paladin", "Druid", "Warrior" }.Contains(Class))
+                {
+                    Ring2.Add("    - Tank -");
+                    AzeriteMapping["role"]["tank"].ForEach(x => { Ring2.Add(x.Name); Ring2Mapping.Add(x); });
+                    Ring2.Add("");
+                }
+                if (new List<String> { "Paladin", "Priest", "Shaman", "Monk", "Druid" }.Contains(Class))
+                {
+                    Ring2.Add("    - Healer -");
+                    AzeriteMapping["role"]["healer"].ForEach(x => { Ring2.Add(x.Name); Ring2Mapping.Add(x); });
+                    Ring2.Add("");
+                }
+                Ring2.Add("    - DPS -");
+                AzeriteMapping["role"]["dps"].ForEach(x => { Ring2.Add(x.Name); Ring2Mapping.Add(x); });
+                Ring2.Add("");
+                Ring2.Add("    - Any -");
+                AzeriteMapping["role"]["any"].ForEach(x => { Ring2.Add(x.Name); Ring2Mapping.Add(x); });
+                // Ring 4
+                Ring4.Add("None");
+                AzeriteMapping["generic"]["center"].ForEach(x => { Ring4.Add(x.Name); Ring4Mapping.Add(x); });
+
+                HeadRing1 = "None";
+                HeadRing2 = "None";
+                HeadRing4 = "None";
+                ChestRing1 = "None";
+                ChestRing2 = "None";
+                ChestRing4 = "None";
+                ShouldersRing1 = "None";
+                ShouldersRing2 = "None";
+                ShouldersRing4 = "None";
 
                 var potionName = potionRegex.Match(profileText).Groups[1].Value;
                 var flaskName = flaskRegex.Match(profileText).Groups[1].Value;
                 var foodName = foodRegex.Match(profileText).Groups[1].Value;
                 var runeName = augmentRegex.Match(profileText).Groups[1].Value;
-                if (PotionNameMapping.ContainsKey(potionName))
+                if (PotionNameMapping.Exists(x => x.simc_names.Contains(potionName)))
                 {
-                    Potion = PotionNameMapping[potionName];
+                    Potion = PotionNameMapping.First(x => x.simc_names.Contains(potionName)).name;
                 }
-                if (FlaskNameMapping.ContainsKey(flaskName))
+                if (FlaskNameMapping.Exists(x => x.simc_names.Contains(flaskName)))
                 {
-                    Flask = FlaskNameMapping[flaskName];
+                    Flask = FlaskNameMapping.First(x => x.simc_names.Contains(flaskName)).name;
                 }
-                if (FoodNameMapping.ContainsKey(foodName))
+                if (FoodNameMapping.Exists(x => x.simc_names.Contains(foodName)))
                 {
-                    Food = FoodNameMapping[foodName];
+                    Food = FoodNameMapping.First(x => x.simc_names.Contains(foodName)).name;
                 }
-                if (AugmentNameMapping.ContainsKey(runeName))
+                if (AugmentNameMapping.Exists(x => x.simc_names.Contains(runeName)))
                 {
-                    Rune = AugmentNameMapping[runeName];
+                    Rune = AugmentNameMapping.First(x => x.simc_names.Contains(runeName)).name;
                 }
+                if (PotionNameMapping.Exists(x => x.simc_names.Contains(potionName)))
+                {
+                    Potion = PotionNameMapping.First(x => x.simc_names.Contains(potionName)).name;
+                }
+                LoadAzerite(profileText);
 
-                var tierMatches = tierRegex.Matches(profileText);
+               var tierMatches = tierRegex.Matches(profileText);
                 for (int i = 0; i < tierMatches.Count; i++)
                 {
                     var match = tierMatches[i];
-                    if (match.Groups[1].Value.Equals("21"))
-                    {
-                        if (match.Groups[2].Value.Equals("2"))
-                        {
-                            T212pc = true;
-                        }
-                        else if (match.Groups[2].Value.Equals("4"))
-                        {
-                            T214pc = true;
-                        }
-                    }
-                    if (match.Groups[1].Value.Equals("20"))
-                    {
-                        if (match.Groups[2].Value.Equals("2"))
-                        {
-                            T202pc = true;
-                        }
-                        else if (match.Groups[2].Value.Equals("4"))
-                        {
-                            T204pc = true;
-                        }
-                    }
-                    if (match.Groups[1].Equals("19"))
-                    {
-                        if (match.Groups[2].Value.Equals("2"))
-                        {
-                            T192pc = true;
-                        }
-                        else if (match.Groups[2].Value.Equals("4"))
-                        {
-                            T194pc = true;
-                        }
-                    }
+                    
                 }
             }
             catch(Exception e)

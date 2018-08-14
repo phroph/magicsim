@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Media.Media3D;
 using System.Windows.Media;
 using HelixToolkit.Wpf;
+using magicsim.objectModels;
 
 namespace magicsim
 {

@@ -1,0 +1,36 @@
+[
+  {
+    "name": "None",
+    "simc_names": [
+      "disabled"
+    ]
+  },
+  {
+    "name": "Flask of the Undertow",
+    "simc_names": [
+      "flask_of_the_undertow",
+      "undertow"
+    ]
+  },
+  {
+    "name": "Flask of the Vast Horizon",
+    "simc_names": [
+      "flask_of_the_vast_horizon",
+      "vast_horizon"
+    ]
+  },
+  {
+    "name": "Flask of Endless Fathoms",
+    "simc_names": [
+      "flask_of_endless_fathoms",
+      "endless_fathoms"
+    ]
+  },
+  {
+    "name": "Flask of the Currents",
+    "simc_names": [
+      "flask_of_the_currents",
+      "currents"
+    ]
+  }
+]

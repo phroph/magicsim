@@ -78,7 +78,7 @@
                                 <Slider.ToolTip>
                                     <ToolTip>
                                         <DockPanel Width="200" Height="80">
-                                            <TextBlock TextWrapping="Wrap">Fixed iteration (10k iterations) gives very accurate results for most specs while fixed error (0.1% error) gives consistent accuracy and faster performance for most specs. </TextBlock>
+                                            <TextBlock TextWrapping="Wrap">Fixed iteration (10k iterations) gives very accurate results for most specs while fixed error (0.1% error) gives consistent accuracy and faster performance for most specs.</TextBlock>
                                         </DockPanel>
                                     </ToolTip>
                                 </Slider.ToolTip>
@@ -88,37 +88,19 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="Advanced">
-                    <Grid Height="200" Margin="0,0,0.333,0">
-                        <Label Content="Pantheon Raid Trinkets:" HorizontalAlignment="Left" Margin="13,42,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.429,-0.53"/>
-                        <Label Content="(Click to remove)" FontSize="8" HorizontalAlignment="Left" Margin="13,57,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.429,-0.53"/>
-                        <CheckBox Content="Enabled" HorizontalAlignment="Left" Margin="151,48,0,0" IsChecked="{Binding PantheonTrinketsEnabled}" Unchecked="PantheonEnable_Unchecked" Checked="PantheonEnable_Checked" VerticalAlignment="Top"/>
-                        <Button Content="Add" IsEnabled="{Binding PantheonTrinketsEnabled}" Click="PantheonUserAdd_Click" HorizontalAlignment="Left" Margin="229,110,0,0" VerticalAlignment="Top" Width="35" Height="24"/>
-                        <ComboBox HorizontalAlignment="Left" IsEnabled="{Binding PantheonTrinketsEnabled}" ItemsSource="{Binding PantheonTrinkets}" SelectionChanged="PantheonTrinket_SelectionChanged" SelectedItem="{Binding SelectedPantheonTrinket}" Margin="139,83,0,0" VerticalAlignment="Top" Width="125"/>
-                        <Label Content="Haste:" HorizontalAlignment="Left" Margin="138,107,0,0" VerticalAlignment="Top"/>
-                        <TextBox x:Name="PantheonHaste" HorizontalAlignment="Left" IsEnabled="{Binding PantheonTrinketsEnabled}" Height="23" Margin="181,111,0,0" TextWrapping="Wrap" Text="{Binding PantheonHastePercent}" VerticalAlignment="Top" Width="27"/>
-                        <Label Content="%" HorizontalAlignment="Left" Margin="204,106,0,0" VerticalAlignment="Top"/>
-                        <Label Content="Reforge Parameters:" HorizontalAlignment="Left" Margin="286,41,0,0" VerticalAlignment="Top"/>
-                        <CheckBox Content="Enabled" HorizontalAlignment="Left" Margin="416,48,0,0" VerticalAlignment="Top" IsChecked="{Binding ReforgeEnabled}"/>
-                        <Label Content="(Will greatly impact performance)" HorizontalAlignment="Left" Margin="286,56,0,0" FontSize="8" VerticalAlignment="Top"/>
-                        <CheckBox Content="Critical Strike" HorizontalAlignment="Left" Margin="292,91,0,0" VerticalAlignment="Top" IsEnabled="{Binding ReforgeEnabled}" IsChecked="{Binding ReforgeCrit}" FontSize="10"/>
-                        <CheckBox Content="Mastery" HorizontalAlignment="Left" Margin="374,91,0,0" VerticalAlignment="Top" IsEnabled="{Binding ReforgeEnabled}" IsChecked="{Binding ReforgeMastery}" FontSize="10"/>
-                        <CheckBox Content="Haste" HorizontalAlignment="Left" Margin="292,109,0,0" VerticalAlignment="Top" IsEnabled="{Binding ReforgeEnabled}" IsChecked="{Binding ReforgeHaste}" FontSize="10"/>
-                        <CheckBox Content="Versatility" HorizontalAlignment="Left" Margin="374,108,0,0" VerticalAlignment="Top" IsEnabled="{Binding ReforgeEnabled}" IsChecked="{Binding ReforgeVers}" FontSize="10"/>
+                    <Grid Height="200" Margin="-132,0,132.333,0">
+                        <Label Content="Reforge Parameters:" HorizontalAlignment="Left" Margin="286,30,0,0" VerticalAlignment="Top"/>
+                        <CheckBox Content="Enabled" HorizontalAlignment="Left" Margin="416,37,0,0" VerticalAlignment="Top" IsChecked="{Binding ReforgeEnabled}"/>
+                        <Label Content="(Will greatly impact performance)" HorizontalAlignment="Left" Margin="286,45,0,0" FontSize="8" VerticalAlignment="Top"/>
+                        <CheckBox Content="Critical Strike" HorizontalAlignment="Left" Margin="325,92,0,0" VerticalAlignment="Top" IsEnabled="{Binding ReforgeEnabled}" IsChecked="{Binding ReforgeCrit}" FontSize="10"/>
+                        <CheckBox Content="Mastery" HorizontalAlignment="Left" Margin="430,91,0,0" VerticalAlignment="Top" IsEnabled="{Binding ReforgeEnabled}" IsChecked="{Binding ReforgeMastery}" FontSize="10"/>
+                        <CheckBox Content="Haste" HorizontalAlignment="Left" Margin="325,110,0,0" VerticalAlignment="Top" IsEnabled="{Binding ReforgeEnabled}" IsChecked="{Binding ReforgeHaste}" FontSize="10"/>
+                        <CheckBox Content="Versatility" HorizontalAlignment="Left" Margin="430,108,0,0" VerticalAlignment="Top" IsEnabled="{Binding ReforgeEnabled}" IsChecked="{Binding ReforgeVers}" FontSize="10"/>
                         <Label Content="Stats to Scale:" HorizontalAlignment="Left" Margin="286,66,0,0" VerticalAlignment="Top"/>
-                        <TextBox HorizontalAlignment="Left" Height="17" Margin="490,87,0,0" TextWrapping="Wrap" IsEnabled="{Binding ReforgeEnabled}" Text="{Binding ReforgeStepSize}" VerticalAlignment="Top" Width="51"/>
-                        <TextBox HorizontalAlignment="Left" Height="19" Margin="490,108,0,0" TextWrapping="Wrap" IsEnabled="{Binding ReforgeEnabled}" Text="{Binding ReforgeAmount}" VerticalAlignment="Top" Width="51"/>
-                        <Label Content="Step:" HorizontalAlignment="Left" Margin="458,84,0,0" VerticalAlignment="Top" FontSize="10"/>
-                        <Label Content="Amount:" HorizontalAlignment="Left" Margin="441,104,0,0" VerticalAlignment="Top" FontSize="10"/>
-                        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="115" Margin="41,76,0,0" Stroke="Black" VerticalAlignment="Top" Width="70"/>
-                        <ScrollViewer IsEnabled="{Binding PantheonTrinketsEnabled}" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="41,76,0,0" Width="70" Height="115"  >
-                            <ItemsControl ItemsSource="{Binding PantheonUsers}" Height="Auto" Width="51">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Button Height="20" Width="Auto" Content="{Binding Value}" IsEnabled="{Binding PantheonTrinketsEnabled}" Click="PantheonUserRemove_Click" Margin="0,0,0,0.667"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </ScrollViewer>
+                        <TextBox HorizontalAlignment="Left" Height="17" Margin="351,137,0,0" TextWrapping="Wrap" IsEnabled="{Binding ReforgeEnabled}" Text="{Binding ReforgeStepSize}" VerticalAlignment="Top" Width="51"/>
+                        <TextBox HorizontalAlignment="Left" Height="19" Margin="479,138,0,0" TextWrapping="Wrap" IsEnabled="{Binding ReforgeEnabled}" Text="{Binding ReforgeAmount}" VerticalAlignment="Top" Width="51"/>
+                        <Label Content="Step:" HorizontalAlignment="Left" Margin="319,134,0,0" VerticalAlignment="Top" FontSize="10"/>
+                        <Label Content="Amount:" HorizontalAlignment="Left" Margin="430,134,0,0" VerticalAlignment="Top" FontSize="10"/>
                     </Grid>
                 </TabItem>
             </TabControl>

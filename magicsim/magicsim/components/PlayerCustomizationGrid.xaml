@@ -20,23 +20,21 @@
     <Label x:Name="ItemLevelLabel" Content="Item Level:" HorizontalAlignment="Left" Margin="217,92,0,0" VerticalAlignment="Top"/>
     <CheckBox x:Name="ItemLevelToggle" Content="Modify" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="350,98,0,0" IsChecked="{Binding Path=ModifyIlvl}" />
     <Label x:Name="TierLabel" Content="Tier:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="217,118,0,0"/>
-    <CheckBox x:Name="T212pc" Content="T21 2pc" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="255,125,0,0" Checked="Tier_Change" Unchecked="Tier_Change" IsChecked="{Binding Path=T212pc}" IsEnabled="{Binding Path=ModifyTier}"/>
-    <CheckBox x:Name="T214pc" Content="T21 4pc" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="321,125,0,0" Checked="Tier_Change" Unchecked="Tier_Change" IsChecked="{Binding Path=T214pc}" IsEnabled="{Binding Path=ModifyTier}"/>
-    <CheckBox x:Name="T202pc" Content="T20 2pc" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="255,145,0,0" Checked="Tier_Change" Unchecked="Tier_Change" IsChecked="{Binding Path=T202pc}" IsEnabled="{Binding Path=ModifyTier}"/>
-    <CheckBox x:Name="T204pc" Content="T20 4pc" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="321,145,0,0" Checked="Tier_Change" Unchecked="Tier_Change" IsChecked="{Binding Path=T204pc}" IsEnabled="{Binding Path=ModifyTier}"/>
-    <CheckBox x:Name="T192pc" Content="T19 2pc" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="255,165,0,0" Checked="Tier_Change" Unchecked="Tier_Change" IsChecked="{Binding Path=T192pc}" IsEnabled="{Binding Path=ModifyTier}"/>
-    <CheckBox x:Name="T194pc" Content="T19 4pc" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="321,165,0,0" Checked="Tier_Change" Unchecked="Tier_Change" IsChecked="{Binding Path=T194pc}" IsEnabled="{Binding Path=ModifyTier}"/>
+    <Label x:Name="TierAbsenceNotifier" IsEnabled="False" Content="Check back later" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="271,149,0,0"/>
+    <!--<CheckBox x:Name="T214pc" Content="T21 4pc" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="321,125,0,0" Checked="Tier_Change" Unchecked="Tier_Change" IsChecked="{Binding Path=T214pc}" IsEnabled="{Binding Path=ModifyTier}"/>-->
     <CheckBox x:Name="TierToggle" Content="Modify" HorizontalAlignment="Left" Margin="397,145,0,0" IsChecked="{Binding Path=ModifyTier}" Checked="Tier_Change" Unchecked="Tier_Change" VerticalAlignment="Top"/>
-    <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="149" Margin="10,209,0,0" Stroke="Black" VerticalAlignment="Top" Width="452"/>
-    <Label x:Name="CrucibleLabel" IsEnabled="False" Content="Crucible (NO LONGER IN GAME):" HorizontalAlignment="Left" Margin="10,209,0,0" VerticalAlignment="Top"/>
-    <Label x:Name="Tier1CrucibleLabel" IsEnabled="False" Content="Netherlight Fortification (Tier 1): " HorizontalAlignment="Left" Margin="34,228,0,0" VerticalAlignment="Top"/>
-    <ComboBox x:Name="Tier1" IsEnabled="False" HorizontalAlignment="Left" Margin="217,232,0,0" VerticalAlignment="Top" Width="38"/>
-    <ComboBox x:Name="Tier21" IsEnabled="False" HorizontalAlignment="Left" Margin="34,280,0,0" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="Tier22" HorizontalAlignment="Left" IsEnabled="False" Margin="177,280,0,0" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="Tier23" HorizontalAlignment="Left" IsEnabled="False" Margin="321,280,0,0" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="Tier31" HorizontalAlignment="Left" IsEnabled="False" Margin="34,323,0,0" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="Tier32" HorizontalAlignment="Left" IsEnabled="False" Margin="177,323,0,0" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="Tier33" HorizontalAlignment="Left" IsEnabled="False" Margin="321,323,0,0" VerticalAlignment="Top" Width="120"/>
-    <Label x:Name="Tier2Label" Content="Tier 2:" HorizontalAlignment="Left" Margin="34,254,0,0" VerticalAlignment="Top"/>
-    <Label x:Name="Tier3Label" Content="Tier 3:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="34,297,0,0"/>
+    <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="180" Margin="10,209,0,-31" Stroke="Black" VerticalAlignment="Top" Width="452"/>
+    <Label x:Name="AzeriteLabel" Content="Azerite:" HorizontalAlignment="Left" Margin="10,209,0,0" VerticalAlignment="Top"/>
+    <ComboBox x:Name="HeadRing1" SelectedItem="{Binding Path=HeadRing1}" ItemsSource="{Binding Path=Ring1}" HorizontalAlignment="Left" Margin="34,260,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="HeadRing2" SelectedItem="{Binding Path=HeadRing2}" ItemsSource="{Binding Path=Ring2}" HorizontalAlignment="Left" Margin="177,260,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="HeadRing4" SelectedItem="{Binding Path=HeadRing4}" ItemsSource="{Binding Path=Ring4}" HorizontalAlignment="Left" Margin="321,260,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="ChestRing1" SelectedItem="{Binding Path=ChestRing1}" ItemsSource="{Binding Path=Ring1}" HorizontalAlignment="Left" Margin="34,305,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="ChestRing2" SelectedItem="{Binding Path=ChestRing2}" ItemsSource="{Binding Path=Ring2}" HorizontalAlignment="Left" Margin="177,305,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="ChestRing4" SelectedItem="{Binding Path=ChestRing4}" ItemsSource="{Binding Path=Ring4}" HorizontalAlignment="Left" Margin="321,305,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="ShouldersRing1" SelectedItem="{Binding Path=ShouldersRing1}" ItemsSource="{Binding Path=Ring1}" HorizontalAlignment="Left" Margin="34,355,0,-19" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="ShouldersRing2" SelectedItem="{Binding Path=ShouldersRing2}" ItemsSource="{Binding Path=Ring2}" HorizontalAlignment="Left" Margin="177,355,0,-19" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="ShouldersRing4" SelectedItem="{Binding Path=ShouldersRing4}" ItemsSource="{Binding Path=Ring4}" HorizontalAlignment="Left" Margin="321,355,0,-19" VerticalAlignment="Top" Width="120"/>
+    <Label x:Name="HeadLabel" Content="Head:" HorizontalAlignment="Left" Margin="34,234,0,0" VerticalAlignment="Top"/>
+    <Label x:Name="ChestLabel" Content="Chest:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="34,279,0,0"/>
+    <Label x:Name="ShouldersLabel" Content="Shoulders:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="34,329,0,0"/>
 </Grid>

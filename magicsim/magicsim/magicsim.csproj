@@ -85,6 +85,9 @@
     <Compile Include="BulkSimLoader.xaml.cs">
       <DependentUpon>BulkSimLoader.xaml</DependentUpon>
     </Compile>
+    <Compile Include="objectModels\Azerite.cs" />
+    <Compile Include="objectModels\Consumable.cs" />
+    <Compile Include="objectModels\Model.cs" />
     <Compile Include="Vertex.cs" />
     <Compile Include="ViewerReadyPlayerReforge.cs" />
     <Compile Include="PlayerReforge.cs" />
@@ -227,6 +230,21 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="json\Augmentations.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="json\Azerite.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="json\Flasks.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="json\Food.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="json\Models.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="adaptiveTemplates\10_lightmovement_3_adds.simc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -542,7 +560,7 @@
     <None Include="adaptiveTemplates\ST_BA_HM.simc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Models.json">
+    <None Include="json\Potions.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

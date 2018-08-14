@@ -25,15 +25,6 @@ namespace magicsim
         public SimQueueData()
         {
             BackingData = SimDataManager.GetSimData();
-            BackingData.PantheonTrinkets.Clear();
-            BackingData.PantheonTrinkets.Add("Aman'Thul's Vision");
-            BackingData.PantheonTrinkets.Add("Aggramar's Conviction");
-            BackingData.PantheonTrinkets.Add("Eonar's Compassion"); //hasted
-            BackingData.PantheonTrinkets.Add("Golganneth's Vitality"); //hasted
-            BackingData.PantheonTrinkets.Add("Khaz'goroth's Courage");
-            BackingData.PantheonTrinkets.Add("Norgannon's Prowess");
-            SelectedPantheonTrinket = "Aman'Thul's Vision";
-            PantheonHastePercent = 20.0f;
             FixedIterationOrError = 1;
             Threads = Math.Min(8, Environment.ProcessorCount);
         }
@@ -43,22 +34,6 @@ namespace magicsim
             get
             {
                 return BackingData.Sims;
-            }
-        }
-
-        public ObservableCollection<PantheonUser> PantheonUsers
-        {
-            get
-            {
-                return BackingData.PantheonUsers;
-            }
-        }
-
-        public ObservableCollection<string> PantheonTrinkets
-        {
-            get
-            {
-                return BackingData.PantheonTrinkets;
             }
         }
 
@@ -83,45 +58,6 @@ namespace magicsim
             }
         }
 
-        public String SelectedPantheonTrinket
-        {
-            get { return BackingData._SelectedPantheonTrinket; }
-            set
-            {
-                if (value != BackingData._SelectedPantheonTrinket)
-                {
-                    BackingData._SelectedPantheonTrinket = value;
-                    OnPropertyChanged("SelectedPantheonTrinket");
-                }
-            }
-        }
-
-        public float PantheonHastePercent
-        {
-            get { return BackingData._PantheonHastePercent; }
-            set
-            {
-                if (value != BackingData._PantheonHastePercent)
-                {
-                    BackingData._PantheonHastePercent = value;
-                    OnPropertyChanged("PantheonHastePercent");
-                }
-            }
-        }
-
-        public bool PantheonTrinketsEnabled
-        {
-            get { return BackingData._PantheonTrinketsEnabled; }
-            set
-            {
-                if (value != BackingData._PantheonTrinketsEnabled)
-                {
-                    BackingData._PantheonTrinketsEnabled = value;
-                    OnPropertyChanged("PantheonTrinketsEnabled");
-                }
-            }
-        }
-
         public bool ReforgeEnabled
         {
             get { return BackingData._ReforgeEnabled; }
@@ -131,19 +67,6 @@ namespace magicsim
                 {
                     BackingData._ReforgeEnabled = value;
                     OnPropertyChanged("ReforgeEnabled");
-                }
-            }
-        }
-
-        public bool DisableSephuz
-        {
-            get { return BackingData._DisableSephuz; }
-            set
-            {
-                if (value != BackingData._DisableSephuz)
-                {
-                    BackingData._DisableSephuz = value;
-                    OnPropertyChanged("DisableSephuz");
                 }
             }
         }

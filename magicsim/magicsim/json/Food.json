@@ -1,0 +1,44 @@
+[
+  {
+    "name": "None",
+    "simc_names": [
+      "disabled"
+    ]
+  },
+  {
+    "name": "Honey-Glazed Haunched",
+    "simc_names": [
+      "honeyglazed_haunches"
+    ]
+  },
+  {
+    "name": "Swamp Fish n Chips",
+    "simc_names": [
+      "swamp_fish_n_chips"
+    ]
+  },
+  {
+    "name": "Spiced Snapper",
+    "simc_names": [
+      "spiced_snapper"
+    ]
+  },
+  {
+    "name": "Sailors Pie",
+    "simc_names": [
+      "spiced_snapper"
+    ]
+  },
+  {
+    "name": "Galley Banquet",
+    "simc_names": [
+      "galley_banquet"
+    ]
+  },
+  {
+    "name": "Bountiful Captains Feast",
+    "simc_names": [
+      "bountiful_captains_feast"
+    ]
+  }
+]
