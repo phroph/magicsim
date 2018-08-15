@@ -73,7 +73,7 @@ namespace magicsim
                     return;
                 }
                 Label = "Generating Armory Profile";
-                var text = File.ReadAllText("templates/armory.simc").Replace("%region%", region).Replace("%realm%", server).Replace("%name%", name);
+                var text = File.ReadAllText("templates/armory.simc").Replace("%region%", region).Replace("%realm%", server.Replace(" ", "-")).Replace("%name%", name);
                 if (!Directory.Exists("characters"))
                 {
                     Directory.CreateDirectory("characters");
