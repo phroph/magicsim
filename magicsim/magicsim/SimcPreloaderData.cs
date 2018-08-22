@@ -71,8 +71,8 @@ namespace magicsim
                 {
                     Directory.CreateDirectory("characters");
                 }
-                Regex nameRegex = new Regex("[^=]+=\"?([^\r\n\"]+)\"?");
-                String name = nameRegex.Match(simcString).Groups[1].Value;
+                Regex nameRegex = new Regex("(warrior|paladin|hunter|rogue|priest|deathknight|shaman|mage|warlock|monk|druid|demonhunter)+=\"?([^\r\n\"]+)\"?");
+                String name = nameRegex.Match(simcString).Groups[2].Value;
                 if (File.Exists("characters/" + name))
                 {
                     File.Delete("characters/" + name);
