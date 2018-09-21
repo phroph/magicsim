@@ -87,7 +87,7 @@ namespace magicsim
             {
                 this.Servers.Add(server);
             });
-            SelectedServer = Properties.Settings.Default.realmName;
+            SelectedServer = Properties.Settings.Default.realmName.Length > 0 ? Properties.Settings.Default.realmName : "Aegwynn";
         }
 
         public ObservableCollection<CustomizationData> CustomizationDataList { get; set; }
@@ -144,7 +144,7 @@ namespace magicsim
             Regions = new ObservableCollection<string>(new List<string> { "US", "EU", "KR", "TW" });
             Servers = new ObservableCollection<string>();
             Name = Properties.Settings.Default.characterName;
-            SelectedRegion = Properties.Settings.Default.regionName;
+            SelectedRegion = Properties.Settings.Default.regionName.Length > 0 ? Properties.Settings.Default.regionName : "US";
         }
 
 
