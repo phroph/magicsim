@@ -3,6 +3,6 @@
     <version>2.3.0.0</version>
     <url>https://github.com/phroph/magicsim/releases/download/2.3.0.0/magicsim-2.3.0.0.zip</url>
     <changelog>https://github.com/phroph/magicsim/releases</changelog>
-    <checksum algorithm="SHA512">0d65de5ef3771b83f8be94be8cdd7a1deceb0898d427b9032f6745eecb005713d19329775d2b36a62320416a7e7f1c67706043f7cbdf4eb50298dd99464595e0</checksum>
+    <checksum algorithm="SHA512">2e99ba11c3d87a1dfc591609d634e19ea00d34a31573c2983e87e7af0fa994b70853dbe59895a2aed34633595535a3f3b55a8de1100ca68e65dcb37fe5676312</checksum>
     <mandatory>false</mandatory>
 </item>
