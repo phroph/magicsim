@@ -28,7 +28,7 @@ namespace magicsim
             FixedIterationOrError = 1;
             Threads = Math.Min(8, Environment.ProcessorCount);
         }
-
+        
         public ObservableCollection<Sim> Sims
         {
             get

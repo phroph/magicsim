@@ -8,12 +8,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace magicsim
 {
     public class SimC
     {
-        String directory;
         /// <summary>
         /// The function determines whether the current operating system is a 
         /// 64-bit operating system.
@@ -74,64 +74,26 @@ namespace magicsim
 
         public SimC()
         {
-            string htmlResponse = new StreamReader(WebRequest.CreateHttp("http://downloads.simulationcraft.org/?C=M;O=D").GetResponse().GetResponseStream()).ReadToEnd();
-            var osString = Is64BitOperatingSystem() ? "win64" : "win32";
-            Regex expression = new Regex(@"simc-([^-]+-[^-]+)-" + osString + @"-([^\.]+)\.7z");
-            var match = expression.Match(htmlResponse);
-            var filename = match.Groups[0].Value;
-            var address = "http://downloads.simulationcraft.org/" + filename;
-            if (!File.Exists(filename))
-            {
-                var file = File.Create(filename);
-                var array = ReadFully(WebRequest.CreateHttp(address).GetResponse().GetResponseStream());
-                file.Write(array, 0, array.Length);
-                file.Close();
-            }
+            var filename = "simc.exe";
+            var address = "https://s3.amazonaws.com/magicsim/simc.exe";
+
             if (!Directory.Exists("bin"))
             {
                 Directory.CreateDirectory("bin");
             }
             DirectoryInfo di = new DirectoryInfo("bin");
 
-            foreach (FileInfo file in di.GetFiles())
+            var request = WebRequest.CreateHttp(address);
+            request.Method = "HEAD";
+            var tag = request.GetResponse().Headers["ETag"].Replace("\"", "");
+            if (!File.Exists(tag))
             {
-                try
-                {
-                    file.Delete();
-                }
-                catch (Exception)
-                {
-                    Console.Write("Warning: Error deleting file");
-                }
+                File.Create(tag).Close();
+                var file = File.Create("bin" + Path.DirectorySeparatorChar + filename);
+                var array = ReadFully(WebRequest.CreateHttp(address).GetResponse().GetResponseStream());
+                file.Write(array, 0, array.Length);
+                file.Close();
             }
-            foreach (DirectoryInfo dir in di.GetDirectories())
-            {
-                try
-                {
-                    dir.Delete(true);
-                }
-                catch (Exception)
-                {
-                    Console.Write("Warning: Error deleting file");
-                }
-            }
-            var zipExecDir = Is64BitOperatingSystem() ? "7z64" : "7z";
-            var zipExec = zipExecDir + Path.DirectorySeparatorChar + "7z.exe";
-            ProcessStartInfo info = new ProcessStartInfo(zipExec, " x -obin -y " + filename);
-            info.WindowStyle = ProcessWindowStyle.Hidden;
-            var sevenZip = Process.Start(info);
-            sevenZip.WaitForExit();
-            if(sevenZip.ExitCode != 0)
-            {
-                File.Delete(filename);
-                throw new Exception("7zip failed to terminate successfully.");
-            }
-
-            directory = new DirectoryInfo("bin").EnumerateDirectories().OrderByDescending((dir) =>
-            {
-                return dir.CreationTimeUtc.ToFileTimeUtc();
-            }).ElementAt(0).ToString();
-
         }
 
         public static byte[] ReadFully(Stream input)
@@ -153,16 +115,34 @@ namespace magicsim
         
         public bool RunSim(String profilePath)
         {
-            ProcessStartInfo info = new ProcessStartInfo("bin\\" + directory + "\\simc.exe", profilePath);
+            ProcessStartInfo info = new ProcessStartInfo("bin\\simc.exe", profilePath);
+            info.RedirectStandardError = true;
+            info.UseShellExecute = false;
+            info.CreateNoWindow = true;
             info.WindowStyle = ProcessWindowStyle.Hidden;
 
-            var process = Process.Start(info);
-            App.Job.AddProcess(process.Handle);
-            process.WaitForExit();
-            var exitCode = process.ExitCode;
-            if(exitCode == 0)
+            try
             {
-                return true;
+                using (var process = Process.Start(info))
+                {
+                    App.Job.AddProcess(process.Handle);
+                    var err = process.StandardError.ReadToEnd();
+                    process.WaitForExit();
+                    var exitCode = process.ExitCode;
+                    if (exitCode == 0)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error running simc:\n" + err, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error running simc: " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return false;
         }

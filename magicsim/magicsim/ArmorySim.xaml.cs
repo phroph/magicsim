@@ -29,18 +29,11 @@ namespace magicsim
             InitializeComponent();
         }
 
-        private void servers_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var armorySimData = (ArmorySimData)this.DataContext;
-            armorySimData.SelectedServer = (String)((ComboBox)sender).SelectedValue;
-        }
-
         private void regions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var armorySimData = (ArmorySimData)this.DataContext;
             var regionsDropdown = (ComboBox)sender;
             var value = (String)regionsDropdown.SelectedValue;
-            armorySimData.SelectedRegion = value;
             BeginGetServersForRegion(armorySimData, value);
         }
 
@@ -53,13 +46,12 @@ namespace magicsim
                 List<string> servers = new List<string>();
                 jsonObject.GetValue("realms").ToList().ForEach((realm) =>
                 {
-                    servers.Add(((JToken)realm).Value<string>("name"));
+                    servers.Add(realm.Value<string>("name"));
                 });
                 App.Current.Dispatcher.Invoke(() => {
                     model.PopulateServers(servers);
                 });
             });
-            
         }
 
         private void button_Click(object sender, RoutedEventArgs e)

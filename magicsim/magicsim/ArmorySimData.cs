@@ -37,13 +37,41 @@ namespace magicsim
             }
         }
 
-        public String SelectedServer;
-        public String SelectedRegion;
+        public String _SelectedServer;
+        public String _SelectedRegion;
+
+        public String SelectedServer
+        {
+            get { return _SelectedServer; }
+            set
+            {
+                if (value != _SelectedServer)
+                {
+                    _SelectedServer = value;
+                    OnPropertyChanged("SelectedServer");
+                }
+            }
+        }
+        public String SelectedRegion
+        {
+            get { return _SelectedRegion; }
+            set
+            {
+                if (value != _SelectedRegion)
+                {
+                    _SelectedRegion = value;
+                    OnPropertyChanged("SelectedRegion");
+                }
+            }
+        }
 
         public ArmorySimData()
         {
             Regions = new ObservableCollection<string>(new List<string> { "US", "EU", "KR", "TW" });
             Servers = new ObservableCollection<string>();
+
+            Name = Properties.Settings.Default.characterName;
+            SelectedRegion = Properties.Settings.Default.regionName;
         }
 
         public void PopulateServers(List<string> servers)
@@ -53,6 +81,7 @@ namespace magicsim
             {
                 this.Servers.Add(server);
             });
+            SelectedServer = Properties.Settings.Default.realmName;
         }
     }
 }

@@ -16,14 +16,7 @@ namespace magicsim
             {
                 return simc;
             }
-            try
-            {
-                simc = new SimC();
-            }
-            catch(Exception e)
-            {
-                return null;
-            }
+            simc = new SimC();
             return simc;
         }
     }

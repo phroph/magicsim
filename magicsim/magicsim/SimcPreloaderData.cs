@@ -27,7 +27,7 @@ namespace magicsim
                 handler(this, new PropertyChangedEventArgs(name));
             }
         }
-        
+
         private String _Label;
         public String Label
         {
@@ -59,7 +59,7 @@ namespace magicsim
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show("Could not acquire SimC because of an Exception: " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Could not acquire SimC because of an Exception: " + e.StackTrace, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     App.Current.Dispatcher.Invoke(() =>
                     {
                         PreloadingFailed(this, new EventArgs());
@@ -67,18 +67,30 @@ namespace magicsim
                     return;
                 }
                 Label = "Generating SimC Profile";
-                if (!Directory.Exists("characters"))
-                {
-                    Directory.CreateDirectory("characters");
-                }
                 Regex nameRegex = new Regex("(warrior|paladin|hunter|rogue|priest|deathknight|shaman|mage|warlock|monk|druid|demonhunter)+=\"?([^\r\n\"]+)\"?");
                 String name = nameRegex.Match(simcString).Groups[2].Value;
-                if (File.Exists("characters/" + name))
-                {
-                    File.Delete("characters/" + name);
-                }
                 String text = simcString + "\nsave=./characters/" + name + ".simc";
-                File.WriteAllText("characters/" + name + ".simc", text);
+                try
+                {
+                    if (!Directory.Exists("characters"))
+                    {
+                        Directory.CreateDirectory("characters");
+                    }
+                    if (File.Exists("characters/" + name))
+                    {
+                        File.Delete("characters/" + name);
+                    }
+                    File.WriteAllText("characters/" + name + ".simc", text);
+                }
+                catch (UnauthorizedAccessException e)
+                {
+                    MessageBox.Show("Could not write character profile due to a permissions issue. Please retry, running as Administrator." + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        PreloadingFailed(this, new EventArgs());
+                    });
+                    return;
+                }
                 if (simc.RunSim("characters/" + name + ".simc"))
                 {
                     Label = "SimC Profile Generated";

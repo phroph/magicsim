@@ -11,13 +11,10 @@ namespace magicsim
         public ObservableCollection<PantheonUser> PantheonUsers { get; set; }
         public ObservableCollection<string> PantheonTrinkets { get; set; }
         public ObservableCollection<string> Models { get; set; }
-
-        internal float _PantheonHastePercent;
-        internal string _SelectedPantheonTrinket;
-        internal bool _PantheonTrinketsEnabled;
+        
         internal bool _ReforgeEnabled;
-        internal bool _DisableSephuz;
         internal bool _DisableStatWeights;
+        internal bool _DisableBuffs;
         internal bool _PTRMode;
         internal bool _ReforgeCrit;
         internal bool _ReforgeMastery;

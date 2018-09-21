@@ -22,7 +22,7 @@ namespace magicsim
         public SimcPreloader()
         {
             InitializeComponent();
-            var context = (SimcPreloaderData)this.DataContext;
+            var context = (SimcPreloaderData) this.DataContext;
             context.PreloadingComplete += Context_PreloadingComplete;
             context.PreloadingFailed += Context_PreloadingFailed;
         }

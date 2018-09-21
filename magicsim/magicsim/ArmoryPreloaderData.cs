@@ -53,19 +53,10 @@ namespace magicsim
                 try
                 {
                     simc = SimCManager.AcquireSimC();
-                    if(simc == null)
-                    {
-                        MessageBox.Show("Could not acquire SimC. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        App.Current.Dispatcher.Invoke(() =>
-                        {
-                            PreloadingFailed(this, new EventArgs());
-                        });
-                        return;
-                    }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    MessageBox.Show("Could not acquire SimC because of an Exception: " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Could not acquire SimC because of an Exception: " + e.StackTrace, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     App.Current.Dispatcher.Invoke(() =>
                     {
                         PreloadingFailed(this, new EventArgs());
@@ -83,12 +74,34 @@ namespace magicsim
                     File.Delete("characters/" + name + ".simc");
                 }
                 File.WriteAllText("characters/" + name + ".simc", text);
+                if (simc == null)
+                {
+                    MessageBox.Show("SimC is null, something bad happened.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        PreloadingFailed(this, new EventArgs());
+                    });
+                    return;
+                }
+                if (name == null)
+                {
+                    MessageBox.Show("Name is null, something bad happened.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        PreloadingFailed(this, new EventArgs());
+                    });
+                    return;
+                }
                 if (simc.RunSim("characters/" + name + ".simc"))
                 {
                     Label = "Armory Profile Generated";
                     charName = name;
                     App.Current.Dispatcher.Invoke(() =>
                     {
+                        Properties.Settings.Default.characterName = name;
+                        Properties.Settings.Default.realmName = server;
+                        Properties.Settings.Default.regionName = region;
+                        Properties.Settings.Default.Save();
                         PreloadingComplete(this, new EventArgs());
                     });
                 }

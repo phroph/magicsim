@@ -55,9 +55,9 @@ namespace magicsim
             window.Show();
         }
 
-        private void batch_Click(object sender, RoutedEventArgs e)
+        private void quicksim_Click(object sender, RoutedEventArgs e)
         {
-            var window = new BulkSimLoader();
+            var window = new QuickSimLoader();
             window.Top = App.Current.MainWindow.Top;
             window.Left = App.Current.MainWindow.Left;
             App.Current.MainWindow = window;

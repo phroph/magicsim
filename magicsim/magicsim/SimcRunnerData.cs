@@ -150,6 +150,7 @@ namespace magicsim
                                     {
                                         if (Completed == Total)
                                         {
+                                            Properties.Settings.Default.Save();
                                             Label = "All Sims Completed";
                                             RunningComplete(this, new EventArgs());
                                             WindowCleanup(this, new EventArgs());
@@ -178,7 +179,7 @@ namespace magicsim
                 catch(Exception e)
                 {
                     Label = "Failed to Run a Sim";
-                    MessageBox.Show("Sims failed to be ran because SimC could not be acquired. Try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Sims failed to be ran because SimC could not be acquired. Try again: " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     App.Current.Dispatcher.Invoke(() =>
                     {
                         RunningFailed(this, new EventArgs());

@@ -1,4 +1,5 @@
-﻿using magicsim.objectModels;
+﻿using magicsim.common;
+using magicsim.objectModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -79,135 +80,22 @@ namespace magicsim
             }
             var guid = Guid.NewGuid().ToString().Substring(0, 8);
             var simList = new List<string>();
-            var createModelSim = new Action<string, string>((string sim, string time) => {
-                try
-                {
-                    var simProfile = "";
-                    if (context.PTRMode)
-                    {
-                        simProfile += "ptr=1";
-                    }
-                    context.Sims.ToList().ForEach((simChar) =>
-                    {
-                        var nameRegex = new Regex("[^=]+=\"?([^\r\n\"]+)\"?");
-                        simChar.Profile = simChar.Profile.Replace(nameRegex.Match(simChar.Profile).Groups[1].Value, simChar.Name);
-                        simProfile += simChar.Profile + "\r\n";
-                    });
-                    if(context.FixedIterationOrError != 0)
-                    {
-                        simProfile += "target_error=0.1\r\n";
-                    }
-                    simProfile += "iterations=10000\r\nthreads=" + context.Threads + "\r\noptimize_expressions=1\r\noptimal_raid=1\r\n";
-                    if (time != null)
-                    {
-                        simProfile += "max_time=" + time + "\r\n";
-                    }
-                    if (Directory.EnumerateFiles("adaptiveTemplates").Contains("adaptiveTemplates" + System.IO.Path.DirectorySeparatorChar + sim + ".simc"))
-                    {
-                        simProfile += File.ReadAllText("adaptiveTemplates" + System.IO.Path.DirectorySeparatorChar + sim + ".simc") + "\r\n";
-                    }
-                    else
-                    {
-                        MessageBox.Show(String.Format("Couldn't find template \"{0}\" requested. Sim results will be skewed.", sim), "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                        return;
-                    }
-
-                    var filePrefix = time != null ? "results" + System.IO.Path.DirectorySeparatorChar + guid + System.IO.Path.DirectorySeparatorChar + time + "_" + sim + "."
-                        : "results" + System.IO.Path.DirectorySeparatorChar + guid + System.IO.Path.DirectorySeparatorChar + sim + ".";
-
-                    if (context.DisableStatWeights)
-                    {
-                        simProfile += "calculate_scale_factors=0\r\n";
-                    }
-                    else
-                    {
-                        simProfile += "calculate_scale_factors=1\r\n";
-                    }
-                    if (context.ReforgeEnabled)
-                    {
-                        var reforge_stat = "";
-                        if (context.ReforgeCrit)
-                        {
-                            reforge_stat += "crit";
-                        }
-                        if (context.ReforgeHaste)
-                        {
-                            if (reforge_stat.Equals(""))
-                            {
-                                reforge_stat += "haste";
-                            }
-                            else
-                            {
-                                reforge_stat += ",haste";
-                            }
-                        }
-                        if (context.ReforgeMastery)
-                        {
-                            if (reforge_stat.Equals(""))
-                            {
-                                reforge_stat += "mastery";
-                            }
-                            else
-                            {
-                                reforge_stat += ",mastery";
-                            }
-                        }
-                        if (context.ReforgeVers)
-                        {
-                            if (reforge_stat.Equals(""))
-                            {
-                                reforge_stat += "versatility";
-                            }
-                            else
-                            {
-                                reforge_stat += ",versatility";
-                            }
-                        }
-                        if (!reforge_stat.Contains(","))
-                        {
-                            MessageBox.Show(String.Format("At least 2 stats are required to reforge. Reforging will be disabled.", sim), "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                        }
-                        else if (context.ReforgeAmount == 0 || context.ReforgeStepSize == 0)
-                        {
-                            MessageBox.Show("No reforging size supplied. Reforging will be disabled", "Warning", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                        }
-                        else
-                        {
-                            simProfile += "reforge_plot_stat=" + reforge_stat + "\r\nreforge_plot_amount=" + context.ReforgeAmount + "\r\nreforge_plot_step=" + context.ReforgeStepSize + "\r\nreforge_plot_output_file=" + filePrefix + "csv\r\n";
-                        }
-                    }
-
-                    simProfile += "json2=" + filePrefix + "json\r\nhtml=" + filePrefix + "html\r\n";
-                    simList.Add(simProfile);
-                }
-                catch(Exception)
-                {
-                    MessageBox.Show("Failed to create your character model. You may have selected an invalid character name or advanced parameter.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    App.Current.Dispatcher.Invoke(() =>
-                    {
-                        var window1 = new SimQueue();
-                        window1.Top = App.Current.MainWindow.Top;
-                        window1.Left = App.Current.MainWindow.Left;
-                        App.Current.MainWindow = window1;
-                        this.Close();
-                        window1.Show();
-                    });
-                    return;
-                }
-            });
             foreach (var sim in selectedModel.model.Keys)
             {
                 if (selectedModel.timeModel.Count != 0)
                 {
                     foreach (var time in selectedModel.timeModel.Keys)
                     {
-
-                        createModelSim(sim, time);
+                        simList.Add(SimHelper.CreateSimForModel(sim, time, context.PTRMode, context.FixedIterationOrError != 0, context.Sims.ToList(), !context.DisableStatWeights,
+                            context.ReforgeEnabled, context.ReforgeHaste, context.ReforgeCrit, context.ReforgeVers, context.ReforgeMastery, context.ReforgeAmount,
+                            context.ReforgeStepSize, context.Threads, guid, false, true));
                     }
                 }
                 else
                 {
-                    createModelSim(sim, null);
+                    simList.Add(SimHelper.CreateSimForModel(sim, null, context.PTRMode, context.FixedIterationOrError != 0, context.Sims.ToList(), !context.DisableStatWeights,
+                        context.ReforgeEnabled, context.ReforgeHaste, context.ReforgeCrit, context.ReforgeVers, context.ReforgeMastery, context.ReforgeAmount,
+                        context.ReforgeStepSize, context.Threads, guid, false, true));
                 }
             }
             var window = new SimcRunner();

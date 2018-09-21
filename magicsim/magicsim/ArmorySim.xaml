@@ -19,9 +19,9 @@
         <Label x:Name="nameLabel" Content="Name:" HorizontalAlignment="Left" Margin="35,42,0,0" VerticalAlignment="Top" FontSize="14"/>
         <TextBox x:Name="name" HorizontalAlignment="Left" Height="23" Margin="93,45,0,0" TextWrapping="Wrap" Text="{Binding Path=Name}" VerticalAlignment="Top" Width="120"/>
         <Label x:Name="serverLabel" Content="Server:" HorizontalAlignment="Left" Margin="35,73,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <ComboBox x:Name="servers" HorizontalAlignment="Left" Height="23" SelectedItem="Aegwynn" ItemsSource="{Binding Path=Servers}" SelectionChanged="servers_SelectionChanged" Margin="93,76,0,0" Text="" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="servers" HorizontalAlignment="Left" Height="23" SelectedItem="{Binding Path=SelectedServer}" ItemsSource="{Binding Path=Servers}" Margin="93,76,0,0" Text="" VerticalAlignment="Top" Width="120"/>
         <Label x:Name="regionLabel" Content="Region:" HorizontalAlignment="Left" Margin="30,104,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <ComboBox x:Name="regions" HorizontalAlignment="Left" Height="23" SelectedItem="US" ItemsSource="{Binding Path=Regions}" SelectionChanged="regions_SelectionChanged" Margin="93,108,0,0" Text="" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="regions" HorizontalAlignment="Left" Height="23" SelectedItem="{Binding Path=SelectedRegion}" ItemsSource="{Binding Path=Regions}"  SelectionChanged="regions_SelectionChanged" Margin="93,108,0,0" Text="" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="button" IsDefault="True" Content="Continue" HorizontalAlignment="Left" VerticalAlignment="Top" Width="77" Margin="35,156,0,0" Click="button_Click"/>
         <Button x:Name="button_Copy" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="77" Margin="136,156,0,0" Click="Cancel_Click"/>
     </Grid>
