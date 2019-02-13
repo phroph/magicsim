@@ -14,27 +14,30 @@
     <Label x:Name="FoodLabel" Content="Food:" FontSize="10" HorizontalAlignment="Left" Height="22" Margin="30,149,0,0" VerticalAlignment="Top" Width="34"/>
     <Label x:Name="RuneLabel" Content="Rune:" FontSize="10" HorizontalAlignment="Left" Height="22" Margin="30,176,0,0" VerticalAlignment="Top" Width="34"/>
     <Label x:Name="ConsumablesHeader" Content="Consumables:" HorizontalAlignment="Left" Height="27" Margin="10,69,0,0" VerticalAlignment="Top" Width="93"/>
-    <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="135" Margin="208,69,0,0" Stroke="Black" VerticalAlignment="Top" Width="254"/>
+    <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="135" Margin="208,69,-116,0" Stroke="Black" VerticalAlignment="Top" Width="370"/>
     <Label x:Name="BasicsSummary" Content="Basics:" HorizontalAlignment="Left" Height="27" Margin="208,69,0,0" VerticalAlignment="Top" Width="93"/>
-    <TextBox x:Name="ItemLevel" HorizontalAlignment="Left" Height="23" Margin="289,95,0,0" TextWrapping="Wrap"  Text="{Binding Path=ILvl}" VerticalAlignment="Top" Width="56"  IsEnabled="{Binding Path=ModifyIlvl}"/>
-    <Label x:Name="ItemLevelLabel" Content="Item Level:" HorizontalAlignment="Left" Margin="217,92,0,0" VerticalAlignment="Top"/>
-    <CheckBox x:Name="ItemLevelToggle" Content="Modify" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="350,98,0,0" IsChecked="{Binding Path=ModifyIlvl}" />
-    <Label x:Name="TierLabel" Content="Tier:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="217,118,0,0"/>
-    <Label x:Name="TierAbsenceNotifier" IsEnabled="False" Content="Check back later" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="271,149,0,0"/>
+    <TextBox x:Name="ItemLevel" HorizontalAlignment="Left" Height="23" Margin="362,100,0,0" TextWrapping="Wrap"  Text="{Binding Path=ILvl}" VerticalAlignment="Top" Width="56"  IsEnabled="{Binding Path=ModifyIlvl}"/>
+    <Label x:Name="ItemLevelLabel" Content="Item Level:" HorizontalAlignment="Left" Margin="290,97,0,0" VerticalAlignment="Top"/>
+    <CheckBox x:Name="ItemLevelToggle" Content="Modify" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="470,103,-65,0" IsChecked="{Binding Path=ModifyIlvl}" />
+    <Label x:Name="TierLabel" Content="Tier:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="290,123,0,0"/>
+    <Label x:Name="TierAbsenceNotifier" IsEnabled="False" Content="Check back later" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="344,154,0,0"/>
     <!--<CheckBox x:Name="T214pc" Content="T21 4pc" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="321,125,0,0" Checked="Tier_Change" Unchecked="Tier_Change" IsChecked="{Binding Path=T214pc}" IsEnabled="{Binding Path=ModifyTier}"/>-->
-    <CheckBox x:Name="TierToggle" Content="Modify" HorizontalAlignment="Left" Margin="397,145,0,0" IsChecked="{Binding Path=ModifyTier}" Checked="Tier_Change" Unchecked="Tier_Change" VerticalAlignment="Top"/>
-    <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="180" Margin="10,209,0,-31" Stroke="Black" VerticalAlignment="Top" Width="452"/>
+    <CheckBox x:Name="TierToggle" Content="Modify" HorizontalAlignment="Left" Margin="470,150,-65,0" IsChecked="{Binding Path=ModifyTier}" Checked="Tier_Change" Unchecked="Tier_Change" VerticalAlignment="Top"/>
+    <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="180" Margin="10,209,-116,-31" Stroke="Black" VerticalAlignment="Top" Width="568"/>
     <Label x:Name="AzeriteLabel" Content="Azerite:" HorizontalAlignment="Left" Margin="10,209,0,0" VerticalAlignment="Top"/>
     <ComboBox x:Name="HeadRing1" SelectedItem="{Binding Path=HeadRing1}" ItemsSource="{Binding Path=Ring1}" HorizontalAlignment="Left" Margin="34,260,0,0" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="HeadRing2" SelectedItem="{Binding Path=HeadRing2}" ItemsSource="{Binding Path=Ring2}" HorizontalAlignment="Left" Margin="177,260,0,0" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="HeadRing4" SelectedItem="{Binding Path=HeadRing4}" ItemsSource="{Binding Path=Ring4}" HorizontalAlignment="Left" Margin="321,260,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="HeadRing2" SelectedItem="{Binding Path=HeadRing2}" ItemsSource="{Binding Path=Ring2}" HorizontalAlignment="Left" Margin="307,260,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="HeadRing4" SelectedItem="{Binding Path=HeadRing4}" ItemsSource="{Binding Path=Ring4}" HorizontalAlignment="Left" Margin="441,260,-99,0" VerticalAlignment="Top" Width="120"/>
     <ComboBox x:Name="ChestRing1" SelectedItem="{Binding Path=ChestRing1}" ItemsSource="{Binding Path=Ring1}" HorizontalAlignment="Left" Margin="34,305,0,0" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="ChestRing2" SelectedItem="{Binding Path=ChestRing2}" ItemsSource="{Binding Path=Ring2}" HorizontalAlignment="Left" Margin="177,305,0,0" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="ChestRing4" SelectedItem="{Binding Path=ChestRing4}" ItemsSource="{Binding Path=Ring4}" HorizontalAlignment="Left" Margin="321,305,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="ChestRing2" SelectedItem="{Binding Path=ChestRing2}" ItemsSource="{Binding Path=Ring2}" HorizontalAlignment="Left" Margin="307,305,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="ChestRing4" SelectedItem="{Binding Path=ChestRing4}" ItemsSource="{Binding Path=Ring4}" HorizontalAlignment="Left" Margin="441,305,-99,0" VerticalAlignment="Top" Width="120"/>
     <ComboBox x:Name="ShouldersRing1" SelectedItem="{Binding Path=ShouldersRing1}" ItemsSource="{Binding Path=Ring1}" HorizontalAlignment="Left" Margin="34,355,0,-19" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="ShouldersRing2" SelectedItem="{Binding Path=ShouldersRing2}" ItemsSource="{Binding Path=Ring2}" HorizontalAlignment="Left" Margin="177,355,0,-19" VerticalAlignment="Top" Width="120"/>
-    <ComboBox x:Name="ShouldersRing4" SelectedItem="{Binding Path=ShouldersRing4}" ItemsSource="{Binding Path=Ring4}" HorizontalAlignment="Left" Margin="321,355,0,-19" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="ShouldersRing2" SelectedItem="{Binding Path=ShouldersRing2}" ItemsSource="{Binding Path=Ring2}" HorizontalAlignment="Left" Margin="307,355,0,-19" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="ShouldersRing4" SelectedItem="{Binding Path=ShouldersRing4}" ItemsSource="{Binding Path=Ring4}" HorizontalAlignment="Left" Margin="441,355,-99,-19" VerticalAlignment="Top" Width="120"/>
     <Label x:Name="HeadLabel" Content="Head:" HorizontalAlignment="Left" Margin="34,234,0,0" VerticalAlignment="Top"/>
     <Label x:Name="ChestLabel" Content="Chest:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="34,279,0,0"/>
     <Label x:Name="ShouldersLabel" Content="Shoulders:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="34,329,0,0"/>
+    <ComboBox x:Name="HeadRing1_2" SelectedItem="{Binding HeadRing12}" ItemsSource="{Binding Ring1}" HorizontalAlignment="Left" Margin="169,260,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="ChestRing1_2" SelectedItem="{Binding ChestRing12}" ItemsSource="{Binding Ring1}" HorizontalAlignment="Left" Margin="169,305,0,0" VerticalAlignment="Top" Width="120"/>
+    <ComboBox x:Name="ShouldersRing1_2" SelectedItem="{Binding ShouldersRing12}" ItemsSource="{Binding Ring1}" HorizontalAlignment="Left" Margin="169,355,0,-19" VerticalAlignment="Top" Width="120"/>
 </Grid>

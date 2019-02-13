@@ -1,5 +1,26 @@
 ﻿[
   {
+    "dispName": "Battle of Dazar Composite",
+    "name": "uldir",
+    "model": {
+      "ST_BA_PW": 0.03333333333,
+      "ST_SA_PW": 0.05555555556,
+      "ST_NA_PW": 0.18888888889,
+      "ST_BA_LM": 0.06666666667,
+      "ST_SA_LM": 0.10000000000,
+      "ST_NA_LM": 0.28888888889,
+      "ST_BA_HM": 0.01111111111,
+      "ST_SA_HM": 0.02222222222,
+      "ST_NA_HM": 0.05555555556,
+      "2T_NA_PW": 0.02222222222,
+      "2T_SA_LM": 0.03333333333,
+      "2T_NA_LM": 0.08888888889,
+      "2T_SA_HM": 0.01111111111,
+      "2T_NA_HM": 0.02222222222
+    },
+    "timeModel": { "378": 1.0 }
+  },
+  {
     "dispName": "Uldir Composite 1.0",
     "name": "uldir",
     "model": {

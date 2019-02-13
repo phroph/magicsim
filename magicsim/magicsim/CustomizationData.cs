@@ -60,12 +60,15 @@ namespace magicsim
         private string _name;
 
         private string _headRing1;
+        private string _headRing12;
         private string _headRing2;
         private string _headRing4;
         private string _chestRing1;
+        private string _chestRing12;
         private string _chestRing2;
         private string _chestRing4;
         private string _shoulderRing1;
+        private string _shoulderRing12;
         private string _shoulderRing2;
         private string _shoulderRing4;
 
@@ -94,6 +97,18 @@ namespace magicsim
                 {
                     _headRing1 = value;
                     OnPropertyChanged("HeadRing1");
+                }
+            }
+        }
+        public String HeadRing12
+        {
+            get { return _headRing12; }
+            set
+            {
+                if (value != _headRing12)
+                {
+                    _headRing12 = value;
+                    OnPropertyChanged("HeadRing12");
                 }
             }
         }
@@ -133,6 +148,18 @@ namespace magicsim
                 }
             }
         }
+        public String ChestRing12
+        {
+            get { return _chestRing12; }
+            set
+            {
+                if (value != _chestRing12)
+                {
+                    _chestRing12 = value;
+                    OnPropertyChanged("ChestRing12");
+                }
+            }
+        }
         public String ChestRing2
         {
             get { return _chestRing2; }
@@ -166,6 +193,18 @@ namespace magicsim
                 {
                     _shoulderRing1 = value;
                     OnPropertyChanged("ShouldersRing1");
+                }
+            }
+        }
+        public String ShouldersRing12
+        {
+            get { return _shoulderRing12; }
+            set
+            {
+                if (value != _shoulderRing12)
+                {
+                    _shoulderRing12 = value;
+                    OnPropertyChanged("ShouldersRing12");
                 }
             }
         }
@@ -384,6 +423,10 @@ namespace magicsim
             {
                 headPowers += Ring1Mapping.Find(x => x.Name.Equals(HeadRing1)).Id + "/";
             }
+            if (Ring1Mapping.Exists(x => x.Name.Equals(HeadRing12)))
+            {
+                headPowers += Ring1Mapping.Find(x => x.Name.Equals(HeadRing12)).Id + "/";
+            }
             if (Ring2Mapping.Exists(x => x.Name.Equals(HeadRing2)))
             {
                 headPowers += Ring2Mapping.Find(x => x.Name.Equals(HeadRing2)).Id + "/";
@@ -397,6 +440,10 @@ namespace magicsim
             {
                 chestPowers += Ring1Mapping.Find(x => x.Name.Equals(ChestRing1)).Id + "/";
             }
+            if (Ring1Mapping.Exists(x => x.Name.Equals(ChestRing12)))
+            {
+                chestPowers += Ring1Mapping.Find(x => x.Name.Equals(ChestRing12)).Id + "/";
+            }
             if (Ring2Mapping.Exists(x => x.Name.Equals(ChestRing2)))
             {
                 chestPowers += Ring2Mapping.Find(x => x.Name.Equals(ChestRing2)).Id + "/";
@@ -409,6 +456,10 @@ namespace magicsim
             if (Ring1Mapping.Exists(x => x.Name.Equals(ShouldersRing1)))
             {
                 shoulderPowers += Ring1Mapping.Find(x => x.Name.Equals(ShouldersRing1)).Id + "/";
+            }
+            if (Ring1Mapping.Exists(x => x.Name.Equals(ShouldersRing12)))
+            {
+                shoulderPowers += Ring1Mapping.Find(x => x.Name.Equals(ShouldersRing12)).Id + "/";
             }
             if (Ring2Mapping.Exists(x => x.Name.Equals(ShouldersRing2)))
             {
@@ -488,11 +539,17 @@ namespace magicsim
                 else
                 {
                     var traits = azeriteHelm.Groups[1].Value.Split('/');
+                    var ring1Found = false;
                     foreach (var trait in traits)
                     {
-                        if (Ring1Mapping.Exists(x => x.Id.Equals(trait)))
+                        if (!ring1Found && Ring1Mapping.Exists(x => x.Id.Equals(trait)))
                         {
                             HeadRing1 = Ring1Mapping.Find(x => x.Id.Equals(trait)).Name;
+                            ring1Found = true;
+                        }
+                        else if (ring1Found && Ring1Mapping.Exists(x => x.Id.Equals(trait)))
+                        { 
+                            HeadRing12 = Ring1Mapping.Find(x => x.Id.Equals(trait)).Name;
                         }
                         else if (Ring2Mapping.Exists(x => x.Id.Equals(trait)))
                         {
@@ -529,11 +586,17 @@ namespace magicsim
                 else
                 {
                     var traits = azeriteShoulder.Groups[1].Value.Split('/');
+                    var ring1Found = false;
                     foreach (var trait in traits)
                     {
-                        if (Ring1Mapping.Exists(x => x.Id.Equals(trait)))
+                        if (!ring1Found && Ring1Mapping.Exists(x => x.Id.Equals(trait)))
                         {
                             ShouldersRing1 = Ring1Mapping.Find(x => x.Id.Equals(trait)).Name;
+                            ring1Found = true;
+                        }
+                        else if (ring1Found && Ring1Mapping.Exists(x => x.Id.Equals(trait)))
+                        {
+                            ShouldersRing12 = Ring1Mapping.Find(x => x.Id.Equals(trait)).Name;
                         }
                         else if (Ring2Mapping.Exists(x => x.Id.Equals(trait)))
                         {
@@ -570,11 +633,17 @@ namespace magicsim
                 else
                 {
                     var traits = azeriteChest.Groups[1].Value.Split('/');
+                    var ring1Found = false;
                     foreach (var trait in traits)
                     {
-                        if (Ring1Mapping.Exists(x => x.Id.Equals(trait)))
+                        if (!ring1Found && Ring1Mapping.Exists(x => x.Id.Equals(trait)))
                         {
                             ChestRing1 = Ring1Mapping.Find(x => x.Id.Equals(trait)).Name;
+                            ring1Found = true;
+                        }
+                        else if (ring1Found && Ring1Mapping.Exists(x => x.Id.Equals(trait)))
+                        {
+                            ChestRing12 = Ring1Mapping.Find(x => x.Id.Equals(trait)).Name;
                         }
                         else if (Ring2Mapping.Exists(x => x.Id.Equals(trait)))
                         {
@@ -626,6 +695,12 @@ namespace magicsim
                 Ring1.Add("    - Uldir -");
                 AzeriteMapping["pve"]["uldir"].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
                 Ring1.Add("");
+                Ring1.Add("    - Battle of Dazar'alor -");
+                AzeriteMapping["pve"]["dazar"].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
+                Ring1.Add("");
+                Ring1.Add("    - Darkshore Warfront -");
+                AzeriteMapping["pve"]["darkshore"].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
+                Ring1.Add("");
                 Ring1.Add("    - World -");
                 AzeriteMapping["pve"]["location"].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
                 Ring1.Add("");
@@ -633,6 +708,8 @@ namespace magicsim
                 AzeriteMapping["pve"]["dungeon"].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
                 Ring1.Add("");
                 Ring1.Add("- PVP -");
+                Ring1.Add("    - Generic -");
+                AzeriteMapping["pvp"]["general"].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
                 Ring1.Add("    - Horde -");
                 AzeriteMapping["pvp"]["horde"].ForEach(x => { Ring1.Add(x.Name); Ring1Mapping.Add(x); });
                 Ring1.Add("");

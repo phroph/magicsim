@@ -68,7 +68,7 @@ namespace magicsim
             var armorySimData = (QuickSimCustomizationData)this.DataContext;
             var regionsDropdown = (ComboBox)sender;
             var value = (String)regionsDropdown.SelectedValue;
-            BeginGetServersForRegion(armorySimData, value);
+            //BeginGetServersForRegion(armorySimData, value);
         }
 
         private void BeginGetServersForRegion(QuickSimCustomizationData model, String region)

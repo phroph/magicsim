@@ -1,1386 +1,1476 @@
 {
-  "generic": {
-    "center": [
-      {
-        "Name": "Azerite Empowered",
-        "Id": "13"
+      "generic": {
+          "center": [
+              {
+                  "Name": "Azerite Empowered",
+                  "Id": "13"
+              }
+          ]
+      },
+      "pve": {
+          "magni": [
+              {
+                  "Name": "Champion of Azeroth",
+                  "Id": "82"
+              }
+          ],
+          "uldir": [
+              {
+                  "Name": "Archive of the Titans",
+                  "Id": "483"
+              },
+              {
+                  "Name": "Laser Matrix",
+                  "Id": "485"
+              }
+          ],
+          "location": [
+              {
+                  "Name": "Ruinous Bolt",
+                  "Id": "156"
+              },
+              {
+                  "Name": "Meticulous Scheming",
+                  "Id": "192"
+              },
+              {
+                  "Name": "Rezan's Fury",
+                  "Id": "157"
+              },
+              {
+                  "Name": "Blightborne Infusion",
+                  "Id": "193"
+              },
+              {
+                  "Name": "Secrets of the Deep",
+                  "Id": "195"
+              },
+              {
+                  "Name": "Filthy Transfusion",
+                  "Id": "194"
+              },
+              {
+                  "Name": "Dagger in the Back",
+                  "Id": "479"
+              },
+              {
+                  "Name": "Thunderous Blast",
+                  "Id": "482"
+              },
+              {
+                  "Name": "Tidal Surge",
+                  "Id": "478"
+              },
+              {
+                  "Name": "Blood Rite",
+                  "Id": "480"
+              },
+              {
+                  "Name": "Incite the Pack",
+                  "Id": "481"
+              },
+              {
+                  "Name": "Swirling Sands",
+                  "Id": "196"
+              },
+              {
+                  "Name": "Tradewinds",
+                  "Id": "505"
+              }
+          ],
+          "dungeon": [
+              {
+                  "Name": "Unstable Catalyst",
+                  "Id": "504"
+              }
+          ],
+          "dazar": [
+              {
+                  "Name": "Seductive Power",
+                  "Id": "561"
+              },
+              {
+                  "Name": "Bonded Souls",
+                  "Id": "560"
+              },
+              {
+                  "Name": "Treacherous Covenant",
+                  "Id": "562"
+              }
+          ],
+          "darkshore": [
+              {
+                  "Name": "Shadow of Elune",
+                  "Id": "521"
+              },
+              {
+                  "Name": "Ancients' Bulwark",
+                  "Id": "522"
+              },
+              {
+                  "Name": "Apothecary's Concoctions",
+                  "Id": "523"
+              },
+              {
+                  "Name": "Endless Hunger",
+                  "Id": "526"
+              }
+          ]
+      },
+      "role": {
+          "tank": [
+              {
+                  "Name": "Winds of War",
+                  "Id": "43"
+              },
+              {
+                  "Name": "Azerite Veins",
+                  "Id": "89"
+              },
+              {
+                  "Name": "Crystalline Carapace",
+                  "Id": "98"
+              },
+              {
+                  "Name": "Ablative Shielding",
+                  "Id": "99"
+              },
+              {
+                  "Name": "Strength in Numbers",
+                  "Id": "100"
+              },
+              {
+                  "Name": "Shimmering Haven",
+                  "Id": "101"
+              }
+          ],
+          "healer": [
+              {
+                  "Name": "Woundbinder",
+                  "Id": "19"
+              },
+              {
+                  "Name": "Concentrated Mending",
+                  "Id": "103"
+              },
+              {
+                  "Name": "Savior",
+                  "Id": "42"
+              },
+              {
+                  "Name": "Bracing Chill",
+                  "Id": "104"
+              },
+              {
+                  "Name": "Ephemeral Recovery",
+                  "Id": "105"
+              },
+              {
+                  "Name": "Blessed Portents",
+                  "Id": "463"
+              },
+              {
+                  "Name": "Synergistic Growth",
+                  "Id": "102"
+              }
+          ],
+          "dps": [
+              {
+                  "Name": "Elemental Whirl",
+                  "Id": "21"
+              },
+              {
+                  "Name": "Overwhelming Power",
+                  "Id": "30"
+              },
+              {
+                  "Name": "Azerite Globules",
+                  "Id": "462"
+              },
+              {
+                  "Name": "Gutripper",
+                  "Id": "31"
+              }
+          ],
+          "any": [
+              {
+                  "Name": "Lifespeed",
+                  "Id": "20"
+              },
+              {
+                  "Name": "On My Way",
+                  "Id": "38"
+              },
+              {
+                  "Name": "Heed My Call",
+                  "Id": "22"
+              },
+              {
+                  "Name": "Blood Siphon",
+                  "Id": "18"
+              },
+              {
+                  "Name": "Unstable Flames",
+                  "Id": "459"
+              },
+              {
+                  "Name": "Earthlink",
+                  "Id": "461"
+              }
+          ],
+          "defense": [
+              {
+                  "Name": "Resounding Protection",
+                  "Id": "15"
+              },
+              {
+                  "Name": "Azerite Fortification",
+                  "Id": "86"
+              },
+              {
+                  "Name": "Impassive Visage",
+                  "Id": "83"
+              },
+              {
+                  "Name": "Longstrider",
+                  "Id": "14"
+              },
+              {
+                  "Name": "Bulwark of the Masses",
+                  "Id": "84"
+              },
+              {
+                  "Name": "Gemhide",
+                  "Id": "85"
+              },
+              {
+                  "Name": "Vampiric Speed",
+                  "Id": "44"
+              },
+              {
+                  "Name": "Self Reliance",
+                  "Id": "87"
+              }
+          ]
+      },
+      "pvp": {
+          "general": [
+              {
+                  "Name": "Fight or Flight",
+                  "Id": "541"
+              }
+          ],
+          "horde": [
+              {
+                  "Name": "Glory in Battle",
+                  "Id": "486"
+              },
+              {
+                  "Name": "Retaliatory Fury",
+                  "Id": "487"
+              },
+              {
+                  "Name": "Combined Might",
+                  "Id": "490"
+              },
+              {
+                  "Name": "Collective Will",
+                  "Id": "491"
+              },
+              {
+                  "Name": "Battlefield Focus",
+                  "Id": "488"
+              },
+              {
+                  "Name": "Sylvanas' Resolve",
+                  "Id": "489"
+              }
+          ],
+          "alliance": [
+              {
+                  "Name": "Liberator's Might",
+                  "Id": "492"
+              },
+              {
+                  "Name": "Last Gift",
+                  "Id": "493"
+              },
+              {
+                  "Name": "Stronger Together",
+                  "Id": "496"
+              },
+              {
+                  "Name": "Stand As One",
+                  "Id": "497"
+              },
+              {
+                  "Name": "Battlefield Precision",
+                  "Id": "494"
+              },
+              {
+                  "Name": "Anduin's Dedication",
+                  "Id": "495"
+              }
+          ]
+      },
+      "profession": {
+          "engineering": [
+              {
+                  "Name": "Barrage Of Many Bombs",
+                  "Id": "498"
+              },
+              {
+                  "Name": "Ricocheting Inflatable Pyrosaw",
+                  "Id": "499"
+              },
+              {
+                  "Name": "Auto-Self-Cauterizer",
+                  "Id": "503"
+              },
+              {
+                  "Name": "Synaptic Spark Capacitor",
+                  "Id": "500"
+              },
+              {
+                  "Name": "Relational Normalization Gizmo",
+                  "Id": "501"
+              },
+              {
+                  "Name": "Personal Absorb-o-Tron",
+                  "Id": "502"
+              }
+          ]
+      },
+      "rogue": {
+          "assassination": [
+              {
+                  "Name": "Double Dose",
+                  "Id": "136"
+              },
+              {
+                  "Name": "Twist the Knife",
+                  "Id": "181"
+              },
+              {
+                  "Name": "Scent of Blood",
+                  "Id": "406"
+              },
+              {
+                  "Name": "Shrouded Suffocation",
+                  "Id": "408"
+              },
+              {
+                  "Name": "Nothing Personal",
+                  "Id": "249"
+              },
+              {
+                  "Name": "Echoing Blades",
+                  "Id": "407"
+              }
+          ],
+          "subtlety": [
+              {
+                  "Name": "Night's Vengeance",
+                  "Id": "175"
+              },
+              {
+                  "Name": "Blade In The Shadows",
+                  "Id": "240"
+              },
+              {
+                  "Name": "Perforate",
+                  "Id": "445"
+              },
+              {
+                  "Name": "The First Dance",
+                  "Id": "413"
+              },
+              {
+                  "Name": "Inevitability",
+                  "Id": "414"
+              },
+              {
+                  "Name": "Replicating Shadows",
+                  "Id": "124"
+              }
+          ],
+          "outlaw": [
+              {
+                  "Name": "Deadshot",
+                  "Id": "129"
+              },
+              {
+                  "Name": "Snake Eyes",
+                  "Id": "239"
+              },
+              {
+                  "Name": "Brigand's Blitz",
+                  "Id": "446"
+              },
+              {
+                  "Name": "Paradise Lost",
+                  "Id": "410"
+              },
+              {
+                  "Name": "Ace Up Your Sleeve",
+                  "Id": "411"
+              },
+              {
+                  "Name": "Keep Your Wits About You",
+                  "Id": "180"
+              }
+          ],
+          "defense": [
+              {
+                  "Name": "Footpad",
+                  "Id": "217"
+              },
+              {
+                  "Name": "Shrouded Mantle",
+                  "Id": "473"
+              },
+              {
+                  "Name": "Lying In Wait",
+                  "Id": "548"
+              }
+          ]
+      },
+      "shaman": {
+          "elemental": [
+              {
+                  "Name": "Lava Shock",
+                  "Id": "178"
+              },
+              {
+                  "Name": "Echo of the Elementals",
+                  "Id": "222"
+              },
+              {
+                  "Name": "Synapse Shock",
+                  "Id": "448"
+              },
+              {
+                  "Name": "Natural Harmony",
+                  "Id": "416"
+              },
+              {
+                  "Name": "Igneous Potential",
+                  "Id": "457"
+              },
+              {
+                  "Name": "Tectonic Thunder",
+                  "Id": "417"
+              }
+          ],
+          "enhancement": [
+              {
+                  "Name": "Primal Primer",
+                  "Id": "137"
+              },
+              {
+                  "Name": "Strength of Earth",
+                  "Id": "179"
+              },
+              {
+                  "Name": "Lightning Conduit",
+                  "Id": "223"
+              },
+              {
+                  "Name": "Ancestral Resonance",
+                  "Id": "447"
+              },
+              {
+                  "Name": "Roiling Storm",
+                  "Id": "420"
+              },
+              {
+                  "Name": "Thunderaan's Fury",
+                  "Id": "530"
+              }
+          ],
+          "restoration": [
+              {
+                  "Name": "Soothing Waters",
+                  "Id": "138"
+              },
+              {
+                  "Name": "Swelling Stream",
+                  "Id": "224"
+              },
+              {
+                  "Name": "Overflowing Shores",
+                  "Id": "449"
+              },
+              {
+                  "Name": "Surging Tides",
+                  "Id": "422"
+              },
+              {
+                  "Name": "Spouting Spirits",
+                  "Id": "423"
+              },
+              {
+                  "Name": "Turn of the Tide",
+                  "Id": "191"
+              }
+          ],
+          "defense": [
+              {
+                  "Name": "Serene Spirit",
+                  "Id": "207"
+              },
+              {
+                  "Name": "Pack Spirit",
+                  "Id": "474"
+              },
+              {
+                  "Name": "Ancient Ankh Talisman",
+                  "Id": "539"
+              }
+          ]
+      },
+      "hunter": {
+          "survival": [
+              {
+                  "Name": "Wildfire Cluster",
+                  "Id": "110"
+              },
+              {
+                  "Name": "Latent Poison",
+                  "Id": "163"
+              },
+              {
+                  "Name": "Venomous Fangs",
+                  "Id": "213"
+              },
+              {
+                  "Name": "Blur of Talons",
+                  "Id": "371"
+              },
+              {
+                  "Name": "Wilderness Survival",
+                  "Id": "372"
+              },
+              {
+                  "Name": "Primeval Intuition",
+                  "Id": "373"
+              }
+          ],
+          "beast_mastery": [
+              {
+                  "Name": "Serrated Jaws",
+                  "Id": "107"
+              },
+              {
+                  "Name": "Haze of Rage",
+                  "Id": "161"
+              },
+              {
+                  "Name": "Dance of Death",
+                  "Id": "211"
+              },
+              {
+                  "Name": "Feeding Frenzy",
+                  "Id": "367"
+              },
+              {
+                  "Name": "Primal Instincts",
+                  "Id": "366"
+              },
+              {
+                  "Name": "Dire Consequences",
+                  "Id": "365"
+              }
+          ],
+          "marksman": [
+              {
+                  "Name": "In The Rhythm",
+                  "Id": "36"
+              },
+              {
+                  "Name": "Unerring Vision",
+                  "Id": "212"
+              },
+              {
+                  "Name": "Steady Aim",
+                  "Id": "368"
+              },
+              {
+                  "Name": "Rapid Reload",
+                  "Id": "369"
+              },
+              {
+                  "Name": "Focused Fire",
+                  "Id": "370"
+              },
+              {
+                  "Name": "Surging Shots",
+                  "Id": "162"
+              }
+          ],
+          "defense": [
+              {
+                  "Name": "Shellshock",
+                  "Id": "203"
+              },
+              {
+                  "Name": "Duck and Cover",
+                  "Id": "469"
+              },
+              {
+                  "Name": "Nature's Salve",
+                  "Id": "543"
+              }
+          ]
+      },
+      "death_knight": {
+          "frost": [
+              {
+                  "Name": "Icy Citadel",
+                  "Id": "108"
+              },
+              {
+                  "Name": "Latent Chill",
+                  "Id": "141"
+              },
+              {
+                  "Name": "Echoing Howl",
+                  "Id": "242"
+              },
+              {
+                  "Name": "Killer Frost",
+                  "Id": "346"
+              },
+              {
+                  "Name": "Frozen Tempest",
+                  "Id": "347"
+              },
+              {
+                  "Name": "Frostwhelp's Indignation",
+                  "Id": "198"
+              }
+          ],
+          "unholy": [
+              {
+                  "Name": "Bone Spike Graveyard",
+                  "Id": "140"
+              },
+              {
+                  "Name": "Festermight",
+                  "Id": "199"
+              },
+              {
+                  "Name": "Harrowing Decay",
+                  "Id": "244"
+              },
+              {
+                  "Name": "Cankerous Wounds",
+                  "Id": "350"
+              },
+              {
+                  "Name": "Last Surprise",
+                  "Id": "351"
+              },
+              {
+                  "Name": "Helchains",
+                  "Id": "142"
+              },
+              {
+                  "Name": "Magus of the Dead",
+                  "Id": "109"
+              }
+          ],
+          "blood": [
+              {
+                  "Name": "Deep Cuts",
+                  "Id": "106"
+              },
+              {
+                  "Name": "Bone Spike Graveyard",
+                  "Id": "140"
+              },
+              {
+                  "Name": "Marrowblood",
+                  "Id": "197"
+              },
+              {
+                  "Name": "Eternal Rune Weapon",
+                  "Id": "348"
+              },
+              {
+                  "Name": "Bones of the Damned",
+                  "Id": "349"
+              },
+              {
+                  "Name": "Bloody Runeblade",
+                  "Id": "243"
+              }
+          ],
+          "defense": [
+              {
+                  "Name": "Runic Barrier",
+                  "Id": "201"
+              },
+              {
+                  "Name": "March of the Damned",
+                  "Id": "465"
+              },
+              {
+                  "Name": "Cold Hearted",
+                  "Id": "549"
+              }
+          ]
+      },
+      "demon_hunter": {
+          "havoc": [
+              {
+                  "Name": "Furious Gaze",
+                  "Id": "159"
+              },
+              {
+                  "Name": "Seething Power",
+                  "Id": "245"
+              },
+              {
+                  "Name": "Thirsting Blades",
+                  "Id": "352"
+              },
+              {
+                  "Name": "Eyes of Rage",
+                  "Id": "353"
+              },
+              {
+                  "Name": "Revolving Blades",
+                  "Id": "126"
+              },
+              {
+                  "Name": "Chaotic Transformation",
+                  "Id": "220"
+              }
+          ],
+          "vengeance": [
+              {
+                  "Name": "Revel in Pain",
+                  "Id": "134"
+              },
+              {
+                  "Name": "Infernal Armor",
+                  "Id": "160"
+              },
+              {
+                  "Name": "Rigid Carapace",
+                  "Id": "221"
+              },
+              {
+                  "Name": "Essence Sever",
+                  "Id": "355"
+              },
+              {
+                  "Name": "Cycle of Binding",
+                  "Id": "354"
+              },
+              {
+                  "Name": "Hour of Reaping",
+                  "Id": "246"
+              }
+          ],
+          "defense": [
+              {
+                  "Name": "Soulmonger",
+                  "Id": "202"
+              },
+              {
+                  "Name": "Burning Soul",
+                  "Id": "466"
+              },
+              {
+                  "Name": "Thrive in Chaos",
+                  "Id": "564"
+              }
+          ]
+      },
+      "paladin": {
+          "retribution": [
+              {
+                  "Name": "Avenger's Might",
+                  "Id": "125"
+              },
+              {
+                  "Name": "Expurgation",
+                  "Id": "187"
+              },
+              {
+                  "Name": "Indomitable Justice",
+                  "Id": "235"
+              },
+              {
+                  "Name": "Relentless Inquisitor",
+                  "Id": "154"
+              },
+              {
+                  "Name": "Light's Decree",
+                  "Id": "396"
+              },
+              {
+                  "Name": "Empyrean Power",
+                  "Id": "453"
+              }
+          ],
+          "protection": [
+              {
+                  "Name": "Bulwark of Light",
+                  "Id": "133"
+              },
+              {
+                  "Name": "Inner Light",
+                  "Id": "234"
+              },
+              {
+                  "Name": "Judicious Defense",
+                  "Id": "454"
+              },
+              {
+                  "Name": "Soaring Shield",
+                  "Id": "150"
+              },
+              {
+                  "Name": "Inspiring Vanguard",
+                  "Id": "395"
+              },
+              {
+                  "Name": "Righteous Conviction",
+                  "Id": "189"
+              }
+          ],
+          "holy": [
+              {
+                  "Name": "Moment of Compassion",
+                  "Id": "188"
+              },
+              {
+                  "Name": "Divine Revelations",
+                  "Id": "233"
+              },
+              {
+                  "Name": "Radiant Incandescence",
+                  "Id": "452"
+              },
+              {
+                  "Name": "Grace of the Justicar",
+                  "Id": "393"
+              },
+              {
+                  "Name": "Breaking Dawn",
+                  "Id": "394"
+              },
+              {
+                  "Name": "Glimmer of Light",
+                  "Id": "139"
+              }
+          ],
+          "defense": [
+              {
+                  "Name": "Stalwart Protector",
+                  "Id": "206"
+              },
+              {
+                  "Name": "Gallant Steed",
+                  "Id": "471"
+              },
+              {
+                  "Name": "Empyreal Ward",
+                  "Id": "538"
+              }
+          ]
+      },
+      "warlock": {
+          "affliction": [
+              {
+                  "Name": "Wracking Brilliance",
+                  "Id": "123"
+              },
+              {
+                  "Name": "Inevitable Demise",
+                  "Id": "183"
+              },
+              {
+                  "Name": "Cascading Calamity",
+                  "Id": "230"
+              },
+              {
+                  "Name": "Sudden Onset",
+                  "Id": "425"
+              },
+              {
+                  "Name": "Dreadful Calling",
+                  "Id": "426"
+              },
+              {
+                  "Name": "Pandemic Invocation",
+                  "Id": "442"
+              }
+          ],
+          "demonology": [
+              {
+                  "Name": "Shadow's Bite",
+                  "Id": "130"
+              },
+              {
+                  "Name": "Umbral Blaze",
+                  "Id": "190"
+              },
+              {
+                  "Name": "Explosive Potential",
+                  "Id": "231"
+              },
+              {
+                  "Name": "Demonic Meteor",
+                  "Id": "428"
+              },
+              {
+                  "Name": "Supreme Commander",
+                  "Id": "458"
+              },
+              {
+                  "Name": "Baleful Invocation",
+                  "Id": "429"
+              }
+          ],
+          "destruction": [
+              {
+                  "Name": "Flashpoint",
+                  "Id": "232"
+              },
+              {
+                  "Name": "Crashing Chaos",
+                  "Id": "444"
+              },
+              {
+                  "Name": "Rolling Havoc",
+                  "Id": "431"
+              },
+              {
+                  "Name": "Chaotic Inferno",
+                  "Id": "432"
+              },
+              {
+                  "Name": "Bursting Flare",
+                  "Id": "460"
+              },
+              {
+                  "Name": "Chaos Shards",
+                  "Id": "131"
+              }
+          ],
+          "defense": [
+              {
+                  "Name": "Lifeblood",
+                  "Id": "208"
+              },
+              {
+                  "Name": "Desperate Power",
+                  "Id": "475"
+              },
+              {
+                  "Name": "Terror of the Mind",
+                  "Id": "531"
+              }
+          ]
+      },
+      "warrior": {
+          "protection": [
+              {
+                  "Name": "Deafening Crash",
+                  "Id": "118"
+              },
+              {
+                  "Name": "Brace for Impact",
+                  "Id": "450"
+              },
+              {
+                  "Name": "Callous Reprisal",
+                  "Id": "440"
+              },
+              {
+                  "Name": "Iron Fortress",
+                  "Id": "441"
+              },
+              {
+                  "Name": "Bloodsport",
+                  "Id": "177"
+              },
+              {
+                  "Name": "Bastion of Might",
+                  "Id": "237"
+              }
+          ],
+          "arms": [
+              {
+                  "Name": "Gathering Storm",
+                  "Id": "174"
+              },
+              {
+                  "Name": "Test of Might",
+                  "Id": "226"
+              },
+              {
+                  "Name": "Seismic Wave",
+                  "Id": "433"
+              },
+              {
+                  "Name": "Crushing Assault",
+                  "Id": "434"
+              },
+              {
+                  "Name": "Lord of War",
+                  "Id": "435"
+              },
+              {
+                  "Name": "Striking the Anvil",
+                  "Id": "121"
+              }
+          ],
+          "fury": [
+              {
+                  "Name": "Pulverizing Blows",
+                  "Id": "229"
+              },
+              {
+                  "Name": "Infinite Fury",
+                  "Id": "451"
+              },
+              {
+                  "Name": "Simmering Rage",
+                  "Id": "437"
+              },
+              {
+                  "Name": "Reckless Flurry",
+                  "Id": "438"
+              },
+              {
+                  "Name": "Unbridled Ferocity",
+                  "Id": "119"
+              },
+              {
+                  "Name": "Cold Steel, Hot Blood",
+                  "Id": "176"
+              }
+          ],
+          "defense": [
+              {
+                  "Name": "Moment of Glory",
+                  "Id": "476"
+              },
+              {
+                  "Name": "Bury the Hatchet",
+                  "Id": "477"
+              },
+              {
+                  "Name": "Intimidating Presence",
+                  "Id": "554"
+              }
+          ]
+      },
+      "mage": {
+          "frost": [
+              {
+                  "Name": "Packed Ice",
+                  "Id": "132"
+              },
+              {
+                  "Name": "Tunnel of Ice",
+                  "Id": "379"
+              },
+              {
+                  "Name": "Whiteout",
+                  "Id": "380"
+              },
+              {
+                  "Name": "Frigid Grasp",
+                  "Id": "381"
+              },
+              {
+                  "Name": "Glacial Assault",
+                  "Id": "225"
+              },
+              {
+                  "Name": "Flash Freeze",
+                  "Id": "170"
+              }
+          ],
+          "fire": [
+              {
+                  "Name": "Flames of Alacrity",
+                  "Id": "128"
+              },
+              {
+                  "Name": "Blaster Master",
+                  "Id": "215"
+              },
+              {
+                  "Name": "Trailing Embers",
+                  "Id": "376"
+              },
+              {
+                  "Name": "Duplicative Incineration",
+                  "Id": "377"
+              },
+              {
+                  "Name": "Firemind",
+                  "Id": "378"
+              },
+              {
+                  "Name": "Wildfire",
+                  "Id": "168"
+              }
+          ],
+          "arcane": [
+              {
+                  "Name": "Arcane Pummeling",
+                  "Id": "88"
+              },
+              {
+                  "Name": "Brain Storm",
+                  "Id": "167"
+              },
+              {
+                  "Name": "Arcane Pressure",
+                  "Id": "214"
+              },
+              {
+                  "Name": "Galvanizing Spark",
+                  "Id": "374"
+              },
+              {
+                  "Name": "Explosive Echo",
+                  "Id": "375"
+              },
+              {
+                  "Name": "Equipoise",
+                  "Id": "127"
+              }
+          ],
+          "defense": [
+              {
+                  "Name": "Eldritch Warding",
+                  "Id": "205"
+              },
+              {
+                  "Name": "Cauterizing Blink",
+                  "Id": "468"
+              },
+              {
+                  "Name": "Quick Thinking",
+                  "Id": "546"
+              }
+          ]
+      },
+      "priest": {
+          "shadow": [
+              {
+                  "Name": "Searing Dialogue",
+                  "Id": "115"
+              },
+              {
+                  "Name": "Whispers of the Damned",
+                  "Id": "236"
+              },
+              {
+                  "Name": "Spiteful Apparitions",
+                  "Id": "403"
+              },
+              {
+                  "Name": "Death Throes",
+                  "Id": "404"
+              },
+              {
+                  "Name": "Chorus of Insanity",
+                  "Id": "405"
+              },
+              {
+                  "Name": "Thought Harvester",
+                  "Id": "166"
+              }
+          ],
+          "holy": [
+              {
+                  "Name": "Permeating Glow",
+                  "Id": "114"
+              },
+              {
+                  "Name": "Blessed Sanctuary",
+                  "Id": "165"
+              },
+              {
+                  "Name": "Prayerful Litany",
+                  "Id": "228"
+              },
+              {
+                  "Name": "Everlasting Light",
+                  "Id": "400"
+              },
+              {
+                  "Name": "Word of Mending",
+                  "Id": "401"
+              },
+              {
+                  "Name": "Promise of Deliverance",
+                  "Id": "402"
+              }
+          ],
+          "discipline": [
+              {
+                  "Name": "Moment of Repose",
+                  "Id": "113"
+              },
+              {
+                  "Name": "Weal and Woe",
+                  "Id": "164"
+              },
+              {
+                  "Name": "Depth of the Shadows",
+                  "Id": "227"
+              },
+              {
+                  "Name": "Contemptuous Homily",
+                  "Id": "398"
+              },
+              {
+                  "Name": "Enduring Luminescence",
+                  "Id": "399"
+              },
+              {
+                  "Name": "Sudden Revelation",
+                  "Id": "397"
+              }
+          ],
+          "defense": [
+              {
+                  "Name": "Sanctum",
+                  "Id": "204"
+              },
+              {
+                  "Name": "Twist Magic",
+                  "Id": "472"
+              },
+              {
+                  "Name": "Death Denied",
+                  "Id": "537"
+              }
+          ]
+      },
+      "druid": {
+          "feral": [
+              {
+                  "Name": "Untamed Ferocity",
+                  "Id": "169"
+              },
+              {
+                  "Name": "Jungle Fury",
+                  "Id": "209"
+              },
+              {
+                  "Name": "Iron Jaws",
+                  "Id": "247"
+              },
+              {
+                  "Name": "Gushing Lacerations",
+                  "Id": "358"
+              },
+              {
+                  "Name": "Blood Mist",
+                  "Id": "111"
+              },
+              {
+                  "Name": "Wild Fleshrending",
+                  "Id": "359"
+              }
+          ],
+          "balance": [
+              {
+                  "Name": "Streaking Stars",
+                  "Id": "122"
+              },
+              {
+                  "Name": "Power of the Moon",
+                  "Id": "173"
+              },
+              {
+                  "Name": "Dawning Sun",
+                  "Id": "250"
+              },
+              {
+                  "Name": "High Noon",
+                  "Id": "356"
+              },
+              {
+                  "Name": "Lunar Shrapnel",
+                  "Id": "357"
+              },
+              {
+                  "Name": "Arcanic Pulsar",
+                  "Id": "200"
+              }
+          ],
+          "guardian": [
+              {
+                  "Name": "Masterful Instincts",
+                  "Id": "171"
+              },
+              {
+                  "Name": "Twisted Claws",
+                  "Id": "241"
+              },
+              {
+                  "Name": "Gory Regeneration",
+                  "Id": "360"
+              },
+              {
+                  "Name": "Guardian's Wrath",
+                  "Id": "361"
+              },
+              {
+                  "Name": "Layered Mane",
+                  "Id": "112"
+              },
+              {
+                  "Name": "Burst of Savagery",
+                  "Id": "251"
+              }
+          ],
+          "restoration": [
+              {
+                  "Name": "Autumn Leaves",
+                  "Id": "210"
+              },
+              {
+                  "Name": "Waking Dream",
+                  "Id": "363"
+              },
+              {
+                  "Name": "Rampant Growth",
+                  "Id": "362"
+              },
+              {
+                  "Name": "Lively Spirit",
+                  "Id": "364"
+              },
+              {
+                  "Name": "Grove Tending",
+                  "Id": "172"
+              },
+              {
+                  "Name": "Early Harvest",
+                  "Id": "120"
+              }
+          ],
+          "defense": [
+              {
+                  "Name": "Reawakening",
+                  "Id": "219"
+              },
+              {
+                  "Name": "Ursoc's Endurance",
+                  "Id": "467"
+              },
+              {
+                  "Name": "Switch Hitter",
+                  "Id": "540"
+              }
+          ]
+      },
+      "monk": {
+          "brewmaster": [
+              {
+                  "Name": "Boiling Brew",
+                  "Id": "116"
+              },
+              {
+                  "Name": "Staggering Strikes",
+                  "Id": "186"
+              },
+              {
+                  "Name": "Fit to Burst",
+                  "Id": "238"
+              },
+              {
+                  "Name": "Training of Niuzao",
+                  "Id": "383"
+              },
+              {
+                  "Name": "Elusive Footwork",
+                  "Id": "384"
+              },
+              {
+                  "Name": "Straight, No Chaser",
+                  "Id": "382"
+              }
+          ],
+          "mistweaver": [
+              {
+                  "Name": "Overflowing Mists",
+                  "Id": "185"
+              },
+              {
+                  "Name": "Misty Peaks",
+                  "Id": "248"
+              },
+              {
+                  "Name": "Burst of Life",
+                  "Id": "385"
+              },
+              {
+                  "Name": "Uplifted Spirits",
+                  "Id": "387"
+              },
+              {
+                  "Name": "Font of Life",
+                  "Id": "386"
+              },
+              {
+                  "Name": "Secret Infusion",
+                  "Id": "76"
+              }
+          ],
+          "windwalker": [
+              {
+                  "Name": "Sunrise Technique",
+                  "Id": "184"
+              },
+              {
+                  "Name": "Pressure Point",
+                  "Id": "587"
+              },
+              {
+                  "Name": "Open Palm Strikes",
+                  "Id": "389"
+              },
+              {
+                  "Name": "Dance of Chi-Ji",
+                  "Id": "391"
+              },
+              {
+                  "Name": "Fury of Xuen",
+                  "Id": "117"
+              },
+              {
+                  "Name": "Glory of the Dawn",
+                  "Id": "388"
+              }
+          ],
+          "defense": [
+              {
+                  "Name": "Strength of Spirit",
+                  "Id": "218"
+              },
+              {
+                  "Name": "Sweep the Leg",
+                  "Id": "470"
+              },
+              {
+                  "Name": "Exit Strategy",
+                  "Id": "566"
+              }
+          ]
       }
-    ]
-  },
-  "pve": {
-    "magni": [
-      {
-        "Name": "Champion of Azeroth",
-        "Id": "82"
-      }
-    ],
-    "uldir": [
-      {
-        "Name": "Archive of the Titans",
-        "Id": "483"
-      },
-      {
-        "Name": "Laser Matrix",
-        "Id": "485"
-      }
-    ],
-    "location": [
-      {
-        "Name": "Ruinous Bolt",
-        "Id": "156"
-      },
-      {
-        "Name": "Meticulous Scheming",
-        "Id": "192"
-      },
-      {
-        "Name": "Rezan's Fury",
-        "Id": "157"
-      },
-      {
-        "Name": "Blightborne Infusion",
-        "Id": "193"
-      },
-      {
-        "Name": "Secrets of the Deep",
-        "Id": "195"
-      },
-      {
-        "Name": "Filthy Transfusion",
-        "Id": "194"
-      },
-      {
-        "Name": "Dagger in the Back",
-        "Id": "479"
-      },
-      {
-        "Name": "Thunderous Blast",
-        "Id": "482"
-      },
-      {
-        "Name": "Tidal Surge",
-        "Id": "478"
-      },
-      {
-        "Name": "Blood Rite",
-        "Id": "480"
-      },
-      {
-        "Name": "Incite the Pack",
-        "Id": "481"
-      },
-      {
-        "Name": "Swirling Sands",
-        "Id": "196"
-      },
-      {
-        "Name": "Tradewinds",
-        "Id": "505"
-      }
-    ],
-    "dungeon": [
-      {
-        "Name": "Unstable Catalyst",
-        "Id": "504"
-      }
-    ]
-  },
-  "role": {
-    "tank": [
-      {
-        "Name": "Winds of War",
-        "Id": "43"
-      },
-      {
-        "Name": "Azerite Veins",
-        "Id": "89"
-      },
-      {
-        "Name": "Crystalline Carapace",
-        "Id": "98"
-      },
-      {
-        "Name": "Ablative Shielding",
-        "Id": "99"
-      },
-      {
-        "Name": "Strength in Numbers",
-        "Id": "100"
-      },
-      {
-        "Name": "Shimmering Haven",
-        "Id": "101"
-      }
-    ],
-    "healer": [
-      {
-        "Name": "Woundbinder",
-        "Id": "19"
-      },
-      {
-        "Name": "Concentrated Mending",
-        "Id": "103"
-      },
-      {
-        "Name": "Savior",
-        "Id": "42"
-      },
-      {
-        "Name": "Bracing Chill",
-        "Id": "104"
-      },
-      {
-        "Name": "Ephemeral Recovery",
-        "Id": "105"
-      },
-      {
-        "Name": "Blessed Portents",
-        "Id": "463"
-      },
-      {
-        "Name": "Synergistic Growth",
-        "Id": "102"
-      }
-    ],
-    "dps": [
-      {
-        "Name": "Elemental Whirl",
-        "Id": "21"
-      },
-      {
-        "Name": "Overwhelming Power",
-        "Id": "30"
-      },
-      {
-        "Name": "Azerite Globules",
-        "Id": "462"
-      },
-      {
-        "Name": "Gutripper",
-        "Id": "31"
-      }
-    ],
-    "any": [
-      {
-        "Name": "Lifespeed",
-        "Id": "20"
-      },
-      {
-        "Name": "On My Way",
-        "Id": "38"
-      },
-      {
-        "Name": "Heed My Call",
-        "Id": "22"
-      },
-      {
-        "Name": "Blood Siphon",
-        "Id": "18"
-      },
-      {
-        "Name": "Unstable Flames",
-        "Id": "459"
-      },
-      {
-        "Name": "Earthlink",
-        "Id": "461"
-      }
-    ],
-    "defense": [
-      {
-        "Name": "Resounding Protection",
-        "Id": "15"
-      },
-      {
-        "Name": "Azerite Fortification",
-        "Id": "86"
-      },
-      {
-        "Name": "Impassive Visage",
-        "Id": "83"
-      },
-      {
-        "Name": "Longstrider",
-        "Id": "14"
-      },
-      {
-        "Name": "Bulwark of the Masses",
-        "Id": "84"
-      },
-      {
-        "Name": "Gemhide",
-        "Id": "85"
-      },
-      {
-        "Name": "Vampiric Speed",
-        "Id": "44"
-      },
-      {
-        "Name": "Self Reliance",
-        "Id": "87"
-      }
-    ]
-  },
-  "pvp": {
-    "horde": [
-      {
-        "Name": "Glory in Battle",
-        "Id": "486"
-      },
-      {
-        "Name": "Retaliatory Fury",
-        "Id": "487"
-      },
-      {
-        "Name": "Combined Might",
-        "Id": "490"
-      },
-      {
-        "Name": "Collective Will",
-        "Id": "491"
-      },
-      {
-        "Name": "Battlefield Focus",
-        "Id": "488"
-      },
-      {
-        "Name": "Sylvanas' Resolve",
-        "Id": "489"
-      }
-    ],
-    "alliance": [
-      {
-        "Name": "Liberator's Might",
-        "Id": "492"
-      },
-      {
-        "Name": "Last Gift",
-        "Id": "493"
-      },
-      {
-        "Name": "Stronger Together",
-        "Id": "496"
-      },
-      {
-        "Name": "Stand As One",
-        "Id": "497"
-      },
-      {
-        "Name": "Battlefield Precision",
-        "Id": "494"
-      },
-      {
-        "Name": "Anduin's Dedication",
-        "Id": "495"
-      }
-    ]
-  },
-  "profession": {
-    "engineering": [
-      {
-        "Name": "Barrage Of Many Bombs",
-        "Id": "498"
-      },
-      {
-        "Name": "Ricocheting Inflatable Pyrosaw",
-        "Id": "499"
-      },
-      {
-        "Name": "Auto-Self-Cauterizer",
-        "Id": "503"
-      },
-      {
-        "Name": "Synaptic Spark Capacitor",
-        "Id": "500"
-      },
-      {
-        "Name": "Relational Normalization Gizmo",
-        "Id": "501"
-      },
-      {
-        "Name": "Personal Absorb-o-Tron",
-        "Id": "502"
-      }
-    ]
-  },
-  "rogue": {
-    "assassination": [
-      {
-        "Name": "Double Dose",
-        "Id": "136"
-      },
-      {
-        "Name": "Twist the Knife",
-        "Id": "181"
-      },
-      {
-        "Name": "Poisoned Wire",
-        "Id": "249"
-      },
-      {
-        "Name": "Scent of Blood",
-        "Id": "406"
-      },
-      {
-        "Name": "Fan of Blades",
-        "Id": "407"
-      },
-      {
-        "Name": "Shrouded Suffocation",
-        "Id": "408"
-      }
-    ],
-    "subtlety": [
-      {
-        "Name": "Sharpened Blades",
-        "Id": "124"
-      },
-      {
-        "Name": "Night's Vengeance",
-        "Id": "175"
-      },
-      {
-        "Name": "Blade In The Shadows",
-        "Id": "240"
-      },
-      {
-        "Name": "Perforate",
-        "Id": "445"
-      },
-      {
-        "Name": "The First Dance",
-        "Id": "413"
-      },
-      {
-        "Name": "Inevitability",
-        "Id": "414"
-      }
-    ],
-    "outlaw": [
-      {
-        "Name": "Deadshot",
-        "Id": "129"
-      },
-      {
-        "Name": "Storm of Steel",
-        "Id": "180"
-      },
-      {
-        "Name": "Snake Eyes",
-        "Id": "239"
-      },
-      {
-        "Name": "Brigand's Blitz",
-        "Id": "446"
-      },
-      {
-        "Name": "Paradise Lost",
-        "Id": "410"
-      },
-      {
-        "Name": "Ace Up Your Sleeve",
-        "Id": "411"
-      }
-    ],
-    "defense": [
-      {
-        "Name": "Footpad",
-        "Id": "217"
-      },
-      {
-        "Name": "Shrouded Mantle",
-        "Id": "473"
-      }
-    ]
-  },
-  "shaman": {
-    "elemental": [
-      {
-        "Name": "Lava Shock",
-        "Id": "178"
-      },
-      {
-        "Name": "Echo of the Elementals",
-        "Id": "222"
-      },
-      {
-        "Name": "Synapse Shock",
-        "Id": "448"
-      },
-      {
-        "Name": "Natural Harmony",
-        "Id": "416"
-      },
-      {
-        "Name": "Rumbling Tremors",
-        "Id": "417"
-      },
-      {
-        "Name": "Igneous Potential",
-        "Id": "457"
-      }
-    ],
-    "enhancement": [
-      {
-        "Name": "Primal Primer",
-        "Id": "137"
-      },
-      {
-        "Name": "Strength of Earth",
-        "Id": "179"
-      },
-      {
-        "Name": "Lightning Conduit",
-        "Id": "223"
-      },
-      {
-        "Name": "Ancestral Resonance",
-        "Id": "447"
-      },
-      {
-        "Name": "Roiling Storm",
-        "Id": "420"
-      }
-    ],
-    "restoration": [
-      {
-        "Name": "Soothing Waters",
-        "Id": "138"
-      },
-      {
-        "Name": "Ebb and Flow",
-        "Id": "191"
-      },
-      {
-        "Name": "Swelling Stream",
-        "Id": "224"
-      },
-      {
-        "Name": "Overflowing Shores",
-        "Id": "449"
-      },
-      {
-        "Name": "Surging Tides",
-        "Id": "422"
-      },
-      {
-        "Name": "Spouting Spirits",
-        "Id": "423"
-      }
-    ],
-    "defense": [
-      {
-        "Name": "Serene Spirit",
-        "Id": "207"
-      },
-      {
-        "Name": "Pack Spirit",
-        "Id": "474"
-      }
-    ]
-  },
-  "hunter": {
-    "survival": [
-      {
-        "Name": "Wildfire Cluster",
-        "Id": "110"
-      },
-      {
-        "Name": "Latent Poison",
-        "Id": "163"
-      },
-      {
-        "Name": "Venomous Fangs",
-        "Id": "213"
-      },
-      {
-        "Name": "Blur of Talons",
-        "Id": "371"
-      },
-      {
-        "Name": "Wilderness Survival",
-        "Id": "372"
-      },
-      {
-        "Name": "Up Close And Personal",
-        "Id": "373"
-      }
-    ],
-    "beast_mastery": [
-      {
-        "Name": "Serrated Jaws",
-        "Id": "107"
-      },
-      {
-        "Name": "Haze of Rage",
-        "Id": "161"
-      },
-      {
-        "Name": "Dance of Death",
-        "Id": "211"
-      },
-      {
-        "Name": "Pack Alpha",
-        "Id": "365"
-      },
-      {
-        "Name": "Feeding Frenzy",
-        "Id": "367"
-      },
-      {
-        "Name": "Primal Instincts",
-        "Id": "366"
-      }
-    ],
-    "marksman": [
-      {
-        "Name": "In The Rhythm",
-        "Id": "36"
-      },
-      {
-        "Name": "Arcane Flurry",
-        "Id": "162"
-      },
-      {
-        "Name": "Unerring Vision",
-        "Id": "212"
-      },
-      {
-        "Name": "Steady Aim",
-        "Id": "368"
-      },
-      {
-        "Name": "Rapid Reload",
-        "Id": "369"
-      },
-      {
-        "Name": "Focused Fire",
-        "Id": "370"
-      }
-    ],
-    "defense": [
-      {
-        "Name": "Shellshock",
-        "Id": "203"
-      },
-      {
-        "Name": "Duck and Cover",
-        "Id": "469"
-      }
-    ]
-  },
-  "death_knight": {
-    "frost": [
-      {
-        "Name": "Icy Citadel",
-        "Id": "108"
-      },
-      {
-        "Name": "Latent Chill",
-        "Id": "141"
-      },
-      {
-        "Name": "Glacial Contagion",
-        "Id": "198"
-      },
-      {
-        "Name": "Echoing Howl",
-        "Id": "242"
-      },
-      {
-        "Name": "Killer Frost",
-        "Id": "346"
-      },
-      {
-        "Name": "Frozen Tempest",
-        "Id": "347"
-      }
-    ],
-    "unholy": [
-      {
-        "Name": "Festering Doom",
-        "Id": "109"
-      },
-      {
-        "Name": "Bone Spike Graveyard",
-        "Id": "140"
-      },
-      {
-        "Name": "Horrid Experimentation",
-        "Id": "142"
-      },
-      {
-        "Name": "Festermight",
-        "Id": "199"
-      },
-      {
-        "Name": "Harrowing Decay",
-        "Id": "244"
-      },
-      {
-        "Name": "Cankerous Wounds",
-        "Id": "350"
-      },
-      {
-        "Name": "Last Surprise",
-        "Id": "351"
-      }
-    ],
-    "blood": [
-      {
-        "Name": "Deep Cuts",
-        "Id": "106"
-      },
-      {
-        "Name": "Bone Spike Graveyard",
-        "Id": "140"
-      },
-      {
-        "Name": "Marrowblood",
-        "Id": "197"
-      },
-      {
-        "Name": "Embrace of the Darkfallen",
-        "Id": "243"
-      },
-      {
-        "Name": "Eternal Rune Weapon",
-        "Id": "348"
-      },
-      {
-        "Name": "Bones of the Damned",
-        "Id": "349"
-      }
-    ],
-    "defense": [
-      {
-        "Name": "Runic Barrier",
-        "Id": "201"
-      },
-      {
-        "Name": "March of the Damned",
-        "Id": "465"
-      }
-    ]
-  },
-  "demon_hunter": {
-    "havoc": [
-      {
-        "Name": "Furious Gaze",
-        "Id": "159"
-      },
-      {
-        "Name": "Unbound Chaos",
-        "Id": "220"
-      },
-      {
-        "Name": "Seething Power",
-        "Id": "245"
-      },
-      {
-        "Name": "Thirsting Blades",
-        "Id": "352"
-      },
-      {
-        "Name": "Eyes of Rage",
-        "Id": "353"
-      },
-      {
-        "Name": "Revolving Blades",
-        "Id": "126"
-      }
-    ],
-    "vengeance": [
-      {
-        "Name": "Revel in Pain",
-        "Id": "134"
-      },
-      {
-        "Name": "Infernal Armor",
-        "Id": "160"
-      },
-      {
-        "Name": "Rigid Carapace",
-        "Id": "221"
-      },
-      {
-        "Name": "Gaping Maw",
-        "Id": "246"
-      },
-      {
-        "Name": "Essence Sever",
-        "Id": "355"
-      },
-      {
-        "Name": "Cycle of Binding",
-        "Id": "354"
-      }
-    ],
-    "defense": [
-      {
-        "Name": "Soulmonger",
-        "Id": "202"
-      },
-      {
-        "Name": "Burning Soul",
-        "Id": "466"
-      }
-    ]
-  },
-  "paladin": {
-    "retribution": [
-      {
-        "Name": "Avenger's Might",
-        "Id": "125"
-      },
-      {
-        "Name": "Expurgation",
-        "Id": "187"
-      },
-      {
-        "Name": "Indomitable Justice",
-        "Id": "235"
-      },
-      {
-        "Name": "Divine Right",
-        "Id": "453"
-      },
-      {
-        "Name": "Zealotry",
-        "Id": "396"
-      },
-      {
-        "Name": "Relentless Inquisitor",
-        "Id": "154"
-      }
-    ],
-    "protection": [
-      {
-        "Name": "Bulwark of Light",
-        "Id": "133"
-      },
-      {
-        "Name": "Dauntless Divinity",
-        "Id": "189"
-      },
-      {
-        "Name": "Inner Light",
-        "Id": "234"
-      },
-      {
-        "Name": "Judicious Defense",
-        "Id": "454"
-      },
-      {
-        "Name": "Soaring Shield",
-        "Id": "150"
-      },
-      {
-        "Name": "Inspiring Vanguard",
-        "Id": "395"
-      }
-    ],
-    "holy": [
-      {
-        "Name": "Martyr's Breath",
-        "Id": "139"
-      },
-      {
-        "Name": "Moment of Compassion",
-        "Id": "188"
-      },
-      {
-        "Name": "Divine Revelations",
-        "Id": "233"
-      },
-      {
-        "Name": "Radiant Incandescence",
-        "Id": "452"
-      },
-      {
-        "Name": "Grace of the Justicar",
-        "Id": "393"
-      },
-      {
-        "Name": "Breaking Dawn",
-        "Id": "394"
-      }
-    ],
-    "defense": [
-      {
-        "Name": "Stalwart Protector",
-        "Id": "206"
-      },
-      {
-        "Name": "Gallant Steed",
-        "Id": "471"
-      }
-    ]
-  },
-  "warlock": {
-    "affliction": [
-      {
-        "Name": "Wracking Brilliance",
-        "Id": "123"
-      },
-      {
-        "Name": "Inevitable Demise",
-        "Id": "183"
-      },
-      {
-        "Name": "Cascading Calamity",
-        "Id": "230"
-      },
-      {
-        "Name": "Deathbloom",
-        "Id": "442"
-      },
-      {
-        "Name": "Sudden Onset",
-        "Id": "425"
-      },
-      {
-        "Name": "Dreadful Calling",
-        "Id": "426"
-      }
-    ],
-    "demonology": [
-      {
-        "Name": "Shadow's Bite",
-        "Id": "130"
-      },
-      {
-        "Name": "Umbral Blaze",
-        "Id": "190"
-      },
-      {
-        "Name": "Explosive Potential",
-        "Id": "231"
-      },
-      {
-        "Name": "Demonic Meteor",
-        "Id": "428"
-      },
-      {
-        "Name": "Forbidden Knowledge",
-        "Id": "429"
-      },
-      {
-        "Name": "Supreme Commander",
-        "Id": "458"
-      }
-    ],
-    "destruction": [
-      {
-        "Name": "Accelerant",
-        "Id": "131"
-      },
-      {
-        "Name": "Flashpoint",
-        "Id": "232"
-      },
-      {
-        "Name": "Crashing Chaos",
-        "Id": "444"
-      },
-      {
-        "Name": "Rolling Havoc",
-        "Id": "431"
-      },
-      {
-        "Name": "Chaotic Inferno",
-        "Id": "432"
-      },
-      {
-        "Name": "Bursting Flare",
-        "Id": "460"
-      }
-    ],
-    "defense": [
-      {
-        "Name": "Lifeblood",
-        "Id": "208"
-      },
-      {
-        "Name": "Desperate Power",
-        "Id": "475"
-      }
-    ]
-  },
-  "warrior": {
-    "protection": [
-      {
-        "Name": "Deafening Crash",
-        "Id": "118"
-      },
-      {
-        "Name": "Reinforced Plating",
-        "Id": "237"
-      },
-      {
-        "Name": "Brace for Impact",
-        "Id": "450"
-      },
-      {
-        "Name": "Callous Reprisal",
-        "Id": "440"
-      },
-      {
-        "Name": "Iron Fortress",
-        "Id": "441"
-      },
-      {
-        "Name": "Bloodsport",
-        "Id": "177"
-      }
-    ],
-    "arms": [
-      {
-        "Name": "Executioner's Precision",
-        "Id": "121"
-      },
-      {
-        "Name": "Gathering Storm",
-        "Id": "174"
-      },
-      {
-        "Name": "Test of Might",
-        "Id": "226"
-      },
-      {
-        "Name": "Seismic Wave",
-        "Id": "433"
-      },
-      {
-        "Name": "Crushing Assault",
-        "Id": "434"
-      },
-      {
-        "Name": "Lord of War",
-        "Id": "435"
-      }
-    ],
-    "fury": [
-      {
-        "Name": "Trample the Weak",
-        "Id": "119"
-      },
-      {
-        "Name": "Bloodcraze",
-        "Id": "176"
-      },
-      {
-        "Name": "Pulverizing Blows",
-        "Id": "229"
-      },
-      {
-        "Name": "Infinite Fury",
-        "Id": "451"
-      },
-      {
-        "Name": "Simmering Rage",
-        "Id": "437"
-      },
-      {
-        "Name": "Reckless Flurry",
-        "Id": "438"
-      }
-    ],
-    "defense": [
-      {
-        "Name": "Moment of Glory",
-        "Id": "476"
-      },
-      {
-        "Name": "Bury the Hatchet",
-        "Id": "477"
-      }
-    ]
-  },
-  "mage": {
-    "frost": [
-      {
-        "Name": "Packed Ice",
-        "Id": "132"
-      },
-      {
-        "Name": "Winter's Reach",
-        "Id": "170"
-      },
-      {
-        "Name": "Tunnel of Ice",
-        "Id": "379"
-      },
-      {
-        "Name": "Whiteout",
-        "Id": "380"
-      },
-      {
-        "Name": "Frigid Grasp",
-        "Id": "381"
-      },
-      {
-        "Name": "Glacial Assault",
-        "Id": "225"
-      }
-    ],
-    "fire": [
-      {
-        "Name": "Flames of Alacrity",
-        "Id": "128"
-      },
-      {
-        "Name": "Preheat",
-        "Id": "168"
-      },
-      {
-        "Name": "Blaster Master",
-        "Id": "215"
-      },
-      {
-        "Name": "Trailing Embers",
-        "Id": "376"
-      },
-      {
-        "Name": "Duplicative Incineration",
-        "Id": "377"
-      },
-      {
-        "Name": "Firemind",
-        "Id": "378"
-      }
-    ],
-    "arcane": [
-      {
-        "Name": "Arcane Pummeling",
-        "Id": "88"
-      },
-      {
-        "Name": "Brain Storm",
-        "Id": "167"
-      },
-      {
-        "Name": "Arcane Pressure",
-        "Id": "214"
-      },
-      {
-        "Name": "Galvanizing Spark",
-        "Id": "374"
-      },
-      {
-        "Name": "Explosive Echo",
-        "Id": "375"
-      },
-      {
-        "Name": "Anomalous Impact",
-        "Id": "127"
-      }
-    ],
-    "defense": [
-      {
-        "Name": "Eldritch Warding",
-        "Id": "205"
-      },
-      {
-        "Name": "Cauterizing Blink",
-        "Id": "468"
-      }
-    ]
-  },
-  "priest": {
-    "shadow": [
-      {
-        "Name": "Searing Dialogue",
-        "Id": "115"
-      },
-      {
-        "Name": "Thought Harvester",
-        "Id": "166"
-      },
-      {
-        "Name": "Whispers of the Damned",
-        "Id": "236"
-      },
-      {
-        "Name": "Spiteful Apparitions",
-        "Id": "403"
-      },
-      {
-        "Name": "Death Throes",
-        "Id": "404"
-      },
-      {
-        "Name": "Chorus of Insanity",
-        "Id": "405"
-      }
-    ],
-    "holy": [
-      {
-        "Name": "Permeating Glow",
-        "Id": "114"
-      },
-      {
-        "Name": "Blessed Sanctuary",
-        "Id": "165"
-      },
-      {
-        "Name": "Prayerful Litany",
-        "Id": "228"
-      },
-      {
-        "Name": "Everlasting Light",
-        "Id": "400"
-      },
-      {
-        "Name": "Word of Mending",
-        "Id": "401"
-      },
-      {
-        "Name": "Sacred Flame",
-        "Id": "402"
-      }
-    ],
-    "discipline": [
-      {
-        "Name": "Moment of Repose",
-        "Id": "113"
-      },
-      {
-        "Name": "Weal and Woe",
-        "Id": "164"
-      },
-      {
-        "Name": "Depth of the Shadows",
-        "Id": "227"
-      },
-      {
-        "Name": "Gift of Forgiveness",
-        "Id": "397"
-      },
-      {
-        "Name": "Contemptuous Homily",
-        "Id": "398"
-      },
-      {
-        "Name": "Enduring Luminescence",
-        "Id": "399"
-      }
-    ],
-    "defense": [
-      {
-        "Name": "Sanctum",
-        "Id": "204"
-      },
-      {
-        "Name": "Twist Magic",
-        "Id": "472"
-      }
-    ]
-  },
-  "druid": {
-    "feral": [
-      {
-        "Name": "Raking Ferocity",
-        "Id": "169"
-      },
-      {
-        "Name": "Shredding Fury",
-        "Id": "209"
-      },
-      {
-        "Name": "Iron Jaws",
-        "Id": "247"
-      },
-      {
-        "Name": "Gushing Lacerations",
-        "Id": "358"
-      },
-      {
-        "Name": "Blood Mist",
-        "Id": "111"
-      },
-      {
-        "Name": "Wild Fleshrending",
-        "Id": "359"
-      }
-    ],
-    "balance": [
-      {
-        "Name": "Streaking Stars",
-        "Id": "122"
-      },
-      {
-        "Name": "Power of the Moon",
-        "Id": "173"
-      },
-      {
-        "Name": "Sunblaze",
-        "Id": "200"
-      },
-      {
-        "Name": "Dawning Sun",
-        "Id": "250"
-      },
-      {
-        "Name": "High Noon",
-        "Id": "356"
-      },
-      {
-        "Name": "Lunar Shrapnel",
-        "Id": "357"
-      }
-    ],
-    "guardian": [
-      {
-        "Name": "Masterful Instincts",
-        "Id": "171"
-      },
-      {
-        "Name": "Twisted Claws",
-        "Id": "241"
-      },
-      {
-        "Name": "Craggy Bark",
-        "Id": "251"
-      },
-      {
-        "Name": "Gory Regeneration",
-        "Id": "360"
-      },
-      {
-        "Name": "Guardian's Wrath",
-        "Id": "361"
-      },
-      {
-        "Name": "Layered Mane",
-        "Id": "112"
-      }
-    ],
-    "restoration": [
-      {
-        "Name": "Fungal Essence",
-        "Id": "120"
-      },
-      {
-        "Name": "Autumn Leaves",
-        "Id": "210"
-      },
-      {
-        "Name": "Waking Dream",
-        "Id": "363"
-      },
-      {
-        "Name": "Rampant Growth",
-        "Id": "362"
-      },
-      {
-        "Name": "Lively Spirit",
-        "Id": "364"
-      },
-      {
-        "Name": "Grove Tending",
-        "Id": "172"
-      }
-    ],
-    "defense": [
-      {
-        "Name": "Reawakening",
-        "Id": "219"
-      },
-      {
-        "Name": "Ursoc's Endurance",
-        "Id": "467"
-      }
-    ]
-  },
-  "monk": {
-    "brewmaster": [
-      {
-        "Name": "Boiling Brew",
-        "Id": "116"
-      },
-      {
-        "Name": "Staggering Strikes",
-        "Id": "186"
-      },
-      {
-        "Name": "Fit to Burst",
-        "Id": "238"
-      },
-      {
-        "Name": "Niuzao's Blessing",
-        "Id": "382"
-      },
-      {
-        "Name": "Training of Niuzao",
-        "Id": "383"
-      },
-      {
-        "Name": "Elusive Footwork",
-        "Id": "384"
-      }
-    ],
-    "mistweaver": [
-      {
-        "Name": "Invigorating Brew",
-        "Id": "76"
-      },
-      {
-        "Name": "Overflowing Mists",
-        "Id": "185"
-      },
-      {
-        "Name": "Misty Peaks",
-        "Id": "248"
-      },
-      {
-        "Name": "Burst of Life",
-        "Id": "385"
-      },
-      {
-        "Name": "Uplifted Spirits",
-        "Id": "387"
-      },
-      {
-        "Name": "Font of Life",
-        "Id": "386"
-      }
-    ],
-    "windwalker": [
-      {
-        "Name": "Iron Fists",
-        "Id": "117"
-      },
-      {
-        "Name": "Sunrise Technique",
-        "Id": "184"
-      },
-      {
-        "Name": "Swift Roundhouse",
-        "Id": "388"
-      },
-      {
-        "Name": "Pressure Point",
-        "Id": "390"
-      },
-      {
-        "Name": "Meridian Strikes",
-        "Id": "391"
-      },
-      {
-        "Name": "Open Palm Strikes",
-        "Id": "389"
-      }
-    ],
-    "defense": [
-      {
-        "Name": "Strength of Spirit",
-        "Id": "218"
-      },
-      {
-        "Name": "Sweep the Leg",
-        "Id": "470"
-      }
-    ]
   }
-}

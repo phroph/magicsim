@@ -10,7 +10,7 @@
     <Grid Margin="0,0,0.333,16">
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Add more characters:" VerticalAlignment="Top" FontSize="18"/>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Margin="45,60,44.667,23">
-            <Button x:Name="button" Content="From Armory" Margin="10" HorizontalAlignment="Center" Click="button_Click" Width="180" FontSize="24"/>
+            <Button x:Name="button" Content="From Armory" IsEnabled="False" Margin="10" HorizontalAlignment="Center" Click="button_Click" Width="180" FontSize="24"/>
             <Button x:Name="button1" Content="From /simc" Margin="10" Height="Auto" Width="180" FontSize="24" Click="button1_Click"/>
             <Button x:Name="cancelButton" Content="Cancel" Margin="10" Width="180" FontSize="24" Click="Cancel_Click" />
         </StackPanel>

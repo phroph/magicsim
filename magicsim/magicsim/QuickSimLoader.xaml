@@ -26,7 +26,12 @@
                         <Setter Property="HorizontalAlignment" Value="Center" />
                     </Style>
                 </TabControl.Resources>
-                <TabItem Header="Armory" Name="Armory">
+                <TabItem Header="SimC" Name="SimC">
+                    <StackPanel  Height="150" Orientation="Vertical" HorizontalAlignment="Center" Margin="15">
+                        <TextBox x:Name="SimCInput" HorizontalAlignment="Center" AcceptsTab="True" AcceptsReturn="True" Height="150" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="280"/>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Armory" Name="Armory" IsEnabled="False">
                     <StackPanel Height="150" Orientation="Vertical" HorizontalAlignment="Center" Margin="15">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
                             <Label x:Name="nameLabel" Content="Name:" FontSize="14"/>
@@ -40,11 +45,6 @@
                             <Label x:Name="regionLabel" Content="Region:" FontSize="14"/>
                             <ComboBox x:Name="regions" Height="23" SelectedItem="{Binding Path=SelectedRegion}" ItemsSource="{Binding Path=Regions}" SelectionChanged="regions_SelectionChanged" Text="" Width="120"/>
                         </StackPanel>
-                    </StackPanel>
-                </TabItem>
-                <TabItem Header="SimC" Name="SimC">
-                    <StackPanel  Height="150" Orientation="Vertical" HorizontalAlignment="Center" Margin="15">
-                        <TextBox x:Name="SimCInput" HorizontalAlignment="Center" AcceptsTab="True" AcceptsReturn="True" Height="150" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="280"/>
                     </StackPanel>
                 </TabItem>
             </TabControl>

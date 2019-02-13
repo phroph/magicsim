@@ -7,7 +7,7 @@
         xmlns:c="clr-namespace:magicsim.components"
         Background="WhiteSmoke"
         mc:Ignorable="d"
-        Title="magicsim" Height="464.825" Width="490.676"
+        Title="magicsim" Height="464.825" Width="596.717"
         ResizeMode="NoResize">
     <Window.Resources>
         <local:CustomizationData x:Key="customizationData"/>
@@ -15,13 +15,13 @@
     <Window.DataContext>
         <Binding Source="{StaticResource customizationData}"/>
     </Window.DataContext>
-    <Grid Margin="0,0,-7,4">
-        <c:PlayerCustomizationGrid>
+    <Grid Margin="0,0,53.667,3.667">
+        <c:PlayerCustomizationGrid Margin="1,0,62.667,-0.333">
             <c:PlayerCustomizationGrid.DataContext>
                 <Binding Source="{StaticResource customizationData}"/>
             </c:PlayerCustomizationGrid.DataContext>
         </c:PlayerCustomizationGrid>
-        <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" Margin="69,392,0,0" VerticalAlignment="Top" Width="100" Click="AddButton_Click" RenderTransformOrigin="0.607,-1.371"/>
-        <Button x:Name="CancelButton" Content="Cancel" Click="CancelButton_Click" HorizontalAlignment="Left" Margin="307,391,0,0" VerticalAlignment="Top" Width="100"/>
+        <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" Margin="100,403,0,0" VerticalAlignment="Top" Width="100" Click="AddButton_Click" RenderTransformOrigin="0.607,-1.371"/>
+        <Button x:Name="CancelButton" Content="Cancel" Click="CancelButton_Click" HorizontalAlignment="Left" Margin="427,403,0,0" VerticalAlignment="Top" Width="100"/>
     </Grid>
 </Window>

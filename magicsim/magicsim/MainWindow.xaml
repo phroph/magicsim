@@ -11,7 +11,7 @@
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Margin="45,71,44.667,33">
             <Button x:Name="quicksim" Content="Quick Sim" Margin="10" Height="Auto" Width="180" FontSize="24" Click="quicksim_Click"/>
-            <Button x:Name="button" Content="From Armory" Margin="10" HorizontalAlignment="Center" Click="button_Click" Width="180" FontSize="24"/>
+            <Button x:Name="button" Content="From Armory" IsEnabled="False" Margin="10" HorizontalAlignment="Center" Click="button_Click" Width="180" FontSize="24"/>
             <Button x:Name="button1" Content="From /simc" Margin="10" Height="Auto" Width="180" FontSize="24" Click="button1_Click"/>
             <Button x:Name="previous" Content="Previous Results" Margin="10" Width="180" FontSize="24" Click="previous_Click" />
         </StackPanel>
